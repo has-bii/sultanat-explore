@@ -20,9 +20,9 @@ Travel agency website. Turkey-based, serving Indonesian travelers. Open trips, p
 
 **Docs:**
 
-- [ARCHITECTURE.md](.claude/project/ARCHITECTURE.md) — tech stack, patterns, key decisions
-- [CODEBASE-DIRECTORY.md](.claude/project/CODEBASE-DIRECTORY.md) — folder structure overview
-- [CONVENTION.md](.claude/project/CONVENTION.md) — naming, styling, file org rules
-- [FEATURES.md](.claude/project/FEATURES.md) — implemented features status
-- [LOG.md](.claude/project/LOG.md) — decisions timeline
-- [PRD.md](.claude/project/PRD.md) — full product requirements
+- [ARCHITECTURE.md](.pi/project/ARCHITECTURE.md) — tech stack, patterns, key decisions
+- [CODEBASE-DIRECTORY.md](.pi/project/CODEBASE-DIRECTORY.md) — folder structure overview
+- [CONVENTION.md](.pi/project/CONVENTION.md) — naming, styling, file org rules
+- [FEATURES.md](.pi/project/FEATURES.md) — implemented features status
+- [LOG.md](.pi/project/LOG.md) — decisions timeline
+- [PRD.md](.pi/project/PRD.md) — full product requirements
