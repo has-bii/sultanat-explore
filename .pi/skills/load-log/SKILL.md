@@ -1,24 +1,25 @@
 ---
 name: load-log
 description: >-
-  Read the decision timeline from LOG.md index and all log entry files. Use when resuming work, checking past decisions, or understanding project history. Trigger: "load log", "show log", "what was decided", "decision history".
+  Read the most recent decision from LOG.md. Use when resuming work, checking the latest decision, or understanding what was last done. Trigger: "load log", "show log", "what was decided", "latest decision".
 ---
 
-# Load Log
+# Load Last Log
 
-Read `.pi/project/LOG.md` index and present the full decision timeline.
+Read `.pi/project/LOG.md` index and present only the **most recent** log entry.
 
 ## Instructions
 
-1. Read `.pi/project/LOG.md` — this is now an index table (date, title, file reference).
-2. For each entry in the index, read the corresponding file from `.pi/project/log/<slug>.md`.
-3. Present entries in reverse chronological order (as listed in index).
-4. Print each entry's full content — do not summarize or truncate.
+1. Read `.pi/project/LOG.md` — this is an index table (date, title, file reference), reverse chronological.
+2. Take only the **first entry** in the table (most recent).
+3. Read the corresponding file from `.pi/project/log/<slug>.md`.
+4. Print the entry's full content — do not summarize or truncate.
 5. If index empty or missing: report "No log entries yet."
 6. No edits. Read-only.
 
 ## Filtering
 
 If user asks about a specific topic or tag:
-- Check each log file's YAML frontmatter `tags` field.
+- Search all entries in the index for matching tags in their YAML frontmatter.
 - Only present matching entries.
+- Otherwise, default to last entry only.
