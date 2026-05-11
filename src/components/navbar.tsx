@@ -23,7 +23,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       {
         label: "Open Trip",
-        href: "#open-trip",
+        href: "/open-trip",
         description: "Bergabung dengan traveler lain. Hemat dan seru!",
       },
       {

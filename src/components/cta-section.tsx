@@ -1,9 +1,9 @@
-import { MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react"
 
 const WHATSAPP_LINK =
-  "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki";
+  "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki"
 
-export function CtaSection() {
+export function CTASection() {
   return (
     <section className="py-20">
       <div className="mx-auto max-w-4xl px-6">
@@ -34,5 +34,5 @@ export function CtaSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
