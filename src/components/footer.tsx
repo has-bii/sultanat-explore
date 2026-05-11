@@ -11,18 +11,18 @@ const FOOTER_LINKS = [
   {
     title: "Services",
     links: [
-      { label: "Open Trip", href: "#open-trip" },
-      { label: "Private Trip", href: "#private-trip" },
-      { label: "Umrah", href: "#umrah" },
+      { label: "Open Trip", href: "/open-trip" },
+      { label: "Private Trip", href: "/private-trip" },
+      { label: "Umrah", href: "/umrah" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#about" },
-      { label: "Destinations", href: "#destinations" },
-      { label: "Articles", href: "#articles" },
-      { label: "Contact", href: "#contact" },
+      { label: "About", href: "/about" },
+      { label: "Destinations", href: "/destinations" },
+      { label: "Articles", href: "/articles" },
+      { label: "Contact", href: "/contact" },
     ],
   },
 ];

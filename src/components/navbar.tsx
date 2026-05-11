@@ -1,25 +1,25 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { ChevronDown, Menu, MessageCircle, X } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import Link from "next/link"
+import { useCallback, useEffect, useState } from "react"
 
 const WHATSAPP_LINK =
-  "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki";
+  "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki"
 
 interface NavItem {
-  label: string;
-  href: string;
-  children?: { label: string; href: string; description: string }[];
+  label: string
+  href: string
+  children?: { label: string; href: string; description: string }[]
 }
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   {
     label: "Services",
-    href: "#services",
+    href: "/services",
     children: [
       {
         label: "Open Trip",
@@ -28,32 +28,32 @@ const NAV_ITEMS: NavItem[] = [
       },
       {
         label: "Private Trip",
-        href: "#private-trip",
+        href: "/private-trip",
         description: "Perjalanan eksklusif sesuai jadwal & keinginan Anda.",
       },
       {
         label: "Umrah",
-        href: "#umrah",
+        href: "/umrah",
         description: "Paket Umrah terlengkap dengan pelayanan terbaik.",
       },
     ],
   },
-  { label: "Destinations", href: "#destinations" },
-  { label: "Articles", href: "#articles" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-];
+  { label: "Destinations", href: "/destinations" },
+  { label: "Articles", href: "/articles" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+]
 
 function ServicesDropdown({
   items,
   isOpen,
   onClose,
 }: {
-  items: NavItem["children"];
-  isOpen: boolean;
-  onClose: () => void;
+  items: NavItem["children"]
+  isOpen: boolean
+  onClose: () => void
 }) {
-  if (!items) return null;
+  if (!items) return null
 
   return (
     <AnimatePresence>
@@ -86,17 +86,11 @@ function ServicesDropdown({
         </motion.div>
       )}
     </AnimatePresence>
-  );
+  )
 }
 
-function MobileMenu({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const [servicesOpen, setServicesOpen] = useState(false);
+function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [servicesOpen, setServicesOpen] = useState(false)
 
   return (
     <AnimatePresence>
@@ -143,7 +137,7 @@ function MobileMenu({
                       <ChevronDown
                         className={cn(
                           "h-4 w-4 text-muted-foreground transition-transform duration-200",
-                          servicesOpen && "rotate-180"
+                          servicesOpen && "rotate-180",
                         )}
                       />
                     </button>
@@ -164,9 +158,7 @@ function MobileMenu({
                                 onClick={onClose}
                                 className="flex flex-col gap-0.5 py-2.5 px-3 rounded-lg hover:bg-accent/60 transition-colors"
                               >
-                                <span className="text-sm font-medium">
-                                  {child.label}
-                                </span>
+                                <span className="text-sm font-medium">{child.label}</span>
                                 <span className="text-xs text-muted-foreground">
                                   {child.description}
                                 </span>
@@ -186,7 +178,7 @@ function MobileMenu({
                   >
                     {item.label}
                   </Link>
-                )
+                ),
               )}
             </nav>
 
@@ -205,34 +197,32 @@ function MobileMenu({
         </>
       )}
     </AnimatePresence>
-  );
+  )
 }
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
 
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 50);
-  }, []);
+    setScrolled(window.scrollY > 50)
+  }, [])
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [handleScroll])
 
   return (
     <>
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+      <header
         className={cn(
           "fixed top-0 left-0 right-0 z-30 transition-all duration-500",
           scrolled
             ? "bg-background/90 backdrop-blur-xl border-b border-border/40 shadow-sm shadow-black/5"
-            : "bg-transparent"
+            : "bg-transparent",
         )}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -260,14 +250,14 @@ export function Navbar() {
                         "flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
                         servicesOpen
                           ? "text-foreground bg-accent/60"
-                          : "text-foreground/70 hover:text-foreground hover:bg-accent/40"
+                          : "text-foreground/70 hover:text-foreground hover:bg-accent/40",
                       )}
                     >
                       {item.label}
                       <ChevronDown
                         className={cn(
                           "h-3.5 w-3.5 transition-transform duration-200",
-                          servicesOpen && "rotate-180"
+                          servicesOpen && "rotate-180",
                         )}
                       />
                     </button>
@@ -285,7 +275,7 @@ export function Navbar() {
                   >
                     {item.label}
                   </Link>
-                )
+                ),
               )}
             </nav>
 
@@ -311,9 +301,9 @@ export function Navbar() {
             </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
-  );
+  )
 }
