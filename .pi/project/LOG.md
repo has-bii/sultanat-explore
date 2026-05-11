@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-11 | Global Not Found Page | [global-not-found-page.md](log/global-not-found-page.md) |
 | 2026-05-11 | Homepage Feature Completed | [homepage-feature-complete.md](log/homepage-feature-complete.md) |
 | 2026-05-11 | Private Trip Facility Cards Redesign | [private-trip-facility-carousel.md](log/private-trip-facility-carousel.md) |
 | 2026-05-11 | Navbar and Footer Implementation | [navbar-footer-implementation.md](log/navbar-footer-implementation.md) |
