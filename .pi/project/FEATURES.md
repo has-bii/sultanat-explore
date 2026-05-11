@@ -10,7 +10,7 @@ Status of implemented features per PRD.
 | Open Trip | ✅ Done | Listing page, detail page, trip cards, how-it-works, itinerary, inclusions, why-us, past-trip gallery, social proof |
 | Private Trip | ✅ Done | Explanation, comparison table, benefits, process timeline, trip builder wizard (city → services → price estimate → WhatsApp), sample itineraries, gallery, testimonials, travel advisor, FAQ, social proof |
 | Private Umrah | ✅ Done | Hero, social proof, explanation, packages (Standard/Premium/VIP), inclusions grid, itinerary preview, process timeline, gallery, testimonials, travel advisor, FAQ, CTA |
-| Destinasi | 🔲 Not started | Destination grid + detail pages |
+| Destinasi | 🚧 In progress | Listing page done (hero, featured, searchable grid, attractions, why-turkey). Detail page TBD |
 | Artikel | 🔲 Not started | Article listing + detail pages |
 | Collaborate | 🔲 Not started | KOL/influencer info + application |
 | About Us | 🔲 Not started | Company story, team, testimonials |
