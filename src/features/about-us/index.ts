@@ -1,0 +1,6 @@
+export { AboutHero } from "./components/about-hero"
+export { CompanyStory } from "./components/company-story"
+export { WhyTurkey } from "./components/why-turkey"
+export { TeamSection } from "./components/team-section"
+export { ValuesSection } from "./components/values-section"
+export { AboutTestimonials } from "./components/testimonials-section"

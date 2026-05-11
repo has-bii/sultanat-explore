@@ -8,11 +8,9 @@ const firstColumn = testimonials.slice(0, 3)
 const secondColumn = testimonials.slice(3, 6)
 const thirdColumn = testimonials.slice(6, 9)
 
-export { testimonials }
-
-export function TestimonialsSection() {
+export function AboutTestimonials() {
   return (
-    <section className="bg-background my-20 relative">
+    <section className="bg-background py-20 relative">
       <div className="container z-10 mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -29,7 +27,8 @@ export function TestimonialsSection() {
             Kata Mereka
           </h2>
           <p className="text-center mt-5 text-body opacity-75">
-            Testimoni dari traveler Indonesia yang telah berpetualang bersama kami.
+            Testimoni dari traveler Indonesia yang telah berpetualang bersama
+            kami.
           </p>
         </motion.div>
 

@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-12 | About Us Page Implementation | [about-us-page-implementation.md](log/about-us-page-implementation.md) |
 | 2026-05-11 | Artikel Feature Implementation | [artikel-feature-implementation.md](log/artikel-feature-implementation.md) |
 | 2026-05-11 | Gallery Thumbnail Ring Fix | [gallery-thumbnail-ring-fix.md](log/gallery-thumbnail-ring-fix.md) |
 | 2026-05-11 | Destination Detail Page | [destination-detail-page.md](log/destination-detail-page.md) |

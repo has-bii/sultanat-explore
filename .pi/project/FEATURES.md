@@ -13,7 +13,7 @@ Status of implemented features per PRD.
 | Destinasi | ✅ Done | Listing page (hero, featured, searchable grid, attractions, why-turkey) + detail pages (hero, about, gallery, related trips, other destinations, CTA) |
 | Artikel | ✅ Done | Listing page (hero, featured, filterable grid, search), detail page (hero, content blocks, author card, related articles), 6 sample articles, SEO metadata |
 | Collaborate | 🔲 Not started | KOL/influencer info + application |
-| About Us | 🔲 Not started | Company story, team, testimonials |
+| About Us | ✅ Done | Company story, team, values, testimonials, navbar dark-theme inversion |
 | FAQ | 🔲 Not started | Accordion Q&A by category |
 | Contact | 🔲 Not started | WhatsApp CTA, social links, email |
 

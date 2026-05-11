@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { ChevronDown, Menu, MessageCircle, X } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import Link from "next/link"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 const WHATSAPP_LINK =
   "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki"
@@ -48,10 +48,12 @@ function ServicesDropdown({
   items,
   isOpen,
   onClose,
+  inverted,
 }: {
   items: NavItem["children"]
   isOpen: boolean
   onClose: () => void
+  inverted: boolean
 }) {
   if (!items) return null
 
@@ -66,18 +68,32 @@ function ServicesDropdown({
           className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72"
           onMouseLeave={onClose}
         >
-          <div className="rounded-2xl border border-border/60 bg-background/95 backdrop-blur-xl p-2 shadow-xl shadow-black/5">
+          <div className={cn(
+            "rounded-2xl border border-border/60 backdrop-blur-xl p-2 shadow-xl shadow-black/5",
+            inverted ? "bg-black/90 border-white/10" : "bg-background/95",
+          )}>
             {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className="group flex flex-col gap-0.5 rounded-xl px-4 py-3 transition-colors hover:bg-accent/80"
+                className={cn(
+                  "group flex flex-col gap-0.5 rounded-xl px-4 py-3 transition-colors hover:bg-accent/80",
+                  inverted && "hover:bg-white/10",
+                )}
               >
-                <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                <span className={cn(
+                  "text-sm font-semibold transition-colors",
+                  inverted
+                    ? "text-white group-hover:text-white/80"
+                    : "text-foreground group-hover:text-primary",
+                )}>
                   {item.label}
                 </span>
-                <span className="text-xs text-muted-foreground leading-relaxed">
+                <span className={cn(
+                  "text-xs leading-relaxed",
+                  inverted ? "text-white/50" : "text-muted-foreground",
+                )}>
                   {item.description}
                 </span>
               </Link>
@@ -204,9 +220,53 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
+  const [inverted, setInverted] = useState(false)
+  const observerRef = useRef<IntersectionObserver | null>(null)
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50)
+  }, [])
+
+  // Observe [data-nav-theme="dark"] sentinels for color inversion
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      () => {
+        // Check if any dark sentinel overlaps the navbar zone
+        const sentinels = document.querySelectorAll('[data-nav-theme="dark"]')
+        const navbarBottom = 80
+        let anyOverlap = false
+        sentinels.forEach((el) => {
+          const rect = el.getBoundingClientRect()
+          // Sentinel top is above navbar bottom = overlap
+          if (rect.top < navbarBottom && rect.bottom > 0) {
+            anyOverlap = true
+          }
+        })
+        setInverted(anyOverlap)
+      },
+      {
+        // Observe when elements enter/leave viewport
+        threshold: [0, 0.1, 0.5, 1],
+      }
+    )
+    observerRef.current = observer
+
+    // Observe all dark-theme sentinels
+    const observe = () => {
+      const sentinels = document.querySelectorAll('[data-nav-theme="dark"]')
+      sentinels.forEach((el) => observer.observe(el))
+    }
+
+    observe()
+
+    // Re-observe on DOM changes (page navigations)
+    const mo = new MutationObserver(observe)
+    mo.observe(document.body, { childList: true, subtree: true })
+
+    return () => {
+      observer.disconnect()
+      mo.disconnect()
+    }
   }, [])
 
   useEffect(() => {
@@ -214,6 +274,9 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
+
+  // When scrolled (bg fills in), never invert — bg is solid
+  const shouldInvert = inverted && !scrolled
 
   return (
     <>
@@ -229,9 +292,14 @@ export function Navbar() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="relative z-10 group">
-              <span className="font-heading text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-foreground/80">
+              <span className={cn(
+                "font-heading text-xl font-bold tracking-tight transition-colors",
+                shouldInvert
+                  ? "text-white group-hover:text-white/80"
+                  : "text-foreground group-hover:text-foreground/80",
+              )}>
                 Sultanat
-                <span className="text-primary">Explore</span>
+                <span className={shouldInvert ? "text-white/70" : "text-primary"}>Explore</span>
               </span>
             </Link>
 
@@ -248,9 +316,10 @@ export function Navbar() {
                     <button
                       className={cn(
                         "flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
-                        servicesOpen
-                          ? "text-foreground bg-accent/60"
-                          : "text-foreground/70 hover:text-foreground hover:bg-accent/40",
+                        shouldInvert && !servicesOpen && "text-white/70 hover:text-white hover:bg-white/10",
+                        shouldInvert && servicesOpen && "text-white bg-white/10",
+                        !shouldInvert && !servicesOpen && "text-foreground/70 hover:text-foreground hover:bg-accent/40",
+                        !shouldInvert && servicesOpen && "text-foreground bg-accent/60",
                       )}
                     >
                       {item.label}
@@ -265,13 +334,19 @@ export function Navbar() {
                       items={item.children}
                       isOpen={servicesOpen}
                       onClose={() => setServicesOpen(false)}
+                      inverted={shouldInvert}
                     />
                   </div>
                 ) : (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="px-3.5 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-accent/40 transition-colors"
+                    className={cn(
+                      "px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
+                      shouldInvert
+                        ? "text-white/70 hover:text-white hover:bg-white/10"
+                        : "text-foreground/70 hover:text-foreground hover:bg-accent/40",
+                    )}
                   >
                     {item.label}
                   </Link>
@@ -285,7 +360,12 @@ export function Navbar() {
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-all active:shadow-uber-pressed"
+                className={cn(
+                  "hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all active:shadow-uber-pressed",
+                  shouldInvert
+                    ? "bg-white text-black hover:bg-white/90"
+                    : "bg-primary text-primary-foreground hover:opacity-90",
+                )}
               >
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp
@@ -293,7 +373,12 @@ export function Navbar() {
 
               <button
                 onClick={() => setMobileOpen(true)}
-                className="lg:hidden relative z-10 p-2 rounded-xl hover:bg-accent/60 transition-colors"
+                className={cn(
+                  "lg:hidden relative z-10 p-2 rounded-xl transition-colors",
+                  shouldInvert
+                    ? "text-white hover:bg-white/10"
+                    : "hover:bg-accent/60",
+                )}
                 aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />
