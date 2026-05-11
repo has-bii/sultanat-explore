@@ -1,0 +1,5 @@
+export { ContactHero } from "./components/contact-hero"
+export { ContactCards } from "./components/contact-cards"
+export { InquiryForm } from "./components/inquiry-form"
+export { OperatingHours } from "./components/operating-hours"
+export { FaqMini } from "./components/faq-mini"

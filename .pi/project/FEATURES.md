@@ -15,7 +15,7 @@ Status of implemented features per PRD.
 | Collaborate | 🔲 Not started | KOL/influencer info + application |
 | About Us | ✅ Done | Company story, team, values, testimonials, navbar dark-theme inversion |
 | FAQ | 🔲 Not started | Accordion Q&A by category |
-| Contact | 🔲 Not started | WhatsApp CTA, social links, email |
+| Contact | ✅ Done | Hero (dark gradient), contact cards (WA/IG/email), WhatsApp-based inquiry form, operating hours, FAQ mini-section, CTA |
 
 ## Global Features
 
