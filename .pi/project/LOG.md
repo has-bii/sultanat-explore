@@ -6,6 +6,8 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-11 | Gallery Thumbnail Ring Fix | [gallery-thumbnail-ring-fix.md](log/gallery-thumbnail-ring-fix.md) |
+| 2026-05-11 | Destination Detail Page | [destination-detail-page.md](log/destination-detail-page.md) |
 | 2026-05-11 | Destinations Listing Page | [destinations-listing-page.md](log/destinations-listing-page.md) |
 | 2026-05-11 | Umrah Page Implementation | [umrah-page-implementation.md](log/umrah-page-implementation.md) |
 | 2026-05-11 | Private Trip Feature Complete | [private-trip-feature-complete.md](log/private-trip-feature-complete.md) |

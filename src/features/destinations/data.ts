@@ -316,3 +316,7 @@ export function getFeaturedDestinations(): Destination[] {
 export function getDestinationsByCategory(category: string): Destination[] {
   return destinations.filter((d) => d.categories.includes(category as DestinationCategory))
 }
+
+export function getAttractionsByDestinationId(destinationId: string): Attraction[] {
+  return attractions.filter((a) => a.destinationId === destinationId)
+}
