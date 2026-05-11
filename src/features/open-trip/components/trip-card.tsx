@@ -4,17 +4,25 @@ import { formatPrice, formatDate } from "../data"
 import type { OpenTrip } from "../types"
 
 function SeatBadge({ available, total }: { available: number; total: number }) {
-  const variant =
-    available <= 3
-      ? "bg-foreground text-background shadow-uber-sm"
-      : available <= 10
-        ? "bg-muted text-foreground shadow-uber-sm"
-        : "bg-primary text-primary-foreground shadow-uber-sm"
+  const isEmpty = available === 0
+  const isAlmostEmpty = available > 0 && available <= 3
+
+  const variant = isEmpty
+    ? "bg-destructive text-destructive-foreground"
+    : isAlmostEmpty
+      ? "bg-amber-500 text-white"
+      : "bg-primary text-primary-foreground"
+
+  const label = isEmpty
+    ? "Penuh!"
+    : isAlmostEmpty
+      ? `Hampir penuh! ${available} kursi`
+      : `${available} kursi tersisa`
 
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold shadow-md ${variant}`}>
       <Users className="h-3 w-3" />
-      {available <= 3 ? "Hampir penuh!" : `${available} kursi tersisa`}
+      {label}
     </span>
   )
 }
@@ -95,7 +103,7 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
             </p>
             <p className="text-[11px] text-muted-foreground">/orang</p>
           </div>
-          <span className="flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="flex items-center gap-1 text-sm font-medium text-primary ">
             Lihat detail
             <ArrowRight className="h-4 w-4" />
           </span>
