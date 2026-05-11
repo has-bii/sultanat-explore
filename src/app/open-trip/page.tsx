@@ -22,7 +22,7 @@ export default async function OpenTripPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-muted py-20 lg:py-28">
         <div className="absolute inset-0 opacity-50">
           <div className="absolute top-20 left-10 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
           <div className="absolute bottom-10 right-20 h-48 w-48 rounded-full bg-primary/8 blur-3xl" />

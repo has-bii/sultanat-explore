@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-11 | Design System Applied (Uber-inspired) | [design-system-applied.md](log/design-system-applied.md) |
 | 2026-05-11 | Open Trip Page & Shared Components | [open-trip-shared-components.md](log/open-trip-shared-components.md) |
 | 2026-05-11 | Open Trip Page Implementation | [open-trip-page-implementation.md](log/open-trip-page-implementation.md) |
 | 2026-05-11 | Global Not Found Page | [global-not-found-page.md](log/global-not-found-page.md) |

@@ -32,7 +32,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
         {/* Inclusions */}
         <div className="rounded-2xl border bg-card p-6">
           <h3 className="flex items-center gap-2 font-heading text-lg font-semibold">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Check className="h-4 w-4" />
             </span>
             Termasuk
@@ -43,7 +43,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
                 key={inc.label}
                 className="flex items-center gap-2.5 text-sm text-muted-foreground"
               >
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10 text-[10px]">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px]">
                   {inc.icon}
                 </span>
                 {inc.label}
@@ -55,7 +55,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
         {/* Exclusions */}
         <div className="rounded-2xl border bg-card p-6">
           <h3 className="flex items-center gap-2 font-heading text-lg font-semibold">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/10 text-red-500">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-foreground">
               <X className="h-4 w-4" />
             </span>
             Tidak Termasuk
@@ -66,7 +66,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
                 key={exc}
                 className="flex items-center gap-2.5 text-sm text-muted-foreground"
               >
-                <X className="h-3.5 w-3.5 text-red-400" />
+                <X className="h-3.5 w-3.5 text-foreground/40" />
                 {exc}
               </li>
             ))}
@@ -91,7 +91,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
           href={waLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#20bd5a] hover:shadow-lg hover:shadow-[#25D366]/20"
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 active:shadow-uber-pressed"
         >
           <MessageCircle className="h-5 w-5" />
           Pesan via WhatsApp

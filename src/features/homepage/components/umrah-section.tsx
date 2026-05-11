@@ -28,9 +28,9 @@ function FacilityCard({ facility }: { facility: Facility }) {
   const Icon = iconMap[facility.icon];
 
   return (
-    <div className="rounded-xl border border-white/8 bg-white/5 p-4 backdrop-blur-sm transition-all duration-200 hover:border-amber-500/20 hover:bg-white/8">
+    <div className="rounded-xl border border-white/8 bg-white/5 p-4 backdrop-blur-sm transition-all duration-200 hover:border-white/20 hover:bg-white/8">
       <div className="flex items-start gap-3.5">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white/80">
           {Icon && <Icon className="h-4 w-4" />}
         </div>
         <div className="min-w-0">
@@ -50,7 +50,7 @@ export function UmrahSection() {
   const { facilities } = umrahService;
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#0D1B1E] to-[#132E28]">
+    <section className="relative overflow-hidden bg-primary">
       {/* Geometric pattern overlay */}
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -62,7 +62,7 @@ export function UmrahSection() {
       <div className="relative mx-auto max-w-6xl px-6 py-20">
         {/* Text */}
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-amber-400">
+          <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
             Private Umrah
           </span>
           <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -84,7 +84,7 @@ export function UmrahSection() {
         <div className="mt-12 text-center">
           <a
             href={umrahService.href}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-5 py-2.5 text-sm font-semibold text-amber-400 backdrop-blur-sm transition-all hover:border-amber-500/50 hover:bg-amber-500/20"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20"
           >
             {umrahService.ctaText}
             <ArrowRight className="h-4 w-4" />

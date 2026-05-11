@@ -24,6 +24,21 @@
 - Use `cn()` from `src/lib/utils.ts` for conditional classes.
 - Tailwind classes sorted by prettier-plugin-tailwindcss.
 
+### Design System Rules (DESIGN.md)
+
+- **Achromatic only.** No color in UI chrome. Black, white, grays only.
+- **No gradients.** Every surface = flat solid color.
+- **No colored shadows.** Only `rgba(0,0,0,0.08–0.16)`.
+- **Pill buttons.** All buttons use `rounded-full` (999px). No `rounded-md` on buttons.
+- **Content-dense cards.** Minimal internal padding. Rely on shadow + radius for boundaries.
+- **Typography utilities.** Use `text-display`, `text-heading`, `text-card-title`, `text-subheading`, `text-small-heading`, `text-nav`, `text-caption`, `text-micro` instead of arbitrary sizes.
+- **Shadow utilities.** Use `shadow-uber-sm`, `shadow-uber-md`, `shadow-uber-lg`, `shadow-uber-pressed`.
+- **Radius scale.** `rounded-sm` = 8px (inputs), `rounded-lg` = 12px (cards), `rounded-full` = 999px (buttons/chips). No `rounded-md`.
+- **Font family.** Headings: `font-heading` (DM Sans). Body: `font-sans` (Inter). Never mix.
+- **Heading weight.** 700 only. Body weight: 400–500.
+- **No serif fonts anywhere.** Geometric sans-serif only.
+- **No decorative borders.** Borders functional only (inputs, dividers).
+
 ## Feature Module Structure
 
 ```

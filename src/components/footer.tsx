@@ -57,7 +57,7 @@ export function Footer() {
             <Link href="/" className="inline-block group">
               <span className="font-heading text-xl font-bold tracking-tight">
                 Sultanat
-                <span className="text-red-500">Explore</span>
+                <span className="text-primary">Explore</span>
               </span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-xs">

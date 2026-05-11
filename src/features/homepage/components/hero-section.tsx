@@ -27,7 +27,7 @@ export function HeroSection() {
         <>
           Jelajahi Keindahan
           <br />
-          <span className="text-red-500">Turki</span> Bersama Kami
+          <span className="text-primary">Turki</span> Bersama Kami
         </>
       }
       description="Open trip, private trip, dan paket Umrah dengan pelayanan profesional. Tim lokal berbasis di Turki siap mengantar perjalanan impian Anda."

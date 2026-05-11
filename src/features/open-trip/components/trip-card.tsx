@@ -6,10 +6,10 @@ import type { OpenTrip } from "../types"
 function SeatBadge({ available, total }: { available: number; total: number }) {
   const variant =
     available <= 3
-      ? "bg-red-600 text-white shadow-red-600/30"
+      ? "bg-foreground text-background shadow-uber-sm"
       : available <= 10
-        ? "bg-amber-500 text-white shadow-amber-500/30"
-        : "bg-emerald-600 text-white shadow-emerald-600/30"
+        ? "bg-muted text-foreground shadow-uber-sm"
+        : "bg-primary text-primary-foreground shadow-uber-sm"
 
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold shadow-md ${variant}`}>

@@ -120,7 +120,7 @@ function MobileMenu({
             <div className="flex items-center justify-between p-6 border-b border-border/40">
               <span className="font-heading text-lg font-bold tracking-tight">
                 Sultanat
-                <span className="text-red-500">Explore</span>
+                <span className="text-primary">Explore</span>
               </span>
               <button
                 onClick={onClose}
@@ -195,7 +195,7 @@ function MobileMenu({
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl bg-[#25D366] text-white font-semibold text-sm hover:bg-[#20bd5a] transition-colors"
+                className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-all active:shadow-uber-pressed"
               >
                 <MessageCircle className="h-4.5 w-4.5" />
                 Chat WhatsApp
@@ -241,7 +241,7 @@ export function Navbar() {
             <Link href="/" className="relative z-10 group">
               <span className="font-heading text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-foreground/80">
                 Sultanat
-                <span className="text-red-500">Explore</span>
+                <span className="text-primary">Explore</span>
               </span>
             </Link>
 
@@ -295,7 +295,7 @@ export function Navbar() {
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#25D366] text-white text-sm font-semibold hover:bg-[#20bd5a] transition-all hover:shadow-md hover:shadow-[#25D366]/20"
+                className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-all active:shadow-uber-pressed"
               >
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp
