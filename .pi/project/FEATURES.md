@@ -9,7 +9,7 @@ Status of implemented features per PRD.
 | Homepage | ✅ Done | Hero (motion marquee), about, services, destinations, testimonials, CTA, floating WhatsApp |
 | Open Trip | ✅ Done | Listing page, detail page, trip cards, how-it-works, itinerary, inclusions, why-us, past-trip gallery, social proof |
 | Private Trip | ✅ Done | Explanation, comparison table, benefits, process timeline, trip builder wizard (city → services → price estimate → WhatsApp), sample itineraries, gallery, testimonials, travel advisor, FAQ, social proof |
-| Private Umrah | 🔲 Not started | Packages overview, inquiry CTA |
+| Private Umrah | ✅ Done | Hero, social proof, explanation, packages (Standard/Premium/VIP), inclusions grid, itinerary preview, process timeline, gallery, testimonials, travel advisor, FAQ, CTA |
 | Destinasi | 🔲 Not started | Destination grid + detail pages |
 | Artikel | 🔲 Not started | Article listing + detail pages |
 | Collaborate | 🔲 Not started | KOL/influencer info + application |

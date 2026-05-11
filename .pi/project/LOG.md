@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-11 | Umrah Page Implementation | [umrah-page-implementation.md](log/umrah-page-implementation.md) |
 | 2026-05-11 | Private Trip Feature Complete | [private-trip-feature-complete.md](log/private-trip-feature-complete.md) |
 | 2026-05-11 | Navbar & Footer Route Fixes | [navbar-footer-route-fix.md](log/navbar-footer-route-fix.md) |
 | 2026-05-11 | Trip Card Seat Badge & CTA Refinements | [trip-card-seat-badge-and-cta.md](log/trip-card-seat-badge-and-cta.md) |
