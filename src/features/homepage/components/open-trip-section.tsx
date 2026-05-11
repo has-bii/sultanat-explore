@@ -30,7 +30,7 @@ function formatPrice(price: number) {
 
 function TripCard({ trip }: { trip: Trip }) {
   return (
-    <div className="group w-[320px] flex-shrink-0 overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <div className="group w-[320px] flex-shrink-0 overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-uber-md">
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={trip.image}
@@ -93,10 +93,10 @@ export function OpenTripSection() {
         <span className="text-xs font-semibold uppercase tracking-widest text-primary">
           Open Trip
         </span>
-        <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+        <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight sm:text-heading">
           Jelajahi Bersama, Hemat Bersama
         </h2>
-        <p className="mt-4 max-w-xl text-muted-foreground">
+        <p className="mt-4 max-w-xl text-body text-muted-foreground">
           {openTripService.description}
         </p>
         <a

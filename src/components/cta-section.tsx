@@ -13,10 +13,10 @@ export function CTASection() {
           <div className="absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-primary-foreground/5" />
 
           <div className="relative z-10">
-            <h2 className="font-heading text-3xl font-bold sm:text-4xl">
+            <h2 className="font-heading text-subheading font-bold sm:text-heading">
               Siap Menjelajahi Turki?
             </h2>
-            <p className="mx-auto mt-4 max-w-lg text-primary-foreground/80">
+            <p className="mx-auto mt-4 max-w-lg text-body text-primary-foreground/80">
               Hubungi kami sekarang melalui WhatsApp untuk konsultasi gratis dan
               dapatkan penawaran terbaik untuk perjalanan impian Anda.
             </p>

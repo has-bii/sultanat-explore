@@ -65,10 +65,10 @@ export function UmrahSection() {
           <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
             Private Umrah
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight text-white sm:text-heading">
             Perjalanan Spiritual yang Berkesan
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-white/60">
+          <p className="mx-auto mt-4 max-w-xl text-body text-white/60">
             {umrahService.description}
           </p>
         </div>

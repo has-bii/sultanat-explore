@@ -47,7 +47,7 @@ export function FAQSection() {
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
             FAQ
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight sm:text-heading">
             Pertanyaan yang Sering Ditanyakan
           </h2>
         </div>

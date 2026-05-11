@@ -50,10 +50,10 @@ export function DestinationsSection({
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-8 flex items-end justify-between md:mb-14 lg:mb-16">
           <div className="flex flex-col gap-4">
-            <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+            <h2 className="font-heading text-subheading font-bold tracking-tight md:text-heading lg:text-card-title">
               {title}
             </h2>
-            <p className="max-w-lg text-muted-foreground">{description}</p>
+            <p className="max-w-lg text-body text-muted-foreground">{description}</p>
           </div>
           <div className="hidden shrink-0 gap-2 md:flex">
             <Button

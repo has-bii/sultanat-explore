@@ -35,14 +35,14 @@ function FacilityCard({ facility }: { facility: Facility }) {
   const Icon = iconMap[facility.icon]
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5">
+    <div className="group relative overflow-hidden rounded-2xl border bg-card">
       {/* Image */}
       <div className="relative aspect-4/3 overflow-hidden">
         <Image
           src={facility.image}
           alt={facility.title}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
@@ -93,13 +93,13 @@ export function PrivateTripSection() {
             <span className="text-xs font-semibold uppercase tracking-widest text-primary">
               Private Trip
             </span>
-            <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight sm:text-heading">
               Perjalanan Privat, Sesuai Keinginan Anda
             </h2>
-            <p className="mt-4 text-muted-foreground">{privateTripService.description}</p>
+            <p className="mt-4 text-body text-muted-foreground">{privateTripService.description}</p>
             <a
               href={privateTripService.href}
-              className="mt-8 inline-flex w-fit items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="mt-8 inline-flex w-fit items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 active:shadow-uber-pressed"
             >
               {privateTripService.ctaText}
               <ArrowRight className="h-4 w-4" />

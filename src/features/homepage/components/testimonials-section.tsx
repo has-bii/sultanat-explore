@@ -76,13 +76,13 @@ export function TestimonialsSection() {
           className="flex flex-col items-center justify-center max-w-135 mx-auto"
         >
           <div className="flex justify-center">
-            <div className="border py-1 px-4 rounded-lg">Testimoni</div>
+            <div className="border py-1 px-4 rounded-full">Testimoni</div>
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tighter mt-5">
+          <h2 className="font-heading text-small-heading font-bold tracking-tighter mt-5 sm:text-subheading md:text-heading lg:text-card-title xl:text-display">
             Kata Mereka
           </h2>
-          <p className="text-center mt-5 opacity-75">
+          <p className="text-center mt-5 text-body opacity-75">
             Testimoni dari traveler Indonesia yang telah berpetualang bersama kami.
           </p>
         </motion.div>
