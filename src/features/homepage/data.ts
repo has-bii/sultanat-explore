@@ -64,7 +64,7 @@ export const destinationItems = [
     id: "istanbul",
     title: "Istanbul",
     description: "Kota dua benua dengan keajaiban arsitektur, kuliner, dan budaya yang memukau.",
-    href: "/destinasi/istanbul",
+    href: "/destinations/istanbul",
     image:
       "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=1080&auto=format&fit=crop",
   },
@@ -73,7 +73,7 @@ export const destinationItems = [
     title: "Cappadocia",
     description:
       "Pemandangan balloon ikonik, gua bersejarah, dan formasi batu unik yang menakjubkan.",
-    href: "/destinasi/cappadocia",
+    href: "/destinations/cappadocia",
     image:
       "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=1080&auto=format&fit=crop",
   },
@@ -81,7 +81,7 @@ export const destinationItems = [
     id: "pamukkale",
     title: "Pamukkale",
     description: "Kolam teras putih alami yang memukau dan peninggalan kota kuno Hierapolis.",
-    href: "/destinasi/pamukkale",
+    href: "/destinations/pamukkale",
     image:
       "https://images.unsplash.com/photo-1728466698701-2eb2af4117d4?q=80&w=1080&auto=format&fit=crop",
   },
@@ -89,7 +89,7 @@ export const destinationItems = [
     id: "trabzon",
     title: "Trabzon",
     description: "Keindahan alam Laut Hitam, biara Sumela, dan udara segar pegunungan.",
-    href: "/destinasi/trabzon",
+    href: "/destinations/trabzon",
     image:
       "https://images.unsplash.com/photo-1663230812927-dedf2bc78fe9?q=80&w=1080&auto=format&fit=crop",
   },
@@ -97,7 +97,7 @@ export const destinationItems = [
     id: "antalya",
     title: "Antalya",
     description: "Pantai biru kristal, kota tua bersejarah, dan resor mediterania yang menawan.",
-    href: "/destinasi/antalya",
+    href: "/destinations/antalya",
     image:
       "https://images.unsplash.com/photo-1578852952104-54f3dac8b260?q=80&w=1080&auto=format&fit=crop",
   },
@@ -106,7 +106,7 @@ export const destinationItems = [
     title: "Bodrum",
     description:
       "Kota pesisir elegan dengan kastil Crusader, pantai eksklusif, dan suasana santai.",
-    href: "/destinasi/bodrum",
+    href: "/destinations/bodrum",
     image:
       "https://images.unsplash.com/photo-1628626915799-af7d444a8c4d?q=80&w=1080&auto=format&fit=crop",
   },
@@ -115,7 +115,7 @@ export const destinationItems = [
     title: "Fethiye",
     description:
       "Blue Lagoon Ölüdeniz, paragliding dari Gunung Babadağ, dan pulau-pulau tersembunyi.",
-    href: "/destinasi/fethiye",
+    href: "/destinations/fethiye",
     image:
       "https://images.unsplash.com/photo-1626009740542-691a70fd230f?q=80&w=1080&auto=format&fit=crop",
   },
@@ -123,7 +123,7 @@ export const destinationItems = [
     id: "bursa",
     title: "Bursa",
     description: "Kota ottoman pertama, gunung Uludağ, dan kuliner Iskender kebab legendaris.",
-    href: "/destinasi/bursa",
+    href: "/destinations/bursa",
     image:
       "https://images.unsplash.com/photo-1528659862616-22886eb53642?q=80&w=1080&auto=format&fit=crop",
   },
@@ -131,7 +131,7 @@ export const destinationItems = [
     id: "izmir",
     title: "İzmir",
     description: "Kota pelabuhan modern, Efesus kuno, dan pantai Aegea yang memesona.",
-    href: "/destinasi/izmir",
+    href: "/destinations/izmir",
     image:
       "https://images.unsplash.com/photo-1582380625189-423697e32b92?q=80&w=1080&auto=format&fit=crop",
   },
@@ -139,7 +139,7 @@ export const destinationItems = [
     id: "konya",
     title: "Konya",
     description: "Kota spiritual Rumi, tarian Sufi, dan warisan Seljuk yang kaya.",
-    href: "/destinasi/konya",
+    href: "/destinations/konya",
     image:
       "https://images.unsplash.com/photo-1554797073-31d3ce2efd4e?q=80&w=1080&auto=format&fit=crop",
   },
@@ -147,7 +147,7 @@ export const destinationItems = [
     id: "ankara",
     title: "Ankara",
     description: "Ibukota modern Turki, museum peradaban Anatolia, dan warisan kemiliteran.",
-    href: "/destinasi/ankara",
+    href: "/destinations/ankara",
     image:
       "https://images.unsplash.com/photo-1770291252190-147c1f86bdd6?q=80&w=1080&auto=format&fit=crop",
   },

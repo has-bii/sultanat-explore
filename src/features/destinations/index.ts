@@ -1,0 +1,5 @@
+export { HeroSection } from "./components/hero-section"
+export { FeaturedDestinations } from "./components/featured-destinations"
+export { DestinationsGrid } from "./components/destinations-grid"
+export { FeaturedAttractions } from "./components/featured-attractions"
+export { WhyTurkey } from "./components/why-turkey"
