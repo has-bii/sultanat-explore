@@ -7,8 +7,8 @@ Status of implemented features per PRD.
 | Feature | Status | Notes |
 |---|---|---|
 | Homepage | ✅ Done | Hero (motion marquee), about, services, destinations, testimonials, CTA, floating WhatsApp |
-| Open Trip | 🔲 Not started | Trip cards, filters, seat availability, detail pages |
-| Private Trip | 🔲 Not started | Explanation, benefits, inquiry form |
+| Open Trip | ✅ Done | Listing page, detail page, trip cards, how-it-works, itinerary, inclusions, why-us, past-trip gallery, social proof |
+| Private Trip | ✅ Done | Explanation, comparison table, benefits, process timeline, trip builder wizard (city → services → price estimate → WhatsApp), sample itineraries, gallery, testimonials, travel advisor, FAQ, social proof |
 | Private Umrah | 🔲 Not started | Packages overview, inquiry CTA |
 | Destinasi | 🔲 Not started | Destination grid + detail pages |
 | Artikel | 🔲 Not started | Article listing + detail pages |
