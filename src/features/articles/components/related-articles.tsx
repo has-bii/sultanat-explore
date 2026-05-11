@@ -1,0 +1,78 @@
+import Link from "next/link"
+import { ArrowRight, Calendar, Clock } from "lucide-react"
+import type { Article } from "../types"
+import { categoryLabels, getRelatedArticles } from "../data"
+
+export function RelatedArticles({ currentSlug }: { currentSlug: string }) {
+  const related = getRelatedArticles(currentSlug, 3)
+
+  if (related.length === 0) return null
+
+  return (
+    <section className="bg-muted py-16 lg:py-20">
+      <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <div className="flex items-end justify-between">
+          <div>
+            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+              Baca Juga
+            </span>
+            <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+              Artikel Terkait
+            </h2>
+          </div>
+          <Link
+            href="/artikel"
+            className="hidden items-center gap-1.5 text-sm font-medium text-primary hover:underline sm:inline-flex"
+          >
+            Semua artikel
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {related.map((article) => (
+            <Link
+              key={article.id}
+              href={`/artikel/${article.slug}`}
+              className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img
+                  src={article.thumbnail}
+                  alt={article.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute bottom-3 left-3">
+                  <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+                    {categoryLabels[article.category]}
+                  </span>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {new Date(article.date).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {article.readingTime} mnt
+                  </span>
+                </div>
+                <h4 className="mt-2 font-heading text-base font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                  {article.title}
+                </h4>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
