@@ -41,6 +41,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Destinations", href: "/destinations" },
   { label: "Artikel", href: "/artikel" },
   { label: "About", href: "/about" },
+  { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ]
 

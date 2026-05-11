@@ -14,7 +14,7 @@ Status of implemented features per PRD.
 | Artikel | ✅ Done | Listing page (hero, featured, filterable grid, search), detail page (hero, content blocks, author card, related articles), 6 sample articles, SEO metadata |
 | Collaborate | 🔲 Not started | KOL/influencer info + application |
 | About Us | ✅ Done | Company story, team, values, testimonials, navbar dark-theme inversion |
-| FAQ | 🔲 Not started | Accordion Q&A by category |
+| FAQ | ✅ Done | Dedicated /faq page, 6 categories (~20 questions), category filter, accordion, WhatsApp CTA. Link in navbar + footer |
 | Contact | ✅ Done | Hero (dark gradient), contact cards (WA/IG/email), WhatsApp-based inquiry form, operating hours, FAQ mini-section, CTA |
 
 ## Global Features

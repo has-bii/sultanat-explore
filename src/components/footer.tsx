@@ -23,6 +23,7 @@ const FOOTER_LINKS = [
       { label: "Destinations", href: "/destinations" },
       { label: "Articles", href: "/articles" },
       { label: "Contact", href: "/contact" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
 ];
