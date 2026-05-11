@@ -6,7 +6,7 @@ Status of implemented features per PRD.
 
 | Feature | Status | Notes |
 |---|---|---|
-| Homepage | 🔲 Not started | Hero, services, destinations, testimonials, WhatsApp CTA |
+| Homepage | ✅ Done | Hero (motion marquee), about, services, destinations, testimonials, CTA, floating WhatsApp |
 | Open Trip | 🔲 Not started | Trip cards, filters, seat availability, detail pages |
 | Private Trip | 🔲 Not started | Explanation, benefits, inquiry form |
 | Private Umrah | 🔲 Not started | Packages overview, inquiry CTA |
@@ -22,8 +22,8 @@ Status of implemented features per PRD.
 | Feature | Status | Notes |
 |---|---|---|
 | Layout (header/footer) | 🔲 Not started | Navigation, branding |
-| Floating WhatsApp button | 🔲 Not started | All pages, pre-filled message |
-| Mobile-first responsive | 🔲 Not started | All pages |
+| Floating WhatsApp button | ✅ Done | Appears on scroll, links to WhatsApp with pre-filled message |
+| Mobile-first responsive | ✅ Done | Homepage sections responsive |
 | Halal-friendly indicators | 🔲 Not started | Where relevant |
 
 ## Admin Panel
