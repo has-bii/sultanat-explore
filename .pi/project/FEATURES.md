@@ -21,7 +21,7 @@ Status of implemented features per PRD.
 
 | Feature | Status | Notes |
 |---|---|---|
-| Layout (header/footer) | 🔲 Not started | Navigation, branding — must follow DESIGN.md (pill nav, achromatic) |
+| Layout (header/footer) | ✅ Done | Navbar: flat text links, Indonesian labels, active underline, full-screen mobile overlay, dark-theme inversion. Footer: black bg, 4-col grid, ghost socials. 1136px max-width |
 | Floating WhatsApp button | ✅ Done | Appears on scroll, links to WhatsApp with pre-filled message |
 | Mobile-first responsive | ✅ Done | Homepage sections responsive |
 | Halal-friendly indicators | 🔲 Not started | Where relevant |

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { ChevronDown, Menu, MessageCircle, X } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 const WHATSAPP_LINK =
@@ -16,10 +17,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
+  { label: "Beranda", href: "/" },
   {
-    label: "Services",
-    href: "/services",
+    label: "Layanan",
+    href: "#",
     children: [
       {
         label: "Open Trip",
@@ -38,12 +39,17 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  { label: "Destinations", href: "/destinations" },
+  { label: "Destinasi", href: "/destinations" },
   { label: "Artikel", href: "/artikel" },
-  { label: "About", href: "/about" },
+  { label: "Tentang Kami", href: "/about" },
   { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
+  { label: "Kontak", href: "/contact" },
 ]
+
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/"
+  return pathname.startsWith(href)
+}
 
 function ServicesDropdown({
   items,
@@ -69,10 +75,14 @@ function ServicesDropdown({
           className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72"
           onMouseLeave={onClose}
         >
-          <div className={cn(
-            "rounded-2xl border border-border/60 backdrop-blur-xl p-2 shadow-xl shadow-black/5",
-            inverted ? "bg-black/90 border-white/10" : "bg-background/95",
-          )}>
+          <div
+            className={cn(
+              "rounded-2xl border border-border/60 backdrop-blur-xl p-2 shadow-xl shadow-black/5",
+              inverted
+                ? "bg-black/90 border-white/10"
+                : "bg-background/95",
+            )}
+          >
             {items.map((item) => (
               <Link
                 key={item.href}
@@ -83,18 +93,22 @@ function ServicesDropdown({
                   inverted && "hover:bg-white/10",
                 )}
               >
-                <span className={cn(
-                  "text-sm font-semibold transition-colors",
-                  inverted
-                    ? "text-white group-hover:text-white/80"
-                    : "text-foreground group-hover:text-primary",
-                )}>
+                <span
+                  className={cn(
+                    "text-sm font-semibold transition-colors",
+                    inverted
+                      ? "text-white group-hover:text-white/80"
+                      : "text-foreground group-hover:text-primary",
+                  )}
+                >
                   {item.label}
                 </span>
-                <span className={cn(
-                  "text-xs leading-relaxed",
-                  inverted ? "text-white/50" : "text-muted-foreground",
-                )}>
+                <span
+                  className={cn(
+                    "text-xs leading-relaxed",
+                    inverted ? "text-white/50" : "text-muted-foreground",
+                  )}
+                >
                   {item.description}
                 </span>
               </Link>
@@ -106,118 +120,120 @@ function ServicesDropdown({
   )
 }
 
-function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const pathname = usePathname()
   const [servicesOpen, setServicesOpen] = useState(false)
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-            onClick={onClose}
-          />
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 z-50 w-[85%] max-w-sm bg-background/98 backdrop-blur-xl border-l border-border/40"
-          >
-            <div className="flex items-center justify-between p-6 border-b border-border/40">
-              <span className="font-heading text-lg font-bold tracking-tight">
-                Sultanat
-                <span className="text-primary">Explore</span>
-              </span>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-xl hover:bg-accent transition-colors"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="fixed inset-0 z-50 bg-black flex flex-col"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-8 py-6">
+            <span className="font-heading text-xl font-bold tracking-tight text-white">
+              Sultanat
+              <span className="text-white/70">Explore</span>
+            </span>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              aria-label="Tutup menu"
+            >
+              <X className="h-6 w-6 text-white" />
+            </button>
+          </div>
 
-            <nav className="p-6 space-y-1">
-              {NAV_ITEMS.map((item) =>
-                item.children ? (
-                  <div key={item.label}>
-                    <button
-                      onClick={() => setServicesOpen(!servicesOpen)}
-                      className="flex items-center justify-between w-full py-3 px-3 rounded-xl text-base font-medium hover:bg-accent transition-colors"
-                    >
-                      {item.label}
-                      <ChevronDown
-                        className={cn(
-                          "h-4 w-4 text-muted-foreground transition-transform duration-200",
-                          servicesOpen && "rotate-180",
-                        )}
-                      />
-                    </button>
-                    <AnimatePresence>
-                      {servicesOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pl-4 pb-2 space-y-0.5">
-                            {item.children.map((child) => (
-                              <Link
-                                key={child.href}
-                                href={child.href}
-                                onClick={onClose}
-                                className="flex flex-col gap-0.5 py-2.5 px-3 rounded-lg hover:bg-accent/60 transition-colors"
-                              >
-                                <span className="text-sm font-medium">{child.label}</span>
-                                <span className="text-xs text-muted-foreground">
-                                  {child.description}
-                                </span>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={onClose}
-                    className="block py-3 px-3 rounded-xl text-base font-medium hover:bg-accent transition-colors"
+          {/* Nav links */}
+          <nav className="flex-1 px-8 py-4 space-y-1 overflow-y-auto">
+            {NAV_ITEMS.map((item) =>
+              item.children ? (
+                <div key={item.label}>
+                  <button
+                    onClick={() => setServicesOpen(!servicesOpen)}
+                    className="flex items-center justify-between w-full py-3 text-2xl font-medium text-white/80 hover:text-white transition-colors"
                   >
                     {item.label}
-                  </Link>
-                ),
-              )}
-            </nav>
+                    <ChevronDown
+                      className={cn(
+                        "h-5 w-5 text-white/50 transition-transform duration-200",
+                        servicesOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {servicesOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pl-4 pb-2 space-y-1">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={onClose}
+                              className={cn(
+                                "block py-2 text-lg transition-colors",
+                                isActive(pathname, child.href)
+                                  ? "text-white font-medium"
+                                  : "text-white/50 hover:text-white/80",
+                              )}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  className={cn(
+                    "block py-3 text-2xl font-medium transition-colors",
+                    isActive(pathname, item.href)
+                      ? "text-white"
+                      : "text-white/80 hover:text-white",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </nav>
 
-            <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border/40">
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-all active:shadow-uber-pressed"
-              >
-                <MessageCircle className="h-4.5 w-4.5" />
-                Chat WhatsApp
-              </a>
-            </div>
-          </motion.div>
-        </>
+          {/* Bottom CTA */}
+          <div className="px-8 pb-8 pt-4">
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2.5 w-full py-4 rounded-full bg-white text-black font-semibold text-base hover:bg-white/90 transition-all active:shadow-uber-pressed"
+            >
+              <MessageCircle className="h-5 w-5" />
+              Chat WhatsApp
+            </a>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   )
 }
 
 export function Navbar() {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
@@ -232,27 +248,21 @@ export function Navbar() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       () => {
-        // Check if any dark sentinel overlaps the navbar zone
         const sentinels = document.querySelectorAll('[data-nav-theme="dark"]')
         const navbarBottom = 80
         let anyOverlap = false
         sentinels.forEach((el) => {
           const rect = el.getBoundingClientRect()
-          // Sentinel top is above navbar bottom = overlap
           if (rect.top < navbarBottom && rect.bottom > 0) {
             anyOverlap = true
           }
         })
         setInverted(anyOverlap)
       },
-      {
-        // Observe when elements enter/leave viewport
-        threshold: [0, 0.1, 0.5, 1],
-      }
+      { threshold: [0, 0.1, 0.5, 1] },
     )
     observerRef.current = observer
 
-    // Observe all dark-theme sentinels
     const observe = () => {
       const sentinels = document.querySelectorAll('[data-nav-theme="dark"]')
       sentinels.forEach((el) => observer.observe(el))
@@ -260,7 +270,6 @@ export function Navbar() {
 
     observe()
 
-    // Re-observe on DOM changes (page navigations)
     const mo = new MutationObserver(observe)
     mo.observe(document.body, { childList: true, subtree: true })
 
@@ -276,7 +285,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
 
-  // When scrolled (bg fills in), never invert — bg is solid
   const shouldInvert = inverted && !scrolled
 
   return (
@@ -285,7 +293,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-30 transition-all duration-500",
           scrolled
-            ? "bg-background/90 backdrop-blur-xl border-b border-border/40 shadow-sm shadow-black/5"
+            ? "bg-white/95 backdrop-blur-xl border-b border-border/40 shadow-sm shadow-black/5"
             : "bg-transparent",
         )}
       >
@@ -293,14 +301,18 @@ export function Navbar() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="relative z-10 group">
-              <span className={cn(
-                "font-heading text-xl font-bold tracking-tight transition-colors",
-                shouldInvert
-                  ? "text-white group-hover:text-white/80"
-                  : "text-foreground group-hover:text-foreground/80",
-              )}>
+              <span
+                className={cn(
+                  "font-heading text-xl font-bold tracking-tight transition-colors",
+                  shouldInvert
+                    ? "text-white group-hover:text-white/80"
+                    : "text-foreground group-hover:text-foreground/80",
+                )}
+              >
                 Sultanat
-                <span className={shouldInvert ? "text-white/70" : "text-primary"}>Explore</span>
+                <span className={shouldInvert ? "text-white/70" : "text-primary"}>
+                  Explore
+                </span>
               </span>
             </Link>
 
@@ -316,11 +328,15 @@ export function Navbar() {
                   >
                     <button
                       className={cn(
-                        "flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
-                        shouldInvert && !servicesOpen && "text-white/70 hover:text-white hover:bg-white/10",
-                        shouldInvert && servicesOpen && "text-white bg-white/10",
-                        !shouldInvert && !servicesOpen && "text-foreground/70 hover:text-foreground hover:bg-accent/40",
-                        !shouldInvert && servicesOpen && "text-foreground bg-accent/60",
+                        "flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors",
+                        shouldInvert && !servicesOpen &&
+                          "text-white/70 hover:text-white",
+                        shouldInvert && servicesOpen &&
+                          "text-white",
+                        !shouldInvert && !servicesOpen &&
+                          "text-foreground/70 hover:text-foreground",
+                        !shouldInvert && servicesOpen &&
+                          "text-foreground",
                       )}
                     >
                       {item.label}
@@ -343,13 +359,26 @@ export function Navbar() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
-                      shouldInvert
-                        ? "text-white/70 hover:text-white hover:bg-white/10"
-                        : "text-foreground/70 hover:text-foreground hover:bg-accent/40",
+                      "relative px-3 py-2 text-sm font-medium transition-colors",
+                      isActive(pathname, item.href)
+                        ? shouldInvert
+                          ? "text-white"
+                          : "text-foreground"
+                        : shouldInvert
+                          ? "text-white/70 hover:text-white"
+                          : "text-foreground/70 hover:text-foreground",
                     )}
                   >
                     {item.label}
+                    {/* Active underline */}
+                    {isActive(pathname, item.href) && (
+                      <span
+                        className={cn(
+                          "absolute bottom-0 left-3 right-3 h-0.5 rounded-full",
+                          shouldInvert ? "bg-white" : "bg-foreground",
+                        )}
+                      />
+                    )}
                   </Link>
                 ),
               )}
@@ -375,12 +404,12 @@ export function Navbar() {
               <button
                 onClick={() => setMobileOpen(true)}
                 className={cn(
-                  "lg:hidden relative z-10 p-2 rounded-xl transition-colors",
+                  "lg:hidden relative z-10 p-2 rounded-full transition-colors",
                   shouldInvert
                     ? "text-white hover:bg-white/10"
                     : "hover:bg-accent/60",
                 )}
-                aria-label="Open menu"
+                aria-label="Buka menu"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -389,7 +418,7 @@ export function Navbar() {
         </div>
       </header>
 
-      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileOverlay isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
   )
 }
