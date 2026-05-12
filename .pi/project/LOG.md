@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-12 | Vercel Deployment + Prisma Migration CI | [vercel-prisma-migration-ci.md](log/vercel-prisma-migration-ci.md) |
 | 2026-05-12 | Layout Separation Public Admin Auth | [layout-separation-public-admin-auth.md](log/layout-separation-public-admin-auth.md) |
 | 2026-05-12 | Admin Auth Implementation | [admin-auth-implementation.md](log/admin-auth-implementation.md) |
 | 2026-05-12 | Layout Header/Footer Redesign | [layout-header-footer-redesign.md](log/layout-header-footer-redesign.md) |
