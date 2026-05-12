@@ -9,6 +9,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    disableSignUp: true,
     async sendResetPassword({ user, url }) {
       if (process.env.NODE_ENV !== "production") {
         console.log("[auth] Password reset URL:", url)

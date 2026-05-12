@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-13 | Disable Public Sign Up | [disable-signup.md](log/disable-signup.md) |
 | 2026-05-13 | Resend Email Module Extraction | [resend-email-module-extraction.md](log/resend-email-module-extraction.md) |
 | 2026-05-13 | Proxy Matcher Config | [proxy-matcher-config.md](log/proxy-matcher-config.md) |
 | 2026-05-12 | Vercel Deployment + Prisma Migration CI | [vercel-prisma-migration-ci.md](log/vercel-prisma-migration-ci.md) |
