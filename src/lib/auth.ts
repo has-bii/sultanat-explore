@@ -1,16 +1,9 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Resend } from "resend";
+import { betterAuth } from "better-auth"
+import { prismaAdapter } from "better-auth/adapters/prisma"
+import { Resend } from "resend"
+import prisma from "./prisma"
 
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
-});
-
-const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -20,8 +13,8 @@ export const auth = betterAuth({
     enabled: true,
     async sendResetPassword({ user, url }) {
       if (!resend) {
-        console.log("[auth] Password reset URL:", url);
-        return;
+        console.log("[auth] Password reset URL:", url)
+        return
       }
       await resend.emails.send({
         from: "Sultanat Explore <noreply@sultanatexplore.com>",
@@ -37,9 +30,9 @@ export const auth = betterAuth({
             <p style="color: #6b6b6b; font-size: 0.875rem;">Link berlaku 1 jam. Jika Anda tidak meminta reset, abaikan email ini.</p>
           </div>
         `,
-      });
+      })
     },
   },
-});
+})
 
-export type Auth = typeof auth;
+export type Auth = typeof auth
