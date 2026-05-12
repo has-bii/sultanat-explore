@@ -23,6 +23,8 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: ${{ secrets.DIRECT_URL }}
 
       - name: Run migrations
         run: npx prisma migrate deploy
