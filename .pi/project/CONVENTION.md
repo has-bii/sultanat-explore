@@ -44,11 +44,20 @@
 ```
 features/<name>/
 ├── components/       # Feature-specific components
+├── dto/              # Zod schemas + inferred types
+│   └── <name>.schema.ts
 ├── hooks/            # Feature-specific hooks (if any)
 ├── types.ts          # Feature types
 ├── index.ts          # Public barrel export
 └── data.ts           # Feature static data (if any)
 ```
+
+### DTO convention
+
+- Schemas in `dto/<name>.schema.ts`, named `<Name>Schema` (PascalCase).
+- Inferred types exported alongside: `export type <Name>Input = z.infer<typeof <Name>Schema>`.
+- Components import schemas from `../dto/<name>.schema` — no Zod in component files.
+- One schema file per feature. Split to multiple only if schemas >150 lines.
 
 ## Import Aliases
 

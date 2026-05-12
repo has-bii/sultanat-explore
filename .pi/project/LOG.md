@@ -6,6 +6,8 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-05-12 | Layout Separation Public Admin Auth | [layout-separation-public-admin-auth.md](log/layout-separation-public-admin-auth.md) |
+| 2026-05-12 | Admin Auth Implementation | [admin-auth-implementation.md](log/admin-auth-implementation.md) |
 | 2026-05-12 | Layout Header/Footer Redesign | [layout-header-footer-redesign.md](log/layout-header-footer-redesign.md) |
 | 2026-05-12 | FAQ Page Implementation | [faq-page-implementation.md](log/faq-page-implementation.md) |
 | 2026-05-12 | Contact Page Implementation | [contact-page-implementation.md](log/contact-page-implementation.md) |
