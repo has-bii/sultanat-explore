@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "type": "module",
+  "exports": {
+    ".": "./src/app.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/adapter-neon": "^7.8.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "better-auth": "^1.6.13",
+    "dotenv": "^17.4.2",
+    "hono": "^4.12.23",
+    "pg": "^8.21.0",
+    "resend": "^6.12.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/pg": "^8.20.0",
+    "prisma": "^7.8.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
