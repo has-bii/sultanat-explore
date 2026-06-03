@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { LoginForm } from "@/features/auth";
+import { LoginForm } from "@/features/auth"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Login Admin — Sultanat Explore",
-};
+}
 
 export default function AdminLoginPage() {
   return (
@@ -16,5 +16,5 @@ export default function AdminLoginPage() {
       </div>
       <LoginForm />
     </>
-  );
+  )
 }

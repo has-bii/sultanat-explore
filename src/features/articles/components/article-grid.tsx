@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
 import { Search } from "lucide-react"
+import { useMemo, useState } from "react"
 import { articles, categoryLabels, type ArticleCategory } from "../data"
 import { ArticleCard } from "./article-card"
 import { CategoryFilter } from "./category-filter"
@@ -28,7 +28,7 @@ export function ArticleGrid() {
         (a) =>
           a.title.toLowerCase().includes(q) ||
           a.excerpt.toLowerCase().includes(q) ||
-          categoryLabels[a.category].toLowerCase().includes(q)
+          categoryLabels[a.category].toLowerCase().includes(q),
       )
     }
 

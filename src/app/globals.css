@@ -55,22 +55,22 @@
   --font-mono: var(--font-geist-mono);
 
   /* Type scale — DESIGN.md §3 Typography Hierarchy */
-  --text-display: 3.25rem;        /* 52px */
-  --text-heading: 2.25rem;        /* 36px */
-  --text-card-title: 2rem;        /* 32px */
-  --text-subheading: 1.5rem;      /* 24px */
-  --text-small-heading: 1.25rem;  /* 20px */
-  --text-nav: 1.125rem;           /* 18px */
-  --text-body: 1rem;              /* 16px */
-  --text-caption: 0.875rem;       /* 14px */
-  --text-micro: 0.75rem;          /* 12px */
+  --text-display: 3.25rem; /* 52px */
+  --text-heading: 2.25rem; /* 36px */
+  --text-card-title: 2rem; /* 32px */
+  --text-subheading: 1.5rem; /* 24px */
+  --text-small-heading: 1.25rem; /* 20px */
+  --text-nav: 1.125rem; /* 18px */
+  --text-body: 1rem; /* 16px */
+  --text-caption: 0.875rem; /* 14px */
+  --text-micro: 0.75rem; /* 12px */
 
   /* Line heights */
   --lh-display: 1.23;
   --lh-heading: 1.22;
   --lh-card-title: 1.25;
   --lh-subheading: 1.33;
-  --lh-small-heading: 1.40;
+  --lh-small-heading: 1.4;
   --lh-nav: 1.33;
   --lh-body: 1.5;
   --lh-caption: 1.43;
@@ -194,35 +194,60 @@
   font-size: var(--text-display);
   line-height: var(--lh-display);
   font-weight: 700;
-  font-family: var(--font-heading), system-ui, Helvetica Neue, Helvetica, Arial,
+  font-family:
+    var(--font-heading),
+    system-ui,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
     sans-serif;
 }
 @utility text-heading {
   font-size: var(--text-heading);
   line-height: var(--lh-heading);
   font-weight: 700;
-  font-family: var(--font-heading), system-ui, Helvetica Neue, Helvetica, Arial,
+  font-family:
+    var(--font-heading),
+    system-ui,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
     sans-serif;
 }
 @utility text-card-title {
   font-size: var(--text-card-title);
   line-height: var(--lh-card-title);
   font-weight: 700;
-  font-family: var(--font-heading), system-ui, Helvetica Neue, Helvetica, Arial,
+  font-family:
+    var(--font-heading),
+    system-ui,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
     sans-serif;
 }
 @utility text-subheading {
   font-size: var(--text-subheading);
   line-height: var(--lh-subheading);
   font-weight: 700;
-  font-family: var(--font-heading), system-ui, Helvetica Neue, Helvetica, Arial,
+  font-family:
+    var(--font-heading),
+    system-ui,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
     sans-serif;
 }
 @utility text-small-heading {
   font-size: var(--text-small-heading);
   line-height: var(--lh-small-heading);
   font-weight: 700;
-  font-family: var(--font-heading), system-ui, Helvetica Neue, Helvetica, Arial,
+  font-family:
+    var(--font-heading),
+    system-ui,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
     sans-serif;
 }
 @utility text-nav {

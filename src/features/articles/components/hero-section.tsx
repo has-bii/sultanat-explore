@@ -22,18 +22,16 @@ export function HeroSection() {
         </h1>
 
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Temukan panduan perjalanan, tips praktis, dan inspirasi untuk petualangan Anda
-          ke Turki dan Tanah Suci.
+          Temukan panduan perjalanan, tips praktis, dan inspirasi untuk petualangan Anda ke Turki
+          dan Tanah Suci.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <BookOpen className="h-4 w-4 text-primary" />
-            6 Artikel
+            <BookOpen className="h-4 w-4 text-primary" />6 Artikel
           </span>
           <span className="flex items-center gap-1.5">
-            <PenLine className="h-4 w-4 text-primary" />
-            6 Kategori
+            <PenLine className="h-4 w-4 text-primary" />6 Kategori
           </span>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client"
 
+import { FileText, Mail, MessageSquare, Send, User } from "lucide-react"
 import { useState } from "react"
-import { Send, User, Mail, MessageSquare, FileText } from "lucide-react"
 
 const WHATSAPP_BASE = "https://wa.me/6281234567890"
 
@@ -44,9 +44,7 @@ export function InquiryForm() {
   return (
     <div className="rounded-2xl border border-border/50 bg-card p-6 sm:p-8">
       <div className="mb-6">
-        <h2 className="font-heading text-subheading font-bold tracking-tight">
-          Kirim Pesan
-        </h2>
+        <h2 className="font-heading text-subheading font-bold tracking-tight">Kirim Pesan</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Isi form di bawah, kami akan terima via WhatsApp
         </p>

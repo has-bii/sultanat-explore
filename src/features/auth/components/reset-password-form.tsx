@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { useAppForm } from "@/lib/form";
-import { authClient } from "@/lib/auth-client";
-import { resetPasswordSchema } from "@/features/auth/dto/auth.schema";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { resetPasswordSchema } from "@/features/auth/dto/auth.schema"
+import { authClient } from "@/lib/auth-client"
+import { useAppForm } from "@/lib/form"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense, useState } from "react"
 
 function ResetPasswordFormInner() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-  const [formError, setFormError] = useState<string | null>(null);
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const token = searchParams.get("token")
+  const [formError, setFormError] = useState<string | null>(null)
 
   const form = useAppForm({
     defaultValues: {
@@ -19,49 +19,44 @@ function ResetPasswordFormInner() {
     } as const,
     validators: {
       onSubmit: ({ value }) => {
-        const result = resetPasswordSchema.safeParse(value);
-        if (!result.success) return result.error.issues;
+        const result = resetPasswordSchema.safeParse(value)
+        if (!result.success) return result.error.issues
       },
     },
     onSubmit: async ({ value }) => {
-      setFormError(null);
+      setFormError(null)
       if (!token) {
-        setFormError(
-          "Token reset tidak ditemukan. Request ulang dari link forgot password."
-        );
-        return;
+        setFormError("Token reset tidak ditemukan. Request ulang dari link forgot password.")
+        return
       }
       const { error } = await authClient.resetPassword({
         newPassword: value.password,
         token,
-      });
+      })
       if (error) {
-        setFormError(error.message ?? "Gagal reset password.");
-        return;
+        setFormError(error.message ?? "Gagal reset password.")
+        return
       }
-      router.push("/admin/login");
+      router.push("/admin/login")
     },
-  });
+  })
 
   if (!token) {
     return (
       <div className="text-center text-sm text-destructive">
         Token reset tidak valid atau sudah kadaluarsa.{" "}
-        <a
-          href="/admin/forgot-password"
-          className="underline underline-offset-4"
-        >
+        <a href="/admin/forgot-password" className="underline underline-offset-4">
           Request ulang
         </a>
       </div>
-    );
+    )
   }
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
+        e.preventDefault()
+        form.handleSubmit()
       }}
       className="flex flex-col gap-6"
     >
@@ -95,7 +90,7 @@ function ResetPasswordFormInner() {
 
       <form.SubmitButton form={form} label="Reset Password" pendingLabel="Memproses..." />
     </form>
-  );
+  )
 }
 
 export function ResetPasswordForm() {
@@ -103,5 +98,5 @@ export function ResetPasswordForm() {
     <Suspense>
       <ResetPasswordFormInner />
     </Suspense>
-  );
+  )
 }

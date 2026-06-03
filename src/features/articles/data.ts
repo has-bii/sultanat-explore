@@ -545,11 +545,9 @@ export function getRelatedArticles(currentSlug: string, limit = 3): Article[] {
 
   // Same category first, then others
   const sameCategory = articles.filter(
-    (a) => a.slug !== currentSlug && a.category === current.category
+    (a) => a.slug !== currentSlug && a.category === current.category,
   )
-  const others = articles.filter(
-    (a) => a.slug !== currentSlug && a.category !== current.category
-  )
+  const others = articles.filter((a) => a.slug !== currentSlug && a.category !== current.category)
 
   return [...sameCategory, ...others].slice(0, limit)
 }

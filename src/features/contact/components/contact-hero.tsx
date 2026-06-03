@@ -28,8 +28,8 @@ export function ContactHero() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
-          Punya pertanyaan tentang trip, butuh bantuan custom itinerary, atau
-          ingin berkolaborasi? Tim SultanatExplore siap merespons dengan cepat.
+          Punya pertanyaan tentang trip, butuh bantuan custom itinerary, atau ingin berkolaborasi?
+          Tim SultanatExplore siap merespons dengan cepat.
         </p>
       </div>
 

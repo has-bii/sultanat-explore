@@ -1,13 +1,13 @@
-import {
-  AboutHero,
-  CompanyStory,
-  WhyTurkey,
-  TeamSection,
-  ValuesSection,
-  AboutTestimonials,
-} from "@/features/about-us"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import {
+  AboutHero,
+  AboutTestimonials,
+  CompanyStory,
+  TeamSection,
+  ValuesSection,
+  WhyTurkey,
+} from "@/features/about-us"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

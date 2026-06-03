@@ -1,18 +1,18 @@
-import {
-  PrivateTripExplanation,
-  SocialProofBar,
-  ComparisonTable,
-  BenefitsSection,
-  ProcessTimeline,
-  TripBuilderWizard,
-  SampleItinerary,
-  PastTripGallery,
-  TestimonialsSection,
-  TravelAdvisor,
-  PrivateFAQ,
-} from "@/features/private-trip"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import {
+  BenefitsSection,
+  ComparisonTable,
+  PastTripGallery,
+  PrivateFAQ,
+  PrivateTripExplanation,
+  ProcessTimeline,
+  SampleItinerary,
+  SocialProofBar,
+  TestimonialsSection,
+  TravelAdvisor,
+  TripBuilderWizard,
+} from "@/features/private-trip"
 import { Crown } from "lucide-react"
 import type { Metadata } from "next"
 
@@ -42,8 +42,8 @@ export default function PrivateTripPage() {
             <span className="text-primary">Dirancang untuk Anda</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Bangun trip impian Anda ke Turki. Pilih kota, layanan, dan dapatkan
-            estimasi harga — semua bisa dicustom 100%.
+            Bangun trip impian Anda ke Turki. Pilih kota, layanan, dan dapatkan estimasi harga —
+            semua bisa dicustom 100%.
           </p>
         </div>
       </section>

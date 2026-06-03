@@ -1,4 +1,4 @@
-import type { TimelineItem, WhyTurkeyItem, TeamMember, ValueItem } from "./types"
+import type { TeamMember, TimelineItem, ValueItem, WhyTurkeyItem } from "./types"
 
 // ─── Company Story Timeline ─────────────────────────────────
 

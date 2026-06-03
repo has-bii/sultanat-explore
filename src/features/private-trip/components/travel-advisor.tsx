@@ -1,4 +1,4 @@
-import { Award, Clock, Compass } from "lucide-react"
+import { Clock, Compass } from "lucide-react"
 import { advisorProfile } from "../data"
 
 export function TravelAdvisor() {
@@ -28,12 +28,8 @@ export function TravelAdvisor() {
 
             {/* Info */}
             <div className="p-6 lg:col-span-3 lg:p-8">
-              <h3 className="font-heading text-xl font-bold">
-                {advisorProfile.name}
-              </h3>
-              <p className="mt-0.5 text-sm font-medium text-primary">
-                {advisorProfile.role}
-              </p>
+              <h3 className="font-heading text-xl font-bold">{advisorProfile.name}</h3>
+              <p className="mt-0.5 text-sm font-medium text-primary">{advisorProfile.role}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {advisorProfile.bio}
               </p>

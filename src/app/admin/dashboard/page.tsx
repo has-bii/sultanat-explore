@@ -1,14 +1,14 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+import { redirect } from "next/navigation"
 
 export default async function AdminDashboardPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
-  });
+  })
 
   if (!session) {
-    redirect("/admin/login");
+    redirect("/admin/login")
   }
 
   return (
@@ -20,5 +20,5 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
     </div>
-  );
+  )
 }

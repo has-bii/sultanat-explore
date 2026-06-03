@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { motion } from "motion/react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { motion } from "motion/react"
+import Link from "next/link"
 
 export default function NotFound() {
   return (
@@ -39,12 +39,9 @@ export default function NotFound() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
       >
-        <h2 className="font-heading text-2xl font-bold md:text-3xl">
-          Halaman Tidak Ditemukan
-        </h2>
+        <h2 className="font-heading text-2xl font-bold md:text-3xl">Halaman Tidak Ditemukan</h2>
         <p className="text-muted-foreground">
-          Sepertinya Anda tersesat! Halaman yang Anda cari tidak ada atau sudah
-          dipindahkan.
+          Sepertinya Anda tersesat! Halaman yang Anda cari tidak ada atau sudah dipindahkan.
         </p>
       </motion.div>
 
@@ -58,17 +55,8 @@ export default function NotFound() {
         <Button asChild size="lg" className="font-heading font-semibold">
           <Link href="/">Kembali ke Beranda</Link>
         </Button>
-        <Button
-          asChild
-          variant="outline"
-          size="lg"
-          className="font-heading font-semibold"
-        >
-          <a
-            href="https://wa.me/6281234567890"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+        <Button asChild variant="outline" size="lg" className="font-heading font-semibold">
+          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
             Hubungi Kami
           </a>
         </Button>
@@ -104,5 +92,5 @@ export default function NotFound() {
         />
       ))}
     </div>
-  );
+  )
 }

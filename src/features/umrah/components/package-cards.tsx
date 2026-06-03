@@ -1,9 +1,9 @@
 import { Check, MessageCircle, Star } from "lucide-react"
-import { packages, formatPrice, WHATSAPP_BASE } from "../data"
+import { formatPrice, packages, WHATSAPP_BASE } from "../data"
 
 function PackageCard({ pkg }: { pkg: (typeof packages)[number] }) {
   const waText = encodeURIComponent(
-    `Halo SultanatExplore, saya tertarik dengan Paket Umrah ${pkg.name} (${pkg.duration}). Mohon info lebih lanjut.`
+    `Halo SultanatExplore, saya tertarik dengan Paket Umrah ${pkg.name} (${pkg.duration}). Mohon info lebih lanjut.`,
   )
 
   return (
@@ -14,9 +14,7 @@ function PackageCard({ pkg }: { pkg: (typeof packages)[number] }) {
     >
       {pkg.popular && (
         <div className="absolute top-0 right-0 rounded-bl-xl bg-primary px-3 py-1">
-          <span className="text-xs font-semibold text-primary-foreground">
-            Populer
-          </span>
+          <span className="text-xs font-semibold text-primary-foreground">Populer</span>
         </div>
       )}
 
@@ -33,19 +31,14 @@ function PackageCard({ pkg }: { pkg: (typeof packages)[number] }) {
             <span className="font-heading text-3xl font-bold text-primary">
               {formatPrice(pkg.price)}
             </span>
-            <span className="text-sm text-muted-foreground">
-              {pkg.priceLabel}
-            </span>
+            <span className="text-sm text-muted-foreground">{pkg.priceLabel}</span>
           </div>
           <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
             <span>{pkg.duration}</span>
             <span>·</span>
             <span className="flex items-center gap-1">
               {Array.from({ length: pkg.hotelStars }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="h-3 w-3 fill-primary text-primary"
-                />
+                <Star key={i} className="h-3 w-3 fill-primary text-primary" />
               ))}
               <span className="ml-0.5">Hotel</span>
             </span>
@@ -110,8 +103,7 @@ export function PackageCards() {
             Pilih Paket yang Sesuai
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Semua paket private — tidak digabung rombongan lain. Atau custom
-            sesuai kebutuhan Anda.
+            Semua paket private — tidak digabung rombongan lain. Atau custom sesuai kebutuhan Anda.
           </p>
         </div>
 

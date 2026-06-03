@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
 
-export const { fieldContext, formContext } = createFormHookContexts();
+export const { fieldContext, formContext } = createFormHookContexts()
 
 function TextField({
   field,
@@ -13,10 +13,10 @@ function TextField({
   type = "text",
   placeholder,
 }: {
-  field: any;
-  label: string;
-  type?: string;
-  placeholder?: string;
+  field: any
+  label: string
+  type?: string
+  placeholder?: string
 }) {
   return (
     <Field>
@@ -30,12 +30,10 @@ function TextField({
         aria-invalid={field.state.meta.errors.length > 0}
       />
       {field.state.meta.errors.length > 0 && (
-        <FieldError>
-          {field.state.meta.errors.map((e: any) => e?.message).join(", ")}
-        </FieldError>
+        <FieldError>{field.state.meta.errors.map((e: any) => e?.message).join(", ")}</FieldError>
       )}
     </Field>
-  );
+  )
 }
 
 function SubmitButton({
@@ -43,25 +41,19 @@ function SubmitButton({
   label,
   pendingLabel,
 }: {
-  form: any;
-  label: string;
-  pendingLabel?: string;
+  form: any
+  label: string
+  pendingLabel?: string
 }) {
   return (
-    <form.Subscribe
-      selector={(state: any) => [state.canSubmit, state.isSubmitting]}
-    >
+    <form.Subscribe selector={(state: any) => [state.canSubmit, state.isSubmitting]}>
       {([canSubmit, isSubmitting]: boolean[]) => (
-        <Button
-          type="submit"
-          disabled={!canSubmit}
-          className="w-full"
-        >
+        <Button type="submit" disabled={!canSubmit} className="w-full">
           {isSubmitting ? (pendingLabel ?? "Memproses...") : label}
         </Button>
       )}
     </form.Subscribe>
-  );
+  )
 }
 
 const { useAppForm } = createFormHook({
@@ -69,6 +61,6 @@ const { useAppForm } = createFormHook({
   formComponents: { SubmitButton },
   fieldContext,
   formContext,
-});
+})
 
-export { useAppForm };
+export { useAppForm }

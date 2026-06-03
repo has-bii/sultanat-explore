@@ -1,12 +1,12 @@
 import {
-  Building2,
-  Utensils,
-  Car,
   BookOpen,
+  Building2,
+  Car,
   Compass,
   FileCheck,
-  ShieldCheck,
   Package,
+  ShieldCheck,
+  Utensils,
   type LucideIcon,
 } from "lucide-react"
 import { inclusions } from "../data"
@@ -49,9 +49,7 @@ export function InclusionGrid() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
                   {Icon && <Icon className="h-5 w-5 text-primary" />}
                 </div>
-                <h3 className="mt-3 font-heading text-sm font-semibold">
-                  {item.title}
-                </h3>
+                <h3 className="mt-3 font-heading text-sm font-semibold">{item.title}</h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {item.description}
                 </p>

@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown, HelpCircle } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { faqCategories, type FaqCategory } from "@/features/faq"
+import { cn } from "@/lib/utils"
+import { ChevronDown, HelpCircle } from "lucide-react"
+import { useState } from "react"
 
 function CategoryFilter({
   categories,
@@ -45,11 +45,7 @@ function CategoryFilter({
   )
 }
 
-function FaqAccordion({
-  items,
-}: {
-  items: { question: string; answer: string }[]
-}) {
+function FaqAccordion({ items }: { items: { question: string; answer: string }[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
@@ -57,10 +53,7 @@ function FaqAccordion({
       {items.map((faq, i) => {
         const isOpen = openIndex === i
         return (
-          <div
-            key={i}
-            className="rounded-xl border border-border/50 bg-card transition-colors"
-          >
+          <div key={i} className="rounded-xl border border-border/50 bg-card transition-colors">
             <button
               onClick={() => setOpenIndex(isOpen ? null : i)}
               className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
@@ -95,9 +88,7 @@ function FaqAccordion({
 export function FaqPageContent() {
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
 
-  const filtered = activeSlug
-    ? faqCategories.filter((c) => c.slug === activeSlug)
-    : faqCategories
+  const filtered = activeSlug ? faqCategories.filter((c) => c.slug === activeSlug) : faqCategories
 
   return (
     <>
@@ -112,8 +103,8 @@ export function FaqPageContent() {
             Pertanyaan yang Sering Ditanyakan
           </h1>
           <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
-            Temukan jawaban untuk pertanyaan umum tentang perjalanan ke Turki,
-            pembayaran, visa, dan layanan kami.
+            Temukan jawaban untuk pertanyaan umum tentang perjalanan ke Turki, pembayaran, visa, dan
+            layanan kami.
           </p>
         </div>
       </section>
@@ -135,9 +126,7 @@ export function FaqPageContent() {
           <div className="mt-8 space-y-12">
             {filtered.map((cat) => (
               <div key={cat.slug}>
-                <h2 className="text-lg font-heading font-bold mb-4">
-                  {cat.category}
-                </h2>
+                <h2 className="text-lg font-heading font-bold mb-4">{cat.category}</h2>
                 <FaqAccordion items={cat.items} />
               </div>
             ))}
@@ -152,8 +141,7 @@ export function FaqPageContent() {
             Masih punya pertanyaan?
           </h2>
           <p className="mt-2 text-muted-foreground">
-            Tim kami siap membantu Anda. Langsung chat via WhatsApp untuk
-            respons cepat.
+            Tim kami siap membantu Anda. Langsung chat via WhatsApp untuk respons cepat.
           </p>
           <a
             href="https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20ingin%20bertanya"

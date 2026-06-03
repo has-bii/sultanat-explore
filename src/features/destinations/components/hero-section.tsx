@@ -1,4 +1,4 @@
-import { MapPin, Compass } from "lucide-react"
+import { Compass, MapPin } from "lucide-react"
 
 export function HeroSection() {
   return (
@@ -22,8 +22,8 @@ export function HeroSection() {
         </h1>
 
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Dari Istanbul yang bersejarah hingga pantai Antalya yang memikat — jelajahi
-          destinasi terbaik Turki dan temukan perjalanan impian Anda.
+          Dari Istanbul yang bersejarah hingga pantai Antalya yang memikat — jelajahi destinasi
+          terbaik Turki dan temukan perjalanan impian Anda.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
@@ -32,8 +32,7 @@ export function HeroSection() {
             11 Destinasi
           </span>
           <span className="flex items-center gap-1.5">
-            <Compass className="h-4 w-4 text-primary" />
-            3 Kategori
+            <Compass className="h-4 w-4 text-primary" />3 Kategori
           </span>
         </div>
       </div>

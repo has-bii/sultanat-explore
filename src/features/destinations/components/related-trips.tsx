@@ -1,7 +1,7 @@
-import Link from "next/link"
-import { ArrowRight, Calendar, Clock, Users } from "lucide-react"
+import { formatDate, formatPrice } from "@/features/open-trip/data"
 import type { OpenTrip } from "@/features/open-trip/types"
-import { formatPrice, formatDate } from "@/features/open-trip/data"
+import { ArrowRight, Calendar, Clock, Users } from "lucide-react"
+import Link from "next/link"
 
 export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
   if (trips.length === 0) return null

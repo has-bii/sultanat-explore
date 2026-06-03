@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link"
 import { MessageCircle } from "lucide-react"
+import Link from "next/link"
 
 const WHATSAPP_LINK =
   "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki"
@@ -74,8 +74,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-3 text-sm text-white/40 leading-relaxed max-w-xs">
-              Agen wisata Turki terpercaya untuk traveler Indonesia. Berbasis
-              langsung di Turki dengan tim profesional.
+              Agen wisata Turki terpercaya untuk traveler Indonesia. Berbasis langsung di Turki
+              dengan tim profesional.
             </p>
 
             {/* Socials — ghost icons */}
@@ -122,9 +122,7 @@ export function Footer() {
           <p className="text-xs text-white/30">
             © {new Date().getFullYear()} SultanatExplore. All rights reserved.
           </p>
-          <p className="text-xs text-white/30">
-            Made with ❤️ for Indonesian travelers
-          </p>
+          <p className="text-xs text-white/30">Made with ❤️ for Indonesian travelers</p>
         </div>
       </div>
     </footer>

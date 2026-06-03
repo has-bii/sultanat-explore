@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { ResetPasswordForm } from "@/features/auth";
+import { ResetPasswordForm } from "@/features/auth"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Reset Password — Sultanat Explore",
-};
+}
 
 export default function ResetPasswordPage() {
   return (
@@ -16,5 +16,5 @@ export default function ResetPasswordPage() {
       </div>
       <ResetPasswordForm />
     </>
-  );
+  )
 }

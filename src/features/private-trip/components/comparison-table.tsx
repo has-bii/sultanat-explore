@@ -1,4 +1,3 @@
-import { Check, X } from "lucide-react"
 import { comparisonItems } from "../data"
 
 export function ComparisonTable() {
@@ -21,12 +20,8 @@ export function ComparisonTable() {
           {/* Header */}
           <div className="grid grid-cols-3 border-b bg-primary text-primary-foreground">
             <div className="px-4 py-3 text-sm font-semibold">Fitur</div>
-            <div className="px-4 py-3 text-center text-sm font-semibold">
-              Open Trip
-            </div>
-            <div className="px-4 py-3 text-center text-sm font-semibold">
-              Private Trip
-            </div>
+            <div className="px-4 py-3 text-center text-sm font-semibold">Open Trip</div>
+            <div className="px-4 py-3 text-center text-sm font-semibold">Private Trip</div>
           </div>
 
           {/* Rows */}

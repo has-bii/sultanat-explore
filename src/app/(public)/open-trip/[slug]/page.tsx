@@ -1,24 +1,10 @@
-import { notFound } from "next/navigation"
-import Link from "next/link"
-import {
-  ArrowLeft,
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-} from "lucide-react"
-import {
-  getTripBySlug,
-  formatDate,
-  formatPrice,
-  openTrips,
-} from "@/features/open-trip/data"
-import {
-  ItinerarySection,
-  InclusionSection,
-} from "@/features/open-trip"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { InclusionSection, ItinerarySection } from "@/features/open-trip"
+import { formatDate, formatPrice, getTripBySlug, openTrips } from "@/features/open-trip/data"
+import { ArrowLeft, Calendar, Clock, MapPin, Users } from "lucide-react"
 import type { Metadata } from "next"
+import Link from "next/link"
+import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -46,11 +32,7 @@ export default async function OpenTripDetailPage({ params }: Props) {
       {/* Header */}
       <section className="relative">
         <div className="relative h-[40vh] min-h-[320px] overflow-hidden lg:h-[50vh]">
-          <img
-            src={trip.image}
-            alt={trip.name}
-            className="h-full w-full object-cover"
-          />
+          <img src={trip.image} alt={trip.name} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         </div>
 

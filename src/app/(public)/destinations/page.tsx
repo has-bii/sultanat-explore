@@ -1,13 +1,13 @@
+import { CTASection } from "@/components/cta-section"
+import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import {
-  HeroSection,
-  FeaturedDestinations,
   DestinationsGrid,
   FeaturedAttractions,
+  FeaturedDestinations,
+  HeroSection,
   WhyTurkey,
 } from "@/features/destinations"
 import { SocialProofBar } from "@/features/open-trip/components/social-proof-bar"
-import { CTASection } from "@/components/cta-section"
-import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

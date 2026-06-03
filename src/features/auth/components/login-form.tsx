@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import { useAppForm } from "@/lib/form";
-import { authClient } from "@/lib/auth-client";
-import { loginSchema } from "@/features/auth/dto/auth.schema";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { loginSchema } from "@/features/auth/dto/auth.schema"
+import { authClient } from "@/lib/auth-client"
+import { useAppForm } from "@/lib/form"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export function LoginForm() {
-  const router = useRouter();
-  const [formError, setFormError] = useState<string | null>(null);
+  const router = useRouter()
+  const [formError, setFormError] = useState<string | null>(null)
 
   const form = useAppForm({
     defaultValues: {
@@ -17,31 +17,29 @@ export function LoginForm() {
     } as const,
     validators: {
       onSubmit: ({ value }) => {
-        const result = loginSchema.safeParse(value);
-        if (!result.success) return result.error.issues;
+        const result = loginSchema.safeParse(value)
+        if (!result.success) return result.error.issues
       },
     },
     onSubmit: async ({ value }) => {
-      setFormError(null);
+      setFormError(null)
       const { error } = await authClient.signIn.email({
         email: value.email,
         password: value.password,
-      });
+      })
       if (error) {
-        setFormError(
-          error.message ?? "Login gagal. Periksa email dan password."
-        );
-        return;
+        setFormError(error.message ?? "Login gagal. Periksa email dan password.")
+        return
       }
-      router.push("/admin/dashboard");
+      router.push("/admin/dashboard")
     },
-  });
+  })
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
+        e.preventDefault()
+        form.handleSubmit()
       }}
       className="flex flex-col gap-6"
     >
@@ -82,5 +80,5 @@ export function LoginForm() {
         Lupa password?
       </a>
     </form>
-  );
+  )
 }

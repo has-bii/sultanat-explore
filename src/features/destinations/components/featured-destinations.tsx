@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 import { getFeaturedDestinations } from "../data"
 
 export function FeaturedDestinations() {
@@ -16,7 +16,8 @@ export function FeaturedDestinations() {
             Destinasi Unggulan
           </h2>
           <p className="mt-3 max-w-lg text-body text-muted-foreground">
-            Destinasi paling populer yang direkomendasikan tim kami untuk perjalanan pertama Anda ke Turki.
+            Destinasi paling populer yang direkomendasikan tim kami untuk perjalanan pertama Anda ke
+            Turki.
           </p>
         </div>
 
@@ -29,9 +30,7 @@ export function FeaturedDestinations() {
             >
               {/* First item spans full width on large screens */}
               <div
-                className={`relative overflow-hidden ${
-                  i === 0 ? "h-80 md:h-96" : "h-72 md:h-80"
-                }`}
+                className={`relative overflow-hidden ${i === 0 ? "h-80 md:h-96" : "h-72 md:h-80"}`}
               >
                 <img
                   src={dest.image}
@@ -48,13 +47,9 @@ export function FeaturedDestinations() {
                     Tersedia
                   </div>
 
-                  <h3 className="text-xl font-bold md:text-2xl">
-                    {dest.name}
-                  </h3>
+                  <h3 className="text-xl font-bold md:text-2xl">{dest.name}</h3>
 
-                  <p className="mt-1 text-sm text-primary-foreground/70">
-                    {dest.tagline}
-                  </p>
+                  <p className="mt-1 text-sm text-primary-foreground/70">{dest.tagline}</p>
 
                   {i === 0 && (
                     <p className="mt-3 max-w-md text-sm leading-relaxed text-primary-foreground/80 line-clamp-2">

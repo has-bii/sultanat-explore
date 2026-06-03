@@ -2,13 +2,7 @@ import { Resend } from "resend"
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
 
-export async function sendResetPasswordEmail({
-  to,
-  url,
-}: {
-  to: string
-  url: string
-}) {
+export async function sendResetPasswordEmail({ to, url }: { to: string; url: string }) {
   await resend.emails.send({
     from: "Sultanat Explore <noreply@sultanatexplore.com>",
     to,

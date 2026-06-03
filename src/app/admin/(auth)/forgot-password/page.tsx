@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { ForgotPasswordForm } from "@/features/auth";
+import { ForgotPasswordForm } from "@/features/auth"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Lupa Password — Sultanat Explore",
-};
+}
 
 export default function ForgotPasswordPage() {
   return (
@@ -16,5 +16,5 @@ export default function ForgotPasswordPage() {
       </div>
       <ForgotPasswordForm />
     </>
-  );
+  )
 }

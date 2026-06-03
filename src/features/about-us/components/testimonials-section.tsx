@@ -1,8 +1,8 @@
 "use client"
 
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1"
-import { motion } from "motion/react"
 import { testimonials } from "@/data/testimonials"
+import { motion } from "motion/react"
 
 const firstColumn = testimonials.slice(0, 3)
 const secondColumn = testimonials.slice(3, 6)
@@ -27,8 +27,7 @@ export function AboutTestimonials() {
             Kata Mereka
           </h2>
           <p className="text-center mt-5 text-body opacity-75">
-            Testimoni dari traveler Indonesia yang telah berpetualang bersama
-            kami.
+            Testimoni dari traveler Indonesia yang telah berpetualang bersama kami.
           </p>
         </motion.div>
 

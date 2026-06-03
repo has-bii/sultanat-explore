@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation"
-import type { Metadata } from "next"
+import { ArticleBody, ArticleHero, AuthorCard, RelatedArticles } from "@/features/articles"
 import { articles, getArticleBySlug } from "@/features/articles/data"
-import { ArticleHero, ArticleBody, AuthorCard, RelatedArticles } from "@/features/articles"
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
 

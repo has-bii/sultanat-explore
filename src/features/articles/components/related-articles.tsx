@@ -1,6 +1,5 @@
-import Link from "next/link"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
-import type { Article } from "../types"
+import Link from "next/link"
 import { categoryLabels, getRelatedArticles } from "../data"
 
 export function RelatedArticles({ currentSlug }: { currentSlug: string }) {

@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { useAppForm } from "@/lib/form";
-import { authClient } from "@/lib/auth-client";
-import { forgotPasswordSchema } from "@/features/auth/dto/auth.schema";
-import { useState } from "react";
+import { forgotPasswordSchema } from "@/features/auth/dto/auth.schema"
+import { authClient } from "@/lib/auth-client"
+import { useAppForm } from "@/lib/form"
+import { useState } from "react"
 
 export function ForgotPasswordForm() {
-  const [sent, setSent] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
+  const [sent, setSent] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
 
   const form = useAppForm({
     defaultValues: {
@@ -15,30 +15,29 @@ export function ForgotPasswordForm() {
     } as const,
     validators: {
       onSubmit: ({ value }) => {
-        const result = forgotPasswordSchema.safeParse(value);
-        if (!result.success) return result.error.issues;
+        const result = forgotPasswordSchema.safeParse(value)
+        if (!result.success) return result.error.issues
       },
     },
     onSubmit: async ({ value }) => {
-      setFormError(null);
+      setFormError(null)
       const { error } = await authClient.requestPasswordReset({
         email: value.email,
         redirectTo: "/admin/reset-password",
-      });
+      })
       if (error) {
-        setFormError(error.message ?? "Gagal mengirim email reset.");
-        return;
+        setFormError(error.message ?? "Gagal mengirim email reset.")
+        return
       }
-      setSent(true);
+      setSent(true)
     },
-  });
+  })
 
   if (sent) {
     return (
       <div className="flex flex-col gap-4 text-center">
         <p className="text-sm text-muted-foreground">
-          Link reset password telah dikirim ke email Anda. Cek inbox dan folder
-          spam.
+          Link reset password telah dikirim ke email Anda. Cek inbox dan folder spam.
         </p>
         <a
           href="/admin/login"
@@ -47,14 +46,14 @@ export function ForgotPasswordForm() {
           Kembali ke login
         </a>
       </div>
-    );
+    )
   }
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
+        e.preventDefault()
+        form.handleSubmit()
       }}
       className="flex flex-col gap-6"
     >
@@ -77,5 +76,5 @@ export function ForgotPasswordForm() {
 
       <form.SubmitButton form={form} label="Kirim Link Reset" pendingLabel="Mengirim..." />
     </form>
-  );
+  )
 }

@@ -6,10 +6,7 @@ export function SocialProofBar() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="grid grid-cols-2 divide-x divide-border sm:grid-cols-4">
           {trustStats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col items-center gap-1 py-8"
-            >
+            <div key={stat.label} className="flex flex-col items-center gap-1 py-8">
               <span className="font-heading text-3xl font-bold text-primary lg:text-4xl">
                 {stat.value}
               </span>

@@ -1,2 +1,2 @@
-export type { FaqItem, FaqCategory } from "./data"
 export { faqCategories } from "./data"
+export type { FaqCategory, FaqItem } from "./data"

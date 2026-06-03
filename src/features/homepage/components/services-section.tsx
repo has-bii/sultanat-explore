@@ -1,6 +1,6 @@
-import { OpenTripSection } from "./open-trip-section";
-import { PrivateTripSection } from "./private-trip-section";
-import { UmrahSection } from "./umrah-section";
+import { OpenTripSection } from "./open-trip-section"
+import { PrivateTripSection } from "./private-trip-section"
+import { UmrahSection } from "./umrah-section"
 
 export function ServicesSection() {
   return (
@@ -9,5 +9,5 @@ export function ServicesSection() {
       <PrivateTripSection />
       <UmrahSection />
     </>
-  );
+  )
 }

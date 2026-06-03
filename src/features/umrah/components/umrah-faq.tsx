@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { useState } from "react"
 import { umrahFaqs } from "../data"
 
 export function UmrahFAQ() {
@@ -11,9 +11,7 @@ export function UmrahFAQ() {
     <section className="bg-muted/30 py-20 lg:py-24">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            FAQ
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-primary">FAQ</span>
           <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
             Pertanyaan Seputar Umrah
           </h2>

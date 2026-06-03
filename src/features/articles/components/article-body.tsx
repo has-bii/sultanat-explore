@@ -40,26 +40,18 @@ export function ArticleBody({ content }: { content: ContentBlock[] }) {
 
           case "tip":
             return (
-              <div
-                key={i}
-                className="mt-6 rounded-xl border border-primary/10 bg-primary/5 p-5"
-              >
+              <div key={i} className="mt-6 rounded-xl border border-primary/10 bg-primary/5 p-5">
                 <div className="flex items-center gap-2 text-sm font-bold text-primary">
                   <Lightbulb className="h-4 w-4" />
                   {block.title}
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {block.text}
-                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{block.text}</p>
               </div>
             )
 
           case "quote":
             return (
-              <blockquote
-                key={i}
-                className="mt-8 border-l-4 border-primary pl-6"
-              >
+              <blockquote key={i} className="mt-8 border-l-4 border-primary pl-6">
                 <Quote className="h-5 w-5 text-primary/40" />
                 <p className="mt-2 text-lg font-medium italic leading-relaxed">
                   &ldquo;{block.text}&rdquo;

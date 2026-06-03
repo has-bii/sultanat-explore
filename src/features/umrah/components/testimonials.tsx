@@ -16,10 +16,7 @@ export function Testimonials() {
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t) => (
-            <div
-              key={t.name}
-              className="rounded-2xl border bg-background p-6 shadow-uber-sm"
-            >
+            <div key={t.name} className="rounded-2xl border bg-background p-6 shadow-uber-sm">
               <Quote className="h-5 w-5 text-primary/20" />
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 &ldquo;{t.text}&rdquo;

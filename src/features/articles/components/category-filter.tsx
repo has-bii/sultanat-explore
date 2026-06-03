@@ -1,4 +1,4 @@
-import { categoryOrder, categoryLabels, type ArticleCategory } from "../data"
+import { categoryLabels, categoryOrder } from "../data"
 
 const ALL = "semua"
 

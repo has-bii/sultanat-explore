@@ -16,8 +16,8 @@ export function TeamSection() {
             Orang di Balik Layar
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Tim kecil yang berdedikasi. Setiap orang punya peran penting untuk
-            memastikan perjalanan Anda sempurna.
+            Tim kecil yang berdedikasi. Setiap orang punya peran penting untuk memastikan perjalanan
+            Anda sempurna.
           </p>
         </div>
 
@@ -45,15 +45,11 @@ export function TeamSection() {
                 />
               </div>
 
-              <h3 className="mt-4 font-heading text-base font-semibold">
-                {member.name}
-              </h3>
+              <h3 className="mt-4 font-heading text-base font-semibold">{member.name}</h3>
               <span className="mt-0.5 inline-block rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">
                 {member.role}
               </span>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {member.bio}
-              </p>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{member.bio}</p>
             </motion.div>
           ))}
         </div>

@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 import type { Destination } from "../types"
 
 export function OtherDestinations({
@@ -54,9 +54,7 @@ export function OtherDestinations({
                 <h4 className="font-heading text-base font-bold group-hover:text-primary transition-colors">
                   {dest.name}
                 </h4>
-                <p className="mt-1 text-sm text-muted-foreground line-clamp-1">
-                  {dest.tagline}
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground line-clamp-1">{dest.tagline}</p>
               </div>
             </Link>
           ))}

@@ -28,9 +28,9 @@ export function AboutHero() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
-          Dari mahasiswa Indonesia di Istanbul menjadi travel agent terpercaya
-          untuk ratusan traveler. Kami beroperasi langsung dari Turki — untuk
-          pengalaman yang autentik dan personal.
+          Dari mahasiswa Indonesia di Istanbul menjadi travel agent terpercaya untuk ratusan
+          traveler. Kami beroperasi langsung dari Turki — untuk pengalaman yang autentik dan
+          personal.
         </p>
       </div>
 

@@ -1,5 +1,4 @@
-import { Check, X, MessageCircle } from "lucide-react"
-import type { Inclusion } from "../types"
+import { Check, MessageCircle, X } from "lucide-react"
 import { formatPrice, WHATSAPP_BASE } from "../data"
 import type { OpenTrip } from "../types"
 
@@ -13,9 +12,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
     <section className="space-y-8">
       {/* Highlights */}
       <div>
-        <h2 className="font-heading text-2xl font-bold tracking-tight">
-          Highlight Perjalanan
-        </h2>
+        <h2 className="font-heading text-2xl font-bold tracking-tight">Highlight Perjalanan</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {trip.highlights.map((h) => (
             <span
@@ -62,10 +59,7 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
           </h3>
           <ul className="mt-4 space-y-2.5">
             {trip.exclusions.map((exc) => (
-              <li
-                key={exc}
-                className="flex items-center gap-2.5 text-sm text-muted-foreground"
-              >
+              <li key={exc} className="flex items-center gap-2.5 text-sm text-muted-foreground">
                 <X className="h-3.5 w-3.5 text-foreground/40" />
                 {exc}
               </li>
@@ -79,13 +73,10 @@ export function InclusionSection({ trip }: { trip: OpenTrip }) {
         <p className="text-sm text-muted-foreground">Mulai dari</p>
         <p className="mt-1 font-heading text-3xl font-bold text-primary">
           {formatPrice(trip.price)}
-          <span className="ml-1 text-base font-normal text-muted-foreground">
-            /orang
-          </span>
+          <span className="ml-1 text-base font-normal text-muted-foreground">/orang</span>
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {trip.duration} · {trip.availableSeats} kursi tersisa dari{" "}
-          {trip.totalSeats}
+          {trip.duration} · {trip.availableSeats} kursi tersisa dari {trip.totalSeats}
         </p>
         <a
           href={waLink}

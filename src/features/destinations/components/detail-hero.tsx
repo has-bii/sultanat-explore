@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { ArrowLeft, MapPin } from "lucide-react"
-import type { Destination } from "../types"
+import Link from "next/link"
 import { categoryLabels } from "../data"
+import type { Destination } from "../types"
 
 export function DetailHero({ destination }: { destination: Destination }) {
   return (

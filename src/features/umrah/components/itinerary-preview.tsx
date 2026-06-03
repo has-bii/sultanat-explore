@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { ChevronDown, MapPin } from "lucide-react"
+import { useState } from "react"
 import { itineraryDays } from "../data"
 
 export function ItineraryPreview() {

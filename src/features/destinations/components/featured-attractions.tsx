@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 import { attractions, destinations } from "../data"
 
 export function FeaturedAttractions() {
@@ -43,9 +43,7 @@ export function FeaturedAttractions() {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="font-heading text-base font-bold">
-                    {attr.name}
-                  </h3>
+                  <h3 className="font-heading text-base font-bold">{attr.name}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-3">
                     {attr.description}
                   </p>

@@ -1,4 +1,10 @@
-export type ArticleCategory = "tips-perjalanan" | "panduan" | "destinasi" | "kuliner" | "umrah" | "inspirasi"
+export type ArticleCategory =
+  | "tips-perjalanan"
+  | "panduan"
+  | "destinasi"
+  | "kuliner"
+  | "umrah"
+  | "inspirasi"
 
 export type ContentBlock =
   | { type: "paragraph"; text: string }

@@ -1,12 +1,6 @@
-import {
-  ContactHero,
-  ContactCards,
-  InquiryForm,
-  OperatingHours,
-  FaqMini,
-} from "@/features/contact"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { ContactCards, ContactHero, FaqMini, InquiryForm, OperatingHours } from "@/features/contact"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

@@ -1,15 +1,15 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const loginSchema = z.object({
   email: z.string().email("Email tidak valid"),
   password: z.string().min(1, "Password wajib diisi"),
-});
-export type LoginInput = z.infer<typeof loginSchema>;
+})
+export type LoginInput = z.infer<typeof loginSchema>
 
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Email tidak valid"),
-});
-export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+})
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
 
 export const resetPasswordSchema = z
   .object({
@@ -19,5 +19,5 @@ export const resetPasswordSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password tidak cocok",
     path: ["confirmPassword"],
-  });
-export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+  })
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>

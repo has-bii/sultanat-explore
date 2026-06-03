@@ -16,8 +16,8 @@ export function CompanyStory() {
             Dari Ide ke Realita
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Perjalanan SultanatExplore dari awal hingga menjadi travel agent
-            terpercaya untuk traveler Indonesia di Turki.
+            Perjalanan SultanatExplore dari awal hingga menjadi travel agent terpercaya untuk
+            traveler Indonesia di Turki.
           </p>
         </div>
 
@@ -59,9 +59,7 @@ export function CompanyStory() {
                     <span className="inline-block rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
                       {item.year}
                     </span>
-                    <h3 className="mt-2 font-heading text-base font-semibold">
-                      {item.title}
-                    </h3>
+                    <h3 className="mt-2 font-heading text-base font-semibold">{item.title}</h3>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {item.description}
                     </p>

@@ -1,4 +1,4 @@
-import type { Destination, Attraction, WhyTurkeyItem, DestinationCategory } from "./types"
+import type { Attraction, Destination, DestinationCategory, WhyTurkeyItem } from "./types"
 
 // ─── Re-exports ──────────────────────────────────────────────
 export type { DestinationCategory } from "./types"
@@ -124,7 +124,12 @@ export const destinations: Destination[] = [
     ],
     categories: ["alam", "pantai"],
     featured: false,
-    highlights: ["Ölüdeniz Blue Lagoon", "Babadağ Paragliding", "Butterfly Valley", "12 Islands Boat Trip"],
+    highlights: [
+      "Ölüdeniz Blue Lagoon",
+      "Babadağ Paragliding",
+      "Butterfly Valley",
+      "12 Islands Boat Trip",
+    ],
   },
   {
     id: "bursa",
@@ -157,7 +162,12 @@ export const destinations: Destination[] = [
     ],
     categories: ["pantai", "budaya"],
     featured: false,
-    highlights: ["Ephesus Ancient City", "Kemeraltı Bazaar", "Alsancak Waterfront", "Şirince Village"],
+    highlights: [
+      "Ephesus Ancient City",
+      "Kemeraltı Bazaar",
+      "Alsancak Waterfront",
+      "Şirince Village",
+    ],
   },
   {
     id: "konya",
@@ -173,7 +183,12 @@ export const destinations: Destination[] = [
     ],
     categories: ["budaya"],
     featured: false,
-    highlights: ["Mevlana Museum", "Sufi Whirling Dervish", "Alaeddin Mosque", "Seljuk Architecture"],
+    highlights: [
+      "Mevlana Museum",
+      "Sufi Whirling Dervish",
+      "Alaeddin Mosque",
+      "Seljuk Architecture",
+    ],
   },
   {
     id: "ankara",
@@ -189,7 +204,12 @@ export const destinations: Destination[] = [
     ],
     categories: ["budaya"],
     featured: false,
-    highlights: ["Anıtkabir", "Museum of Anatolian Civilizations", "Ankara Castle", "Kızılay Square"],
+    highlights: [
+      "Anıtkabir",
+      "Museum of Anatolian Civilizations",
+      "Ankara Castle",
+      "Kızılay Square",
+    ],
   },
 ]
 
@@ -288,8 +308,7 @@ export const whyTurkeyItems: WhyTurkeyItem[] = [
   {
     icon: "🇮🇩",
     title: "Guide Berbahasa Indonesia",
-    description:
-      "Tim SultanatExplore siap menemani perjalanan Anda tanpa barrier bahasa.",
+    description: "Tim SultanatExplore siap menemani perjalanan Anda tanpa barrier bahasa.",
   },
 ]
 

@@ -1,14 +1,9 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import Link from "next/link"
 import { ArrowRight, Search } from "lucide-react"
-import {
-  destinations,
-  categoryLabels,
-  categoryOrder,
-  type DestinationCategory,
-} from "../data"
+import Link from "next/link"
+import { useMemo, useState } from "react"
+import { categoryLabels, categoryOrder, destinations, type DestinationCategory } from "../data"
 
 const ALL = "semua"
 
@@ -35,7 +30,7 @@ export function DestinationsGrid() {
           d.name.toLowerCase().includes(q) ||
           d.tagline.toLowerCase().includes(q) ||
           d.description.toLowerCase().includes(q) ||
-          d.highlights.some((h) => h.toLowerCase().includes(q))
+          d.highlights.some((h) => h.toLowerCase().includes(q)),
       )
     }
 
@@ -122,9 +117,7 @@ export function DestinationsGrid() {
                   <h4 className="font-heading text-base font-bold group-hover:text-primary transition-colors">
                     {dest.name}
                   </h4>
-                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                    {dest.tagline}
-                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{dest.tagline}</p>
                   <span className="mt-3 inline-flex items-center text-xs font-medium text-primary">
                     Lihat detail
                     <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />

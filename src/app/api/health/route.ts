@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import { NextResponse } from "next/server"
 
 export async function GET() {
   try {
@@ -7,12 +7,11 @@ export async function GET() {
 
     return NextResponse.json({ status: "ok", database: "connected" })
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unknown database error"
+    const message = error instanceof Error ? error.message : "Unknown database error"
 
     return NextResponse.json(
       { status: "error", database: "disconnected", error: message },
-      { status: 503 }
+      { status: 503 },
     )
   }
 }

@@ -10,9 +10,7 @@ export function GallerySection({ destination }: { destination: Destination }) {
   return (
     <section className="bg-muted py-16 lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        <span className="text-sm font-medium uppercase tracking-wider text-primary">
-          Galeri
-        </span>
+        <span className="text-sm font-medium uppercase tracking-wider text-primary">Galeri</span>
         <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
           Foto {destination.name}
         </h2>

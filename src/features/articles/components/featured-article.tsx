@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
-import type { Article } from "../types"
+import Link from "next/link"
 import { categoryLabels } from "../data"
+import type { Article } from "../types"
 
 export function FeaturedArticle({ article }: { article: Article }) {
   return (

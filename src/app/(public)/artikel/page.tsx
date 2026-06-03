@@ -1,4 +1,4 @@
-import { HeroSection, FeaturedArticle, ArticleGrid } from "@/features/articles"
+import { ArticleGrid, FeaturedArticle, HeroSection } from "@/features/articles"
 import { getFeaturedArticles } from "@/features/articles/data"
 
 export default function ArtikelPage() {

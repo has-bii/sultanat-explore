@@ -1,4 +1,4 @@
-import { MessageCircle, Camera, Mail, ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Camera, Mail, MessageCircle } from "lucide-react"
 
 const WHATSAPP_LINK =
   "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki"
@@ -37,12 +37,8 @@ export function ContactCards() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="font-heading text-subheading font-bold tracking-tight">
-          Saluran Kami
-        </h2>
-        <p className="mt-1 text-muted-foreground">
-          Pilih cara yang paling nyaman untuk Anda
-        </p>
+        <h2 className="font-heading text-subheading font-bold tracking-tight">Saluran Kami</h2>
+        <p className="mt-1 text-muted-foreground">Pilih cara yang paling nyaman untuk Anda</p>
       </div>
 
       <div className="space-y-3">

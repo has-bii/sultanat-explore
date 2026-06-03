@@ -1,6 +1,6 @@
+import { ArrowRight, Calendar, Clock, MapPin, Users } from "lucide-react"
 import Link from "next/link"
-import { MapPin, Calendar, Clock, Users, ArrowRight } from "lucide-react"
-import { formatPrice, formatDate } from "../data"
+import { formatDate, formatPrice } from "../data"
 import type { OpenTrip } from "../types"
 
 function SeatBadge({ available, total }: { available: number; total: number }) {
@@ -20,7 +20,9 @@ function SeatBadge({ available, total }: { available: number; total: number }) {
       : `${available} kursi tersisa`
 
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold shadow-md ${variant}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold shadow-md ${variant}`}
+    >
       <Users className="h-3 w-3" />
       {label}
     </span>
@@ -45,17 +47,12 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
 
         {/* Seat badge top-right */}
         <div className="absolute top-3 right-3">
-          <SeatBadge
-            available={trip.availableSeats}
-            total={trip.totalSeats}
-          />
+          <SeatBadge available={trip.availableSeats} total={trip.totalSeats} />
         </div>
 
         {/* Bottom overlay */}
         <div className="absolute bottom-3 left-4 right-4">
-          <h3 className="font-heading text-lg font-bold leading-tight text-white">
-            {trip.name}
-          </h3>
+          <h3 className="font-heading text-lg font-bold leading-tight text-white">{trip.name}</h3>
           <p className="mt-0.5 flex items-center gap-1 text-xs text-white/80">
             <MapPin className="h-3 w-3" />
             {trip.destination}
@@ -98,9 +95,7 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
         {/* Price + CTA */}
         <div className="mt-4 flex items-end justify-between border-t pt-4">
           <div>
-            <p className="text-xl font-bold text-primary">
-              {formatPrice(trip.price)}
-            </p>
+            <p className="text-xl font-bold text-primary">{formatPrice(trip.price)}</p>
             <p className="text-[11px] text-muted-foreground">/orang</p>
           </div>
           <span className="flex items-center gap-1 text-sm font-medium text-primary ">

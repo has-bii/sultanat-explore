@@ -24,12 +24,8 @@ export function SampleItinerary() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-heading text-lg font-semibold">
-                    {itinerary.title}
-                  </h3>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {itinerary.duration}
-                  </p>
+                  <h3 className="font-heading text-lg font-semibold">{itinerary.title}</h3>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{itinerary.duration}</p>
                 </div>
                 <span className="flex-shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
                   {itinerary.priceRange}
@@ -51,10 +47,7 @@ export function SampleItinerary() {
               {/* Highlights */}
               <ul className="mt-4 space-y-2">
                 {itinerary.highlights.map((h) => (
-                  <li
-                    key={h}
-                    className="flex items-start gap-2 text-sm text-muted-foreground"
-                  >
+                  <li key={h} className="flex items-start gap-2 text-sm text-muted-foreground">
                     <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                     {h}
                   </li>

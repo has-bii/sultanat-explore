@@ -1,20 +1,16 @@
-import { notFound } from "next/navigation"
-import {
-  getDestinationBySlug,
-  destinations,
-  getAttractionsByDestinationId,
-} from "@/features/destinations/data"
-import {
-  DetailHero,
-  AboutSection,
-  GallerySection,
-  RelatedTrips,
-  OtherDestinations,
-} from "@/features/destinations"
-import { openTrips } from "@/features/open-trip/data"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import {
+  AboutSection,
+  DetailHero,
+  GallerySection,
+  OtherDestinations,
+  RelatedTrips,
+} from "@/features/destinations"
+import { destinations, getDestinationBySlug } from "@/features/destinations/data"
+import { openTrips } from "@/features/open-trip/data"
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
 

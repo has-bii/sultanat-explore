@@ -78,9 +78,7 @@ function ServicesDropdown({
           <div
             className={cn(
               "rounded-2xl border border-border/60 backdrop-blur-xl p-2 shadow-xl shadow-black/5",
-              inverted
-                ? "bg-black/90 border-white/10"
-                : "bg-background/95",
+              inverted ? "bg-black/90 border-white/10" : "bg-background/95",
             )}
           >
             {items.map((item) => (
@@ -203,9 +201,7 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                   onClick={onClose}
                   className={cn(
                     "block py-3 text-2xl font-medium transition-colors",
-                    isActive(pathname, item.href)
-                      ? "text-white"
-                      : "text-white/80 hover:text-white",
+                    isActive(pathname, item.href) ? "text-white" : "text-white/80 hover:text-white",
                   )}
                 >
                   {item.label}
@@ -310,9 +306,7 @@ export function Navbar() {
                 )}
               >
                 Sultanat
-                <span className={shouldInvert ? "text-white/70" : "text-primary"}>
-                  Explore
-                </span>
+                <span className={shouldInvert ? "text-white/70" : "text-primary"}>Explore</span>
               </span>
             </Link>
 
@@ -329,14 +323,12 @@ export function Navbar() {
                     <button
                       className={cn(
                         "flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors",
-                        shouldInvert && !servicesOpen &&
-                          "text-white/70 hover:text-white",
-                        shouldInvert && servicesOpen &&
-                          "text-white",
-                        !shouldInvert && !servicesOpen &&
+                        shouldInvert && !servicesOpen && "text-white/70 hover:text-white",
+                        shouldInvert && servicesOpen && "text-white",
+                        !shouldInvert &&
+                          !servicesOpen &&
                           "text-foreground/70 hover:text-foreground",
-                        !shouldInvert && servicesOpen &&
-                          "text-foreground",
+                        !shouldInvert && servicesOpen && "text-foreground",
                       )}
                     >
                       {item.label}
@@ -405,9 +397,7 @@ export function Navbar() {
                 onClick={() => setMobileOpen(true)}
                 className={cn(
                   "lg:hidden relative z-10 p-2 rounded-full transition-colors",
-                  shouldInvert
-                    ? "text-white hover:bg-white/10"
-                    : "hover:bg-accent/60",
+                  shouldInvert ? "text-white hover:bg-white/10" : "hover:bg-accent/60",
                 )}
                 aria-label="Buka menu"
               >

@@ -36,9 +36,7 @@ export function WhyTurkey() {
               className="rounded-2xl border bg-background p-6 transition-all hover:-translate-y-0.5 hover:shadow-uber-md"
             >
               <span className="text-3xl">{item.icon}</span>
-              <h3 className="mt-3 font-heading text-base font-semibold">
-                {item.title}
-              </h3>
+              <h3 className="mt-3 font-heading text-base font-semibold">{item.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                 {item.description}
               </p>

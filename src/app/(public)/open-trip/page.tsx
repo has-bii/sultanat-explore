@@ -1,14 +1,14 @@
-import { openTrips } from "@/features/open-trip/data"
-import {
-  OpenTripExplanation,
-  SocialProofBar,
-  HowItWorks,
-  TripList,
-  PastTripGallery,
-  WhyUs,
-} from "@/features/open-trip"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import {
+  HowItWorks,
+  OpenTripExplanation,
+  PastTripGallery,
+  SocialProofBar,
+  TripList,
+  WhyUs,
+} from "@/features/open-trip"
+import { openTrips } from "@/features/open-trip/data"
 import { Plane } from "lucide-react"
 import type { Metadata } from "next"
 
@@ -38,8 +38,8 @@ export default async function OpenTripPage() {
             <span className="text-primary">Bersama Kami</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Pilih trip impian Anda dan bergabunglah dengan traveler Indonesia
-            lainnya. Semua sudah kami atur — tinggal berangkat!
+            Pilih trip impian Anda dan bergabunglah dengan traveler Indonesia lainnya. Semua sudah
+            kami atur — tinggal berangkat!
           </p>
         </div>
       </section>
@@ -57,12 +57,8 @@ export default async function OpenTripPage() {
       <section className="py-20 lg:py-24">
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
           <div>
-            <h2 className="font-heading text-2xl font-bold tracking-tight">
-              Trip Tersedia
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {openTrips.length} trip tersedia
-            </p>
+            <h2 className="font-heading text-2xl font-bold tracking-tight">Trip Tersedia</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{openTrips.length} trip tersedia</p>
           </div>
           <div className="mt-8">
             <TripList trips={openTrips} />

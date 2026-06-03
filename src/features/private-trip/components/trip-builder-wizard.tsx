@@ -1,8 +1,17 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { MessageCircle, MapPin, Sparkles, ChevronRight, ChevronLeft, Check, Minus, Plus } from "lucide-react"
-import { cities, services, formatPrice } from "../data"
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  MessageCircle,
+  Minus,
+  Plus,
+  Sparkles,
+} from "lucide-react"
+import { useMemo, useState } from "react"
+import { cities, formatPrice, services } from "../data"
 import type { ServiceCategory } from "../types"
 
 const categoryLabels: Record<ServiceCategory, string> = {
@@ -105,16 +114,10 @@ export function TripBuilderWizard() {
                       : "bg-muted text-muted-foreground"
                 }`}
               >
-                {step > s.num ? (
-                  <Check className="h-3.5 w-3.5" />
-                ) : (
-                  <span>{s.num}</span>
-                )}
+                {step > s.num ? <Check className="h-3.5 w-3.5" /> : <span>{s.num}</span>}
                 <span className="hidden sm:inline">{s.label}</span>
               </div>
-              {i < steps.length - 1 && (
-                <div className="h-px w-8 bg-border sm:w-12" />
-              )}
+              {i < steps.length - 1 && <div className="h-px w-8 bg-border sm:w-12" />}
             </div>
           ))}
         </div>
@@ -190,9 +193,7 @@ export function TripBuilderWizard() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         <div className="absolute bottom-2 left-3">
-                          <span className="text-sm font-bold text-white">
-                            {city.name}
-                          </span>
+                          <span className="text-sm font-bold text-white">{city.name}</span>
                         </div>
                         {isSelected && (
                           <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary">
@@ -218,9 +219,7 @@ export function TripBuilderWizard() {
           {/* Step 2: Services */}
           {step === 2 && (
             <div>
-              <h3 className="font-heading text-lg font-semibold">
-                Pilih Layanan Tambahan
-              </h3>
+              <h3 className="font-heading text-lg font-semibold">Pilih Layanan Tambahan</h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 Tambahkan layanan untuk pengalaman yang lebih baik
               </p>
@@ -258,9 +257,7 @@ export function TripBuilderWizard() {
                               </div>
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center justify-between gap-2">
-                                  <span className="text-sm font-semibold">
-                                    {service.name}
-                                  </span>
+                                  <span className="text-sm font-semibold">{service.name}</span>
                                   <span className="flex-shrink-0 text-xs font-semibold text-primary">
                                     {formatPrice(service.price)}
                                     <span className="font-normal text-muted-foreground">
@@ -286,9 +283,7 @@ export function TripBuilderWizard() {
           {/* Step 3: Summary */}
           {step === 3 && (
             <div>
-              <h3 className="font-heading text-lg font-semibold">
-                Ringkasan Trip Anda
-              </h3>
+              <h3 className="font-heading text-lg font-semibold">Ringkasan Trip Anda</h3>
 
               <div className="mt-6 space-y-4">
                 {/* Cities */}
@@ -340,9 +335,7 @@ export function TripBuilderWizard() {
                             <span>{s.name}</span>
                             <span className="font-semibold">
                               {formatPrice(
-                                s.priceType === "per-person"
-                                  ? s.price * travelers
-                                  : s.price,
+                                s.priceType === "per-person" ? s.price * travelers : s.price,
                               )}
                             </span>
                           </li>

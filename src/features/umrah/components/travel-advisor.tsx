@@ -1,9 +1,9 @@
-import { Clock, Compass, BookOpen } from "lucide-react"
+import { BookOpen, Clock, Compass } from "lucide-react"
 import { advisorProfile, WHATSAPP_BASE } from "../data"
 
 export function TravelAdvisor() {
   const waText = encodeURIComponent(
-    "Halo SultanatExplore, saya ingin konsultasi mengenai paket Umrah. Mohon info lebih lanjut."
+    "Halo SultanatExplore, saya ingin konsultasi mengenai paket Umrah. Mohon info lebih lanjut.",
   )
 
   return (
@@ -32,12 +32,8 @@ export function TravelAdvisor() {
 
             {/* Info */}
             <div className="p-6 lg:col-span-3 lg:p-8">
-              <h3 className="font-heading text-xl font-bold">
-                {advisorProfile.name}
-              </h3>
-              <p className="mt-0.5 text-sm font-medium text-primary">
-                {advisorProfile.role}
-              </p>
+              <h3 className="font-heading text-xl font-bold">{advisorProfile.name}</h3>
+              <p className="mt-0.5 text-sm font-medium text-primary">{advisorProfile.role}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {advisorProfile.bio}
               </p>
@@ -49,9 +45,7 @@ export function TravelAdvisor() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Pengalaman</p>
-                    <p className="text-sm font-semibold">
-                      {advisorProfile.experience}
-                    </p>
+                    <p className="text-sm font-semibold">{advisorProfile.experience}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2.5">
@@ -60,9 +54,7 @@ export function TravelAdvisor() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Spesialisasi</p>
-                    <p className="text-sm font-semibold">
-                      {advisorProfile.speciality}
-                    </p>
+                    <p className="text-sm font-semibold">{advisorProfile.speciality}</p>
                   </div>
                 </div>
               </div>

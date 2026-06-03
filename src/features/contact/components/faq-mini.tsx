@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { ChevronDown, HelpCircle } from "lucide-react"
+import { useState } from "react"
 
 const FAQS = [
   {
@@ -43,10 +43,7 @@ export function FaqMini() {
 
         <div className="space-y-3">
           {FAQS.map((faq, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-border/50 bg-card transition-colors"
-            >
+            <div key={i} className="rounded-2xl border border-border/50 bg-card transition-colors">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
                 className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
@@ -60,9 +57,7 @@ export function FaqMini() {
               </button>
               {open === i && (
                 <div className="px-6 pb-4">
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {faq.a}
-                  </p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
                 </div>
               )}
             </div>

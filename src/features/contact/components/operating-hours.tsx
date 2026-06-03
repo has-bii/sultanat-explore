@@ -9,9 +9,7 @@ export function OperatingHours() {
         </div>
         <div>
           <h3 className="font-semibold">Jam Operasional</h3>
-          <p className="text-sm text-muted-foreground">
-            Waktu Indonesia Barat (WIB)
-          </p>
+          <p className="text-sm text-muted-foreground">Waktu Indonesia Barat (WIB)</p>
         </div>
       </div>
 
@@ -21,10 +19,7 @@ export function OperatingHours() {
           { day: "Sabtu", hours: "09:00 – 18:00", active: true },
           { day: "Minggu", hours: "10:00 – 16:00", active: true },
         ].map((schedule) => (
-          <div
-            key={schedule.day}
-            className="flex items-center justify-between text-sm"
-          >
+          <div key={schedule.day} className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{schedule.day}</span>
             <span className="font-medium">{schedule.hours}</span>
           </div>
@@ -33,9 +28,8 @@ export function OperatingHours() {
 
       <div className="mt-4 rounded-xl bg-[#25D366]/5 p-3">
         <p className="text-xs leading-relaxed text-muted-foreground">
-          💬 <strong className="text-foreground">Di luar jam kerja?</strong>{" "}
-          Tetap kirim pesan WhatsApp — kami akan membalas sesegera mungkin pada
-          hari kerja berikutnya.
+          💬 <strong className="text-foreground">Di luar jam kerja?</strong> Tetap kirim pesan
+          WhatsApp — kami akan membalas sesegera mungkin pada hari kerja berikutnya.
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { X } from "lucide-react"
+import { useState } from "react"
 import { galleryImages } from "../data"
 
 export function Gallery() {
@@ -55,9 +55,7 @@ export function Gallery() {
             <X className="h-5 w-5" />
           </button>
           <img
-            src={galleryImages[selected].src
-              .replace("w=400", "w=1200")
-              .replace("w=600", "w=1200")}
+            src={galleryImages[selected].src.replace("w=400", "w=1200").replace("w=600", "w=1200")}
             alt={galleryImages[selected].alt}
             className="max-h-[85vh] max-w-full rounded-2xl object-contain"
           />

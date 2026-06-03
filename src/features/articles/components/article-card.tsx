@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
-import type { Article } from "../types"
+import Link from "next/link"
 import { categoryLabels } from "../data"
+import type { Article } from "../types"
 
 export function ArticleCard({ article }: { article: Article }) {
   return (
@@ -44,9 +44,7 @@ export function ArticleCard({ article }: { article: Article }) {
           {article.title}
         </h4>
 
-        <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">
-          {article.excerpt}
-        </p>
+        <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">{article.excerpt}</p>
 
         <span className="mt-3 inline-flex items-center text-xs font-medium text-primary">
           Baca artikel
