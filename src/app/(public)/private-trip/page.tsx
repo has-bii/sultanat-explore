@@ -10,7 +10,7 @@ import {
   PrivateTripExplanation,
   ProcessTimeline,
   SampleItinerary,
-  SocialProofBar,
+  // SocialProofBar,
   TestimonialsSection,
   TravelAdvisor,
   TripBuilderWizard,
@@ -27,7 +27,7 @@ export default function PrivateTripPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-muted relative overflow-hidden py-20 lg:py-28">
+      <section className="bg-background relative overflow-hidden py-20 lg:py-28">
         <div className="absolute inset-0 opacity-50">
           <div className="bg-primary/5 absolute top-20 left-10 h-64 w-64 rounded-full blur-3xl" />
           <div className="bg-primary/8 absolute right-20 bottom-10 h-48 w-48 rounded-full blur-3xl" />
@@ -38,19 +38,19 @@ export default function PrivateTripPage() {
             <span className="font-medium">Private Trip</span>
           </div>
           <h1 className="font-heading mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Perjalanan Eksklusif,
+            Liburan Eksklusif,
             <br />
-            <span className="text-primary">Dirancang untuk Anda</span>
+            <span className="text-primary">Spesial Untuk Anda</span>
           </h1>
           <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-lg">
-            Bangun trip impian Anda ke Turki. Pilih kota, layanan, dan dapatkan estimasi harga —
-            semua bisa dicustom 100%.
+            Rencanakan liburan private Anda ke Turki. Pilih destinasi, layanan dan dapatkan estimasi
+            harga terbaik. Semua bisa di-custom 100%.
           </p>
         </div>
       </section>
 
       {/* 2. Social Proof */}
-      <SocialProofBar />
+      {/* <SocialProofBar /> */}
 
       {/* 3. Explanation */}
       <PrivateTripExplanation />

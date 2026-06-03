@@ -40,7 +40,7 @@ export function TeamSection() {
               className="group bg-background hover:shadow-uber-md rounded-2xl border p-6 text-center transition-all hover:-translate-y-0.5"
             >
               {/* Avatar */}
-              <div className="mx-auto h-24 w-24 overflow-hidden rounded-full">
+              <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full">
                 <Image
                   fill
                   src={member.image}

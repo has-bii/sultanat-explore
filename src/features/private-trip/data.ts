@@ -300,7 +300,7 @@ export const comparisonItems: ComparisonItem[] = [
   {
     feature: "Pemandu",
     openTrip: "1 guide untuk grup",
-    privateTrip: "Guide privat + bahasa Indonesia",
+    privateTrip: "Guide private + bahasa Indonesia",
   },
 ]
 

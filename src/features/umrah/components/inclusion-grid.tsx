@@ -32,7 +32,7 @@ export function InclusionGrid() {
             Fasilitas
           </span>
           <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
-            Semua Termasuk, Tanpa Biaya Tersembunyi
+            All Included, Tanpa Biaya Tambahan
           </h2>
           <p className="text-muted-foreground mt-2 text-sm">
             Harga paket sudah mencakup seluruh kebutuhan perjalanan Umrah Anda

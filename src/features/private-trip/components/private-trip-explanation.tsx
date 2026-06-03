@@ -50,7 +50,7 @@ export function PrivateTripExplanation() {
                 <div>
                   <h3 className="font-heading text-base font-semibold">Eksklusif & Fleksibel</h3>
                   <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
-                    Hanya Anda dan orang-orang pilihan Anda. Tanpa campurt dengan orang lain.
+                    Hanya Anda dan orang-orang pilihan Anda. Tanpa campur dengan orang lain.
                   </p>
                 </div>
               </div>
