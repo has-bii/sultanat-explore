@@ -39,30 +39,30 @@ export function OpenTripExplanationA() {
               />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
+              <div className="absolute right-6 bottom-6 left-6">
                 <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
                   ✦ Cappadocia, Turki
                 </span>
               </div>
             </div>
             {/* Decorative accent — rotated rectangle behind */}
-            <div className="absolute -bottom-4 -right-4 -z-10 h-full w-full rounded-3xl border-2 border-primary/20" />
+            <div className="border-primary/20 absolute -right-4 -bottom-4 -z-10 h-full w-full rounded-3xl border-2" />
             {/* Floating stat */}
-            <div className="absolute -right-3 top-8 rounded-2xl border bg-background/90 px-4 py-3 shadow-lg backdrop-blur-sm">
-              <p className="text-2xl font-bold text-primary">500+</p>
-              <p className="text-[11px] text-muted-foreground">Traveler puas</p>
+            <div className="bg-background/90 absolute top-8 -right-3 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur-sm">
+              <p className="text-primary text-2xl font-bold">500+</p>
+              <p className="text-muted-foreground text-[11px]">Traveler puas</p>
             </div>
           </div>
 
           {/* Right — Content */}
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+            <span className="text-primary text-xs font-semibold tracking-widest uppercase">
               Kenalan dulu
             </span>
-            <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="font-heading mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               <span className="text-primary">Open Trip</span>
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            <p className="text-muted-foreground mt-4 text-base leading-relaxed">
               Perjalanan wisata grup dengan jadwal dan rute sudah ditentukan. Anda bergabung bersama
               traveler lain, dipandu tour guide berpengalaman. Tinggal pilih trip yang tersedia.
             </p>
@@ -73,13 +73,13 @@ export function OpenTripExplanationA() {
                 return (
                   <div key={b.title} className="flex gap-5">
                     <div className="shrink-0">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                      <span className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold">
                         {i + 1}
                       </span>
                     </div>
                     <div>
                       <h3 className="font-heading text-base font-semibold">{b.title}</h3>
-                      <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                      <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
                         {b.description}
                       </p>
                     </div>

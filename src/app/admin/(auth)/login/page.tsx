@@ -10,7 +10,7 @@ export default function AdminLoginPage() {
     <>
       <div className="mb-8 text-center">
         <h1 className="text-small-heading font-heading font-bold">Admin Login</h1>
-        <p className="mt-2 text-caption text-muted-foreground">
+        <p className="text-caption text-muted-foreground mt-2">
           Masuk ke dashboard admin Sultanat Explore
         </p>
       </div>

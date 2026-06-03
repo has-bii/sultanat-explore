@@ -1,6 +1,8 @@
 import { ArrowRight, Calendar, Clock } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { categoryLabels, getRelatedArticles } from "../data"
 
 export function RelatedArticles({ currentSlug }: { currentSlug: string }) {
@@ -13,16 +15,16 @@ export function RelatedArticles({ currentSlug }: { currentSlug: string }) {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase">
               Baca Juga
             </span>
-            <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+            <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
               Artikel Terkait
             </h2>
           </div>
           <Link
             href="/artikel"
-            className="hidden items-center gap-1.5 text-sm font-medium text-primary hover:underline sm:inline-flex"
+            className="text-primary hidden items-center gap-1.5 text-sm font-medium hover:underline sm:inline-flex"
           >
             Semua artikel
             <ArrowRight className="h-4 w-4" />
@@ -34,7 +36,7 @@ export function RelatedArticles({ currentSlug }: { currentSlug: string }) {
             <Link
               key={article.id}
               href={`/artikel/${article.slug}`}
-              className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
+              className="group bg-card shadow-uber-sm hover:shadow-uber-md overflow-hidden rounded-xl transition-shadow"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
@@ -53,7 +55,7 @@ export function RelatedArticles({ currentSlug }: { currentSlug: string }) {
                 </div>
               </div>
               <div className="p-4">
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <div className="text-muted-foreground flex items-center gap-3 text-xs">
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
                     {new Date(article.date).toLocaleDateString("id-ID", {
@@ -67,7 +69,7 @@ export function RelatedArticles({ currentSlug }: { currentSlug: string }) {
                     {article.readingTime} mnt
                   </span>
                 </div>
-                <h4 className="mt-2 font-heading text-base font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                <h4 className="font-heading group-hover:text-primary mt-2 line-clamp-2 text-base leading-snug font-bold transition-colors">
                   {article.title}
                 </h4>
               </div>

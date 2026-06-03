@@ -3,12 +3,14 @@
   "printWidth": 100,
   "semi": false,
   "singleQuote": false,
-  "plugins": [
-    "@trivago/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss",
-    "prettier-plugin-organize-imports"
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "importOrder": [
+    "react",
+    "<THIRD_PARTY_MODULES>",
+    "^@features/(.*)$",
+    "^@components/(.*)$",
+    "^[./]"
   ],
-  "importOrder": ["react", "^@features/(.*)$", "^@components/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

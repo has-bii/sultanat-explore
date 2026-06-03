@@ -1,8 +1,10 @@
 "use client"
 
 import { X } from "lucide-react"
-import Image from "next/image"
 import { useState } from "react"
+
+import Image from "next/image"
+
 import { galleryImages } from "../data"
 
 export function PastTripGallery() {
@@ -12,13 +14,13 @@ export function PastTripGallery() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">
             Galeri
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
             Momen Private Trip Mereka
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-sm">
             Foto-foto nyata dari perjalanan privat bersama traveler kami
           </p>
         </div>

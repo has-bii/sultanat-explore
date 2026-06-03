@@ -6,10 +6,11 @@ import {
   Car,
   Compass,
   FileCheck,
+  type LucideIcon,
   Package,
   Utensils,
-  type LucideIcon,
 } from "lucide-react"
+
 import type { Facility } from "../data"
 import { umrahService } from "../data"
 
@@ -34,7 +35,7 @@ function FacilityCard({ facility }: { facility: Facility }) {
           {Icon && <Icon className="h-4 w-4" />}
         </div>
         <div className="min-w-0">
-          <h4 className="text-sm font-semibold leading-tight text-white">{facility.title}</h4>
+          <h4 className="text-sm leading-tight font-semibold text-white">{facility.title}</h4>
           <p className="mt-1 text-xs leading-relaxed text-white/60">{facility.description}</p>
         </div>
       </div>
@@ -46,7 +47,7 @@ export function UmrahSection() {
   const { title, heading, description, facilities } = umrahService
 
   return (
-    <section className="relative overflow-hidden bg-primary">
+    <section className="bg-primary relative overflow-hidden">
       {/* Geometric pattern overlay */}
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -58,13 +59,13 @@ export function UmrahSection() {
       <div className="relative mx-auto max-w-6xl px-6 py-20">
         {/* Text */}
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
+          <span className="text-xs font-semibold tracking-widest text-white/60 uppercase">
             {title}
           </span>
-          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight text-white sm:text-heading">
+          <h2 className="font-heading text-subheading sm:text-heading mt-2 font-bold tracking-tight text-white">
             {heading}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-body text-white/60">{description}</p>
+          <p className="text-body mx-auto mt-4 max-w-xl text-white/60">{description}</p>
         </div>
 
         {/* Facility grid */}

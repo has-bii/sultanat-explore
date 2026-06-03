@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { getFeaturedDestinations } from "../data"
 
 export function FeaturedDestinations() {
@@ -10,13 +12,13 @@ export function FeaturedDestinations() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mb-12 lg:mb-16">
-          <span className="text-sm font-medium uppercase tracking-wider text-primary">
+          <span className="text-primary text-sm font-medium tracking-wider uppercase">
             Pilihan Terbaik
           </span>
-          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+          <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
             Destinasi Unggulan
           </h2>
-          <p className="mt-3 max-w-lg text-body text-muted-foreground">
+          <p className="text-body text-muted-foreground mt-3 max-w-lg">
             Destinasi paling populer yang direkomendasikan tim kami untuk perjalanan pertama Anda ke
             Turki.
           </p>
@@ -44,7 +46,7 @@ export function FeaturedDestinations() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
                 {/* Content */}
-                <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 text-primary-foreground">
+                <div className="text-primary-foreground absolute inset-x-0 bottom-0 p-6 md:p-8">
                   <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-sm">
                     <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
                     Tersedia
@@ -52,10 +54,10 @@ export function FeaturedDestinations() {
 
                   <h3 className="text-xl font-bold md:text-2xl">{dest.name}</h3>
 
-                  <p className="mt-1 text-sm text-primary-foreground/70">{dest.tagline}</p>
+                  <p className="text-primary-foreground/70 mt-1 text-sm">{dest.tagline}</p>
 
                   {i === 0 && (
-                    <p className="mt-3 max-w-md text-sm leading-relaxed text-primary-foreground/80 line-clamp-2">
+                    <p className="text-primary-foreground/80 mt-3 line-clamp-2 max-w-md text-sm leading-relaxed">
                       {dest.description}
                     </p>
                   )}

@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import type { Destination } from "../types"
 
 export function OtherDestinations({
@@ -19,16 +21,16 @@ export function OtherDestinations({
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase">
               Eksplorasi
             </span>
-            <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+            <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
               Destinasi Lainnya
             </h2>
           </div>
           <Link
             href="/destinations"
-            className="hidden items-center gap-1.5 text-sm font-medium text-primary hover:underline sm:inline-flex"
+            className="text-primary hidden items-center gap-1.5 text-sm font-medium hover:underline sm:inline-flex"
           >
             Semua destinasi
             <ArrowRight className="h-4 w-4" />
@@ -40,7 +42,7 @@ export function OtherDestinations({
             <Link
               key={dest.id}
               href={`/destinations/${dest.slug}`}
-              className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
+              className="group bg-card shadow-uber-sm hover:shadow-uber-md overflow-hidden rounded-xl transition-shadow"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
@@ -54,10 +56,10 @@ export function OtherDestinations({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
               <div className="p-4">
-                <h4 className="font-heading text-base font-bold group-hover:text-primary transition-colors">
+                <h4 className="font-heading group-hover:text-primary text-base font-bold transition-colors">
                   {dest.name}
                 </h4>
-                <p className="mt-1 text-sm text-muted-foreground line-clamp-1">{dest.tagline}</p>
+                <p className="text-muted-foreground mt-1 line-clamp-1 text-sm">{dest.tagline}</p>
               </div>
             </Link>
           ))}

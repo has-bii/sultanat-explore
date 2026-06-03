@@ -1,4 +1,5 @@
 import { CalendarX } from "lucide-react"
+
 import type { OpenTrip } from "../types"
 import { TripCard } from "./trip-card"
 
@@ -6,9 +7,9 @@ export function TripList({ trips }: { trips: OpenTrip[] }) {
   if (trips.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <CalendarX className="h-12 w-12 text-muted-foreground/40" />
-        <h3 className="mt-4 font-heading text-lg font-semibold">Belum ada trip yang cocok</h3>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <CalendarX className="text-muted-foreground/40 h-12 w-12" />
+        <h3 className="font-heading mt-4 text-lg font-semibold">Belum ada trip yang cocok</h3>
+        <p className="text-muted-foreground mt-1 text-sm">
           Coba ubah filter atau reset pencarian Anda.
         </p>
       </div>

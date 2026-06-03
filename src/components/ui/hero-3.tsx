@@ -1,9 +1,10 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
-import Image from "next/image"
 import React from "react"
+
+import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface AnimatedMarqueeHeroProps {
   tagline: string
@@ -18,7 +19,7 @@ const ActionButton = ({ children }: { children: React.ReactNode }) => (
   <motion.button
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    className="mt-8 px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold shadow-uber-md transition-colors hover:bg-primary/90 active:shadow-uber-pressed focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+    className="bg-primary text-primary-foreground shadow-uber-md hover:bg-primary/90 active:shadow-uber-pressed focus:ring-ring mt-8 rounded-full px-8 py-3 font-semibold transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
   >
     {children}
   </motion.button>
@@ -46,7 +47,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
   return (
     <section
       className={cn(
-        "relative w-full h-screen overflow-hidden bg-background flex flex-col items-center justify-center text-center px-4",
+        "bg-background relative flex h-screen w-full flex-col items-center justify-center overflow-hidden px-4 text-center",
         className,
       )}
     >
@@ -55,7 +56,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
           initial="hidden"
           animate="show"
           variants={FADE_IN_ANIMATION_VARIANTS}
-          className="mb-4 inline-block rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm"
+          className="border-border bg-card/50 text-muted-foreground mb-4 inline-block rounded-full border px-4 py-1.5 text-sm font-medium backdrop-blur-sm"
         >
           {tagline}
         </motion.div>
@@ -71,7 +72,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
               },
             },
           }}
-          className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground"
+          className="text-foreground text-5xl font-bold tracking-tighter md:text-7xl"
         >
           {typeof title === "string"
             ? title.split(" ").map((word, i) => (
@@ -88,7 +89,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
             animate="show"
             variants={FADE_IN_ANIMATION_VARIANTS}
             transition={{ delay: 0.5 }}
-            className="mt-6 max-w-xl text-lg text-muted-foreground"
+            className="text-muted-foreground mt-6 max-w-xl text-lg"
           >
             {description}
           </motion.p>
@@ -104,7 +105,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         </motion.div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-1/3 md:h-2/5 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
+      <div className="absolute bottom-0 left-0 h-1/3 w-full [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] md:h-2/5">
         <motion.div
           className="flex gap-4"
           animate={{
@@ -119,7 +120,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
           {duplicatedImages.map((src, index) => (
             <div
               key={index}
-              className="relative aspect-[3/4] h-48 md:h-64 flex-shrink-0"
+              className="relative aspect-[3/4] h-48 flex-shrink-0 md:h-64"
               style={{
                 rotate: `${index % 2 === 0 ? -2 : 5}deg`,
               }}
@@ -128,7 +129,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
                 fill
                 src={src}
                 alt={`Showcase image ${index + 1}`}
-                className="object-cover rounded-2xl shadow-uber-sm"
+                className="shadow-uber-sm rounded-2xl object-cover"
                 sizes="(max-width: 768px) 192px, 256px"
               />
             </div>

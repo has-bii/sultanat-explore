@@ -1,7 +1,8 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { motion } from "motion/react"
+
+import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default function NotFound() {
@@ -10,7 +11,7 @@ export default function NotFound() {
       {/* Animated 404 */}
       <div className="relative mb-8">
         <motion.h1
-          className="font-heading text-[10rem] font-black leading-none tracking-tighter text-foreground/10 md:text-[14rem]"
+          className="font-heading text-foreground/10 text-[10rem] leading-none font-black tracking-tighter md:text-[14rem]"
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 14, mass: 1 }}
@@ -72,7 +73,7 @@ export default function NotFound() {
       ].map((dot, i) => (
         <motion.span
           key={i}
-          className="absolute rounded-full bg-primary/20"
+          className="bg-primary/20 absolute rounded-full"
           style={{
             width: dot.size,
             height: dot.size,

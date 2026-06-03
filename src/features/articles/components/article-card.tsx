@@ -1,6 +1,8 @@
 import { ArrowRight, Calendar, Clock } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { categoryLabels } from "../data"
 import type { Article } from "../types"
 
@@ -8,7 +10,7 @@ export function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={`/artikel/${article.slug}`}
-      className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
+      className="group bg-card shadow-uber-sm hover:shadow-uber-md overflow-hidden rounded-xl transition-shadow"
     >
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
@@ -28,7 +30,7 @@ export function ArticleCard({ article }: { article: Article }) {
       </div>
 
       <div className="p-4">
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-3 text-xs">
           <span className="flex items-center gap-1">
             <Calendar className="h-3 w-3" />
             {new Date(article.date).toLocaleDateString("id-ID", {
@@ -43,13 +45,13 @@ export function ArticleCard({ article }: { article: Article }) {
           </span>
         </div>
 
-        <h4 className="mt-2 font-heading text-base font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2">
+        <h4 className="font-heading group-hover:text-primary mt-2 line-clamp-2 text-base leading-snug font-bold transition-colors">
           {article.title}
         </h4>
 
-        <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">{article.excerpt}</p>
+        <p className="text-muted-foreground mt-1.5 line-clamp-2 text-sm">{article.excerpt}</p>
 
-        <span className="mt-3 inline-flex items-center text-xs font-medium text-primary">
+        <span className="text-primary mt-3 inline-flex items-center text-xs font-medium">
           Baca artikel
           <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />
         </span>

@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { attractions, destinations } from "../data"
 
 export function FeaturedAttractions() {
@@ -8,13 +10,13 @@ export function FeaturedAttractions() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mb-12 lg:mb-16">
-          <span className="text-sm font-medium uppercase tracking-wider text-primary">
+          <span className="text-primary text-sm font-medium tracking-wider uppercase">
             Daya Tarik Ikonik
           </span>
-          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+          <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
             atraksi yang Tak Boleh Dilewatkan
           </h2>
-          <p className="mt-3 max-w-lg text-body text-muted-foreground">
+          <p className="text-body text-muted-foreground mt-3 max-w-lg">
             Landmark dan pengalaman yang membuat Turki menjadi destinasi dunia.
           </p>
         </div>
@@ -26,7 +28,7 @@ export function FeaturedAttractions() {
             return (
               <div
                 key={attr.id}
-                className="group overflow-hidden rounded-2xl bg-card shadow-uber-sm"
+                className="group bg-card shadow-uber-sm overflow-hidden rounded-2xl"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -47,14 +49,14 @@ export function FeaturedAttractions() {
 
                 <div className="p-5">
                   <h3 className="font-heading text-base font-bold">{attr.name}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+                  <p className="text-muted-foreground mt-2 line-clamp-3 text-sm leading-relaxed">
                     {attr.description}
                   </p>
 
                   {dest && (
                     <Link
                       href={`/destinations/${dest.slug}`}
-                      className="mt-4 inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary/80"
+                      className="text-primary hover:text-primary/80 mt-4 inline-flex items-center text-sm font-medium transition-colors"
                     >
                       Lihat {dest.name}
                       <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />

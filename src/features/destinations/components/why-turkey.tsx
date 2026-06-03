@@ -2,13 +2,13 @@ import { whyTurkeyItems } from "../data"
 
 export function WhyTurkey() {
   return (
-    <section className="border-y bg-card py-20 lg:py-24">
+    <section className="bg-card border-y py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        <div className="mb-12 lg:mb-16 text-center">
-          <span className="text-sm font-medium uppercase tracking-wider text-primary">
+        <div className="mb-12 text-center lg:mb-16">
+          <span className="text-primary text-sm font-medium tracking-wider uppercase">
             Kenapa Turki?
           </span>
-          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+          <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
             Alasan Traveler Indonesia Memilih Turki
           </h2>
         </div>
@@ -17,11 +17,11 @@ export function WhyTurkey() {
           {whyTurkeyItems.map((item) => (
             <div
               key={item.title}
-              className="rounded-xl border bg-background p-6 transition-shadow hover:shadow-uber-sm"
+              className="bg-background hover:shadow-uber-sm rounded-xl border p-6 transition-shadow"
             >
               <span className="text-3xl">{item.icon}</span>
-              <h3 className="mt-4 font-heading text-base font-bold">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <h3 className="font-heading mt-4 text-base font-bold">{item.title}</h3>
+              <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                 {item.description}
               </p>
             </div>

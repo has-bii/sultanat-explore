@@ -1,6 +1,8 @@
 import { ArrowRight, Calendar, Clock, MapPin, Users } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { formatDate, formatPrice } from "../data"
 import type { OpenTrip } from "../types"
 
@@ -34,7 +36,7 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
   return (
     <Link
       href={`/open-trip/${trip.slug}`}
-      className="group block overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5"
+      className="group bg-card block overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -54,8 +56,8 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
         </div>
 
         {/* Bottom overlay */}
-        <div className="absolute bottom-3 left-4 right-4">
-          <h3 className="font-heading text-lg font-bold leading-tight text-white">{trip.name}</h3>
+        <div className="absolute right-4 bottom-3 left-4">
+          <h3 className="font-heading text-lg leading-tight font-bold text-white">{trip.name}</h3>
           <p className="mt-0.5 flex items-center gap-1 text-xs text-white/80">
             <MapPin className="h-3 w-3" />
             {trip.destination}
@@ -66,13 +68,13 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
       {/* Content */}
       <div className="p-5">
         {/* Meta row */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-4 text-sm">
           <span className="flex items-center gap-1.5">
-            <Calendar className="h-3.5 w-3.5 text-primary" />
+            <Calendar className="text-primary h-3.5 w-3.5" />
             {formatDate(trip.departureDate)}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 text-primary" />
+            <Clock className="text-primary h-3.5 w-3.5" />
             {trip.duration}
           </span>
         </div>
@@ -82,14 +84,14 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
           {trip.inclusions.slice(0, 3).map((inc) => (
             <span
               key={inc.label}
-              className="inline-flex items-center gap-1 rounded-full bg-muted/60 px-2 py-0.5 text-[11px] text-muted-foreground"
+              className="bg-muted/60 text-muted-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px]"
             >
               <span>{inc.icon}</span>
               {inc.label}
             </span>
           ))}
           {trip.inclusions.length > 3 && (
-            <span className="inline-flex items-center rounded-full bg-muted/60 px-2 py-0.5 text-[11px] text-muted-foreground">
+            <span className="bg-muted/60 text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-[11px]">
               +{trip.inclusions.length - 3} lagi
             </span>
           )}
@@ -98,10 +100,10 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
         {/* Price + CTA */}
         <div className="mt-4 flex items-end justify-between border-t pt-4">
           <div>
-            <p className="text-xl font-bold text-primary">{formatPrice(trip.price)}</p>
-            <p className="text-[11px] text-muted-foreground">/orang</p>
+            <p className="text-primary text-xl font-bold">{formatPrice(trip.price)}</p>
+            <p className="text-muted-foreground text-[11px]">/orang</p>
           </div>
-          <span className="flex items-center gap-1 text-sm font-medium text-primary ">
+          <span className="text-primary flex items-center gap-1 text-sm font-medium">
             Lihat detail
             <ArrowRight className="h-4 w-4" />
           </span>

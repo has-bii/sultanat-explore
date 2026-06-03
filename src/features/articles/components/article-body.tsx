@@ -1,4 +1,5 @@
 import { Lightbulb, Quote } from "lucide-react"
+
 import type { ContentBlock } from "../types"
 
 export function ArticleBody({ content }: { content: ContentBlock[] }) {
@@ -10,7 +11,7 @@ export function ArticleBody({ content }: { content: ContentBlock[] }) {
             return (
               <h2
                 key={i}
-                className="mt-10 font-heading text-small-heading font-bold tracking-tight first:mt-0"
+                className="font-heading text-small-heading mt-10 font-bold tracking-tight first:mt-0"
               >
                 {block.text}
               </h2>
@@ -18,7 +19,7 @@ export function ArticleBody({ content }: { content: ContentBlock[] }) {
 
           case "paragraph":
             return (
-              <p key={i} className="mt-4 text-base leading-relaxed text-muted-foreground">
+              <p key={i} className="text-muted-foreground mt-4 text-base leading-relaxed">
                 {block.text}
               </p>
             )
@@ -29,9 +30,9 @@ export function ArticleBody({ content }: { content: ContentBlock[] }) {
                 {block.items.map((item, j) => (
                   <li
                     key={j}
-                    className="flex items-start gap-3 text-base leading-relaxed text-muted-foreground"
+                    className="text-muted-foreground flex items-start gap-3 text-base leading-relaxed"
                   >
-                    <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                    <span className="bg-primary mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full" />
                     {item}
                   </li>
                 ))}
@@ -40,24 +41,24 @@ export function ArticleBody({ content }: { content: ContentBlock[] }) {
 
           case "tip":
             return (
-              <div key={i} className="mt-6 rounded-xl border border-primary/10 bg-primary/5 p-5">
-                <div className="flex items-center gap-2 text-sm font-bold text-primary">
+              <div key={i} className="border-primary/10 bg-primary/5 mt-6 rounded-xl border p-5">
+                <div className="text-primary flex items-center gap-2 text-sm font-bold">
                   <Lightbulb className="h-4 w-4" />
                   {block.title}
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{block.text}</p>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{block.text}</p>
               </div>
             )
 
           case "quote":
             return (
-              <blockquote key={i} className="mt-8 border-l-4 border-primary pl-6">
-                <Quote className="h-5 w-5 text-primary/40" />
-                <p className="mt-2 text-lg font-medium italic leading-relaxed">
+              <blockquote key={i} className="border-primary mt-8 border-l-4 pl-6">
+                <Quote className="text-primary/40 h-5 w-5" />
+                <p className="mt-2 text-lg leading-relaxed font-medium italic">
                   &ldquo;{block.text}&rdquo;
                 </p>
                 {block.author && (
-                  <cite className="mt-2 block text-sm text-muted-foreground not-italic">
+                  <cite className="text-muted-foreground mt-2 block text-sm not-italic">
                     — {block.author}
                   </cite>
                 )}

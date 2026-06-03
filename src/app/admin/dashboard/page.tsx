@@ -15,7 +15,7 @@ export default async function AdminDashboardPage() {
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="text-center">
         <h1 className="text-small-heading font-heading font-bold">Dashboard</h1>
-        <p className="mt-2 text-caption text-muted-foreground">
+        <p className="text-caption text-muted-foreground mt-2">
           Selamat datang, {session.user.name ?? session.user.email}
         </p>
       </div>

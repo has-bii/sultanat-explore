@@ -1,10 +1,11 @@
 "use client"
 
+import { Suspense, useState } from "react"
+
 import { resetPasswordSchema } from "@/features/auth/dto/auth.schema"
 import { authClient } from "@/lib/auth-client"
 import { useAppForm } from "@/lib/form"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Suspense, useState } from "react"
 
 function ResetPasswordFormInner() {
   const router = useRouter()
@@ -43,7 +44,7 @@ function ResetPasswordFormInner() {
 
   if (!token) {
     return (
-      <div className="text-center text-sm text-destructive">
+      <div className="text-destructive text-center text-sm">
         Token reset tidak valid atau sudah kadaluarsa.{" "}
         <a href="/admin/forgot-password" className="underline underline-offset-4">
           Request ulang
@@ -83,7 +84,7 @@ function ResetPasswordFormInner() {
       </form.AppField>
 
       {formError && (
-        <div role="alert" className="text-sm text-destructive">
+        <div role="alert" className="text-destructive text-sm">
           {formError}
         </div>
       )}

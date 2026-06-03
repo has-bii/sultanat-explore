@@ -5,13 +5,13 @@ export function SampleItinerary() {
     <section className="bg-muted/30 py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">
             Contoh Itinerary
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
             Inspirasi Perjalanan Anda
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-sm">
             Berikut contoh itinerary yang bisa kami susun. Semua bisa dicustom!
           </p>
         </div>
@@ -20,14 +20,14 @@ export function SampleItinerary() {
           {sampleItineraries.map((itinerary) => (
             <div
               key={itinerary.title}
-              className="rounded-2xl border bg-background p-6 shadow-uber-sm transition-all hover:-translate-y-0.5 hover:shadow-uber-md"
+              className="bg-background shadow-uber-sm hover:shadow-uber-md rounded-2xl border p-6 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="font-heading text-lg font-semibold">{itinerary.title}</h3>
-                  <p className="mt-0.5 text-sm text-muted-foreground">{itinerary.duration}</p>
+                  <p className="text-muted-foreground mt-0.5 text-sm">{itinerary.duration}</p>
                 </div>
-                <span className="flex-shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
+                <span className="bg-primary text-primary-foreground flex-shrink-0 rounded-full px-3 py-1 text-xs font-bold">
                   {itinerary.priceRange}
                 </span>
               </div>
@@ -37,7 +37,7 @@ export function SampleItinerary() {
                 {itinerary.cities.map((city) => (
                   <span
                     key={city}
-                    className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                    className="bg-primary/10 text-primary rounded-full px-2.5 py-0.5 text-xs font-medium"
                   >
                     {city}
                   </span>
@@ -47,8 +47,8 @@ export function SampleItinerary() {
               {/* Highlights */}
               <ul className="mt-4 space-y-2">
                 {itinerary.highlights.map((h) => (
-                  <li key={h} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                  <li key={h} className="text-muted-foreground flex items-start gap-2 text-sm">
+                    <span className="bg-primary mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full" />
                     {h}
                   </li>
                 ))}

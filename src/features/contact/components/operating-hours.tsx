@@ -2,14 +2,14 @@ import { Clock } from "lucide-react"
 
 export function OperatingHours() {
   return (
-    <div className="rounded-2xl border border-border/50 bg-card p-5">
+    <div className="border-border/50 bg-card rounded-2xl border p-5">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-xl">
           <Clock className="h-5 w-5" />
         </div>
         <div>
           <h3 className="font-semibold">Jam Operasional</h3>
-          <p className="text-sm text-muted-foreground">Waktu Indonesia Barat (WIB)</p>
+          <p className="text-muted-foreground text-sm">Waktu Indonesia Barat (WIB)</p>
         </div>
       </div>
 
@@ -27,7 +27,7 @@ export function OperatingHours() {
       </div>
 
       <div className="mt-4 rounded-xl bg-[#25D366]/5 p-3">
-        <p className="text-xs leading-relaxed text-muted-foreground">
+        <p className="text-muted-foreground text-xs leading-relaxed">
           💬 <strong className="text-foreground">Di luar jam kerja?</strong> Tetap kirim pesan
           WhatsApp — kami akan membalas sesegera mungkin pada hari kerja berikutnya.
         </p>

@@ -1,4 +1,5 @@
 import { Lock, Shield } from "lucide-react"
+
 import Image from "next/image"
 
 export function PrivateTripExplanation() {
@@ -19,23 +20,23 @@ export function PrivateTripExplanation() {
               />
             </div>
             {/* Floating stat */}
-            <div className="absolute -right-3 top-8 rounded-2xl border bg-background/90 px-4 py-3 shadow-uber-md backdrop-blur-sm">
-              <p className="text-2xl font-bold text-primary">100%</p>
-              <p className="text-[11px] text-muted-foreground">Customizable</p>
+            <div className="bg-background/90 shadow-uber-md absolute top-8 -right-3 rounded-2xl border px-4 py-3 backdrop-blur-sm">
+              <p className="text-primary text-2xl font-bold">100%</p>
+              <p className="text-muted-foreground text-[11px]">Customizable</p>
             </div>
           </div>
 
           {/* Right — Content */}
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+            <span className="text-primary text-xs font-semibold tracking-widest uppercase">
               Kenalan dulu
             </span>
-            <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="font-heading mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               Apa itu
               <br />
               <span className="text-primary">Private Trip?</span>
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            <p className="text-muted-foreground mt-4 text-base leading-relaxed">
               Private trip pilihan liburan bareng teman atau keluarga tanpa campur dengan rombongan
               lain. Bebas atur jadwal, itinerary dan yang pasti liburan Anda lebih asik dengan
               orang-orang tersayang.
@@ -43,24 +44,24 @@ export function PrivateTripExplanation() {
 
             <div className="mt-8 space-y-4">
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                  <Lock className="h-5 w-5 text-primary" />
+                <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                  <Lock className="text-primary h-5 w-5" />
                 </div>
                 <div>
                   <h3 className="font-heading text-base font-semibold">Eksklusif & Fleksibel</h3>
-                  <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
                     Hanya Anda dan orang-orang pilihan Anda. Tanpa campurt dengan orang lain.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                  <Shield className="h-5 w-5 text-primary" />
+                <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                  <Shield className="text-primary h-5 w-5" />
                 </div>
                 <div>
                   <h3 className="font-heading text-base font-semibold">Aman & Terpercaya</h3>
-                  <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
                     Tim berpengalaman, dan telah melayani ratusan traveler dari Indonesia
                   </p>
                 </div>

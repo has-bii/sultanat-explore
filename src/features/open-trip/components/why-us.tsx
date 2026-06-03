@@ -2,13 +2,13 @@ import { trustBadges } from "../data"
 
 export function WhyUs() {
   return (
-    <section className="border-y bg-card py-16 lg:py-20">
+    <section className="bg-card border-y py-16 lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">
             Kenapa Kami
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
             Partner perjalanan terpercaya & berpengalaman
           </h2>
         </div>
@@ -17,11 +17,11 @@ export function WhyUs() {
           {trustBadges.map((badge) => (
             <div
               key={badge.title}
-              className="flex flex-col items-center rounded-2xl border bg-background p-6 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
+              className="bg-background flex flex-col items-center rounded-2xl border p-6 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <span className="text-3xl">{badge.icon}</span>
-              <h3 className="mt-3 font-heading text-base font-semibold">{badge.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              <h3 className="font-heading mt-3 text-base font-semibold">{badge.title}</h3>
+              <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
                 {badge.description}
               </p>
             </div>

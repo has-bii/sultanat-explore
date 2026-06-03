@@ -1,6 +1,7 @@
+import { ArrowRight, Calendar, Clock, Users } from "lucide-react"
+
 import { formatDate, formatPrice } from "@/features/open-trip/data"
 import type { OpenTrip } from "@/features/open-trip/types"
-import { ArrowRight, Calendar, Clock, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -12,19 +13,19 @@ export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase">
               Open Trip
             </span>
-            <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+            <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
               Trip Tersedia
             </h2>
-            <p className="mt-2 max-w-lg text-body text-muted-foreground">
+            <p className="text-body text-muted-foreground mt-2 max-w-lg">
               Bergabung dengan open trip menuju destinasi ini bersama rombongan.
             </p>
           </div>
           <Link
             href="/open-trip"
-            className="hidden items-center gap-1.5 text-sm font-medium text-primary hover:underline sm:inline-flex"
+            className="text-primary hidden items-center gap-1.5 text-sm font-medium hover:underline sm:inline-flex"
           >
             Lihat semua trip
             <ArrowRight className="h-4 w-4" />
@@ -36,7 +37,7 @@ export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
             <Link
               key={trip.slug}
               href={`/open-trip/${trip.slug}`}
-              className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
+              className="group bg-card shadow-uber-sm hover:shadow-uber-md overflow-hidden rounded-xl transition-shadow"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
@@ -56,26 +57,26 @@ export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
               </div>
 
               <div className="p-4">
-                <h4 className="font-heading text-base font-bold group-hover:text-primary transition-colors">
+                <h4 className="font-heading group-hover:text-primary text-base font-bold transition-colors">
                   {trip.name}
                 </h4>
 
-                <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                <div className="text-muted-foreground mt-2 flex flex-wrap gap-3 text-xs">
                   <span className="flex items-center gap-1">
-                    <Calendar className="h-3.5 w-3.5 text-primary" />
+                    <Calendar className="text-primary h-3.5 w-3.5" />
                     {formatDate(trip.departureDate)}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Clock className="h-3.5 w-3.5 text-primary" />
+                    <Clock className="text-primary h-3.5 w-3.5" />
                     {trip.duration}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Users className="h-3.5 w-3.5 text-primary" />
+                    <Users className="text-primary h-3.5 w-3.5" />
                     {trip.availableSeats} kursi tersisa
                   </span>
                 </div>
 
-                <span className="mt-3 inline-flex items-center text-xs font-medium text-primary">
+                <span className="text-primary mt-3 inline-flex items-center text-xs font-medium">
                   Lihat detail
                   <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                 </span>
@@ -86,7 +87,7 @@ export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
 
         <Link
           href="/open-trip"
-          className="mt-6 flex items-center justify-center gap-1.5 text-sm font-medium text-primary hover:underline sm:hidden"
+          className="text-primary mt-6 flex items-center justify-center gap-1.5 text-sm font-medium hover:underline sm:hidden"
         >
           Lihat semua trip
           <ArrowRight className="h-4 w-4" />

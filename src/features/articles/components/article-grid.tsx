@@ -2,7 +2,8 @@
 
 import { Search } from "lucide-react"
 import { useMemo, useState } from "react"
-import { articles, categoryLabels, type ArticleCategory } from "../data"
+
+import { type ArticleCategory, articles, categoryLabels } from "../data"
 import { ArticleCard } from "./article-card"
 import { CategoryFilter } from "./category-filter"
 
@@ -41,23 +42,23 @@ export function ArticleGrid() {
         {/* Header */}
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase">
               Semua Artikel
             </span>
-            <h2 className="mt-1 font-heading text-subheading font-bold tracking-tight md:text-heading">
+            <h2 className="font-heading text-subheading md:text-heading mt-1 font-bold tracking-tight">
               Jelajahi Artikel Kami
             </h2>
           </div>
 
           {/* Search */}
           <div className="relative w-full sm:max-w-xs">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Cari artikel..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-full border bg-background py-2 pl-10 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+              className="bg-background placeholder:text-muted-foreground focus:border-primary w-full rounded-full border py-2 pr-4 pl-10 text-sm transition-colors outline-none"
             />
           </div>
         </div>
@@ -84,7 +85,7 @@ export function ArticleGrid() {
                 setSearch("")
                 setActiveTab(ALL)
               }}
-              className="mt-2 text-sm font-medium text-primary hover:underline"
+              className="text-primary mt-2 text-sm font-medium hover:underline"
             >
               Reset filter
             </button>

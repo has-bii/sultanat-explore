@@ -1,11 +1,12 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { ChevronDown, Menu, MessageCircle, X } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
+import { useCallback, useEffect, useRef, useState } from "react"
+
+import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useCallback, useEffect, useRef, useState } from "react"
 
 const WHATSAPP_LINK =
   "https://wa.me/6281234567890?text=Halo%20SultanatExplore%2C%20saya%20tertarik%20untuk%20berwisata%20ke%20Turki"
@@ -72,13 +73,13 @@ function ServicesDropdown({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 8, scale: 0.96 }}
           transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-          className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72"
+          className="absolute top-full left-1/2 w-72 -translate-x-1/2 pt-3"
           onMouseLeave={onClose}
         >
           <div
             className={cn(
-              "rounded-2xl border border-border/60 backdrop-blur-xl p-2 shadow-xl shadow-black/5",
-              inverted ? "bg-black/90 border-white/10" : "bg-background/95",
+              "border-border/60 rounded-2xl border p-2 shadow-xl shadow-black/5 backdrop-blur-xl",
+              inverted ? "border-white/10 bg-black/90" : "bg-background/95",
             )}
           >
             {items.map((item) => (
@@ -87,7 +88,7 @@ function ServicesDropdown({
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "group flex flex-col gap-0.5 rounded-xl px-4 py-3 transition-colors hover:bg-accent/80",
+                  "group hover:bg-accent/80 flex flex-col gap-0.5 rounded-xl px-4 py-3 transition-colors",
                   inverted && "hover:bg-white/10",
                 )}
               >
@@ -130,7 +131,7 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-50 bg-black flex flex-col"
+          className="fixed inset-0 z-50 flex flex-col bg-black"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-8 py-6">
@@ -140,7 +141,7 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             </span>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              className="rounded-full p-2 transition-colors hover:bg-white/10"
               aria-label="Tutup menu"
             >
               <X className="h-6 w-6 text-white" />
@@ -148,13 +149,13 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
           </div>
 
           {/* Nav links */}
-          <nav className="flex-1 px-8 py-4 space-y-1 overflow-y-auto">
+          <nav className="flex-1 space-y-1 overflow-y-auto px-8 py-4">
             {NAV_ITEMS.map((item) =>
               item.children ? (
                 <div key={item.label}>
                   <button
                     onClick={() => setServicesOpen(!servicesOpen)}
-                    className="flex items-center justify-between w-full py-3 text-2xl font-medium text-white/80 hover:text-white transition-colors"
+                    className="flex w-full items-center justify-between py-3 text-2xl font-medium text-white/80 transition-colors hover:text-white"
                   >
                     {item.label}
                     <ChevronDown
@@ -173,7 +174,7 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden"
                       >
-                        <div className="pl-4 pb-2 space-y-1">
+                        <div className="space-y-1 pb-2 pl-4">
                           {item.children.map((child) => (
                             <Link
                               key={child.href}
@@ -182,7 +183,7 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                               className={cn(
                                 "block py-2 text-lg transition-colors",
                                 isActive(pathname, child.href)
-                                  ? "text-white font-medium"
+                                  ? "font-medium text-white"
                                   : "text-white/50 hover:text-white/80",
                               )}
                             >
@@ -211,12 +212,12 @@ function MobileOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
           </nav>
 
           {/* Bottom CTA */}
-          <div className="px-8 pb-8 pt-4">
+          <div className="px-8 pt-4 pb-8">
             <a
               href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 w-full py-4 rounded-full bg-white text-black font-semibold text-base hover:bg-white/90 transition-all active:shadow-uber-pressed"
+              className="active:shadow-uber-pressed flex w-full items-center justify-center gap-2.5 rounded-full bg-white py-4 text-base font-semibold text-black transition-all hover:bg-white/90"
             >
               <MessageCircle className="h-5 w-5" />
               Chat WhatsApp
@@ -288,16 +289,16 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-30 transition-all duration-500",
+          "fixed top-0 right-0 left-0 z-30 transition-all duration-500",
           scrolled
-            ? "bg-white/95 backdrop-blur-xl border-b border-border/40 shadow-sm shadow-black/5"
+            ? "border-border/40 border-b bg-white/95 shadow-sm shadow-black/5 backdrop-blur-xl"
             : "bg-transparent",
         )}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="relative z-10 group">
+            <Link href="/" className="group relative z-10">
               <span
                 className={cn(
                   "font-heading text-xl font-bold tracking-tight transition-colors",
@@ -312,7 +313,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden items-center gap-1 lg:flex">
               {NAV_ITEMS.map((item) =>
                 item.children ? (
                   <div
@@ -367,7 +368,7 @@ export function Navbar() {
                     {isActive(pathname, item.href) && (
                       <span
                         className={cn(
-                          "absolute bottom-0 left-3 right-3 h-0.5 rounded-full",
+                          "absolute right-3 bottom-0 left-3 h-0.5 rounded-full",
                           shouldInvert ? "bg-white" : "bg-foreground",
                         )}
                       />
@@ -384,7 +385,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  "hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all active:shadow-uber-pressed",
+                  "active:shadow-uber-pressed hidden items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all lg:inline-flex",
                   shouldInvert
                     ? "bg-white text-black hover:bg-white/90"
                     : "bg-primary text-primary-foreground hover:opacity-90",
@@ -397,7 +398,7 @@ export function Navbar() {
               <button
                 onClick={() => setMobileOpen(true)}
                 className={cn(
-                  "lg:hidden relative z-10 p-2 rounded-full transition-colors",
+                  "relative z-10 rounded-full p-2 transition-colors lg:hidden",
                   shouldInvert ? "text-white hover:bg-white/10" : "hover:bg-accent/60",
                 )}
                 aria-label="Buka menu"

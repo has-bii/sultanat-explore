@@ -2,6 +2,7 @@
 
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
+
 import { umrahFaqs } from "../data"
 
 export function UmrahFAQ() {
@@ -11,8 +12,8 @@ export function UmrahFAQ() {
     <section className="bg-muted/30 py-20 lg:py-24">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">FAQ</span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">FAQ</span>
+          <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
             Pertanyaan Seputar Umrah
           </h2>
         </div>
@@ -23,7 +24,7 @@ export function UmrahFAQ() {
             return (
               <div
                 key={i}
-                className="overflow-hidden rounded-2xl border bg-background transition-shadow hover:shadow-uber-sm"
+                className="bg-background hover:shadow-uber-sm overflow-hidden rounded-2xl border transition-shadow"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
@@ -31,7 +32,7 @@ export function UmrahFAQ() {
                 >
                   <span className="text-sm font-semibold">{faq.question}</span>
                   <ChevronDown
-                    className={`h-4 w-4 flex-shrink-0 text-muted-foreground transition-transform ${
+                    className={`text-muted-foreground h-4 w-4 flex-shrink-0 transition-transform ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -42,7 +43,7 @@ export function UmrahFAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>

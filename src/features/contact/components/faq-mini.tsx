@@ -29,35 +29,35 @@ export function FaqMini() {
     <section className="py-20">
       <div className="mx-auto max-w-3xl px-6">
         <div className="mb-10 text-center">
-          <div className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
+          <div className="bg-primary/5 text-primary mx-auto mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium">
             <HelpCircle className="h-3.5 w-3.5" />
             FAQ
           </div>
           <h2 className="font-heading text-subheading font-bold tracking-tight">
             Pertanyaan yang Sering Ditanyakan
           </h2>
-          <p className="mt-2 text-muted-foreground">
+          <p className="text-muted-foreground mt-2">
             Belum menemukan jawaban? Langsung chat kami di WhatsApp
           </p>
         </div>
 
         <div className="space-y-3">
           {FAQS.map((faq, i) => (
-            <div key={i} className="rounded-2xl border border-border/50 bg-card transition-colors">
+            <div key={i} className="border-border/50 bg-card rounded-2xl border transition-colors">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
                 className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
               >
-                <span className="font-medium leading-snug">{faq.q}</span>
+                <span className="leading-snug font-medium">{faq.q}</span>
                 <ChevronDown
-                  className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
+                  className={`text-muted-foreground h-4 w-4 shrink-0 transition-transform ${
                     open === i ? "rotate-180" : ""
                   }`}
                 />
               </button>
               {open === i && (
                 <div className="px-6 pb-4">
-                  <p className="text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
                 </div>
               )}
             </div>

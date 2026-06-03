@@ -10,7 +10,7 @@ export default function ResetPasswordPage() {
     <>
       <div className="mb-8 text-center">
         <h1 className="text-small-heading font-heading font-bold">Reset Password</h1>
-        <p className="mt-2 text-caption text-muted-foreground">
+        <p className="text-caption text-muted-foreground mt-2">
           Buat password baru untuk akun admin Anda
         </p>
       </div>

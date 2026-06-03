@@ -10,8 +10,10 @@ import {
   Plus,
   Sparkles,
 } from "lucide-react"
-import Image from "next/image"
 import { useMemo, useState } from "react"
+
+import Image from "next/image"
+
 import { cities, formatPrice, services } from "../data"
 import type { ServiceCategory } from "../types"
 
@@ -91,13 +93,13 @@ export function TripBuilderWizard() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">
             Trip Builder
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
             Bangun Trip Impianmu
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-sm">
             Pilih kota, layanan, dan lihat estimasi harga — semua dalam hitungan menit
           </p>
         </div>
@@ -118,53 +120,53 @@ export function TripBuilderWizard() {
                 {step > s.num ? <Check className="h-3.5 w-3.5" /> : <span>{s.num}</span>}
                 <span className="hidden sm:inline">{s.label}</span>
               </div>
-              {i < steps.length - 1 && <div className="h-px w-8 bg-border sm:w-12" />}
+              {i < steps.length - 1 && <div className="bg-border h-px w-8 sm:w-12" />}
             </div>
           ))}
         </div>
 
         {/* Step content */}
-        <div className="mt-8 rounded-2xl border bg-background p-6 shadow-uber-sm sm:p-8">
+        <div className="bg-background shadow-uber-sm mt-8 rounded-2xl border p-6 sm:p-8">
           {/* Step 1: Cities */}
           {step === 1 && (
             <div>
               <h3 className="font-heading text-lg font-semibold">
                 Pilih Kota yang Ingin Dikunjungi
               </h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-sm">
                 Pilih satu atau lebih kota tujuan perjalanan Anda
               </p>
 
               {/* Days & Travelers */}
               <div className="mt-6 flex flex-wrap gap-4">
-                <div className="flex items-center gap-3 rounded-full border bg-background px-4 py-2">
+                <div className="bg-background flex items-center gap-3 rounded-full border px-4 py-2">
                   <span className="text-sm font-medium">Hari:</span>
                   <button
                     onClick={() => setDays(Math.max(1, days - 1))}
-                    className="flex h-6 w-6 items-center justify-center rounded-full bg-muted hover:bg-primary/10"
+                    className="bg-muted hover:bg-primary/10 flex h-6 w-6 items-center justify-center rounded-full"
                   >
                     <Minus className="h-3 w-3" />
                   </button>
                   <span className="w-6 text-center text-sm font-bold">{days}</span>
                   <button
                     onClick={() => setDays(Math.min(30, days + 1))}
-                    className="flex h-6 w-6 items-center justify-center rounded-full bg-muted hover:bg-primary/10"
+                    className="bg-muted hover:bg-primary/10 flex h-6 w-6 items-center justify-center rounded-full"
                   >
                     <Plus className="h-3 w-3" />
                   </button>
                 </div>
-                <div className="flex items-center gap-3 rounded-full border bg-background px-4 py-2">
+                <div className="bg-background flex items-center gap-3 rounded-full border px-4 py-2">
                   <span className="text-sm font-medium">Orang:</span>
                   <button
                     onClick={() => setTravelers(Math.max(1, travelers - 1))}
-                    className="flex h-6 w-6 items-center justify-center rounded-full bg-muted hover:bg-primary/10"
+                    className="bg-muted hover:bg-primary/10 flex h-6 w-6 items-center justify-center rounded-full"
                   >
                     <Minus className="h-3 w-3" />
                   </button>
                   <span className="w-6 text-center text-sm font-bold">{travelers}</span>
                   <button
                     onClick={() => setTravelers(Math.min(20, travelers + 1))}
-                    className="flex h-6 w-6 items-center justify-center rounded-full bg-muted hover:bg-primary/10"
+                    className="bg-muted hover:bg-primary/10 flex h-6 w-6 items-center justify-center rounded-full"
                   >
                     <Plus className="h-3 w-3" />
                   </button>
@@ -181,7 +183,7 @@ export function TripBuilderWizard() {
                       onClick={() => toggleCity(city.id)}
                       className={`group relative overflow-hidden rounded-2xl border text-left transition-all ${
                         isSelected
-                          ? "border-primary ring-2 ring-primary/20"
+                          ? "border-primary ring-primary/20 ring-2"
                           : "hover:border-primary/30"
                       }`}
                     >
@@ -199,16 +201,16 @@ export function TripBuilderWizard() {
                           <span className="text-sm font-bold text-white">{city.name}</span>
                         </div>
                         {isSelected && (
-                          <div className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary">
-                            <Check className="h-3 w-3 text-primary-foreground" />
+                          <div className="bg-primary absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full">
+                            <Check className="text-primary-foreground h-3 w-3" />
                           </div>
                         )}
                       </div>
                       <div className="px-3 py-2">
-                        <p className="text-[11px] leading-snug text-muted-foreground">
+                        <p className="text-muted-foreground text-[11px] leading-snug">
                           {city.description}
                         </p>
-                        <p className="mt-1 text-[11px] font-semibold text-primary">
+                        <p className="text-primary mt-1 text-[11px] font-semibold">
                           Mulai {formatPrice(city.basePricePerPersonPerDay)}/orang/hari
                         </p>
                       </div>
@@ -223,7 +225,7 @@ export function TripBuilderWizard() {
           {step === 2 && (
             <div>
               <h3 className="font-heading text-lg font-semibold">Pilih Layanan Tambahan</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-sm">
                 Tambahkan layanan untuk pengalaman yang lebih baik
               </p>
 
@@ -233,7 +235,7 @@ export function TripBuilderWizard() {
                   if (catServices.length === 0) return null
                   return (
                     <div key={cat}>
-                      <h4 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      <h4 className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
                         {categoryLabels[cat]}
                       </h4>
                       <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -245,7 +247,7 @@ export function TripBuilderWizard() {
                               onClick={() => toggleService(service.id)}
                               className={`flex items-start gap-3 rounded-xl border p-3 text-left transition-all ${
                                 isSelected
-                                  ? "border-primary bg-primary/[0.03] ring-1 ring-primary/20"
+                                  ? "border-primary bg-primary/[0.03] ring-primary/20 ring-1"
                                   : "hover:border-primary/30"
                               }`}
                             >
@@ -261,14 +263,14 @@ export function TripBuilderWizard() {
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center justify-between gap-2">
                                   <span className="text-sm font-semibold">{service.name}</span>
-                                  <span className="flex-shrink-0 text-xs font-semibold text-primary">
+                                  <span className="text-primary flex-shrink-0 text-xs font-semibold">
                                     {formatPrice(service.price)}
-                                    <span className="font-normal text-muted-foreground">
+                                    <span className="text-muted-foreground font-normal">
                                       /{service.priceType === "per-person" ? "orang" : "grup"}
                                     </span>
                                   </span>
                                 </div>
-                                <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                                <p className="text-muted-foreground mt-0.5 text-[11px] leading-snug">
                                   {service.description}
                                 </p>
                               </div>
@@ -291,7 +293,7 @@ export function TripBuilderWizard() {
               <div className="mt-6 space-y-4">
                 {/* Cities */}
                 <div className="rounded-xl border p-4">
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  <div className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-widest uppercase">
                     <MapPin className="h-3.5 w-3.5" />
                     Kota
                   </div>
@@ -301,7 +303,7 @@ export function TripBuilderWizard() {
                       .map((c) => (
                         <span
                           key={c.id}
-                          className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+                          className="bg-primary/10 text-primary inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium"
                         >
                           {c.name}
                         </span>
@@ -313,11 +315,11 @@ export function TripBuilderWizard() {
                 <div className="rounded-xl border p-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs text-muted-foreground">Durasi</p>
+                      <p className="text-muted-foreground text-xs">Durasi</p>
                       <p className="text-sm font-semibold">{days} Hari</p>
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Jumlah Orang</p>
+                      <p className="text-muted-foreground text-xs">Jumlah Orang</p>
                       <p className="text-sm font-semibold">{travelers} Orang</p>
                     </div>
                   </div>
@@ -326,7 +328,7 @@ export function TripBuilderWizard() {
                 {/* Services */}
                 {selectedServices.size > 0 && (
                   <div className="rounded-xl border p-4">
-                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    <div className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-widest uppercase">
                       <Sparkles className="h-3.5 w-3.5" />
                       Layanan Tambahan
                     </div>
@@ -348,14 +350,14 @@ export function TripBuilderWizard() {
                 )}
 
                 {/* Price estimate */}
-                <div className="rounded-xl bg-primary p-5 text-primary-foreground">
-                  <p className="text-xs font-medium uppercase tracking-wider text-primary-foreground/70">
+                <div className="bg-primary text-primary-foreground rounded-xl p-5">
+                  <p className="text-primary-foreground/70 text-xs font-medium tracking-wider uppercase">
                     Estimasi Harga Total
                   </p>
-                  <p className="mt-1 font-heading text-3xl font-bold">
+                  <p className="font-heading mt-1 text-3xl font-bold">
                     {formatPrice(priceEstimate)}
                   </p>
-                  <p className="mt-1 text-[11px] text-primary-foreground/60">
+                  <p className="text-primary-foreground/60 mt-1 text-[11px]">
                     Harga estimasi. Harga final dikonfirmasi setelah konsultasi.
                   </p>
                 </div>
@@ -366,12 +368,12 @@ export function TripBuilderWizard() {
                 href={`https://wa.me/6281234567890?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold text-primary-foreground shadow-uber-sm transition-all hover:opacity-90"
+                className="bg-primary text-primary-foreground shadow-uber-sm mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-full text-base font-semibold transition-all hover:opacity-90"
               >
                 <MessageCircle className="h-5 w-5" />
                 Chat WhatsApp — Dapatkan Penawaran
               </a>
-              <p className="mt-2 text-center text-[11px] text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-center text-[11px]">
                 Ringkasan trip akan otomatis terkirim di WhatsApp
               </p>
             </div>
@@ -382,7 +384,7 @@ export function TripBuilderWizard() {
             {step > 1 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                className="text-muted-foreground hover:text-primary flex items-center gap-1.5 text-sm font-medium transition-colors"
               >
                 <ChevronLeft className="h-4 w-4" />
                 Kembali
@@ -397,7 +399,7 @@ export function TripBuilderWizard() {
                 className={`flex items-center gap-1.5 rounded-full px-6 py-2.5 text-sm font-semibold transition-all ${
                   canNext
                     ? "bg-primary text-primary-foreground shadow-uber-sm hover:opacity-90"
-                    : "cursor-not-allowed bg-muted text-muted-foreground"
+                    : "bg-muted text-muted-foreground cursor-not-allowed"
                 }`}
               >
                 Lanjut

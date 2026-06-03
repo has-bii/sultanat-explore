@@ -4,11 +4,12 @@ import {
   Car,
   Compass,
   FileCheck,
+  type LucideIcon,
   Package,
   ShieldCheck,
   Utensils,
-  type LucideIcon,
 } from "lucide-react"
+
 import { inclusions } from "../data"
 
 const iconMap: Record<string, LucideIcon> = {
@@ -27,13 +28,13 @@ export function InclusionGrid() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">
             Fasilitas
           </span>
-          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
+          <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight">
             Semua Termasuk, Tanpa Biaya Tersembunyi
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-sm">
             Harga paket sudah mencakup seluruh kebutuhan perjalanan Umrah Anda
           </p>
         </div>
@@ -44,13 +45,13 @@ export function InclusionGrid() {
             return (
               <div
                 key={item.title}
-                className="rounded-2xl border bg-background p-5 shadow-uber-sm transition-shadow hover:shadow-uber-md"
+                className="bg-background shadow-uber-sm hover:shadow-uber-md rounded-2xl border p-5 transition-shadow"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-                  {Icon && <Icon className="h-5 w-5 text-primary" />}
+                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl">
+                  {Icon && <Icon className="text-primary h-5 w-5" />}
                 </div>
-                <h3 className="mt-3 font-heading text-sm font-semibold">{item.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                <h3 className="font-heading mt-3 text-sm font-semibold">{item.title}</h3>
+                <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
                   {item.description}
                 </p>
               </div>

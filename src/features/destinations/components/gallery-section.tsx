@@ -1,7 +1,9 @@
 "use client"
 
-import Image from "next/image"
 import { useState } from "react"
+
+import Image from "next/image"
+
 import type { Destination } from "../types"
 
 export function GallerySection({ destination }: { destination: Destination }) {
@@ -11,8 +13,8 @@ export function GallerySection({ destination }: { destination: Destination }) {
   return (
     <section className="bg-muted py-16 lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
-        <span className="text-sm font-medium uppercase tracking-wider text-primary">Galeri</span>
-        <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight md:text-heading">
+        <span className="text-primary text-sm font-medium tracking-wider uppercase">Galeri</span>
+        <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
           Foto {destination.name}
         </h2>
 
@@ -38,8 +40,8 @@ export function GallerySection({ destination }: { destination: Destination }) {
                   onClick={() => setActiveIndex(i)}
                   className={`relative aspect-[4/3] w-24 flex-shrink-0 overflow-hidden rounded-xl transition-all ${
                     i === activeIndex
-                      ? "opacity-100 border-2 border-primary"
-                      : "opacity-60 border-2 border-transparent hover:opacity-100"
+                      ? "border-primary border-2 opacity-100"
+                      : "border-2 border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
                   <Image

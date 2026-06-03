@@ -7,26 +7,26 @@ export function AboutSection({ destination }: { destination: Destination }) {
         <div className="grid gap-12 lg:grid-cols-5">
           {/* Description — wider */}
           <div className="lg:col-span-3">
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase">
               Tentang {destination.name}
             </span>
-            <p className="mt-4 text-lg leading-relaxed text-foreground/90">
+            <p className="text-foreground/90 mt-4 text-lg leading-relaxed">
               {destination.description}
             </p>
           </div>
 
           {/* Highlights — sidebar */}
           <div className="lg:col-span-2">
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase">
               Highlights
             </span>
             <ul className="mt-4 space-y-3">
               {destination.highlights.map((h, i) => (
                 <li key={i} className="flex items-center gap-3">
-                  <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                  <span className="bg-primary/10 text-primary mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold">
                     {i + 1}
                   </span>
-                  <span className="text-sm font-medium text-foreground">{h}</span>
+                  <span className="text-foreground text-sm font-medium">{h}</span>
                 </li>
               ))}
             </ul>

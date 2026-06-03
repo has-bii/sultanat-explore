@@ -1,6 +1,8 @@
 import { ArrowLeft, MapPin } from "lucide-react"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { categoryLabels } from "../data"
 import type { Destination } from "../types"
 
@@ -16,14 +18,14 @@ export function DetailHero({ destination }: { destination: Destination }) {
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+        <div className="from-background via-background/50 absolute inset-0 bg-gradient-to-t to-transparent" />
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0">
-        <div className="mx-auto max-w-6xl px-6 lg:px-8 pb-10">
+      <div className="absolute right-0 bottom-0 left-0">
+        <div className="mx-auto max-w-6xl px-6 pb-10 lg:px-8">
           <Link
             href="/destinations"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Kembali ke Destinasi
@@ -33,19 +35,19 @@ export function DetailHero({ destination }: { destination: Destination }) {
             {destination.categories.map((cat) => (
               <span
                 key={cat}
-                className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+                className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium"
               >
                 {categoryLabels[cat]}
               </span>
             ))}
           </div>
 
-          <h1 className="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+          <h1 className="font-heading mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
             {destination.name}
           </h1>
 
-          <p className="mt-2 flex items-center gap-1.5 text-base text-muted-foreground">
-            <MapPin className="h-4 w-4 text-primary" />
+          <p className="text-muted-foreground mt-2 flex items-center gap-1.5 text-base">
+            <MapPin className="text-primary h-4 w-4" />
             {destination.tagline}
           </p>
         </div>

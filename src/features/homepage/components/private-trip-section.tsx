@@ -1,6 +1,5 @@
 "use client"
 
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 import {
   ArrowRight,
   CalendarRange,
@@ -8,15 +7,18 @@ import {
   Car,
   ChevronLeft,
   ChevronRight,
+  type LucideIcon,
   Map,
   Sparkles,
   Star,
   Users,
   Utensils,
-  type LucideIcon,
 } from "lucide-react"
-import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
+
+import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import Image from "next/image"
+
 import type { Facility } from "../data"
 import { privateTripService } from "../data"
 
@@ -35,7 +37,7 @@ function FacilityCard({ facility }: { facility: Facility }) {
   const Icon = iconMap[facility.icon]
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border bg-card">
+    <div className="group bg-card relative overflow-hidden rounded-2xl border">
       {/* Image */}
       {facility.image && (
         <div className="relative aspect-4/3 overflow-hidden">
@@ -53,12 +55,12 @@ function FacilityCard({ facility }: { facility: Facility }) {
       {/* Content */}
       <div className="p-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
             {Icon && <Icon className="h-4 w-4" />}
           </div>
-          <h4 className="text-sm font-semibold leading-tight">{facility.title}</h4>
+          <h4 className="text-sm leading-tight font-semibold">{facility.title}</h4>
         </div>
-        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{facility.description}</p>
+        <p className="text-muted-foreground mt-2 text-xs leading-relaxed">{facility.description}</p>
       </div>
     </div>
   )
@@ -93,16 +95,16 @@ export function PrivateTripSection() {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left: text content */}
           <div className="flex flex-col justify-center">
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+            <span className="text-primary text-xs font-semibold tracking-widest uppercase">
               Private Trip
             </span>
-            <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight sm:text-heading">
+            <h2 className="font-heading text-subheading sm:text-heading mt-2 font-bold tracking-tight">
               Perjalanan Privat, Sesuai Keinginan Anda
             </h2>
-            <p className="mt-4 text-body text-muted-foreground">{privateTripService.description}</p>
+            <p className="text-body text-muted-foreground mt-4">{privateTripService.description}</p>
             <a
               href={privateTripService.href}
-              className="mt-8 inline-flex w-fit items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 active:shadow-uber-pressed"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 active:shadow-uber-pressed mt-8 inline-flex w-fit items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors"
             >
               {privateTripService.ctaText}
               <ArrowRight className="h-4 w-4" />
@@ -132,7 +134,7 @@ export function PrivateTripSection() {
             <div className="flex items-center justify-center gap-3 sm:justify-start">
               <button
                 onClick={() => api?.scrollPrev()}
-                className="flex h-8 w-8 items-center justify-center rounded-full border bg-background transition-colors hover:bg-muted disabled:opacity-40"
+                className="bg-background hover:bg-muted flex h-8 w-8 items-center justify-center rounded-full border transition-colors disabled:opacity-40"
                 aria-label="Previous"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -144,7 +146,7 @@ export function PrivateTripSection() {
                     key={i}
                     onClick={() => api?.scrollTo(i)}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
-                      i === current ? "w-6 bg-primary" : "w-1.5 bg-primary/25 hover:bg-primary/40"
+                      i === current ? "bg-primary w-6" : "bg-primary/25 hover:bg-primary/40 w-1.5"
                     }`}
                     aria-label={`Go to slide ${i + 1}`}
                   />
@@ -153,7 +155,7 @@ export function PrivateTripSection() {
 
               <button
                 onClick={() => api?.scrollNext()}
-                className="flex h-8 w-8 items-center justify-center rounded-full border bg-background transition-colors hover:bg-muted disabled:opacity-40"
+                className="bg-background hover:bg-muted flex h-8 w-8 items-center justify-center rounded-full border transition-colors disabled:opacity-40"
                 aria-label="Next"
               >
                 <ChevronRight className="h-4 w-4" />

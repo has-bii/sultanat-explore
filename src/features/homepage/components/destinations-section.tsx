@@ -1,11 +1,12 @@
 "use client"
 
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import Image from "next/image"
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import Image from "next/image"
+
 import { destinationItems } from "../data"
 
 export interface Gallery4Item {
@@ -51,10 +52,10 @@ export function DestinationsSection({
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-8 flex items-end justify-between md:mb-14 lg:mb-16">
           <div className="flex flex-col gap-4">
-            <h2 className="font-heading text-subheading font-bold tracking-tight md:text-heading lg:text-card-title">
+            <h2 className="font-heading text-subheading md:text-heading lg:text-card-title font-bold tracking-tight">
               {title}
             </h2>
-            <p className="max-w-lg text-body text-muted-foreground">{description}</p>
+            <p className="text-body text-muted-foreground max-w-lg">{description}</p>
           </div>
           <div className="hidden shrink-0 gap-2 md:flex">
             <Button
@@ -82,7 +83,7 @@ export function DestinationsSection({
           </div>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto mask-x-from-98% mask-x-to-100%">
+      <div className="mx-auto max-w-6xl mask-x-from-98% mask-x-to-100%">
         <Carousel
           setApi={setCarouselApi}
           opts={{
@@ -110,7 +111,7 @@ export function DestinationsSection({
                       loading="lazy"
                     />
                     <div className="absolute inset-0 h-full bg-linear-to-t from-black/80 via-black/30 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 text-primary-foreground md:p-8">
+                    <div className="text-primary-foreground absolute inset-x-0 bottom-0 flex flex-col items-start p-6 md:p-8">
                       <div className="mb-2 pt-4 text-xl font-semibold md:mb-3 md:pt-4 lg:pt-4">
                         {item.title}
                       </div>

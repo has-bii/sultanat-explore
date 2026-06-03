@@ -26,7 +26,7 @@ export function ContactHero() {
           <span className="font-medium">Hubungi Kami</span>
         </div>
 
-        <h1 className="mt-6 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 className="font-heading mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
           Kami Siap
           <br />
           <span className="text-white/80">Membantu Anda</span>

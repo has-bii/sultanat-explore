@@ -1,10 +1,11 @@
 "use client"
 
+import { useState } from "react"
+
 import { loginSchema } from "@/features/auth/dto/auth.schema"
 import { authClient } from "@/lib/auth-client"
 import { useAppForm } from "@/lib/form"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 
 export function LoginForm() {
   const router = useRouter()
@@ -66,7 +67,7 @@ export function LoginForm() {
       </form.AppField>
 
       {formError && (
-        <div role="alert" className="text-sm text-destructive">
+        <div role="alert" className="text-destructive text-sm">
           {formError}
         </div>
       )}
@@ -75,7 +76,7 @@ export function LoginForm() {
 
       <a
         href="/admin/forgot-password"
-        className="text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="text-muted-foreground hover:text-foreground text-center text-sm transition-colors"
       >
         Lupa password?
       </a>

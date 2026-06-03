@@ -1,8 +1,9 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
+
+import { cn } from "@/lib/utils"
 
 const faqs = [
   {
@@ -39,8 +40,8 @@ export function FAQSection() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">FAQ</span>
-          <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight sm:text-heading">
+          <span className="text-primary text-xs font-semibold tracking-widest uppercase">FAQ</span>
+          <h2 className="font-heading text-subheading sm:text-heading mt-2 font-bold tracking-tight">
             Pertanyaan yang Sering Ditanyakan
           </h2>
         </div>
@@ -49,7 +50,7 @@ export function FAQSection() {
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i
             return (
-              <div key={i} className="rounded-xl border bg-card transition-colors">
+              <div key={i} className="bg-card rounded-xl border transition-colors">
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
@@ -57,7 +58,7 @@ export function FAQSection() {
                   <span className="text-sm font-semibold">{faq.question}</span>
                   <ChevronDown
                     className={cn(
-                      "h-4 w-4 flex-shrink-0 text-muted-foreground transition-transform duration-200",
+                      "text-muted-foreground h-4 w-4 flex-shrink-0 transition-transform duration-200",
                       isOpen && "rotate-180",
                     )}
                   />
@@ -69,7 +70,7 @@ export function FAQSection() {
                   )}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-muted-foreground px-5 pb-4 text-sm leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>

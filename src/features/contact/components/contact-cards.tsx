@@ -38,7 +38,7 @@ export function ContactCards() {
     <div className="space-y-4">
       <div>
         <h2 className="font-heading text-subheading font-bold tracking-tight">Saluran Kami</h2>
-        <p className="mt-1 text-muted-foreground">Pilih cara yang paling nyaman untuk Anda</p>
+        <p className="text-muted-foreground mt-1">Pilih cara yang paling nyaman untuk Anda</p>
       </div>
 
       <div className="space-y-3">
@@ -48,7 +48,7 @@ export function ContactCards() {
             href={contact.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group flex items-start gap-4 rounded-2xl border border-border/50 bg-card p-5 transition-all ${contact.hoverBg}`}
+            className={`group border-border/50 bg-card flex items-start gap-4 rounded-2xl border p-5 transition-all ${contact.hoverBg}`}
           >
             <div
               className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${contact.color}`}
@@ -59,12 +59,12 @@ export function ContactCards() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span className="font-semibold">{contact.label}</span>
-                <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <ArrowUpRight className="text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
-              <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+              <p className="text-muted-foreground mt-0.5 text-sm leading-relaxed">
                 {contact.description}
               </p>
-              <span className="mt-2 inline-block text-sm font-medium text-primary transition-opacity group-hover:opacity-80">
+              <span className="text-primary mt-2 inline-block text-sm font-medium transition-opacity group-hover:opacity-80">
                 {contact.action} →
               </span>
             </div>

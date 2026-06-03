@@ -1,6 +1,7 @@
 "use client"
 
 import { MessageCircle } from "lucide-react"
+
 import Link from "next/link"
 
 const WHATSAPP_LINK =
@@ -64,16 +65,16 @@ export function Footer() {
     <footer className="bg-black">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Main footer */}
-        <div className="py-14 grid grid-cols-1 md:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 gap-10 py-14 md:grid-cols-12">
           {/* Brand column */}
           <div className="md:col-span-12 lg:col-span-6">
-            <Link href="/" className="inline-block group">
-              <span className="font-heading text-xl font-bold tracking-tight text-white group-hover:text-white/80 transition-colors">
+            <Link href="/" className="group inline-block">
+              <span className="font-heading text-xl font-bold tracking-tight text-white transition-colors group-hover:text-white/80">
                 Sultanat
                 <span className="text-white/70">Explore</span>
               </span>
             </Link>
-            <p className="mt-3 text-sm text-white/40 leading-relaxed max-w-xs">
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/40">
               Agen wisata Turki terpercaya untuk traveler Indonesia. Berbasis langsung di Turki
               dengan tim profesional.
             </p>
@@ -87,7 +88,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="text-white/40 hover:text-white transition-colors"
+                  className="text-white/40 transition-colors hover:text-white"
                 >
                   <social.icon className="h-5 w-5" />
                 </a>
@@ -98,7 +99,7 @@ export function Footer() {
           {/* Link columns */}
           {FOOTER_COLUMNS.map((group) => (
             <div key={group.title} className="md:col-span-4 lg:col-span-2">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-white/40">
+              <h3 className="text-xs font-semibold tracking-wider text-white/40 uppercase">
                 {group.title}
               </h3>
               <ul className="mt-4 space-y-2.5">
@@ -106,7 +107,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/50 hover:text-white transition-colors"
+                      className="text-sm text-white/50 transition-colors hover:text-white"
                     >
                       {link.label}
                     </Link>
@@ -118,7 +119,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-5 sm:flex-row">
           <p className="text-xs text-white/30">
             © {new Date().getFullYear()} SultanatExplore. All rights reserved.
           </p>

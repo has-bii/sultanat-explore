@@ -42,10 +42,10 @@ export function InquiryForm() {
     "w-full rounded-xl border border-border/60 bg-background px-4 py-3 text-sm transition-colors placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/10"
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-card p-6 sm:p-8">
+    <div className="border-border/50 bg-card rounded-2xl border p-6 sm:p-8">
       <div className="mb-6">
         <h2 className="font-heading text-subheading font-bold tracking-tight">Kirim Pesan</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-sm">
           Isi form di bawah, kami akan terima via WhatsApp
         </p>
       </div>
@@ -53,7 +53,7 @@ export function InquiryForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name */}
         <div className="relative">
-          <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
+          <User className="text-muted-foreground/50 absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2" />
           <input
             type="text"
             name="name"
@@ -67,7 +67,7 @@ export function InquiryForm() {
 
         {/* Email */}
         <div className="relative">
-          <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
+          <Mail className="text-muted-foreground/50 absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2" />
           <input
             type="email"
             name="email"
@@ -80,13 +80,13 @@ export function InquiryForm() {
 
         {/* Subject */}
         <div className="relative">
-          <FileText className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
+          <FileText className="text-muted-foreground/50 absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2" />
           <select
             name="subject"
             required
             value={form.subject}
             onChange={handleChange}
-            className={`${inputClasses} pl-10 appearance-none cursor-pointer`}
+            className={`${inputClasses} cursor-pointer appearance-none pl-10`}
           >
             <option value="" disabled>
               Pilih topik...
@@ -101,7 +101,7 @@ export function InquiryForm() {
 
         {/* Message */}
         <div className="relative">
-          <MessageSquare className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground/50" />
+          <MessageSquare className="text-muted-foreground/50 absolute top-3.5 left-3.5 h-4 w-4" />
           <textarea
             name="message"
             placeholder="Tulis pesan Anda di sini..."
@@ -116,13 +116,13 @@ export function InquiryForm() {
         {/* Submit */}
         <button
           type="submit"
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-semibold text-primary-foreground shadow-uber-sm transition-all hover:opacity-90 active:scale-[0.98]"
+          className="bg-primary text-primary-foreground shadow-uber-sm inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
         >
           <Send className="h-4 w-4" />
           Kirim via WhatsApp
         </button>
 
-        <p className="text-center text-xs text-muted-foreground/60">
+        <p className="text-muted-foreground/60 text-center text-xs">
           Form ini akan membuka WhatsApp dengan pesan yang sudah terisi
         </p>
       </form>

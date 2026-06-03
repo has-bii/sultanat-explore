@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
     <>
       <div className="mb-8 text-center">
         <h1 className="text-small-heading font-heading font-bold">Lupa Password</h1>
-        <p className="mt-2 text-caption text-muted-foreground">
+        <p className="text-caption text-muted-foreground mt-2">
           Masukkan email untuk menerima link reset password
         </p>
       </div>
