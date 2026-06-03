@@ -6,7 +6,7 @@ import {
   HowItWorks,
   OpenTripExplanation,
   PastTripGallery,
-  SocialProofBar,
+  // SocialProofBar,
   TripList,
   WhyUs,
 } from "@/features/open-trip"
@@ -46,7 +46,7 @@ export default async function OpenTripPage() {
       </section>
 
       {/* 2. Social Proof */}
-      <SocialProofBar />
+      {/* <SocialProofBar /> */}
 
       {/* 3. Explanation */}
       <OpenTripExplanation />
