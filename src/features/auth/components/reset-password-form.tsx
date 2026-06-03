@@ -5,6 +5,7 @@ import { Suspense, useState } from "react"
 import { resetPasswordSchema } from "@/features/auth/dto/auth.schema"
 import { authClient } from "@/lib/auth-client"
 import { useAppForm } from "@/lib/form"
+import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 
 function ResetPasswordFormInner() {
@@ -17,12 +18,9 @@ function ResetPasswordFormInner() {
     defaultValues: {
       password: "",
       confirmPassword: "",
-    } as const,
+    },
     validators: {
-      onSubmit: ({ value }) => {
-        const result = resetPasswordSchema.safeParse(value)
-        if (!result.success) return result.error.issues
-      },
+      onSubmit: resetPasswordSchema,
     },
     onSubmit: async ({ value }) => {
       setFormError(null)
@@ -46,9 +44,9 @@ function ResetPasswordFormInner() {
     return (
       <div className="text-destructive text-center text-sm">
         Token reset tidak valid atau sudah kadaluarsa.{" "}
-        <a href="/admin/forgot-password" className="underline underline-offset-4">
+        <Link href="/admin/forgot-password" className="underline underline-offset-4">
           Request ulang
-        </a>
+        </Link>
       </div>
     )
   }

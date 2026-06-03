@@ -13,12 +13,9 @@ export function ForgotPasswordForm() {
   const form = useAppForm({
     defaultValues: {
       email: "",
-    } as const,
+    },
     validators: {
-      onSubmit: ({ value }) => {
-        const result = forgotPasswordSchema.safeParse(value)
-        if (!result.success) return result.error.issues
-      },
+      onSubmit: forgotPasswordSchema,
     },
     onSubmit: async ({ value }) => {
       setFormError(null)

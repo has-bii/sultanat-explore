@@ -16,7 +16,9 @@ export async function proxy(request: NextRequest) {
   }
 
   // Better Auth sets a session cookie called "better-auth.session_token"
-  const sessionCookie = getSessionCookie(request)
+  const sessionCookie = getSessionCookie(request, {
+    cookiePrefix: process.env.COOKIE_PREFIX,
+  })
   const hasSession = !!sessionCookie
 
   // Protected route without session → redirect to login

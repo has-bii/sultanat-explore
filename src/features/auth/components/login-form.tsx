@@ -15,19 +15,17 @@ export function LoginForm() {
     defaultValues: {
       email: "",
       password: "",
-    } as const,
-    validators: {
-      onSubmit: ({ value }) => {
-        const result = loginSchema.safeParse(value)
-        if (!result.success) return result.error.issues
-      },
     },
-    onSubmit: async ({ value }) => {
+    validators: {
+      onSubmit: loginSchema,
+    },
+    onSubmit: async ({ value, formApi }) => {
       setFormError(null)
       const { error } = await authClient.signIn.email({
         email: value.email,
         password: value.password,
       })
+      formApi.reset()
       if (error) {
         setFormError(error.message ?? "Login gagal. Periksa email dan password.")
         return

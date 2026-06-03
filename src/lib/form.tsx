@@ -20,8 +20,10 @@ function TextField({
   type?: string
   placeholder?: string
 }) {
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
   return (
-    <Field>
+    <Field data-invalid={isInvalid}>
       <FieldLabel>{label}</FieldLabel>
       <Input
         type={type}
@@ -29,11 +31,10 @@ function TextField({
         value={field.state.value}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value as any)}
-        aria-invalid={field.state.meta.errors.length > 0}
+        aria-invalid={isInvalid}
+        autoComplete="off"
       />
-      {field.state.meta.errors.length > 0 && (
-        <FieldError>{field.state.meta.errors.map((e: any) => e?.message).join(", ")}</FieldError>
-      )}
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
     </Field>
   )
 }

@@ -1,23 +1,34 @@
-import { auth } from "@backend/lib/auth"
-import { headers } from "next/headers"
-import { redirect } from "next/navigation"
+"use client"
 
-export default async function AdminDashboardPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
+import { Button } from "@/components/ui/button"
+import { authClient } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
 
-  if (!session) {
-    redirect("/admin/login")
+export default function AdminDashboardPage() {
+  const { isPending, data } = authClient.useSession()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await authClient.signOut()
+    router.push("/admin/login")
   }
 
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="text-center">
         <h1 className="text-small-heading font-heading font-bold">Dashboard</h1>
-        <p className="text-caption text-muted-foreground mt-2">
-          Selamat datang, {session.user.name ?? session.user.email}
-        </p>
+        {data && (
+          <>
+            <p className="text-caption text-muted-foreground mt-2">
+              Selamat datang, {data.user.name}
+            </p>
+            <Button className="mt-4" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
+        )}
+
+        {isPending && <p className="text-caption text-muted-foreground mt-2">Loading...</p>}
       </div>
     </div>
   )
