@@ -22,15 +22,15 @@ const TURKEY_IMAGES = [
 export function HeroSection() {
   return (
     <AnimatedMarqueeHero
-      tagline="✈️ Agen Wisata Turki Terpercaya untuk Indonesia"
+      tagline="✈️ Partner Perjalanan Terbaik Anda"
       title={
-        <>
-          Jelajahi Keindahan
+        <span>
+          Mengukir Perjalanan Paling Nyaman
           <br />
-          <span className="text-primary">Turki</span> Bersama Kami
-        </>
+          Menciptakan Kenangan Paling Berkesan
+        </span>
       }
-      description="Open trip, private trip, dan paket Umrah dengan pelayanan profesional. Tim lokal berbasis di Turki siap mengantar perjalanan impian Anda."
+      description=""
       ctaText="Hubungi via WhatsApp"
       images={TURKEY_IMAGES}
     />

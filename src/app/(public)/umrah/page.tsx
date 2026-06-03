@@ -1,17 +1,14 @@
-import {
-  UmrahExplanation,
-  SocialProofBar,
-  PackageCards,
-  InclusionGrid,
-  ItineraryPreview,
-  ProcessTimeline,
-  Gallery,
-  Testimonials,
-  UmrahFAQ,
-  TravelAdvisor,
-} from "@/features/umrah"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import {
+  Gallery,
+  InclusionGrid,
+  ProcessTimeline,
+  Testimonials,
+  TravelAdvisor,
+  UmrahExplanation,
+  UmrahFAQ,
+} from "@/features/umrah"
 import { Moon } from "lucide-react"
 import type { Metadata } from "next"
 
@@ -35,33 +32,31 @@ export default function UmrahPage() {
             <Moon className="h-4 w-4 text-primary" />
             <span className="font-medium">Private Umrah</span>
           </div>
-          <h1 className="mt-6 font-heading text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Perjalanan Spiritual
+          <h1 className="mt-6 font-heading text-4xl text-balance font-bold tracking-tight sm:text-5xl">
+            Ibadah Lebih Nyaman Tanpa Ribet
             <br />
             <span className="text-primary">Tanpa Khawatir</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Paket Umrah privat dengan pembimbing berpengalaman, hotel dekat
-            Masjid, dan layanan personal. Tinggal fokus ibadah — sisanya kami
-            atur.
+            Paket Umrah private dengan muthawwif berpengalaman, fasilitas dan layanan spesial.
           </p>
         </div>
       </section>
 
       {/* 2. Social Proof */}
-      <SocialProofBar />
+      {/* <SocialProofBar /> */}
 
       {/* 3. Explanation */}
       <UmrahExplanation />
 
       {/* 4. Packages */}
-      <PackageCards />
+      {/* <PackageCards /> */}
 
       {/* 5. Inclusions */}
       <InclusionGrid />
 
       {/* 6. Itinerary */}
-      <ItineraryPreview />
+      {/* <ItineraryPreview /> */}
 
       {/* 7. Process */}
       <ProcessTimeline />

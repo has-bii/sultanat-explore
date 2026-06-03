@@ -1,19 +1,14 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
+import { useState } from "react"
 
 const faqs = [
   {
     question: "Apakah saya perlu visa untuk ke Turki?",
     answer:
       "Warga Indonesia memerlukan visa Turki. Namun, prosesnya cukup mudah dan bisa dilakukan online (e-Visa). Tim kami akan membantu dan mendampingi proses pengurusan visa Anda.",
-  },
-  {
-    question: "Bagaimana jaminan makanan halal?",
-    answer:
-      "Kami hanya menggunakan restoran dengan sertifikasi halal atau yang telah diverifikasi oleh tim kami. Menu sudah diatur sedemikian rupa sehingga Anda tidak perlu khawatir soal makanan selama perjalanan.",
   },
   {
     question: "Bagaimana sistem pembayarannya?",
@@ -44,9 +39,7 @@ export function FAQSection() {
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            FAQ
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-primary">FAQ</span>
           <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight sm:text-heading">
             Pertanyaan yang Sering Ditanyakan
           </h2>
@@ -56,10 +49,7 @@ export function FAQSection() {
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i
             return (
-              <div
-                key={i}
-                className="rounded-xl border bg-card transition-colors"
-              >
+              <div key={i} className="rounded-xl border bg-card transition-colors">
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"

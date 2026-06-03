@@ -37,16 +37,18 @@ function FacilityCard({ facility }: { facility: Facility }) {
   return (
     <div className="group relative overflow-hidden rounded-2xl border bg-card">
       {/* Image */}
-      <div className="relative aspect-4/3 overflow-hidden">
-        <Image
-          src={facility.image}
-          alt={facility.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
-      </div>
+      {facility.image && (
+        <div className="relative aspect-4/3 overflow-hidden">
+          <Image
+            src={facility.image}
+            alt={facility.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
+        </div>
+      )}
 
       {/* Content */}
       <div className="p-4">

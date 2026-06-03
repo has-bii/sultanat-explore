@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import React from "react";
-import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { motion } from "motion/react"
+import React from "react"
 
 interface AnimatedMarqueeHeroProps {
-  tagline: string;
-  title: React.ReactNode;
-  description: string;
-  ctaText: string;
-  images: string[];
-  className?: string;
+  tagline: string
+  title: React.ReactNode
+  description?: string
+  ctaText: string
+  images: string[]
+  className?: string
 }
 
 const ActionButton = ({ children }: { children: React.ReactNode }) => (
@@ -21,7 +21,7 @@ const ActionButton = ({ children }: { children: React.ReactNode }) => (
   >
     {children}
   </motion.button>
-);
+)
 
 export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
   tagline,
@@ -38,9 +38,9 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
       y: 0,
       transition: { type: "spring" as const, stiffness: 100, damping: 20 },
     },
-  };
+  }
 
-  const duplicatedImages = [...images, ...images];
+  const duplicatedImages = [...images, ...images]
 
   return (
     <section
@@ -72,30 +72,26 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
           }}
           className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground"
         >
-          {typeof title === "string" ? (
-            title.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                variants={FADE_IN_ANIMATION_VARIANTS}
-                className="inline-block"
-              >
-                {word}&nbsp;
-              </motion.span>
-            ))
-          ) : (
-            title
-          )}
+          {typeof title === "string"
+            ? title.split(" ").map((word, i) => (
+                <motion.span key={i} variants={FADE_IN_ANIMATION_VARIANTS} className="inline-block">
+                  {word}&nbsp;
+                </motion.span>
+              ))
+            : title}
         </motion.h1>
 
-        <motion.p
-          initial="hidden"
-          animate="show"
-          variants={FADE_IN_ANIMATION_VARIANTS}
-          transition={{ delay: 0.5 }}
-          className="mt-6 max-w-xl text-lg text-muted-foreground"
-        >
-          {description}
-        </motion.p>
+        {description && (
+          <motion.p
+            initial="hidden"
+            animate="show"
+            variants={FADE_IN_ANIMATION_VARIANTS}
+            transition={{ delay: 0.5 }}
+            className="mt-6 max-w-xl text-lg text-muted-foreground"
+          >
+            {description}
+          </motion.p>
+        )}
 
         <motion.div
           initial="hidden"
@@ -137,5 +133,5 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}

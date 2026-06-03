@@ -9,7 +9,7 @@ export function WhyUs() {
             Kenapa Kami
           </span>
           <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
-            Travel Terpercaya, Bukan Sekadar Janji
+            Partner perjalanan terpercaya & berpengalaman
           </h2>
         </div>
 
@@ -20,9 +20,7 @@ export function WhyUs() {
               className="flex flex-col items-center rounded-2xl border bg-background p-6 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <span className="text-3xl">{badge.icon}</span>
-              <h3 className="mt-3 font-heading text-base font-semibold">
-                {badge.title}
-              </h3>
+              <h3 className="mt-3 font-heading text-base font-semibold">{badge.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                 {badge.description}
               </p>

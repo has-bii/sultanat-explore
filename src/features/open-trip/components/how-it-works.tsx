@@ -1,4 +1,4 @@
-import { Search, MessageCircle, PlaneTakeoff } from "lucide-react"
+import { MessageCircle, PlaneTakeoff, Search } from "lucide-react"
 import { howItWorks } from "../data"
 
 const iconMap = [Search, MessageCircle, PlaneTakeoff]
@@ -9,7 +9,7 @@ export function HowItWorks() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            Cara Pesan
+            Cara Booking
           </span>
           <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
             3 Langkah, Langsung Berangkat
@@ -33,9 +33,7 @@ export function HowItWorks() {
                       {item.step}
                     </span>
                   </div>
-                  <h3 className="mt-5 font-heading text-lg font-semibold">
-                    {item.title}
-                  </h3>
+                  <h3 className="mt-5 font-heading text-lg font-semibold">{item.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>

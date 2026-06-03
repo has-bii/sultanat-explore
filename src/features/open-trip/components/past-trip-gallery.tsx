@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
 import { X } from "lucide-react"
+import { useState } from "react"
 import { galleryImages } from "../data"
 
 export function PastTripGallery() {
@@ -16,11 +15,9 @@ export function PastTripGallery() {
             Galeri
           </span>
           <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
-            Mereka Sudah Ada di Turki
+            Intip Keseruan Kami
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Momen-momen nyata dari perjalanan bersama traveler kami
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Dokumentasi para customer kami</p>
         </div>
 
         {/* Masonry-ish grid */}

@@ -17,7 +17,7 @@ export type Facility = {
   icon: string
   title: string
   description: string
-  image: string
+  image?: string
 }
 
 // --- Open Trip ---
@@ -155,9 +155,8 @@ export const destinationItems = [
 
 export const openTripService = {
   title: "Open Trip",
-  heading: "Jelajahi Bersama, Hemat Bersama",
-  description:
-    "Perjalanan grup bersama traveler Indonesia lainnya, direncanakan tim kami dari A sampai Z. Jadwal, itinerary, hotel, harga — semua sudah kami atur. Tinggal pesan, berangkat, dan nikmati.",
+  heading: "Trip Hemat Healing Bareng Bestie",
+  description: "Solusi healing anti ribet. Jadwal dan akomodasi tinggal dinikmati.",
   href: "/open-trip",
   ctaText: "Lihat Semua Open Trip",
   trips: openTripTrips,
@@ -239,67 +238,51 @@ export const privateTripService = {
 const umrahFacilities: Facility[] = [
   {
     icon: "book-open",
-    title: "Pembimbing Ibadah",
-    description: "Pendamping ibadah berpengalaman dan bersertifikat",
-    image:
-      "https://images.unsplash.com/photo-1585036156171-384164a8c272?q=80&w=600&auto=format&fit=crop",
+    title: "Muthawwif",
+    description: "Berpengalaman & Profesional",
   },
   {
     icon: "building",
-    title: "Hotel Dekat Masjid",
-    description: "Akomodasi berjarak dekat dari Masjidil Haram & Nabawi",
-    image:
-      "https://images.unsplash.com/photo-1591604129939-fd8d0048431b?q=80&w=600&auto=format&fit=crop",
+    title: "Hotel Strategis",
+    description: "Ibadah jadi lebih mudah",
   },
   {
     icon: "compass",
-    title: "Ziarah Lengkap",
-    description: "Tour ziarah sejarah Islam di Mekkah & Madinah",
-    image:
-      "https://images.unsplash.com/photo-1591604129939-fd8d0048431b?q=80&w=600&auto=format&fit=crop",
+    title: "Program Fleksibel",
+    description: "Bebas atur itenerary mulai dari ziarah & wisata halal lainnya",
   },
   {
     icon: "file-check",
     title: "Visa Umrah",
-    description: "Pengurusan visa Umrah lengkap tanpa ribet",
-    image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=600&auto=format&fit=crop",
+    description: "Pengurusan visa umrah terjamin tanpa ribet",
   },
   {
     icon: "car",
-    title: "Transport Privat",
-    description: "Bus dan kendaraan pribadi selama di Arab Saudi",
-    image:
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?q=80&w=600&auto=format&fit=crop",
+    title: "Transport Private",
+    description: "Exclusive aman & nyaman",
   },
   {
     icon: "utensils",
     title: "Full Board Meal",
-    description: "Makan 3x sehari dengan menu halal terjamin",
-    image:
-      "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=600&auto=format&fit=crop",
+    description: "Makan 3x sehari dengan banyak pilihan menu",
   },
   {
     icon: "package",
-    title: "Perlengkapan Ibadah",
-    description: "Kitab doa, ihram, dan perlengkapan ibadah lainnya",
-    image:
-      "https://images.unsplash.com/photo-1600618528240-fb9fc964b853?q=80&w=600&auto=format&fit=crop",
+    title: "Bimbingan Ibadah",
+    description: "Memastikan ibadah sah sesuai syariat",
   },
   {
-    icon: "shield-check",
-    title: "Asuransi Perjalanan",
-    description: "Perlindungan menyeluruh selama perjalanan",
-    image:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=600&auto=format&fit=crop",
+    icon: "camera",
+    title: "Dokumentasi",
+    description: "Mengabadikan moment terindah selama di tanah suci",
   },
 ]
 
 export const umrahService = {
-  title: "Private Umrah",
-  heading: "Perjalanan Spiritual yang Berkesan",
+  title: "Private Umroh Eksklusif",
+  heading: "Ibadah Lebih Nyaman dan Berkesan",
   description:
-    "Paket Umrah eksklusif dengan pendampingan pembimbing ibadah berpengalaman. Akomodasi nyaman dekat Masjid, jaminan makanan halal, dan pelayanan profesional sepanjang perjalanan.",
+    "Paket Umroh Eksklusif dengan muthawwif berpengalaman, akomodasi bintang 5, program fleksibel dengan layanan profesional",
   href: "/umrah",
   ctaText: "Konsultasi Paket Umrah",
   facilities: umrahFacilities,

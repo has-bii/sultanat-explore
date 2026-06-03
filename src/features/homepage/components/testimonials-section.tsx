@@ -1,8 +1,8 @@
 "use client"
 
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1"
-import { motion } from "motion/react"
 import { testimonials } from "@/data/testimonials"
+import { motion } from "motion/react"
 
 const firstColumn = testimonials.slice(0, 3)
 const secondColumn = testimonials.slice(3, 6)
@@ -21,15 +21,11 @@ export function TestimonialsSection() {
           viewport={{ once: true }}
           className="flex flex-col items-center justify-center max-w-135 mx-auto"
         >
-          <div className="flex justify-center">
-            <div className="border py-1 px-4 rounded-full">Testimoni</div>
-          </div>
-
           <h2 className="font-heading text-small-heading font-bold tracking-tighter mt-5 sm:text-subheading md:text-heading lg:text-card-title xl:text-display">
-            Kata Mereka
+            Dokumentasi
           </h2>
           <p className="text-center mt-5 text-body opacity-75">
-            Testimoni dari traveler Indonesia yang telah berpetualang bersama kami.
+            Abadikan moment terindah Anda bersama kami
           </p>
         </motion.div>
 

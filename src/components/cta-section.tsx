@@ -14,11 +14,11 @@ export function CTASection() {
 
           <div className="relative z-10">
             <h2 className="font-heading text-subheading font-bold sm:text-heading">
-              Siap Menjelajahi Turki?
+              Bebas Konsultasi
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-body text-primary-foreground/80">
-              Hubungi kami sekarang melalui WhatsApp untuk konsultasi gratis dan
-              dapatkan penawaran terbaik untuk perjalanan impian Anda.
+              Hubungi kami sekarang melalui WhatsApp untuk konsultasi gratis dan dapatkan penawaran
+              terbaik untuk perjalanan impian Anda.
             </p>
 
             <a

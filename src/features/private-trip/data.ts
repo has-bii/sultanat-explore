@@ -310,32 +310,27 @@ export const benefits: Benefit[] = [
   {
     icon: "🎯",
     title: "100% Custom",
-    description: "Itinerary, destinasi, dan aktivitas sesuai keinginan Anda. Tidak ada kompromi.",
+    description: "Itinerary, destinasi, dan aktivitas sesuai keinginan Anda.",
   },
   {
     icon: "🔒",
     title: "Privasi Penuh",
-    description: "Hanya Anda dan rombongan. Tidak berbagi trip dengan orang asing.",
+    description: "Hanya Anda dan rombongan, tidak gabung dengan traveler lain.",
   },
   {
     icon: "🕐",
     title: "Fleksibel",
-    description: "Atur sendiri tempo perjalanan. Mau lama di satu tempat? Silakan.",
+    description: "Bebas atur tempo perjalanan sendiri sesuai keinginan Anda.",
   },
   {
     icon: "👨‍👩‍👧‍👦",
-    title: "Semua Usia",
+    title: "Exclusive",
     description: "Cocok untuk honeymoon, keluarga dengan anak, reuni, atau trip teman.",
-  },
-  {
-    icon: "🌙",
-    title: "Halal Terjamin",
-    description: "Makanan halal, aktivitas Muslim-friendly, dan fasilitas ibadah tersedia.",
   },
   {
     icon: "💬",
     title: "Konsultasi Gratis",
-    description: "Diskusi dengan tim kami sebelum commit. Tanpa biaya, tanpa kewajiban.",
+    description: "Free konsultasi dengan tim kami sampai deal tanpa biaya sepeserpun.",
   },
 ]
 

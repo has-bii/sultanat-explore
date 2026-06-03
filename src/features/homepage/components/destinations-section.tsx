@@ -22,7 +22,7 @@ export interface DestinationsSectionProps {
 
 export function DestinationsSection({
   title = "Destinasi Populer",
-  description = "Jelajahi destinasi wisata Turki terbaik yang menanti Anda.",
+  description = "Explore destinasi wisata Turki paling wajib Anda kunjungi",
 }: DestinationsSectionProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [canScrollPrev, setCanScrollPrev] = useState(false)

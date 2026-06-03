@@ -33,38 +33,32 @@ export function PrivateTripExplanation() {
               <span className="text-primary">Private Trip?</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-              Private trip adalah perjalanan wisata yang dirancang khusus untuk
-              Anda dan rombongan. Jadwal, destinasi, dan aktivitas — semua
-              ditentukan oleh Anda. Kami yang atur sisanya.
+              Private trip pilihan liburan bareng teman atau keluarga tanpa campur dengan rombongan
+              lain. Bebas atur jadwal, itinerary dan yang pasti liburan Anda lebih asik dengan
+              orang-orang tersayang.
             </p>
 
             <div className="mt-8 space-y-4">
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
                   <Lock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-base font-semibold">
-                    Eksklusif & Privat
-                  </h3>
+                  <h3 className="font-heading text-base font-semibold">Eksklusif & Fleksibel</h3>
                   <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                    Hanya Anda dan orang-orang pilihan Anda. Tanpa berbagi trip
-                    dengan orang asing.
+                    Hanya Anda dan orang-orang pilihan Anda. Tanpa campurt dengan orang lain.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
                   <Shield className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-base font-semibold">
-                    Aman & Terpercaya
-                  </h3>
+                  <h3 className="font-heading text-base font-semibold">Aman & Terpercaya</h3>
                   <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                    Tim berpengalaman, rekening resmi PT, dan ratusan traveler
-                    puas dari Indonesia.
+                    Tim berpengalaman, dan telah melayani ratusan traveler dari Indonesia
                   </p>
                 </div>
               </div>

@@ -35,12 +35,11 @@ export function UmrahExplanation() {
               Private Umrah
             </span>
             <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight">
-              Ibadah Tenang, Semua Kami Atur
+              Ibadah Nyaman Dengan Pelayanan Exclusive
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Umrah adalah perjalanan spiritual yang sakral. Kami memahami bahwa setiap jamaah ingin
-              fokus pada ibadah tanpa khawatir logistik. Itulah mengapa SultanatExplore menyediakan
-              paket Umrah privat — dari akomodasi hingga bimbingan ibadah, semua kami tangani.
+              Kami menghadirkan layanan umrah private yang berfokus pada kenyamanan dan ke-khusukan
+              dalam ibadah Anda.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Berbeda dengan travel Umrah massal, kami memastikan kelompok kecil, pembimbing
@@ -53,10 +52,10 @@ export function UmrahExplanation() {
                   <Shield className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-sm font-semibold">Halal & Muslim-Friendly</h3>
+                  <h3 className="font-heading text-sm font-semibold">Exclusive & Flexibel</h3>
                   <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                    Makanan halal 100%, jadwal shalat diutamakan, dan pembimbing ibadah
-                    bersertifikat.
+                    Fokus beribadah dengan orang tersayang dengan program yang sesuai dengan
+                    keinginan Anda.
                   </p>
                 </div>
               </div>
@@ -65,10 +64,9 @@ export function UmrahExplanation() {
                   <Lock className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-sm font-semibold">Aman & Terpercaya</h3>
+                  <h3 className="font-heading text-sm font-semibold">Amanah & Terpercaya</h3>
                   <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                    Berpengalaman melayani ratusan jamaah Indonesia. Rekening resmi PT, transparansi
-                    penuh.
+                    Tim yang berpengalaman yang berfokus mendampingin ibadah Umrah Anda.
                   </p>
                 </div>
               </div>

@@ -2,16 +2,16 @@ import {
   ArrowRight,
   BookOpen,
   Building2,
+  Camera,
+  Car,
   Compass,
   FileCheck,
-  Car,
-  Utensils,
   Package,
-  ShieldCheck,
+  Utensils,
   type LucideIcon,
-} from "lucide-react";
-import { umrahService } from "../data";
-import type { Facility } from "../data";
+} from "lucide-react"
+import type { Facility } from "../data"
+import { umrahService } from "../data"
 
 const iconMap: Record<string, LucideIcon> = {
   "book-open": BookOpen,
@@ -21,11 +21,11 @@ const iconMap: Record<string, LucideIcon> = {
   car: Car,
   utensils: Utensils,
   package: Package,
-  "shield-check": ShieldCheck,
-};
+  camera: Camera,
+}
 
 function FacilityCard({ facility }: { facility: Facility }) {
-  const Icon = iconMap[facility.icon];
+  const Icon = iconMap[facility.icon]
 
   return (
     <div className="rounded-xl border border-white/8 bg-white/5 p-4 backdrop-blur-sm transition-all duration-200 hover:border-white/20 hover:bg-white/8">
@@ -34,20 +34,16 @@ function FacilityCard({ facility }: { facility: Facility }) {
           {Icon && <Icon className="h-4 w-4" />}
         </div>
         <div className="min-w-0">
-          <h4 className="text-sm font-semibold leading-tight text-white">
-            {facility.title}
-          </h4>
-          <p className="mt-1 text-xs leading-relaxed text-white/60">
-            {facility.description}
-          </p>
+          <h4 className="text-sm font-semibold leading-tight text-white">{facility.title}</h4>
+          <p className="mt-1 text-xs leading-relaxed text-white/60">{facility.description}</p>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export function UmrahSection() {
-  const { facilities } = umrahService;
+  const { title, heading, description, facilities } = umrahService
 
   return (
     <section className="relative overflow-hidden bg-primary">
@@ -63,14 +59,12 @@ export function UmrahSection() {
         {/* Text */}
         <div className="text-center">
           <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-            Private Umrah
+            {title}
           </span>
           <h2 className="mt-2 font-heading text-subheading font-bold tracking-tight text-white sm:text-heading">
-            Perjalanan Spiritual yang Berkesan
+            {heading}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-body text-white/60">
-            {umrahService.description}
-          </p>
+          <p className="mx-auto mt-4 max-w-xl text-body text-white/60">{description}</p>
         </div>
 
         {/* Facility grid */}
@@ -92,5 +86,5 @@ export function UmrahSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }

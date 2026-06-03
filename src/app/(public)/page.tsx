@@ -1,6 +1,6 @@
-import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import { CTASection } from "@/components/cta-section"
-import { FAQSection } from "@/components/faq-section"
+import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+// import { FAQSection } from "@/components/faq-section"
 import {
   AboutSection,
   DestinationsSection,
@@ -17,7 +17,7 @@ export default function Home() {
       <ServicesSection />
       <DestinationsSection />
       <TestimonialsSection />
-      <FAQSection />
+      {/* <FAQSection /> */}
       <CTASection />
       <FloatingWhatsApp />
     </>

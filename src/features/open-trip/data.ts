@@ -357,7 +357,7 @@ export const howItWorks = [
   {
     step: 1,
     title: "Pilih Trip",
-    description: "Pilih destinasi dan tanggal yang Anda inginkan.",
+    description: "Tentukan trip dan tanggal liburan",
   },
   {
     step: 2,
@@ -367,7 +367,7 @@ export const howItWorks = [
   {
     step: 3,
     title: "Berangkat!",
-    description: "Siapkan paspor, kami urus sisanya. Tinggal menikmati!",
+    description: "Siapkan passport, duduk manis dan nikmati moment liburan mu!!!",
   },
 ]
 
@@ -410,19 +410,20 @@ export const galleryImages = [
 
 export const trustBadges: TrustBadge[] = [
   {
-    icon: "清真",
-    title: "Garansi Halal",
-    description: "Semua makanan & restoran terjamin halal. Zero compromise.",
-  },
-  {
-    icon: "👥",
-    title: "Small Group",
-    description: "Maksimal 20 orang per grup. Personal, bukan massal.",
-  },
-  {
     icon: "💰",
-    title: "Tanpa Biaya Tersembunyi",
-    description: "Harga yang tertera sudah all-in. Tidak ada biaya tambahan di lapangan.",
+    title: "Garansi Harga Terbaik",
+    description:
+      "Jaminan harga terbaik & ter worth it sesuai fasilitas dan layanan yang kami berikan",
+  },
+  {
+    icon: "✅",
+    title: "Booking Simple & Mudah",
+    description: "Kami siap melayani dengan sepenuh hati",
+  },
+  {
+    icon: "✨",
+    title: "Exclusive",
+    description: "Liburan dengan pelayanan spesial dan fasilitas terbaik",
   },
   {
     icon: "🇮🇩",
