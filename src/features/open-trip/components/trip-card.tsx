@@ -39,7 +39,7 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
       className="group bg-card block overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-4/3 overflow-hidden">
         <Image
           fill
           src={trip.image}
@@ -48,11 +48,11 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
         {/* Seat badge top-right */}
         <div className="absolute top-3 right-3">
-          <SeatBadge available={trip.availableSeats} total={trip.totalSeats} />
+          <SeatBadge available={trip.availableSeats} />
         </div>
 
         {/* Bottom overlay */}

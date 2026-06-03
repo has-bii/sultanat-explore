@@ -20,11 +20,11 @@
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.17.0",
     "motion": "^12.40.0",
-    "next": "16.2.6",
+    "next": "16.2.7",
     "pg": "^8.21.0",
     "radix-ui": "^1.4.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "resend": "^6.12.4",
     "shadcn": "^4.10.0",
     "tailwind-merge": "^3.6.0",
@@ -34,19 +34,19 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^24.12.4",
+    "@types/node": "^25.9.1",
     "@types/pg": "^8.20.0",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
     "dotenv": "^17.4.2",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "16.2.6",
+    "eslint": "^10.4.1",
+    "eslint-config-next": "16.2.7",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "prisma": "^7.8.0",
     "tailwindcss": "^4.3.0",
     "tsx": "^4.22.4",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
