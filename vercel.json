@@ -1,5 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "pnpm install && cd backend && pnpm install",
-  "buildCommand": "cd backend && pnpm dlx prisma generate"
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }

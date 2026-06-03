@@ -11,7 +11,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
     "@tanstack/react-form": "^1.33.0",
-    "backend": "link:backend",
+    "backend": "workspace:*",
     "better-auth": "^1.6.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
