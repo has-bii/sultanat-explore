@@ -5,6 +5,8 @@ import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import {
   Gallery,
   InclusionGrid,
+  ItineraryPreview,
+  PackageCards,
   ProcessTimeline,
   Testimonials,
   TravelAdvisor,
@@ -51,13 +53,13 @@ export default function UmrahPage() {
       <UmrahExplanation />
 
       {/* 4. Packages */}
-      {/* <PackageCards /> */}
+      <PackageCards />
 
       {/* 5. Inclusions */}
       <InclusionGrid />
 
       {/* 6. Itinerary */}
-      {/* <ItineraryPreview /> */}
+      <ItineraryPreview />
 
       {/* 7. Process */}
       <ProcessTimeline />
