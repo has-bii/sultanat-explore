@@ -1,4 +1,5 @@
 import { BookOpen, Clock, Compass } from "lucide-react"
+import Image from "next/image"
 import { advisorProfile, WHATSAPP_BASE } from "../data"
 
 export function TravelAdvisor() {
@@ -22,10 +23,12 @@ export function TravelAdvisor() {
           <div className="grid items-center lg:grid-cols-5">
             {/* Photo */}
             <div className="relative h-64 overflow-hidden lg:col-span-2 lg:h-full">
-              <img
+              <Image
+                fill
                 src={advisorProfile.photo}
                 alt={advisorProfile.name}
-                className="h-full w-full object-cover"
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
                 loading="lazy"
               />
             </div>

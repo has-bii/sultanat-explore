@@ -1,4 +1,5 @@
 import { Lock, MapPin, Shield } from "lucide-react"
+import Image from "next/image"
 
 export function UmrahExplanation() {
   return (
@@ -8,9 +9,11 @@ export function UmrahExplanation() {
           {/* Left — Image */}
           <div className="relative">
             <div className="overflow-hidden rounded-3xl">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1592326871020-04f58c1a52f3?w=800&h=600&fit=crop"
                 alt="Masjidil Haram"
+                width={800}
+                height={600}
                 className="h-80 w-full object-cover lg:h-105"
                 loading="lazy"
               />

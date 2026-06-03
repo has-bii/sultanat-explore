@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useState } from "react"
 import type { Destination } from "../types"
 
@@ -18,10 +19,13 @@ export function GallerySection({ destination }: { destination: Destination }) {
         <div className="mt-8">
           {/* Main image */}
           <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
-            <img
+            <Image
+              fill
               src={allImages[activeIndex]}
               alt={`${destination.name} photo ${activeIndex + 1}`}
-              className="h-full w-full object-cover"
+              className="object-cover"
+              sizes="100vw"
+              priority
             />
           </div>
 
@@ -38,10 +42,12 @@ export function GallerySection({ destination }: { destination: Destination }) {
                       : "opacity-60 border-2 border-transparent hover:opacity-100"
                   }`}
                 >
-                  <img
+                  <Image
+                    fill
                     src={img}
                     alt={`${destination.name} thumbnail ${i + 1}`}
-                    className="h-full w-full object-cover"
+                    className="object-cover"
+                    sizes="96px"
                   />
                 </button>
               ))}

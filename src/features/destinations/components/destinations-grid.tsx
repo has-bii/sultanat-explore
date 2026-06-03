@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowRight, Search } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { categoryLabels, categoryOrder, destinations, type DestinationCategory } from "../data"
@@ -94,10 +95,12 @@ export function DestinationsGrid() {
                 className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
+                  <Image
+                    fill
                     src={dest.image}
                     alt={dest.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

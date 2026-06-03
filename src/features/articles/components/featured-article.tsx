@@ -1,4 +1,5 @@
 import { ArrowRight, Calendar, Clock } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { categoryLabels } from "../data"
 import type { Article } from "../types"
@@ -18,10 +19,12 @@ export function FeaturedArticle({ article }: { article: Article }) {
           <div className="grid lg:grid-cols-2">
             {/* Image */}
             <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden">
-              <img
+              <Image
+                fill
                 src={article.thumbnail}
                 alt={article.title}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/10" />
               <div className="absolute top-4 left-4">

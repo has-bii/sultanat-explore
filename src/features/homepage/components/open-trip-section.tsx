@@ -1,4 +1,5 @@
 import { ArrowRight, Car, Hotel, MapPin, Mic, Plane, Utensils } from "lucide-react"
+import Image from "next/image"
 import type { Inclusion, Trip } from "../data"
 import { openTripService } from "../data"
 
@@ -24,10 +25,12 @@ function TripCard({ trip }: { trip: Trip }) {
   return (
     <div className="group w-[320px] flex-shrink-0 overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-uber-md">
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img
+        <Image
+          fill
           src={trip.image}
           alt={trip.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          sizes="320px"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

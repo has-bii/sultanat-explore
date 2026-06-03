@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const benefits = [
   {
     title: "Harga Terjangkau",
@@ -28,10 +30,12 @@ export function OpenTripExplanationA() {
           {/* Left — Photo */}
           <div className="relative">
             <div className="relative aspect-3/4 overflow-hidden rounded-3xl">
-              <img
+              <Image
+                fill
                 src="https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop"
                 alt="Cappadocia balloons"
-                className="h-full w-full object-cover"
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />

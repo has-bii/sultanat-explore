@@ -1,4 +1,5 @@
 import { Lock, Shield } from "lucide-react"
+import Image from "next/image"
 
 export function PrivateTripExplanation() {
   return (
@@ -8,9 +9,11 @@ export function PrivateTripExplanation() {
           {/* Left — Image */}
           <div className="relative">
             <div className="overflow-hidden rounded-3xl">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&h=600&fit=crop"
                 alt="Private trip Turkey"
+                width={800}
+                height={600}
                 className="h-[400px] w-full object-cover"
                 loading="lazy"
               />

@@ -1,4 +1,5 @@
 import { ArrowRight, Calendar, Clock } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { categoryLabels } from "../data"
 import type { Article } from "../types"
@@ -10,10 +11,12 @@ export function ArticleCard({ article }: { article: Article }) {
       className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
     >
       <div className="relative aspect-[16/10] overflow-hidden">
-        <img
+        <Image
+          fill
           src={article.thumbnail}
           alt={article.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />

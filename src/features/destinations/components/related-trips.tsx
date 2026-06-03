@@ -1,6 +1,7 @@
 import { formatDate, formatPrice } from "@/features/open-trip/data"
 import type { OpenTrip } from "@/features/open-trip/types"
 import { ArrowRight, Calendar, Clock, Users } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 
 export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
@@ -38,10 +39,12 @@ export function RelatedTrips({ trips }: { trips: OpenTrip[] }) {
               className="group overflow-hidden rounded-xl bg-card shadow-uber-sm transition-shadow hover:shadow-uber-md"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
-                <img
+                <Image
+                  fill
                   src={trip.image}
                   alt={trip.name}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />

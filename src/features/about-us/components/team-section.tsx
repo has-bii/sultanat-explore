@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
+import Image from "next/image"
 import { team } from "../data"
 
 export function TeamSection() {
@@ -38,10 +39,12 @@ export function TeamSection() {
             >
               {/* Avatar */}
               <div className="mx-auto h-24 w-24 overflow-hidden rounded-full">
-                <img
+                <Image
+                  fill
                   src={member.image}
                   alt={member.name}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="96px"
                 />
               </div>
 

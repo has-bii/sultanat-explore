@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowLeft, ArrowRight } from "lucide-react"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -100,10 +101,12 @@ export function DestinationsSection({
               >
                 <a href={item.href} className="group rounded-xl">
                   <div className="group relative h-full min-h-[27rem] max-w-full overflow-hidden rounded-xl md:aspect-[5/4] lg:aspect-[16/9]">
-                    <img
+                    <Image
+                      fill
                       src={item.image}
                       alt={item.title}
-                      className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 768px) 320px, 360px"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 h-full bg-linear-to-t from-black/80 via-black/30 to-transparent" />

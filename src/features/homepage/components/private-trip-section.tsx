@@ -78,6 +78,7 @@ export function PrivateTripSection() {
 
   useEffect(() => {
     if (!api) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect()
     api.on("select", onSelect)
     api.on("reInit", onSelect)

@@ -1,4 +1,5 @@
 import { ArrowLeft, MapPin } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { categoryLabels } from "../data"
 import type { Destination } from "../types"
@@ -7,10 +8,13 @@ export function DetailHero({ destination }: { destination: Destination }) {
   return (
     <section className="relative">
       <div className="relative h-[45vh] min-h-[360px] overflow-hidden lg:h-[55vh]">
-        <img
+        <Image
+          fill
           src={destination.image}
           alt={destination.name}
-          className="h-full w-full object-cover"
+          className="object-cover"
+          sizes="100vw"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
       </div>

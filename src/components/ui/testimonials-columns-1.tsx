@@ -1,11 +1,19 @@
 "use client"
 
 import { motion } from "motion/react"
+import Image from "next/image"
 import React from "react"
+
+type Testimonial = {
+  text: string
+  image: string
+  name: string
+  role: string
+}
 
 export const TestimonialsColumn = (props: {
   className?: string
-  testimonials: typeof testimonials
+  testimonials: Testimonial[]
   duration?: number
 }) => {
   return (
@@ -32,12 +40,12 @@ export const TestimonialsColumn = (props: {
                 >
                   <div>{text}</div>
                   <div className="flex items-center gap-2 mt-5">
-                    <img
-                      width={40}
-                      height={40}
+                    <Image
                       src={image}
                       alt={name}
-                      className="h-10 w-10 rounded-full"
+                      width={40}
+                      height={40}
+                      className="rounded-full"
                     />
                     <div className="flex flex-col">
                       <div className="font-medium tracking-tight leading-5">{name}</div>
@@ -54,11 +62,4 @@ export const TestimonialsColumn = (props: {
   )
 }
 
-const testimonials = [
-  {
-    text: "",
-    image: "",
-    name: "",
-    role: "",
-  },
-]
+

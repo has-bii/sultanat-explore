@@ -1,6 +1,7 @@
 "use client"
 
 import { X } from "lucide-react"
+import Image from "next/image"
 import { useState } from "react"
 import { galleryImages } from "../data"
 
@@ -30,10 +31,12 @@ export function Gallery() {
               onClick={() => setSelected(i)}
               className={`group relative overflow-hidden rounded-2xl ${img.span}`}
             >
-              <img
+              <Image
+                fill
                 src={img.src}
                 alt={img.alt}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
@@ -54,10 +57,13 @@ export function Gallery() {
           >
             <X className="h-5 w-5" />
           </button>
-          <img
+          <Image
             src={galleryImages[selected].src.replace("w=400", "w=1200").replace("w=600", "w=1200")}
             alt={galleryImages[selected].alt}
+            width={1200}
+            height={800}
             className="max-h-[85vh] max-w-full rounded-2xl object-contain"
+            style={{ width: "auto", height: "auto" }}
           />
         </div>
       )}

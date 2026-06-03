@@ -33,7 +33,7 @@ export function ArticleGrid() {
     }
 
     return items
-  }, [search, activeTab])
+  }, [search, activeTab, nonFeatured])
 
   return (
     <section className="pb-16 lg:pb-20">

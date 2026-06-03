@@ -1,11 +1,16 @@
+import Image from "next/image"
+
 export function AboutHero() {
   return (
     <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden">
       {/* Full-bleed background */}
-      <img
+      <Image
+        fill
         src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1920&h=1080&fit=crop&q=80"
         alt="Istanbul skyline at sunset"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="object-cover"
+        sizes="100vw"
+        priority
       />
 
       {/* Dark overlay */}

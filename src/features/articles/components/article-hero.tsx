@@ -1,4 +1,5 @@
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { categoryLabels } from "../data"
 import type { Article } from "../types"
@@ -7,7 +8,7 @@ export function ArticleHero({ article }: { article: Article }) {
   return (
     <section className="relative">
       <div className="relative h-[45vh] min-h-[360px] overflow-hidden lg:h-[55vh]">
-        <img src={article.thumbnail} alt={article.title} className="h-full w-full object-cover" />
+        <Image fill src={article.thumbnail} alt={article.title} className="object-cover" sizes="100vw" priority />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
       </div>
 

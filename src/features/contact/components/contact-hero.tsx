@@ -1,11 +1,16 @@
+import Image from "next/image"
+
 export function ContactHero() {
   return (
     <section className="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
       {/* Full-bleed background */}
-      <img
+      <Image
+        fill
         src="https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?w=1920&h=1080&fit=crop&q=80"
         alt="Istanbul Bosphorus bridge at dusk"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="object-cover"
+        sizes="100vw"
+        priority
       />
 
       {/* Dark overlay */}

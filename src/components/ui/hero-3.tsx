@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
+import Image from "next/image"
 import React from "react"
 
 interface AnimatedMarqueeHeroProps {
@@ -123,10 +124,12 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
                 rotate: `${index % 2 === 0 ? -2 : 5}deg`,
               }}
             >
-              <img
+              <Image
+                fill
                 src={src}
                 alt={`Showcase image ${index + 1}`}
-                className="w-full h-full object-cover rounded-2xl shadow-uber-sm"
+                className="object-cover rounded-2xl shadow-uber-sm"
+                sizes="(max-width: 768px) 192px, 256px"
               />
             </div>
           ))}

@@ -1,9 +1,10 @@
 import { ArrowRight, Calendar, Clock, MapPin, Users } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { formatDate, formatPrice } from "../data"
 import type { OpenTrip } from "../types"
 
-function SeatBadge({ available, total }: { available: number; total: number }) {
+function SeatBadge({ available }: { available: number }) {
   const isEmpty = available === 0
   const isAlmostEmpty = available > 0 && available <= 3
 
@@ -37,10 +38,12 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img
+        <Image
+          fill
           src={trip.image}
           alt={trip.name}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />

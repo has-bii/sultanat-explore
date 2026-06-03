@@ -10,6 +10,7 @@ import {
   Plus,
   Sparkles,
 } from "lucide-react"
+import Image from "next/image"
 import { useMemo, useState } from "react"
 import { cities, formatPrice, services } from "../data"
 import type { ServiceCategory } from "../types"
@@ -185,10 +186,12 @@ export function TripBuilderWizard() {
                       }`}
                     >
                       <div className="relative h-28 overflow-hidden">
-                        <img
+                        <Image
+                          fill
                           src={city.image}
                           alt={city.name}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

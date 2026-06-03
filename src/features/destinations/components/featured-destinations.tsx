@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { getFeaturedDestinations } from "../data"
 
@@ -32,10 +33,12 @@ export function FeaturedDestinations() {
               <div
                 className={`relative overflow-hidden ${i === 0 ? "h-80 md:h-96" : "h-72 md:h-80"}`}
               >
-                <img
+                <Image
+                  fill
                   src={dest.image}
                   alt={dest.name}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
