@@ -67,7 +67,7 @@ function FacilityCard({ facility }: { facility: Facility }) {
 }
 
 export function PrivateTripSection() {
-  const { facilities } = privateTripService
+  const { title, heading, description, facilities } = privateTripService
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
@@ -96,12 +96,12 @@ export function PrivateTripSection() {
           {/* Left: text content */}
           <div className="flex flex-col justify-center">
             <span className="text-primary text-xs font-semibold tracking-widest uppercase">
-              Private Trip
+              {title}
             </span>
             <h2 className="font-heading text-subheading sm:text-heading mt-2 font-bold tracking-tight">
-              Perjalanan Privat, Sesuai Keinginan Anda
+              {heading}
             </h2>
-            <p className="text-body text-muted-foreground mt-4">{privateTripService.description}</p>
+            <p className="text-body text-muted-foreground mt-4">{description}</p>
             <a
               href={privateTripService.href}
               className="bg-primary text-primary-foreground hover:bg-primary/90 active:shadow-uber-pressed mt-8 inline-flex w-fit items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors"

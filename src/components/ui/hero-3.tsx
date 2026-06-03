@@ -47,7 +47,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
   return (
     <section
       className={cn(
-        "bg-background relative flex h-screen w-full flex-col items-center justify-center overflow-hidden px-4 text-center",
+        "bg-background relative flex h-[75vh] w-full flex-col items-center justify-center overflow-hidden px-4 text-center",
         className,
       )}
     >
@@ -89,7 +89,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
             animate="show"
             variants={FADE_IN_ANIMATION_VARIANTS}
             transition={{ delay: 0.5 }}
-            className="text-muted-foreground mt-6 max-w-xl text-lg"
+            className="text-muted-foreground mt-6 max-w-2xl text-lg"
           >
             {description}
           </motion.p>

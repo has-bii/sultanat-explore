@@ -225,9 +225,8 @@ const privateTripFacilities: Facility[] = [
 
 export const privateTripService = {
   title: "Private Trip",
-  heading: "Perjalanan Privat, Sesuai Keinginan Anda",
-  description:
-    "Dirancang khusus untuk Anda — baik untuk keluarga, bulan madu, atau perjalanan bersama teman. Tentukan sendiri destinasi, durasi, dan fasilitas yang Anda inginkan, dan kami yang mewujudkannya.",
+  heading: "Liburan Lebih Eksklusif dan Fleksibel",
+  description: "Rencanakan liburan privat Anda dan kami akan mewujudkannya.",
   href: "/private-trip",
   ctaText: "Ajukan Private Trip",
   facilities: privateTripFacilities,

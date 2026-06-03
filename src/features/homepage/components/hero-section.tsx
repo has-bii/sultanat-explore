@@ -22,15 +22,9 @@ const TURKEY_IMAGES = [
 export function HeroSection() {
   return (
     <AnimatedMarqueeHero
-      tagline="✈️ Partner Perjalanan Terbaik Anda"
-      title={
-        <span>
-          Mengukir Perjalanan Paling Nyaman
-          <br />
-          Menciptakan Kenangan Paling Berkesan
-        </span>
-      }
-      description=""
+      tagline="Partner Perjalanan Terbaik Anda"
+      title={"Exclusive · Flexible · Memorable"}
+      description="Mengukir perjalanan paling nyaman, menciptakan kenangan paling berkesan"
       ctaText="Hubungi via WhatsApp"
       images={TURKEY_IMAGES}
     />
