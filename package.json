@@ -8,8 +8,7 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "format": "prettier --write .",
-    "postinstall": "turbo run db:generate"
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "prettier": "^3.8.3",
