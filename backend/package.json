@@ -5,7 +5,8 @@
     ".": "./src/app.ts"
   },
   "scripts": {
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/adapter-neon": "^7.8.0",

@@ -1,4 +1,3 @@
-import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import RootProviders from "@/providers/root"
 import type { Metadata } from "next"
