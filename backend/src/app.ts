@@ -22,15 +22,15 @@ app.use(
 )
 
 app.notFound((c) => {
-  return c.json({ message: "Not found" }, 404)
+  return c.json({ message: "Not found", error: "Not found" }, 404)
 })
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
-    return c.json({ message: err.message, error: err.cause }, err.status)
+    return c.json({ message: err.message, error: err.cause || err.message }, err.status)
   }
 
-  return c.json({ message: "Internal server error" }, 500)
+  return c.json({ message: "Internal server error", error: "Internal server error" }, 500)
 })
 
 app.on(["POST", "GET"], "/auth/*", (c) => {
@@ -58,7 +58,7 @@ export type AppType = ApplyGlobalResponse<
     500: {
       json: {
         message: string
-        error?: any
+        error: any
       }
     }
   }
