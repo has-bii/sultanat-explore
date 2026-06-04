@@ -2,6 +2,8 @@
 
 import { RotateCcw, X } from "lucide-react"
 
+import { cn } from "@/lib/utils"
+
 export interface QueueItem {
   id: string
   file: File
@@ -30,9 +32,10 @@ export function UploadQueueItem({ item, onAltChange, onRemove, onRetry }: Upload
 
   return (
     <div
-      className={`flex gap-3 rounded-lg border p-3 ${
-        item.status === "failed" ? "border-red-300 bg-red-50" : "border-neutral-200"
-      }`}
+      className={cn(
+        "flex gap-3 overflow-hidden rounded-lg border p-3",
+        item.status === "failed" ? "border-red-300 bg-red-50" : "border-neutral-200",
+      )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -42,8 +45,8 @@ export function UploadQueueItem({ item, onAltChange, onRemove, onRetry }: Upload
       />
       <div className="flex flex-1 flex-col gap-1.5">
         <div className="flex items-center justify-between">
-          <span className="text-small-heading truncate text-sm font-medium">{item.file.name}</span>
-          <div className="flex items-center gap-1">
+          <span className="max-w-75 truncate text-xs font-medium">{item.file.name}</span>
+          <div className="flex shrink-0 items-center gap-1">
             {canRetry && (
               <button
                 type="button"
