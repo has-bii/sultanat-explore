@@ -123,6 +123,11 @@ frontend/src/proxy.ts (Next.js config)
 frontend/src/lib/auth-client.ts
   └── Better Auth browser client (useSession, signIn, signOut)
 
+frontend/src/lib/api-client.ts
+  └── Hono RPC client (hc<AppType>) — NEXT_PUBLIC_API_URL env var
+      ├── credentials: include (cookie-based auth)
+      └── Used for typed client-side API calls
+
 frontend/src/lib/form.tsx (useAppForm)
   └── TanStack React Form factory
       ├── TextField: label + input + error (Zod validation)
