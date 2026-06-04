@@ -1,35 +1,24 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/lib/auth-client"
-import { useRouter } from "next/navigation"
+import { Header, HeaderBreadcrumb, HeaderLeft } from "@/components/header"
+import { MainPage, MainPageContent } from "@/components/main-page"
 
 export default function AdminDashboardPage() {
-  const { isPending, data } = authClient.useSession()
-  const router = useRouter()
-
-  const handleLogout = async () => {
-    await authClient.signOut()
-    router.push("/admin/login")
-  }
-
   return (
-    <div className="flex min-h-dvh items-center justify-center px-4">
-      <div className="text-center">
-        <h1 className="text-small-heading font-heading font-bold">Dashboard</h1>
-        {data && (
-          <>
-            <p className="text-caption text-muted-foreground mt-2">
-              Selamat datang, {data.user.name}
-            </p>
-            <Button className="mt-4" onClick={handleLogout}>
-              Logout
-            </Button>
-          </>
-        )}
-
-        {isPending && <p className="text-caption text-muted-foreground mt-2">Loading...</p>}
-      </div>
-    </div>
+    <MainPage>
+      <Header>
+        <HeaderLeft>
+          <HeaderBreadcrumb items={[{ label: "Dashboard" }]} />
+        </HeaderLeft>
+      </Header>
+      <MainPageContent>
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          <div className="bg-muted/50 aspect-video rounded-xl" />
+          <div className="bg-muted/50 aspect-video rounded-xl" />
+          <div className="bg-muted/50 aspect-video rounded-xl" />
+        </div>
+        <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+      </MainPageContent>
+    </MainPage>
   )
 }

@@ -1,12 +1,14 @@
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import RootProviders from "@/providers/root"
 import type { Metadata } from "next"
 import { DM_Sans, Geist, Geist_Mono, Inter } from "next/font/google"
 
 import "./globals.css"
 
-const dmSansHeading = DM_Sans({subsets:['latin'],variable:'--font-heading'})
+const dmSansHeading = DM_Sans({ subsets: ["latin"], variable: "--font-heading" })
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,14 +26,10 @@ export const metadata: Metadata = {
     "Agen wisata Turki terpercaya untuk traveler Indonesia. Open trip, private trip, dan paket Umrah.",
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
+      lang="id"
       className={cn(
         "h-full",
         "antialiased",
@@ -43,7 +41,9 @@ export default function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
-        <main className="flex-1">{children}</main>
+        <main className="flex-1">
+          <RootProviders>{children}</RootProviders>
+        </main>
       </body>
     </html>
   )
