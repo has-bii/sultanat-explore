@@ -1,77 +1,132 @@
 # Codebase Directory
 
+Monorepo with two workspace packages: `frontend/` and `backend/`. Orchestrated via Turborepo.
+
 ```
-src/
-├── app/
-│   ├── layout.tsx                 # Root layout (fonts + html/body only)
-│   ├── globals.css                # Tailwind base styles
-│   ├── not-found.tsx              # Global 404 page
-│   │
-│   ├── (public)/                  # Public route group (Navbar + Footer)
-│   │   ├── layout.tsx             # Public layout (Navbar + Footer)
-│   │   ├── page.tsx               # Homepage
-│   │   ├── open-trip/             # Open Trip listing + detail
-│   │   ├── private-trip/          # Private Trip page
-│   │   ├── umrah/                 # Private Umrah page
-│   │   ├── destinations/          # Destinations listing + detail
-│   │   ├── artikel/               # Articles listing + detail
-│   │   ├── about/                 # About Us page
-│   │   ├── faq/                   # FAQ page
-│   │   └── contact/               # Contact page
-│   │
-│   ├── admin/                     # Admin route group (no Navbar/Footer)
-│   │   ├── layout.tsx             # Admin bare layout
-│   │   ├── page.tsx               # Admin index (redirects to dashboard or login)
-│   │   ├── dashboard/             # Admin dashboard
-│   │   └── (auth)/                # Auth pages (centered layout)
-│   │       ├── layout.tsx         # Centered auth layout
-│   │       ├── login/             # Login page
-│   │       ├── forgot-password/   # Forgot password page
-│   │       └── reset-password/    # Reset password page
-│   │
-│   └── api/
-│       └── [[...route]]/
-│           └── route.ts           # Hono catch-all API handler
+frontend/                         # Next.js app (Next.js 16, App Router)
+├── package.json
+├── next.config.ts
+├── tsconfig.json
+├── components.json               # shadcn/ui config
+├── postcss.config.mjs
+├── eslint.config.mjs
+├── .env                          # Env vars (DATABASE_URL, BETTER_AUTH_SECRET, etc.)
 │
-├── components/
-│   ├── ui/                        # shadcn/ui primitives (button, badge, carousel…)
-│   ├── layout/                    # Layout components (navbar, footer)
-│   └── shared/                    # Shared feature-agnostic components
-│       ├── cta-section.tsx
-│       ├── faq-section.tsx
-│       └── floating-whatsapp.tsx
-│
-├── features/                      # Feature modules (domain-driven)
-│   ├── about-us/                  # About Us components, data, types
-│   ├── articles/                  # Article components, data, types
-│   ├── auth/                      # Auth components (login, forgot, reset forms) + Zod schemas
-│   ├── contact/                   # Contact components, data
-│   ├── destinations/              # Destination components, data, types
-│   ├── faq/                       # FAQ components, data
-│   ├── homepage/                  # Homepage section components
-│   ├── open-trip/                 # Open trip components, data, types
-│   ├── private-trip/              # Private trip components, data, types
-│   ├── umrah/                     # Umrah components, data, types
-│   └── collaborate/               # (empty — not started)
-│
-├── hooks/                         # Shared custom hooks
-├── lib/                           # Utilities
-│   ├── utils.ts                   # cn() helper (clsx + tailwind-merge)
-│   ├── auth-client.ts             # Better Auth browser client
-│   └── form.tsx                   # useAppForm (TanStack Form factory)
-│
-├── data/                          # Static data (testimonials only — trips etc. in features)
-├── types/                         # Shared TypeScript types
-└── proxy.ts                       # Next.js auth middleware (route protection)
+└── src/
+    ├── app/
+    │   ├── layout.tsx             # Root layout (fonts + html/body + RootProviders)
+    │   ├── globals.css            # Tailwind base styles
+    │   ├── not-found.tsx          # Global 404 page
+    │   │
+    │   ├── (public)/              # Public route group (Navbar + Footer)
+    │   │   ├── layout.tsx         # Public layout (Navbar + Footer)
+    │   │   ├── page.tsx           # Homepage
+    │   │   ├── open-trip/         # Open Trip listing + detail
+    │   │   ├── private-trip/      # Private Trip page
+    │   │   ├── umrah/             # Private Umrah page
+    │   │   ├── destinations/      # Destinations listing + detail
+    │   │   ├── artikel/           # Articles listing + detail
+    │   │   ├── about/             # About Us page
+    │   │   ├── faq/               # FAQ page
+    │   │   └── contact/           # Contact page
+    │   │
+    │   ├── admin/                 # Admin route group (no Navbar/Footer)
+    │   │   ├── page.tsx           # Admin index (redirects to dashboard or login)
+    │   │   ├── loading.tsx        # Loading fallback for admin
+    │   │   ├── (auth)/            # Auth pages (centered layout)
+    │   │   │   ├── layout.tsx     # Centered auth layout
+    │   │   │   ├── login/         # Login page
+    │   │   │   ├── forgot-password/
+    │   │   │   └── reset-password/
+    │   │   └── dashboard/         # Admin dashboard (SidebarProvider layout)
+    │   │       ├── layout.tsx     # Admin dashboard layout (SidebarProvider + AppSidebar)
+    │   │       ├── page.tsx       # Dashboard home (cards placeholder)
+    │   │       └── destination/   # Destination management (shell pages)
+    │   │           ├── page.tsx   # Destination list
+    │   │           └── category/  # Attraction category management
+    │   │               └── page.tsx
+    │   │
+    │   └── api/
+    │       └── [[...route]]/
+    │           └── route.ts       # Hono catch-all API handler
+    │
+    ├── components/
+    │   ├── ui/                    # shadcn/ui primitives
+    │   │   ├── avatar.tsx
+    │   │   ├── breadcrumb.tsx
+    │   │   ├── button.tsx
+    │   │   ├── carousel.tsx
+    │   │   ├── collapsible.tsx
+    │   │   ├── dropdown-menu.tsx
+    │   │   ├── field.tsx
+    │   │   ├── hero-3.tsx
+    │   │   ├── input.tsx
+    │   │   ├── label.tsx
+    │   │   ├── separator.tsx
+    │   │   ├── sheet.tsx
+    │   │   ├── sidebar.tsx        # shadcn Sidebar (SidebarProvider, SidebarTrigger, etc.)
+    │   │   ├── skeleton.tsx
+    │   │   ├── sonner.tsx
+    │   │   ├── testimonials-columns-1.tsx
+    │   │   └── tooltip.tsx
+    │   │
+    │   ├── header.tsx             # Admin header with breadcrumb + sidebar trigger
+    │   ├── main-page.tsx          # Admin page layout wrapper
+    │   ├── navbar.tsx             # Public navbar
+    │   ├── footer.tsx             # Public footer
+    │   ├── cta-section.tsx        # Shared CTA section
+    │   ├── faq-section.tsx        # Shared FAQ accordion
+    │   ├── floating-whatsapp.tsx  # Floating WhatsApp button
+    │   └── sidebar/               # Admin sidebar components
+    │       ├── app-sidebar.tsx    # Main sidebar with nav groups
+    │       ├── nav-main.tsx       # Nav items (Dashboard, Destinasi, etc.)
+    │       ├── nav-user.tsx       # User menu in sidebar footer
+    │       ├── nav-skeleton.tsx   # Loading skeleton for sidebar
+    │       └── sidebar-header-item.tsx
+    │
+    ├── features/                  # Feature modules (domain-driven)
+    │   ├── about-us/              # Components, data, types
+    │   ├── articles/              # Components, data, types
+    │   ├── auth/                  # Login/forgot/reset forms + Zod schemas
+    │   ├── contact/               # Components, data
+    │   ├── destinations/          # Components, data, types
+    │   ├── faq/                   # Components, data
+    │   ├── homepage/              # Homepage section components
+    │   ├── open-trip/             # Components, data, types
+    │   ├── private-trip/          # Components, data, types
+    │   ├── umrah/                 # Components, data, types
+    │   └── collaborate/           # (empty — not started)
+    │
+    ├── providers/                 # React provider wrappers
+    │   ├── root.tsx               # RootProviders (TooltipProvider + QueryProvider + Toaster)
+    │   └── query-provider.tsx     # React Query provider (TanStack Query)
+    │
+    ├── hooks/                     # Shared custom hooks
+    │   └── use-mobile.ts          # Mobile detection hook (used by sidebar)
+    │
+    ├── lib/                       # Utilities
+    │   ├── utils.ts               # cn() helper (clsx + tailwind-merge)
+    │   ├── auth-client.ts         # Better Auth browser client
+    │   ├── form.tsx               # useAppForm (TanStack Form factory)
+    │   └── query-client.ts        # React Query client instance
+    │
+    ├── data/                      # Static data (testimonials only)
+    ├── types/                     # Shared TypeScript types (empty — types in features)
+    └── proxy.ts                   # Next.js auth middleware (route protection)
 
 backend/                           # Workspace package: API + DB + Auth
 ├── package.json                   # Dependencies: hono, better-auth, prisma, resend
-├── tsconfig.json                  # Path alias: backend/* → ./src/*
+├── tsconfig.json                  # Extends root tsconfig.base.json
 ├── prisma.config.ts               # Prisma 7 config (schema path, datasource URL, seed)
+├── .env                           # Env vars (DATABASE_URL, RESEND_API_KEY, etc.)
+│
 ├── prisma/
-│   ├── schema.prisma              # User, Session, Account, Verification models
-│   ├── migrations/                # Prisma migration files
+│   ├── schema.prisma              # Models: User, Session, Account, Verification
+│   │                             #   Image, Destination, DestinationImage,
+│   │                             #   AttractionCategory, Attraction, AttractionImage
+│   ├── migrations/                # Migration files (auth + destination models)
 │   └── seed.ts                    # Admin user seed
+│
 └── src/
     ├── app.ts                     # Hono app (CORS, auth handler, /api/hello)
     ├── app.type.ts                # Hono context types (user, session)
@@ -80,11 +135,18 @@ backend/                           # Workspace package: API + DB + Auth
         ├── auth.ts                # Better Auth config (email+password, resend)
         └── resend.ts              # Resend email client
 
-public/                            # Static assets (images, icons)
+public/                            # Static assets (root level, served by Next.js)
 
 .github/workflows/
-└── migrate.yml                    # CI: Prisma migrate deploy + seed on push
-```
+└── migrate.yml                    # CI: Prisma migrate deploy + seed on push to main
+
+## Monorepo Structure
+
+- **Root:** Turbo (task orchestration), Prettier (shared config), tsconfig.base.json
+- **frontend/** — Next.js 16 app (imports `"backend": "workspace:*"`)
+- **backend/** — Hono + Prisma (generated Prisma client in `src/generated/prisma/`)
+- **Turborepo tasks:** `db:generate` → `typecheck` → `lint` → `build`
+- **Single `.env` per package** (frontend/.env for Next.js, backend/.env for Prisma)
 
 ## Rules
 
@@ -93,4 +155,4 @@ public/                            # Static assets (images, icons)
 - `data/` — static TS data until CMS replaces it.
 - Pages in `app/` import from `features/` and `components/`. Pages stay thin.
 - `backend/` — workspace package imported via `"backend": "workspace:*"`. Hono app imported by API route.
-- `src/proxy.ts` — Next.js middleware matcher for `/admin/:path*`. Not a standard middleware file.
+- `frontend/src/proxy.ts` — Next.js middleware matcher for `/admin/:path*`. Not a standard middleware file.

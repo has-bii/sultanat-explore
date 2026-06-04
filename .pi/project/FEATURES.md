@@ -32,7 +32,11 @@ Status of implemented features per PRD.
 | Feature | Status | Notes |
 |---|---|---|
 | Auth system | ✅ Done | Better Auth (email+password), login/forgot/reset pages, cookie-based session, proxy.ts protection |
-| Dashboard | ✅ Done | Session-aware, user name + logout |
+| Dashboard layout | ✅ Done | shadcn SidebarProvider + AppSidebar + Header/Breadcrumb/MainPage layout |
+| Dashboard home | ✅ Done | Session-aware, user name + logout, placeholder cards |
+| React Query infra | ✅ Done | QueryClient + QueryProvider in root, devtools available |
+| Toast/theme infra | ✅ Done | sonner (toasts) + next-themes wired via RootProviders |
+| Destination Management | 🔶 In progress | DB schema done (Destination, Image, Attraction, AttractionCategory models + migrations). Admin shell pages for list + category list created. CRUD not implemented |
 | Trip Management | 🔲 Not started | CRUD open trips + private packages |
 | Article (SEO) | 🔲 Not started | Rich text editor, SEO fields, publish/draft |
 | Gallery / Dokumentasi | 🔲 Not started | Photo/video upload per trip |
@@ -41,8 +45,9 @@ Status of implemented features per PRD.
 
 | Feature | Status | Notes |
 |---|---|---|
-| Hono API | ✅ Done | Catch-all route at `src/app/api/[[...route]]`, CORS, error handling |
-| Database (Neon + Prisma 7) | ✅ Done | PostgreSQL, adapter-based PrismaClient |
+| Monorepo (Turborepo) | ✅ Done | frontend/ + backend/ workspace packages, task orchestration |
+| Hono API | ✅ Done | Catch-all route at `frontend/src/app/api/[[...route]]`, CORS, error handling |
+| Database (Neon + Prisma 7) | ✅ Done | PostgreSQL, adapter-based PrismaClient. Models: User, Session, Account, Verification, Image, Destination, DestinationImage, AttractionCategory, Attraction, AttractionImage |
 | Auth (Better Auth) | ✅ Done | Hono handler + Prisma adapter, email+password, disableSignUp |
 | Email (Resend) | ✅ Done | Password reset emails with branded HTML template |
 | CI/CD (GitHub Actions) | ✅ Done | Prisma migrate deploy + seed on push to main |

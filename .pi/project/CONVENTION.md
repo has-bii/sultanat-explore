@@ -21,7 +21,7 @@
 
 - **Tailwind only.** No CSS modules, no styled-components.
 - Use shadcn/components-ui as building blocks.
-- Use `cn()` from `src/lib/utils.ts` for conditional classes.
+- Use `cn()` from `@/lib/utils` for conditional classes.
 - Tailwind classes sorted by prettier-plugin-tailwindcss.
 
 ### Design System Rules (DESIGN.md)
@@ -67,24 +67,26 @@ features/<name>/
 - Form error display via local `formError` state (set in `onSubmit` handler).
 - Reference: `src/features/auth/components/login-form.tsx`.
 
-## Backend Convention
+## Monorepo Convention
 
-- `backend/` is a workspace package (`"backend": "workspace:*"` in root package.json).
-- Hono app (backend/src/app.ts) is the single entry point imported by API route.
+- `frontend/` — Next.js app. All source code inside `frontend/src/`.
+- `backend/` — workspace package (`"backend": "workspace:*"` in root/frontend package.json).
+- Hono app (`backend/src/app.ts`) is the single entry point imported by API route.
 - Better Auth config lives in `backend/src/lib/auth.ts` with Prisma adapter.
 - Prisma 7 uses `prisma.config.ts` (not `datasource.url` in schema). Adapter-based PrismaClient with `@prisma/adapter-neon`.
 - Seed file at `backend/prisma/seed.ts` uses `npx tsx` via prisma config.
-- Auth route protection: `src/proxy.ts` (Next.js config matcher) — not `middleware.ts`.
+- Auth route protection: `frontend/src/proxy.ts` (Next.js config matcher) — not `middleware.ts`.
+- Turborepo tasks: `db:generate` (generate Prisma client) → `typecheck` → `lint` → `build`.
 
 ## Import Aliases
 
-- `@/components` → `src/components`
-- `@/features` → `src/features`
-- `@/hooks` → `src/hooks`
-- `@/lib` → `src/lib`
-- `@/types` → `src/types`
-- `@/data` → `src/data`
-- `backend/*` → `backend/src/*`
+- `@/components` → `frontend/src/components`
+- `@/features` → `frontend/src/features`
+- `@/hooks` → `frontend/src/hooks`
+- `@/lib` → `frontend/src/lib`
+- `@/types` → `frontend/src/types`
+- `@/data` → `frontend/src/data`
+- `backend/*` → `backend/src/*` (workspace package)
 
 ## General
 

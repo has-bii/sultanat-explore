@@ -1,7 +1,7 @@
 # Product Requirements Document
 ## SultanatExplore Website
 
-**Version:** 2.0  
+**Version:** 2.1  
 **Last Updated:** June 2026  
 **Status:** Active
 
@@ -9,7 +9,7 @@
 
 ## 1. Overview
 
-SultanatExplore is a Turkey-based travel agency serving Indonesian travelers. Website covers brand awareness, service presentation, and WhatsApp-driven inquiries. Public pages complete. Remaining work: Collaborate page, Admin CMS modules, minor global features.
+SultanatExplore is a Turkey-based travel agency serving Indonesian travelers. Website covers brand awareness, service presentation, and WhatsApp-driven inquiries. Public pages complete. Remaining work: Collaborate page, Admin CMS modules (Trip, Article, Gallery), minor global features.
 
 ---
 
@@ -58,7 +58,9 @@ SultanatExplore is a Turkey-based travel agency serving Indonesian travelers. We
 | Module | Priority | Status |
 |---|---|---|
 | Auth (login/forgot/reset) | Required | ✅ Done — Better Auth + Hono API + Prisma/Neon |
-| Dashboard | Required | ✅ Done — session-aware redirect, logout |
+| Dashboard layout + home | Required | ✅ Done — shadcn SidebarProvider + AppSidebar + Header/Breadcrumb. Session-aware, logout. Placeholder cards |
+| Client infra (React Query, toasts, theme) | Required | ✅ Done — QueryProvider, sonner Toaster, next-themes in RootProviders |
+| Destination Management | High | 🔶 In progress — DB schema (Destination, Image, Attraction, AttractionCategory) + migrations done. Admin shell pages created (list + category). CRUD forms not implemented |
 | Trip Management | High | 🔲 Not started — CRUD for open trips + private packages |
 | Article (SEO) | High | 🔲 Not started — rich text editor, SEO fields, publish/draft |
 | Gallery / Dokumentasi | Medium | 🔲 Not started — photo/video upload per trip or destination |
@@ -88,6 +90,11 @@ SultanatExplore is a Turkey-based travel agency serving Indonesian travelers. We
 ---
 
 ## 7. Admin Panel Requirements — Remaining
+
+### Destination Management
+- **DB schema: complete** (Destination, Image, Attraction, AttractionCategory + join tables)
+- **Admin UI: shell pages created** (list page + category list page under `/admin/dashboard/destination/`)
+- Remaining: CRUD forms, image upload, category CRUD
 
 ### Trip Management
 - Add / edit / delete open trips and private trip packages

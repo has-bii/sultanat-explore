@@ -11,21 +11,41 @@
 | Language | TypeScript (strict) |
 | Compiler | React Compiler (babel plugin) |
 | Package mgr | pnpm |
+| Monorepo | Turborepo (task orchestration + caching) |
 | Forms | TanStack React Form (useAppForm) |
 | Auth | Better Auth (server) + auth-client (browser) |
-| API layer | Hono (catch-all route in `src/app/api/[[...route]]`) |
+| API layer | Hono (catch-all route in `frontend/src/app/api/[[...route]]`) |
 | Database | PostgreSQL via Neon + Prisma 7 |
 | Email | Resend (password reset) |
+| Client data | TanStack React Query (React Query) |
+| Theme | next-themes |
+| Toasts | sonner |
 | CI | GitHub Actions (Prisma migrate on push to main) |
+
+## Monorepo Layout
+
+```
+sultanat-explore/
+├── frontend/      # Next.js app (public + admin pages)
+├── backend/       # Hono API + Prisma + Better Auth
+├── turbo.json     # Task orchestration
+└── pnpm-workspace.yaml
+```
+
+- Root has only Prettier, Turbo, and convenience scripts (`dev`, `build`, `lint`, `typecheck`).
+- Each package has its own `.env`, `package.json`, `tsconfig.json`, ESLint config.
+- `frontend/` imports `"backend": "workspace:*"` — Hono app bundled into Next.js build.
+- Turborepo pipeline: `db:generate` → `typecheck` → `lint` → `build`.
 
 ## Patterns
 
 - **Server Components by default.** Add `"use client"` only when needed (event handlers, hooks, browser APIs).
-- **Feature-based modules.** `src/features/<domain>/` owns components, hooks, types. Shared resources at `src/components/`, `src/hooks/`, `src/lib/`.
-- **Workspace backend.** `backend/` is a local workspace package (`"backend": "workspace:*"`) with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
-- **API catch-all.** All API routes handled by `src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
-- **Route protection.** `src/proxy.ts` (Next.js config-based middleware) checks Better Auth session cookie before admin routes.
-- **Route groups.** Public pages in `(public)` route group (Navbar/Footer in its layout). Admin in `admin/` route group (no Navbar/Footer).
+- **Feature-based modules.** `frontend/src/features/<domain>/` owns components, hooks, types. Shared resources at `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/lib/`.
+- **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
+- **API catch-all.** All API routes handled by `frontend/src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
+- **Route protection.** `frontend/src/proxy.ts` (Next.js config-based middleware) checks Better Auth session cookie before admin routes.
+- **Route groups.** Public pages in `(public)` route group (Navbar/Footer in its layout). Admin in `admin/` route group with dashboard layout (sidebar + header).
+- **Admin layout.** Dashboard pages wrapped in shadcn `SidebarProvider` + `AppSidebar` + `Header`/`MainPage` components.
 - **No CMS yet.** Content still static/hardcoded for public pages. CMS decision deferred until admin modules built.
 
 ## Design System
@@ -54,11 +74,29 @@
 | API routing | Hono catch-all | Single route handler in `[[...route]]` for all API paths |
 | Form system | TanStack React Form (useAppForm) | Type-safe forms with Zod validation, reactive submit state |
 | Route protection | Next.js proxy.ts | Cookie-based, redirects unauthenticated to /admin/login |
+| Monorepo | Turborepo + pnpm workspaces | Task caching, clean separation, shared base tsconfig |
+| Client data | TanStack React Query | Server-state for admin CRUD pages |
+| Admin layout | shadcn SidebarProvider | Collapsible sidebar + breadcrumb header pattern |
+
+## Database Models (Prisma 7)
+
+### Auth models
+- `User`, `Session`, `Account`, `Verification` — Better Auth standard models.
+
+### Content models
+- `Image` — Reusable image entity (`url`, `alt`). Referenced by typed FKs from destinations and attractions.
+- `Destination` — City/region (slug, name, tagline, description, highlights[], featured flag). FK to Image (hero).
+- `DestinationImage` — Join table for gallery images, ordered.
+- `AttractionCategory` — Category entity (budaya, alam, pantai, etc.) — not an enum.
+- `Attraction` — Landmark/activity per destination. FK to Image (hero), Category, Destination.
+- `AttractionImage` — Join table for attraction gallery images, ordered.
+
+Gallery pattern uses join tables (`DestinationImage`, `AttractionImage`) with `order` field instead of JSON arrays or polymorphic relations.
 
 ## Dependency map
 
 ```
-src/app/api/[[...route]]/route.ts
+frontend/src/app/api/[[...route]]/route.ts
   └── imports Hono app from backend/src/app.ts
         ├── Hono instance with CORS + error handling
         ├── Better Auth handler at /api/auth/*
@@ -66,19 +104,23 @@ src/app/api/[[...route]]/route.ts
         └── Protected routes (auth check on every request)
               └── Set c.set("user") / c.set("session")
 
-src/proxy.ts (Next.js config)
+frontend/src/proxy.ts (Next.js config)
   └── Matches /admin/:path*
       └── Reads Better Auth session cookie
           ├── Protected + no cookie → redirect /admin/login
           └── Auth page + cookie → redirect /admin/dashboard
 
-src/lib/auth-client.ts
+frontend/src/lib/auth-client.ts
   └── Better Auth browser client (useSession, signIn, signOut)
 
-src/lib/form.tsx (useAppForm)
+frontend/src/lib/form.tsx (useAppForm)
   └── TanStack React Form factory
       ├── TextField: label + input + error (Zod validation)
       └── SubmitButton: reactive disabled/loading state
+
+frontend/src/providers/
+  ├── root.tsx — TooltipProvider + QueryProvider + Toaster
+  └── query-provider.tsx — TanStack Query (React Query) client provider
 
 backend/src/lib/db.ts
   └── PrismaClient with PrismaNeon adapter
