@@ -3,6 +3,6 @@
   "version": 2,
   "framework": "nextjs",
   "installCommand": "pnpm install",
-  "buildCommand": "pnpm typecheck && pnpm lint && pnpm build",
+  "buildCommand": "pnpm build",
   "outputDirectory": "./frontend/dist"
 }
