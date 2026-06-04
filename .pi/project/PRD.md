@@ -1,22 +1,22 @@
 # Product Requirements Document
 ## SultanatExplore Website
 
-**Version:** 1.0  
-**Last Updated:** May 2026  
-**Status:** Draft
+**Version:** 2.0  
+**Last Updated:** June 2026  
+**Status:** Active
 
 ---
 
 ## 1. Overview
 
-SultanatExplore is a Turkey-based travel agency that serves Indonesian travelers. The website aims to grow brand awareness, explain what SultanatExplore is, and present their travel services — including open group trips, private trips, and private Umrah packages.
+SultanatExplore is a Turkey-based travel agency serving Indonesian travelers. Website covers brand awareness, service presentation, and WhatsApp-driven inquiries. Public pages complete. Remaining work: Collaborate page, Admin CMS modules, minor global features.
 
 ---
 
 ## 2. Goals
 
-- Establish SultanatExplore's online presence and brand credibility
-- Educate Indonesian audiences about the services offered
+- Establish online presence and brand credibility
+- Educate Indonesian audiences about travel services offered
 - Drive inquiries via WhatsApp for trip bookings
 - Attract potential collaborators (travel influencers / KOL)
 - Support SEO growth through articles and destination content
@@ -33,103 +33,61 @@ SultanatExplore is a Turkey-based travel agency that serves Indonesian travelers
 
 ## 4. Site Structure
 
-### 4.1 Public Pages
+### 4.1 Completed Pages (Built, minor maintenance only)
 
-| Page | Description |
+| Page | Notes |
 |---|---|
-| **Homepage** | Brand introduction, hero visuals, service highlights, testimonials, and CTA to WhatsApp |
-| **Open Trip** | List of upcoming group trips with dates, itinerary, pricing (IDR), and seat availability |
-| **Private Trip** | Explanation of private/custom trip service with an inquiry form |
-| **Private Umrah** | Dedicated page for Umrah travel packages with details and inquiry CTA |
-| **Destinasi** | Destination listing page; each destination links to its own detail page |
-| **Artikel** | Publicly accessible blog/article listing page with individual article detail pages |
-| **Collaborate** | Information for travel influencers/KOL interested in partnering with SultanatExplore |
-| **About Us** | Company story, team, values, and testimonials |
-| **FAQ** | Common questions about trips, visas, halal food, payments, and more |
-| **Contact** | WhatsApp contact CTA, social media links, and email |
+| **Homepage** | Hero (motion marquee), about, services, destinations, testimonials, CTA, floating WhatsApp |
+| **Open Trip** | Listing + detail, trip cards, itinerary, inclusions, social proof, past-trip gallery |
+| **Private Trip** | Explanation, comparison table, trip builder wizard, sample itineraries, gallery, testimonials, FAQ |
+| **Private Umrah** | Hero, social proof, packages (Standard/Premium/VIP), inclusions, itinerary, process, gallery, testimonials, FAQ |
+| **Destinasi** | Listing (hero, featured, searchable grid) + detail (hero, gallery, related trips, CTA) |
+| **Artikel** | Listing (hero, featured, filterable grid, search) + detail (content blocks, author, related) + 6 sample articles |
+| **About Us** | Company story, team, values, testimonials, navbar dark-theme inversion |
+| **FAQ** | 6 categories (~20 questions), category filter, accordion, WhatsApp CTA |
+| **Contact** | Contact cards (WA/IG/email), inquiry form, operating hours, FAQ mini-section |
 
-### 4.2 Admin Panel
+### 4.2 Remaining Pages
 
-| Module | Description |
-|---|---|
-| **Trip Management** | Create, edit, and manage open trip listings and private trip packages |
-| **Article (SEO)** | Write, publish, and manage blog articles for SEO purposes |
-| **Gallery / Dokumentasi** | Upload and manage trip photos and video documentation |
+| Page | Priority | Status |
+|---|---|---|
+| **Collaborate** | Medium | 🔲 Not started — KOL/influencer info + application form or WhatsApp CTA |
+
+### 4.3 Admin Panel
+
+| Module | Priority | Status |
+|---|---|---|
+| Auth (login/forgot/reset) | Required | ✅ Done — Better Auth + Hono API + Prisma/Neon |
+| Dashboard | Required | ✅ Done — session-aware redirect, logout |
+| Trip Management | High | 🔲 Not started — CRUD for open trips + private packages |
+| Article (SEO) | High | 🔲 Not started — rich text editor, SEO fields, publish/draft |
+| Gallery / Dokumentasi | Medium | 🔲 Not started — photo/video upload per trip or destination |
 
 ---
 
-## 5. Page Requirements
+## 5. Page Requirements — Remaining
 
-### 5.1 Homepage
-- Hero banner with strong Turkey visuals and a clear tagline
-- Short introduction of SultanatExplore
-- Highlights of services (Open Trip, Private Trip, Umrah)
-- Featured destinations
-- Testimonials from past Indonesian clients
-- Sticky/floating WhatsApp button
-
-### 5.2 Open Trip
-- Trip cards with: destination name, departure date, duration, price in IDR, seat availability
-- Filter by destination or date
-- "Seats remaining" indicator for urgency
-- Each card links to a full trip detail page with day-by-day itinerary, inclusions/exclusions, and WhatsApp CTA
-
-### 5.3 Private Trip
-- Explanation of what a private trip is and how it works
-- Benefits of choosing a private/custom trip
-- Inquiry form (name, number of travelers, destination interest, travel dates, message)
-- WhatsApp CTA as alternative to the form
-
-### 5.4 Private Umrah
-- Overview of Umrah packages offered
-- What's included (accommodation, transport, guidance, etc.)
-- Emphasis on halal and Muslim-friendly experience
-- Inquiry CTA via WhatsApp
-
-### 5.5 Destinasi
-- Grid or list of destinations (e.g. Istanbul, Cappadocia, Pamukkale, Trabzon)
-- Each destination opens a detail page with description, highlights, best time to visit, and related trips
-
-### 5.6 Artikel
-- Listing page with article cards (thumbnail, title, date, short excerpt)
-- Individual article detail page with full content
-- Articles managed from the Admin panel
-
-### 5.7 Collaborate
+### 5.1 Collaborate
 - Who SultanatExplore is looking to collaborate with
 - What collaborators get (e.g. free/subsidized trips, content opportunities)
 - Inquiry/application form or WhatsApp CTA
-
-### 5.8 About Us
-- Company background and story
-- Why a locally-based Turkey agency (trust signal)
-- Team introduction
-- Testimonials / client stories
-
-### 5.9 FAQ
-- Organized by category: Visa, Halal & Food, Payment, Trip Process, Umrah
-- Expandable accordion-style Q&A
-
-### 5.10 Contact
-- WhatsApp as primary contact method with pre-filled message
-- Instagram and other social media links
-- Email address
-- General inquiry form (optional fallback)
 
 ---
 
 ## 6. Global Features
 
-- **Language:** Bahasa Indonesia (primary)
-- **Currency:** IDR (Indonesian Rupiah)
-- **WhatsApp CTA:** Floating button present on all pages with a pre-filled message
-- **Mobile-first:** Optimized for smartphone browsing
-- **Muslim-friendly indicators:** Halal food info, prayer considerations noted where relevant
-- **Instagram embed:** Live feed on Homepage or Gallery section
+| Feature | Status | Notes |
+|---|---|---|
+| Language: Bahasa Indonesia | ✅ Done | Hardcoded |
+| Currency: IDR | ✅ Done | |
+| WhatsApp CTA | ✅ Done | Floating button all pages |
+| Mobile-first responsive | ✅ Done | |
+| Halal-friendly indicators | 🔲 Not started | Where relevant |
+| Instagram embed | 🔲 Not started | Live feed on Homepage or Gallery |
 
 ---
 
-## 7. Admin Panel Requirements
+## 7. Admin Panel Requirements — Remaining
 
 ### Trip Management
 - Add / edit / delete open trips and private trip packages

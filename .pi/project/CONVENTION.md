@@ -20,7 +20,7 @@
 ## Styling
 
 - **Tailwind only.** No CSS modules, no styled-components.
-- Use shadcn components as building blocks.
+- Use shadcn/components-ui as building blocks.
 - Use `cn()` from `src/lib/utils.ts` for conditional classes.
 - Tailwind classes sorted by prettier-plugin-tailwindcss.
 
@@ -59,6 +59,23 @@ features/<name>/
 - Components import schemas from `../dto/<name>.schema` — no Zod in component files.
 - One schema file per feature. Split to multiple only if schemas >150 lines.
 
+## Form Convention (TanStack Form)
+
+- Use `useAppForm()` from `@/lib/form` — never raw `useForm` from TanStack.
+- `useAppForm()` exposes `form.AppField`, `form.AppForm`, `field.TextField`, `form.SubmitButton`.
+- Zod validators passed via `validators: { onSubmit: <ZodSchema> }`.
+- Form error display via local `formError` state (set in `onSubmit` handler).
+- Reference: `src/features/auth/components/login-form.tsx`.
+
+## Backend Convention
+
+- `backend/` is a workspace package (`"backend": "workspace:*"` in root package.json).
+- Hono app (backend/src/app.ts) is the single entry point imported by API route.
+- Better Auth config lives in `backend/src/lib/auth.ts` with Prisma adapter.
+- Prisma 7 uses `prisma.config.ts` (not `datasource.url` in schema). Adapter-based PrismaClient with `@prisma/adapter-neon`.
+- Seed file at `backend/prisma/seed.ts` uses `npx tsx` via prisma config.
+- Auth route protection: `src/proxy.ts` (Next.js config matcher) — not `middleware.ts`.
+
 ## Import Aliases
 
 - `@/components` → `src/components`
@@ -67,6 +84,7 @@ features/<name>/
 - `@/lib` → `src/lib`
 - `@/types` → `src/types`
 - `@/data` → `src/data`
+- `backend/*` → `backend/src/*`
 
 ## General
 
