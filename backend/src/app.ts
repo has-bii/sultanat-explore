@@ -26,6 +26,8 @@ app.notFound((c) => {
 })
 
 app.onError((err, c) => {
+  console.error(err)
+
   if (err instanceof HTTPException) {
     return c.json({ message: err.message, error: err.cause || err.message }, err.status)
   }
@@ -43,6 +45,7 @@ app.use("*", async (c, next) => {
     c.set("user", session.user)
     c.set("session", session.session)
     await next()
+    return
   }
   c.set("user", null)
   c.set("session", null)

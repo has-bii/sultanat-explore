@@ -12,6 +12,7 @@ export async function processImage(input: Buffer): Promise<{
       .toBuffer(),
     sharp(input)
       .resize({ width: 64, height: 64, fit: "inside" })
+      .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true }),
   ])
