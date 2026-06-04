@@ -12,8 +12,13 @@
     "RESEND_EMAIL"
   ],
   "tasks": {
+    "db:generate": {
+      "cache": true,
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": ["src/generated/**"]
+    },
     "build": {
-      "dependsOn": ["^build", "typecheck", "lint"],
+      "dependsOn": ["^db:generate", "^build", "typecheck", "lint"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
