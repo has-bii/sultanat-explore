@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, PinIcon } from "lucide-react"
+import { Home, Image, PinIcon } from "lucide-react"
 import * as React from "react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
@@ -41,6 +41,11 @@ const navMain = [
         url: "/admin/dashboard/destination/attraction",
       },
     ],
+  },
+  {
+    title: "Foto",
+    url: "/admin/dashboard/image",
+    icon: Image,
   },
 ]
 

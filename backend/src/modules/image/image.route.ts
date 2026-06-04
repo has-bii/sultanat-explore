@@ -11,12 +11,12 @@ import {
   uploadImage,
 } from "backend/modules/image/image.service"
 import { paramIdSchema } from "backend/schemas/param.schema"
-import { querySchema } from "backend/schemas/query.schema"
+import { imageQuerySchema } from "backend/schemas/query.schema"
 
 const imageRoute = new Hono()
-  .get("/", zValidator("query", querySchema), async (c) => {
+  .get("/", zValidator("query", imageQuerySchema), async (c) => {
     const query = c.req.valid("query")
-    const result = await listImages(query.cursor, query.limit)
+    const result = await listImages(query)
     return c.json(result)
   })
   .get("/:id", zValidator("param", paramIdSchema), async (c) => {

@@ -19,8 +19,8 @@ export async function uploadImage(file: File, alt?: string) {
   let processed: Awaited<ReturnType<typeof processImage>>
   try {
     processed = await processImage(buffer)
-  } catch {
-    throw new HTTPException(500, { message: "Image processing failed" })
+  } catch (err) {
+    throw new HTTPException(500, { message: "Image processing failed", cause: err })
   }
 
   const key = r2Key()
@@ -43,13 +43,21 @@ export async function uploadImage(file: File, alt?: string) {
   return image
 }
 
-export async function listImages(cursor?: string, limit = 20) {
+export async function listImages(params: {
+  cursor?: string
+  limit?: number
+  sort?: "createdAt"
+  order?: "asc" | "desc"
+  search?: string
+}) {
+  const { cursor, limit = 20, sort = "createdAt", order = "desc", search } = params
   const take = Math.min(limit, 100) + 1
 
   const images = await db.image.findMany({
     take,
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-    orderBy: { createdAt: "desc" },
+    orderBy: { [sort]: order },
+    ...(search ? { where: { alt: { startsWith: search, mode: "insensitive" } } } : {}),
   })
 
   const data = images.slice(0, Math.min(limit, 100))

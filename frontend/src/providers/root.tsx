@@ -1,5 +1,6 @@
 "use client"
 
+import { NuqsAdapter } from "nuqs/adapters/react"
 import { ReactNode } from "react"
 
 import { Toaster } from "@/components/ui/sonner"
@@ -13,9 +14,11 @@ type Props = {
 
 export default function RootProviders({ children }: Props) {
   return (
-    <TooltipProvider>
-      <QueryProvider>{children}</QueryProvider>
-      <Toaster richColors theme="light" />
-    </TooltipProvider>
+    <NuqsAdapter>
+      <TooltipProvider>
+        <QueryProvider>{children}</QueryProvider>
+        <Toaster richColors theme="light" />
+      </TooltipProvider>
+    </NuqsAdapter>
   )
 }
