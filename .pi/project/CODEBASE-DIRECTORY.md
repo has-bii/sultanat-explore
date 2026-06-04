@@ -115,25 +115,38 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     └── proxy.ts                   # Next.js auth middleware (route protection)
 
 backend/                           # Workspace package: API + DB + Auth
-├── package.json                   # Dependencies: hono, better-auth, prisma, resend
+├── package.json                   # Dependencies: hono, better-auth, prisma, resend, sharp, blurhash, @aws-sdk/client-s3
 ├── tsconfig.json                  # Extends root tsconfig.base.json
 ├── prisma.config.ts               # Prisma 7 config (schema path, datasource URL, seed)
-├── .env                           # Env vars (DATABASE_URL, RESEND_API_KEY, etc.)
+├── .env                           # Env vars (DATABASE_URL, RESEND_API_KEY, R2_*, etc.)
 │
 ├── prisma/
 │   ├── schema.prisma              # Models: User, Session, Account, Verification
-│   │                             #   Image, Destination, DestinationImage,
+│   │                             #   Image (url, alt, fileSize, blurHash), Destination, DestinationImage,
 │   │                             #   AttractionCategory, Attraction, AttractionImage
-│   ├── migrations/                # Migration files (auth + destination models)
+│   ├── migrations/                # Migration files (auth + destination + image fields)
 │   └── seed.ts                    # Admin user seed
 │
 └── src/
-    ├── app.ts                     # Hono app (CORS, auth handler, /api/hello)
-    ├── app.type.ts                # Hono context types (user, session)
-    └── lib/
-        ├── db.ts                  # PrismaClient with Neon adapter
-        ├── auth.ts                # Better Auth config (email+password, resend)
-        └── resend.ts              # Resend email client
+    ├── app.ts                     # Hono app (CORS, auth, route registration)
+    ├── app.type.ts                # AppContext (nullable) + AppAuthContext (guaranteed)
+    ├── middlewares/
+    │   ├── require-auth.ts        # Auth guard middleware (narrows context)
+    │   └── validator-wrapper.ts   # zValidator wrapper (auto HTTPException)
+    ├── schemas/
+    │   ├── param.schema.ts        # Shared param schemas (paramIdSchema)
+    │   └── query.schema.ts        # Shared query schemas (querySchema)
+    ├── lib/
+    │   ├── db.ts                  # PrismaClient with Neon adapter
+    │   ├── auth.ts                # Better Auth config (email+password, resend)
+    │   ├── resend.ts              # Resend email client
+    │   ├── r2.ts                  # S3Client + upload/delete wrappers
+    │   └── image-processing.ts    # Sharp resize + blurHash pipeline
+    └── modules/
+        └── image/
+            ├── image.route.ts     # Hono routes (GET public, mutations auth)
+            ├── image.service.ts   # Business logic (R2 + DB)
+            └── image.schema.ts   # Zod schemas (upload, update)
 
 public/                            # Static assets (root level, served by Next.js)
 

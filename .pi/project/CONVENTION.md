@@ -94,3 +94,32 @@ features/<name>/
 - RSC by default. `"use client"` only when necessary.
 - React Compiler enabled — avoid useMemo/useCallback unless compiler can't optimize.
 - No `console.log` in production code.
+
+## Backend Module Convention
+
+```
+backend/src/
+├── modules/<domain>/
+│   ├── <domain>.route.ts      # Hono route handlers
+│   ├── <domain>.service.ts    # Business logic (DB + external ops)
+│   └── <domain>.schema.ts    # Zod schemas (request validation)
+├── middlewares/                # Shared Hono middleware
+├── schemas/                   # Shared Zod schemas (param, query)
+└── lib/                       # Shared utilities (db, auth, r2, etc.)
+```
+
+### Route file
+- Chain routes with `.get()`, `.post()`, etc.
+- Place public routes before `requireAuth`, auth-required routes after.
+- Use `zValidator(target, schema)` for validation — never manual `safeParse`.
+- Return `c.json(data, status)` for responses, `c.body(null, 204)` for deletes.
+
+### Service file
+- One exported function per operation (uploadImage, listImages, etc.)
+- Throw `HTTPException` with specific status + message.
+- Keep R2/external ops and DB ops in same function (service owns full flow).
+
+### Schema file
+- Export Zod schemas + inferred types.
+- Named `<Name>Schema` (PascalCase).
+- Import from `zod` (not `@hono/zod-validator`).

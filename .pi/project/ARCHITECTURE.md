@@ -21,6 +21,10 @@
 | Theme | next-themes |
 | Toasts | sonner |
 | CI | GitHub Actions (Prisma migrate on push to main) |
+| Image storage | Cloudflare R2 (S3-compatible) |
+| Image processing | Sharp (resize + WebP)
+| Blur placeholder | blurhash (encode from 64×64 thumbnail) |
+| Validation | Zod (v4) + @hono/zod-validator |
 
 ## Monorepo Layout
 
@@ -41,6 +45,9 @@ sultanat-explore/
 
 - **Server Components by default.** Add `"use client"` only when needed (event handlers, hooks, browser APIs).
 - **Feature-based modules.** `frontend/src/features/<domain>/` owns components, hooks, types. Shared resources at `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/lib/`.
+- **Backend modules.** `backend/src/modules/<domain>/` owns route, service, schema. Shared middleware at `backend/src/middlewares/`, shared schemas at `backend/src/schemas/`.
+- **Zod validation via zValidator.** Use `zValidator(target, schema)` wrapper — auto-throws HTTPException(400) on failure. Never manual `safeParse` in routes.
+- **Auth split.** `AppContext` (nullable user/session) for public routes. `AppAuthContext` (guaranteed) for protected routes. `requireAuth` middleware narrows context type.
 - **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
 - **API catch-all.** All API routes handled by `frontend/src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
 - **Route protection.** `frontend/src/proxy.ts` (Next.js config-based middleware) checks Better Auth session cookie before admin routes.
@@ -77,6 +84,7 @@ sultanat-explore/
 | Monorepo | Turborepo + pnpm workspaces | Task caching, clean separation, shared base tsconfig |
 | Client data | TanStack React Query | Server-state for admin CRUD pages |
 | Admin layout | shadcn SidebarProvider | Collapsible sidebar + breadcrumb header pattern |
+| Image upload | Sharp + R2 | Resize to 1920px max, WebP quality 75, blurHash for placeholders |
 
 ## Database Models (Prisma 7)
 
@@ -84,7 +92,7 @@ sultanat-explore/
 - `User`, `Session`, `Account`, `Verification` — Better Auth standard models.
 
 ### Content models
-- `Image` — Reusable image entity (`url`, `alt`). Referenced by typed FKs from destinations and attractions.
+- `Image` — Reusable image entity (`url`, `alt`, `fileSize`, `blurHash`). Referenced by typed FKs from destinations and attractions.
 - `Destination` — City/region (slug, name, tagline, description, highlights[], featured flag). FK to Image (hero).
 - `DestinationImage` — Join table for gallery images, ordered.
 - `AttractionCategory` — Category entity (budaya, alam, pantai, etc.) — not an enum.
@@ -101,8 +109,10 @@ frontend/src/app/api/[[...route]]/route.ts
         ├── Hono instance with CORS + error handling
         ├── Better Auth handler at /api/auth/*
         │     └── Prisma adapter → Neon Postgres
-        └── Protected routes (auth check on every request)
-              └── Set c.set("user") / c.set("session")
+        ├── Public routes (GET /api/images — no auth required)
+        └── Protected routes (requireAuth middleware)
+              ├── Set c.set("user") / c.set("session")
+              └── POST/PATCH/DELETE mutations
 
 frontend/src/proxy.ts (Next.js config)
   └── Matches /admin/:path*
@@ -130,4 +140,23 @@ backend/src/lib/auth.ts
 
 backend/src/lib/resend.ts
   └── Resend client for password reset emails
+
+backend/src/lib/r2.ts
+  └── S3Client init + r2Upload/r2Delete/r2KeyFromUrl
+
+backend/src/lib/image-processing.ts
+  └── Sharp resize (1920px max, WebP 75) + blurHash encode
+
+backend/src/modules/image/
+  ├── image.route.ts — Hono routes (GET public, mutations auth)
+  ├── image.service.ts — Business logic (R2 + DB)
+  └── image.schema.ts — Zod schemas (upload, update)
+
+backend/src/middlewares/
+  ├── require-auth.ts — Auth guard (narrows to AppAuthContext)
+  └── validator-wrapper.ts — zValidator wrapper (auto HTTPException)
+
+backend/src/schemas/
+  ├── param.schema.ts — UUID param validation
+  └── query.schema.ts — Cursor + limit query validation
 ```

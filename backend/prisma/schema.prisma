@@ -78,10 +78,12 @@ model Verification {
 // ─── Image ────────────────────────────────────────────────────
 
 model Image {
-  id        String   @id @db.Uuid @default(uuid(7))
+  id        String     @id @db.Uuid @default(uuid(7))
   url       String
   alt       String?
-  createdAt DateTime @default(now())
+  fileSize  Int
+  blurHash  String?
+  createdAt DateTime   @default(now())
 
   destinations         Destination[]
   attractions          Attraction[]

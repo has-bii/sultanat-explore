@@ -36,10 +36,10 @@ Status of implemented features per PRD.
 | Dashboard home | ✅ Done | Session-aware, user name + logout, placeholder cards |
 | React Query infra | ✅ Done | QueryClient + QueryProvider in root, devtools available |
 | Toast/theme infra | ✅ Done | sonner (toasts) + next-themes wired via RootProviders |
-| Destination Management | 🔶 In progress | DB schema done (Destination, Image, Attraction, AttractionCategory models + migrations). Admin shell pages for list + category list created. CRUD not implemented |
+| Destination Management | 🔶 In progress | DB schema done (Destination, Image, Attraction, AttractionCategory models + migrations). Admin shell pages for list + category list created. CRUD not implemented
 | Trip Management | 🔲 Not started | CRUD open trips + private packages |
 | Article (SEO) | 🔲 Not started | Rich text editor, SEO fields, publish/draft |
-| Gallery / Dokumentasi | 🔲 Not started | Photo/video upload per trip |
+| Image CRUD | ✅ Done | Upload (Sharp→WebP + blurHash), list (cursor paginated), get, update alt, delete (R2 + DB). Public GET, auth for mutations |
 
 ## Backend Infrastructure
 
