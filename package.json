@@ -2,16 +2,18 @@
   "name": "sultanat-explore",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.5.0",
   "scripts": {
-    "dev": "pnpm --filter frontend dev",
-    "build": "pnpm --filter frontend build",
-    "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck",
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
     "format": "prettier --write ."
   },
   "devDependencies": {
     "prettier": "^3.8.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "prettier-plugin-tailwindcss": "^0.8.0"
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "turbo": "^2.5.4"
   }
 }
