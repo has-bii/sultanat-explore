@@ -5,12 +5,15 @@
   "singleQuote": false,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrder": [
+    "^dotenv/(.*)$",
     "react",
     "<THIRD_PARTY_MODULES>",
-    "^@features/(.*)$",
+    "^backend/(.*)$",
     "^@components/(.*)$",
+    "^@features/(.*)$",
     "^[./]"
   ],
+
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

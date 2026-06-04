@@ -1,8 +1,8 @@
 import { prismaAdapter } from "better-auth/adapters/prisma"
 import { betterAuth } from "better-auth/minimal"
 
-import { db } from "./db"
-import { sendResetPasswordEmail } from "./resend"
+import { db } from "backend/lib/db"
+import { sendResetPasswordEmail } from "backend/lib/resend"
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {

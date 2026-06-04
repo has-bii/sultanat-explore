@@ -1,7 +1,9 @@
-import { PrismaClient } from "@backend/generated/prisma/client"
+import "dotenv/config"
+
 import { PrismaNeon } from "@prisma/adapter-neon"
 import { hashPassword } from "better-auth/crypto"
-import "dotenv/config"
+
+import { PrismaClient } from "backend/generated/prisma/client"
 
 const adapter = new PrismaNeon({
   connectionString: process.env.DATABASE_URL!,

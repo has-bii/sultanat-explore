@@ -14,7 +14,7 @@
     "incremental": true,
     "verbatimModuleSyntax": true,
     "paths": {
-      "@backend/*": ["./src/*"]
+      "backend/*": ["./src/*"]
     },
     "types": ["node"]
   },

@@ -1,4 +1,4 @@
-import { auth } from "./lib/auth"
+import { auth } from "backend/lib/auth"
 
 interface Variables {
   user: typeof auth.$Infer.Session.user

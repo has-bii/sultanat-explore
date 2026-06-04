@@ -2,8 +2,8 @@ import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { HTTPException } from "hono/http-exception"
 
-import type { AppContext } from "./app.type"
-import { auth } from "./lib/auth"
+import type { AppContext } from "backend/app.type"
+import { auth } from "backend/lib/auth"
 
 const app = new Hono<AppContext>().basePath("/api")
 
