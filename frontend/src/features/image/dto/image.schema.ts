@@ -15,7 +15,7 @@ export const imageSchema = z.object({
   url: z.string(),
   alt: z.string().nullable(),
   fileSize: z.number(),
-  blurHash: z.string().nullable(),
+  blurHash: z.string(),
   createdAt: z.string(),
 })
 

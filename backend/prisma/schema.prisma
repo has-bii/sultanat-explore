@@ -82,7 +82,7 @@ model Image {
   url       String
   alt       String?
   fileSize  Int
-  blurHash  String?
+  blurHash  String
   createdAt DateTime   @default(now())
 
   destinations         Destination[]

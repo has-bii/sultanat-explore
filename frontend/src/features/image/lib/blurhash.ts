@@ -1,10 +1,6 @@
 import { decode } from "blurhash"
 
-export function blurhashToDataUrl(hash: string | null, w = 32, h = 32): string {
-  if (!hash) {
-    return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
-  }
-
+export function blurhashToDataUrl(hash: string, w = 32, h = 32): string {
   const pixels = decode(hash, w, h)
   const canvas = new OffscreenCanvas(w, h)
   const ctx = canvas.getContext("2d")!
