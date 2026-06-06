@@ -95,8 +95,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── open-trip/             # Components, data, types
     │   ├── private-trip/          # Components, data, types
     │   ├── umrah/                 # Components, data, types
-    │   ├── collaborate/           # (empty — not started)
-    │   └── image/                 # Image CRUD (admin) — queries, mutations, stores, components
+    │   └── collaborate/           # (empty — not started)
     │
     ├── providers/                 # React provider wrappers
     │   ├── root.tsx               # RootProviders (TooltipProvider + QueryProvider + Toaster)
