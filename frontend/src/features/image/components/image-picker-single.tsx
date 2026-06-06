@@ -119,7 +119,6 @@ export function ImagePickerSingle({
             onLoadMore={() => fetchNextPage()}
             onImageClick={() => {}}
             onClearSearch={() => setSearch("")}
-            onUpload={() => {}}
             mode="pick"
             onPick={handlePick}
             selectedId={value}

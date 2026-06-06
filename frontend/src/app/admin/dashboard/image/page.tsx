@@ -1,6 +1,6 @@
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
-import { LibraryPage } from "@/features/image"
+import { ImagesPage } from "@/features/image/pages/images.page"
 
 const breadcrumb: HeaderBreadcrumbItem = [
   {
@@ -21,7 +21,7 @@ export default function Page() {
         </HeaderLeft>
       </Header>
       <MainPageContent>
-        <LibraryPage />
+        <ImagesPage />
       </MainPageContent>
     </MainPage>
   )

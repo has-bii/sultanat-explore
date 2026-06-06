@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
 import type { Image } from "../dto/image.schema"
+import { useUploadImagesDialogStore } from "../stores/upload-images-dialog.store"
 import { ImageCard } from "./image-card"
 
 interface ImageGridProps {
@@ -17,7 +18,6 @@ interface ImageGridProps {
   onLoadMore: () => void
   onImageClick: (image: Image) => void
   onClearSearch: () => void
-  onUpload: () => void
   mode?: "view" | "pick"
   onPick?: (image: Image) => void
   selectedId?: string | null
@@ -48,11 +48,12 @@ export function ImageGrid({
   onLoadMore,
   onImageClick,
   onClearSearch,
-  onUpload,
   mode = "view",
   onPick,
   selectedId,
 }: ImageGridProps) {
+  const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
+
   // Mobile gate
   if (typeof window !== "undefined" && window.innerWidth < 768) {
     return (

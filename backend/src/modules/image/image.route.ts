@@ -44,7 +44,7 @@ const imageRoute = new Hono()
   .delete("/:id", zValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     await deleteImage(param.id)
-    return c.body(null, 204)
+    return c.json({ success: true })
   })
 
 export default imageRoute

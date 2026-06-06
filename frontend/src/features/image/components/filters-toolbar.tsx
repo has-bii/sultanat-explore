@@ -13,21 +13,18 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface LibraryToolbarProps {
+import { useUploadImagesDialogStore } from "../stores/upload-images-dialog.store"
+
+interface Props {
   search: string
   order: string
   onSearchChange: (value: string) => void
   onOrderChange: (value: string) => void
-  onUpload: () => void
 }
 
-export function LibraryToolbar({
-  search,
-  order,
-  onSearchChange,
-  onOrderChange,
-  onUpload,
-}: LibraryToolbarProps) {
+export function FiltersToolbar({ search, order, onSearchChange, onOrderChange }: Props) {
+  const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
+
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const debouncedSearch = useCallback(

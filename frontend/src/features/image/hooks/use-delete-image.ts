@@ -12,10 +12,11 @@ export function useDeleteImage() {
   return useMutation({
     mutationFn: async (id: string) => {
       const res = await apiClient.api.images[":id"].$delete({ param: { id } })
-      if (!res.ok) {
-        const body = await res.json()
-        throw new Error(body.message || "Delete failed")
+      const data = await res.json()
+      if ("error" in data) {
+        throw new Error(data.message)
       }
+      return data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
