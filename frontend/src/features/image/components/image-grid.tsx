@@ -1,6 +1,6 @@
 "use client"
 
-import { ImageOff, ImagePlus, Monitor } from "lucide-react"
+import { ImageOff, ImagePlus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -53,22 +53,6 @@ export function ImageGrid({
   selectedId,
 }: ImageGridProps) {
   const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
-
-  // Mobile gate
-  if (typeof window !== "undefined" && window.innerWidth < 768) {
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center">
-        <Monitor className="size-16 text-neutral-300" strokeWidth={1} />
-        <div>
-          <h3 className="text-heading font-heading text-lg font-bold">Gunakan Desktop</h3>
-          <p className="text-caption mt-1 max-w-sm text-neutral-500">
-            Manajemen foto optimal di layar desktop. Silakan buka di perangkat dengan layar lebih
-            besar.
-          </p>
-        </div>
-      </div>
-    )
-  }
 
   // Loading state
   if (isLoading) return <SkeletonGrid />

@@ -3,24 +3,27 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 
 import { FiltersToolbar } from "../components/filters-toolbar"
+import { ImageSheet } from "../components/image-detail-sheet"
 import { ImageErrorMessage } from "../components/image-error-message"
 import { ImageGrid } from "../components/image-grid"
-import { ImageSheet } from "../components/image-sheet"
 import { UploadImagesDialog } from "../components/upload-images-dialog"
 import { useImageFilters } from "../hooks/use-image-filters"
 import { getImagesQueryOptions } from "../query/get-images.query"
+import { useImageDetailSheetStore } from "../stores/image-detail-sheet.store"
 
 export function ImagesPage() {
   // Get SearchURL Query
-  const { search, setSearch, order, setOrder, sort, setCursor, selected, setSelected } =
-    useImageFilters()
+  const { search, setSearch, order, setOrder, sort } = useImageFilters()
+
+  // Image Detail Sheet
+  const onOpen = useImageDetailSheetStore((s) => s.onOpen)
 
   //   Restructure query
   const query = {
     sort: sort as "createdAt",
     order: order as "asc" | "desc",
     ...(search ? { search } : {}),
-    limit: 20,
+    limit: 10,
   }
 
   //   Fetching data
@@ -29,16 +32,8 @@ export function ImagesPage() {
 
   const images = data?.pages.flatMap((p) => p.data) ?? []
 
-  const handleLoadMore = () => {
-    const lastPage = data?.pages[data.pages.length - 1]
-    if (lastPage?.nextCursor) {
-      setCursor(lastPage.nextCursor)
-    }
-    fetchNextPage()
-  }
-
   const handleImageClick = (image: { id: string }) => {
-    setSelected(image.id)
+    onOpen(image.id)
   }
 
   if (isError) {
@@ -60,14 +55,14 @@ export function ImagesPage() {
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
         search={search}
-        onLoadMore={handleLoadMore}
+        onLoadMore={fetchNextPage}
         onImageClick={handleImageClick}
         onClearSearch={() => setSearch("")}
       />
 
       <UploadImagesDialog />
 
-      <ImageSheet imageId={selected} onOpenChange={(open) => !open && setSelected("")} />
+      <ImageSheet />
     </>
   )
 }

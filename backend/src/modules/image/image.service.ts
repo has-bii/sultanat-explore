@@ -13,14 +13,14 @@ function r2Key(): string {
   return `images/${year}/${month}/${randomUUID()}.webp`
 }
 
-export async function uploadImage(file: File, alt?: string) {
+async function processAndUpload(file: File) {
   const buffer = Buffer.from(await file.arrayBuffer())
 
   let processed: Awaited<ReturnType<typeof processImage>>
   try {
     processed = await processImage(buffer)
   } catch (err) {
-    throw new HTTPException(500, { message: "Image processing failed", cause: err })
+    throw new HTTPException(500, { message: "Gagal memproses foto", cause: err })
   }
 
   const key = r2Key()
@@ -28,19 +28,24 @@ export async function uploadImage(file: File, alt?: string) {
   try {
     url = await r2Upload(key, processed.buffer, "image/webp")
   } catch {
-    throw new HTTPException(500, { message: "Upload failed" })
+    throw new HTTPException(500, { message: "Gagal mengunggah foto" })
   }
 
-  const image = await db.image.create({
+  return db.image.create({
     data: {
       url,
-      alt: alt ?? null,
       fileSize: processed.buffer.length,
       blurHash: processed.blurHash,
     },
   })
+}
 
-  return image
+export async function uploadImages(files: File[] | File) {
+  if (Array.isArray(files)) {
+    const results = await Promise.all(files.map(processAndUpload))
+    return results
+  }
+  return await processAndUpload(files)
 }
 
 export async function listImages(params: {
@@ -68,13 +73,13 @@ export async function listImages(params: {
 
 export async function getImage(id: string) {
   const image = await db.image.findUnique({ where: { id } })
-  if (!image) throw new HTTPException(404, { message: "Image not found" })
+  if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
   return image
 }
 
 export async function updateImage(id: string, input: UpdateImageInput) {
   const existing = await db.image.findUnique({ where: { id } })
-  if (!existing) throw new HTTPException(404, { message: "Image not found" })
+  if (!existing) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
 
   return db.image.update({
     where: { id },
@@ -84,13 +89,13 @@ export async function updateImage(id: string, input: UpdateImageInput) {
 
 export async function deleteImage(id: string) {
   const image = await db.image.findUnique({ where: { id } })
-  if (!image) throw new HTTPException(404, { message: "Image not found" })
+  if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
 
   const key = r2KeyFromUrl(image.url)
   try {
     await r2Delete(key)
   } catch {
-    throw new HTTPException(500, { message: "Delete failed" })
+    throw new HTTPException(500, { message: "Gagal menghapus foto" })
   }
 
   await db.image.delete({ where: { id } })

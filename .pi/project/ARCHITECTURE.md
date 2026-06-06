@@ -46,6 +46,7 @@ sultanat-explore/
 - **Server Components by default.** Add `"use client"` only when needed (event handlers, hooks, browser APIs).
 - **Feature-based modules.** `frontend/src/features/<domain>/` owns components, hooks, types. Shared resources at `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/lib/`.
 - **Backend modules.** `backend/src/modules/<domain>/` owns route, service, schema. Shared middleware at `backend/src/middlewares/`, shared schemas at `backend/src/schemas/`.
+- **Unified API response format.** All endpoints return `{ success: true, data, message }` for success, `{ success: false, data: null, message, error }` for errors. Use `successResponse()` and `errorResponse()` from `backend/src/utils/response.ts`.
 - **Zod validation via zValidator.** Use `zValidator(target, schema)` wrapper — auto-throws HTTPException(400) on failure. Never manual `safeParse` in routes.
 - **Auth split.** `AppContext` (nullable user/session) for public routes. `AppAuthContext` (guaranteed) for protected routes. `requireAuth` middleware narrows context type.
 - **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
@@ -85,6 +86,7 @@ sultanat-explore/
 | Client data | TanStack React Query | Server-state for admin CRUD pages |
 | Admin layout | shadcn SidebarProvider | Collapsible sidebar + breadcrumb header pattern |
 | Image upload | Sharp + R2 | Resize to 1920px max, WebP quality 75, blurHash for placeholders |
+| API response format | `successResponse`/`errorResponse` | Unified `{ success, data, message, error }` contract for frontend consumers |
 
 ## Database Models (Prisma 7)
 
@@ -151,6 +153,9 @@ backend/src/lib/r2.ts
 
 backend/src/lib/image-processing.ts
   └── Sharp resize (1920px max, WebP 75) + blurHash encode
+
+backend/src/utils/
+  └── response.ts — successResponse() / errorResponse() helpers
 
 backend/src/modules/image/
   ├── image.route.ts — Hono routes (GET public, mutations auth)

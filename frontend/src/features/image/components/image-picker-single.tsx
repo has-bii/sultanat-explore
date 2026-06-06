@@ -1,5 +1,6 @@
 "use client"
 
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { Pencil, Trash2 } from "lucide-react"
 import { useState } from "react"
 
@@ -7,9 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Image from "next/image"
 
-import { useImageDetail } from "../hooks/use-image-detail"
-import { useImageList } from "../hooks/use-image-list"
 import { blurhashToDataUrl } from "../lib/blurhash"
+import { getImageDetailQueryOptions } from "../query/get-image-detail.query"
+import { getImagesQueryOptions } from "../query/get-images.query"
 import { ImageGrid } from "./image-grid"
 
 interface ImagePickerSingleProps {
@@ -29,7 +30,10 @@ export function ImagePickerSingle({
   const [search, setSearch] = useState("")
   const [order] = useState("desc")
 
-  const { data: selectedImage } = useImageDetail(value)
+  const { data: selectedImage } = useQuery({
+    ...getImageDetailQueryOptions(value!),
+    enabled: !!value,
+  })
 
   const query = {
     sort: "createdAt" as const,
@@ -38,7 +42,9 @@ export function ImagePickerSingle({
     limit: 20,
   }
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useImageList(query)
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    getImagesQueryOptions(query),
+  )
 
   const images = data?.pages.flatMap((p) => p.data) ?? []
 

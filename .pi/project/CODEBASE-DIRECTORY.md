@@ -136,6 +136,8 @@ backend/                           # Workspace package: API + DB + Auth
     ├── schemas/
     │   ├── param.schema.ts        # Shared param schemas (paramIdSchema)
     │   └── query.schema.ts        # Shared query schemas (querySchema)
+    ├── utils/
+    │   └── response.ts            # successResponse() / errorResponse() helpers
     ├── lib/
     │   ├── db.ts                  # PrismaClient with Neon adapter
     │   ├── auth.ts                # Better Auth config (email+password, resend)

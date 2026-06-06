@@ -16,9 +16,9 @@ export const getImagesQueryOptions = (query: GetImagesQuery = {}) => {
       const res = await $getImages({
         query: { ...query, cursor: pageParam },
       })
-      const data = await res.json()
-      if ("error" in data) throw new Error(data.message)
-      return data
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      return json.data
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined as string | undefined,

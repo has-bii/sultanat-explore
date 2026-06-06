@@ -16,6 +16,7 @@ backend/src/
 │   └── <domain>.schema.ts   # Zod validation schemas
 ├── middlewares/               # Shared (require-auth, validator-wrapper)
 ├── schemas/                  # Shared (param.schema, query.schema)
+├── utils/                    # Shared helpers (response.ts)
 └── lib/                      # Shared (db, auth, r2, etc.)
 ```
 
@@ -138,6 +139,7 @@ Create `backend/src/modules/<domain>/<domain>.route.ts`:
 import { Hono } from "hono"
 import { requireAuth } from "backend/middlewares/require-auth"
 import { zValidator } from "backend/middlewares/validator-wrapper"
+import { successResponse } from "backend/utils/response"
 import { paramIdSchema } from "backend/schemas/param.schema"
 import { querySchema } from "backend/schemas/query.schema"
 import { create<Model>Schema, update<Model>Schema } from "backend/modules/<domain>/<domain>.schema"
@@ -148,30 +150,30 @@ const <domain>Route = new Hono()
   .get("/", zValidator("query", querySchema), async (c) => {
     const query = c.req.valid("query")
     const result = await list<Model>s(query.cursor, query.limit)
-    return c.json(result)
+    return c.json(successResponse(result, "<Model>s fetched successfully"))
   })
   .get("/:id", zValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     const item = await get<Model>(param.id)
-    return c.json(item)
+    return c.json(successResponse(item, "<Model> fetched successfully"))
   })
   // Auth-required routes
   .use(requireAuth)
   .post("/", zValidator("json", create<Model>Schema), async (c) => {
     const body = c.req.valid("json")
     const item = await create<Model>(body)
-    return c.json(item, 201)
+    return c.json(successResponse(item, "<Model> created successfully"), 201)
   })
   .patch("/:id", zValidator("param", paramIdSchema), zValidator("json", update<Model>Schema), async (c) => {
     const param = c.req.valid("param")
     const body = c.req.valid("json")
     const item = await update<Model>(param.id, body)
-    return c.json(item)
+    return c.json(successResponse(item, "<Model> updated successfully"))
   })
   .delete("/:id", zValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     await delete<Model>(param.id)
-    return c.body(null, 204)
+    return c.json(successResponse(null, "<Model> deleted successfully"))
   })
 
 export default <domain>Route
@@ -183,8 +185,8 @@ export default <domain>Route
 - Auth-required routes AFTER `.use(requireAuth)`
 - Use `zValidator(target, schema)` — never manual `safeParse`
 - Use `c.req.valid(target)` to get validated data
-- Return `c.json(data, status)` for responses
-- Return `c.body(null, 204)` for deletes
+- Wrap all responses with `successResponse(data, msg)` — never raw `c.json(data)`
+- Delete routes return `c.json(successResponse(null, "..."), 200)` to keep envelope uniform
 
 ---
 
@@ -262,5 +264,6 @@ const myParamSchema = paramIdSchema.extend({
 - [ ] Public routes before `requireAuth`
 - [ ] Auth routes after `requireAuth`
 - [ ] Route registered in `app.ts`
+- [ ] All responses wrapped with `successResponse()` — no raw `c.json(data)`
 - [ ] `pnpm --filter backend typecheck` passes
 - [ ] CORS updated if new HTTP methods needed (PATCH, etc.)

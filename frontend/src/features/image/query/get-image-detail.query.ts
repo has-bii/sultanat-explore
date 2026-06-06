@@ -15,9 +15,9 @@ export const getImageDetailQueryOptions = (id: string) => {
       const res = await $getImageDetail({
         param: { id },
       })
-      const data = await res.json()
-      if ("error" in data) throw new Error(data.message)
-      return data
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      return json.data
     },
   })
 }

@@ -6,23 +6,23 @@ import { toast } from "sonner"
 import { IMAGE_QUERY_KEY } from "../query/get-image-detail.query"
 import { IMAGES_QUERY_KEY } from "../query/get-images.query"
 
-export const useDeleteImage = () => {
+export const useDeleteImage = (id: string) => {
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async () => {
       const res = await apiClient.api.images[":id"].$delete({ param: { id } })
-      const data = await res.json()
-      if ("error" in data) {
-        throw new Error(data.message)
+      const json = await res.json()
+      if (!json.success) {
+        throw new Error(json.message)
       }
-      return data
+      return json
     },
-    onSuccess: () => {
-      toast.success("Image has been deleted successfully")
+    onSuccess: (res) => {
+      toast.success(res.message)
     },
     onError: (e) => {
       toast.error(e.message)
     },
-    onSettled: (_response, _error, id, _result, context) => {
+    onSettled: (_data, _error, _vars, _result, context) => {
       context.client.invalidateQueries({
         queryKey: [IMAGES_QUERY_KEY],
         exact: false,

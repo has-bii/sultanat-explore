@@ -90,7 +90,7 @@ features/<name>/
 
 ## General
 
-- TypeScript strict mode. No `any`.
+- TypeScript strict mode. `any` allowed only in `utils/response.ts` (generic error field) and Hono catch-all types.
 - RSC by default. `"use client"` only when necessary.
 - React Compiler enabled — avoid useMemo/useCallback unless compiler can't optimize.
 - No `console.log` in production code.
@@ -105,6 +105,7 @@ backend/src/
 │   └── <domain>.schema.ts    # Zod schemas (request validation)
 ├── middlewares/                # Shared Hono middleware
 ├── schemas/                   # Shared Zod schemas (param, query)
+├── utils/                     # Shared utilities (response.ts)
 └── lib/                       # Shared utilities (db, auth, r2, etc.)
 ```
 
@@ -112,7 +113,8 @@ backend/src/
 - Chain routes with `.get()`, `.post()`, etc.
 - Place public routes before `requireAuth`, auth-required routes after.
 - Use `zValidator(target, schema)` for validation — never manual `safeParse`.
-- Return `c.json(data, status)` for responses, `c.body(null, 204)` for deletes.
+- Wrap success responses with `successResponse(data, msg)` from `backend/utils/response` — `c.json(successResponse(data, msg), status)`.
+- `delete` routes return `c.json(successResponse(null, "..."), 200)` — 204 is avoided to keep the response envelope uniform.
 
 ### Service file
 - One exported function per operation (uploadImage, listImages, etc.)
@@ -123,3 +125,23 @@ backend/src/
 - Export Zod schemas + inferred types.
 - Named `<Name>Schema` (PascalCase).
 - Import from `zod` (not `@hono/zod-validator`).
+
+## API Response Format
+
+All endpoints must return one of two shapes:
+
+**Success (2xx):**
+```ts
+{ success: true, data: T, message: string }
+```
+
+**Error (4xx/5xx):**
+```ts
+{ success: false, data: null, message: string, error: any }
+```
+
+- Use `successResponse(data, message?)` in route handlers for success responses.
+- Use `errorResponse(message, error?)` in `app.ts` global `onError` / `notFound` handlers (and thrown `HTTPException` automatically lands in `onError`).
+- Every route handler returns data via `successResponse()` — never raw `c.json(data)`.
+- `message` should be descriptive Indonesian (e.g. `"Foto berhasil dihapus"`).
+- `error` field in error responses carries the technical cause or a user-safe string when cause is internal.
