@@ -47,6 +47,11 @@ features/<name>/
 ├── dto/              # Zod schemas + inferred types
 │   └── <name>.schema.ts
 ├── hooks/            # Feature-specific hooks (if any)
+├── mutations/        # TanStack Query mutation hooks
+├── queries/          # useQuery / useInfiniteQuery hooks
+├── stores/           # Zustand UI stores
+├── pages/            # Page components (imported by app/page.tsx)
+├── lib/              # Feature-specific utilities
 ├── types.ts          # Feature types
 ├── index.ts          # Public barrel export
 └── data.ts           # Feature static data (if any)
@@ -145,3 +150,110 @@ All endpoints must return one of two shapes:
 - Every route handler returns data via `successResponse()` — never raw `c.json(data)`.
 - `message` should be descriptive Indonesian (e.g. `"Foto berhasil dihapus"`).
 - `error` field in error responses carries the technical cause or a user-safe string when cause is internal.
+
+## Mutation Convention (Frontend)
+
+Every mutation is a custom hook file in `features/<name>/mutations/<name>.mutation.ts`:
+
+```ts
+// Pattern
+export const useUpdateImage = (id: string) => {
+  return useMutation({
+    mutationFn: async (input) => {
+      const res = await $api({ param: { id }, json: input })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)  // check unified response
+      return json
+    },
+    onSuccess: (res) => {
+      toast.success(res.message)       // user-facing message from API
+    },
+    onError: (err) => {
+      toast.error(err.message)         // error toast on failure
+    },
+    onSettled: (_res, _error, _vars, _result, context) => {
+      context.client.invalidateQueries({ queryKey: [...] })  // invalidate in onSettled
+    },
+  })
+}
+```
+
+Rules:
+- Always destructure `res.json()`, check `json.success`, throw on failure.
+- Show toast in `onSuccess` (message from API) and `onError` (error message).
+- Invalidate related queries in `onSettled` via `context.client.invalidateQueries`.
+- Export a const query key (e.g. `export const UPLOAD_MUTATION_KEY = ["upload-images"] as const`).
+
+## Query Factory Convention (Frontend)
+
+Query options exported as hook functions that call `useQuery` / `useInfiniteQuery` directly:
+
+```ts
+// Pattern — infinite list
+export const IMAGES_QUERY_KEY = "images" as const
+
+export const useImagesQuery = (query: GetImagesQuery = {}) => {
+  return useInfiniteQuery({
+    queryKey: [IMAGES_QUERY_KEY, query],
+    queryFn: async ({ pageParam }) => {
+      const res = await $getImages({ query: { ...query, cursor: pageParam } })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      return json.data
+    },
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    initialPageParam: undefined as string | undefined,
+  })
+}
+
+// Pattern — single item
+export const IMAGE_QUERY_KEY = "image" as const
+
+export const useImageDetailQuery = (id: string) => {
+  return useQuery({
+    queryKey: [IMAGE_QUERY_KEY, id],
+    queryFn: async () => {
+      const res = await $getImageDetail({ param: { id } })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      return json.data
+    },
+  })
+}
+```
+
+- Components call `useImagesQuery(query)` or `useImageDetailQuery(id)` directly — no wrapping at call site.
+- For detail queries, use `useQuery`. For paginated lists, use `useInfiniteQuery`.
+- Always check `json.success` from the unified response.
+- Export query key as a const for cross-file reference (mutations need it for invalidation).
+
+## Zustand Store Convention
+
+- Use for **transient UI state only** (sheet open/close, dialog open/close, selected item IDs).
+- Never store server data in zustand — use React Query for that.
+- Place in `features/<name>/stores/<name>.store.ts`.
+- Export store via `create<State>()((set) => ({ ... }))`.
+- Components subscribe via selector: `useStore((s) => s.onOpen)`.
+- Clean up on close: use `useEffect` to reset state when component closes.
+
+```ts
+// Pattern
+import { create } from "zustand"
+
+interface State {
+  open: boolean
+  selectedImageId: string | null
+  onOpen: (imageId: string) => void
+  onClose: () => void
+}
+
+export const useImageDetailSheetStore = create<State>()((set) => ({
+  open: false,
+  selectedImageId: null,
+  onOpen: (imageId) => set({ selectedImageId: imageId, open: true }),
+  onClose: () => {
+    set({ open: false })
+    setTimeout(() => set({ selectedImageId: null }), 300)
+  },
+}))
+```
