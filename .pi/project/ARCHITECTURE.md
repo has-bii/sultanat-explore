@@ -55,6 +55,10 @@ sultanat-explore/
 - **Route groups.** Public pages in `(public)` route group (Navbar/Footer in its layout). Admin in `admin/` route group with dashboard layout (sidebar + header).
 - **Admin layout.** Dashboard pages wrapped in shadcn `SidebarProvider` + `AppSidebar` + `Header`/`MainPage` components.
 - **No CMS yet.** Content still static/hardcoded for public pages. CMS decision deferred until admin modules built.
+- **Zustand for UI state.** Feature-scoped zustand stores for transient UI state (sheet open/close, dialog open/close, selected item IDs). Never for server data — use React Query for that.
+- **Mutation pattern.** Each mutation is a custom hook wrapping `useMutation`. Always check `json.success` from the unified response and throw on failure. `toast.success`/`toast.error` in `onSuccess`/`onError`. Query invalidation in `onSettled` via `context.client.invalidateQueries`.
+- **Query factory pattern.** Always place `queryOptions` and `infiniteQueryOptions` factories in `features/<name>/queries/`. Use `queryOptions` for single-item fetches, `infiniteQueryOptions` for cursor-paginated lists. Factories are plain functions returning options objects — called via `useQuery(getXxxQueryOptions(...))` or `useInfiniteQuery(getXxxQueryOptions(...))` at the call site. Never pass `queryOptions` to `useInfiniteQuery` or vice versa.
+- **Sheet + dialog managed by stores.** Sheet open state + selected entity ID stored in zustand. Dialog open state also in zustand. Components subscribe via selector. Reset on close with `useEffect` cleanup.
 
 ## Design System
 
@@ -74,7 +78,7 @@ sultanat-explore/
 | Component lib | radix-ui + shadcn/ui | Radix primitives + shadcn copy-paste components |
 | Styling | Tailwind only | No CSS modules, no styled-components |
 | File naming | kebab-case | Next.js App Router convention |
-| State | React state / URL params | No global store needed yet |
+| State | React state / URL params + zustand for UI state | zustand for sheet, dialog, and other transient UI state. React state + URL params for persistent/route-level state |
 | Design system | Uber-inspired (DESIGN.md) | High-contrast achromatic, content-dense, pill buttons |
 | Fonts | Inter + DM Sans | Closest open-source to UberMove / UberMoveText |
 | Auth | Better Auth | Full-stack auth (Hono handler + React client + cookies) |
@@ -83,9 +87,9 @@ sultanat-explore/
 | Form system | TanStack React Form (useAppForm) | Type-safe forms with Zod validation, reactive submit state |
 | Route protection | Next.js proxy.ts | Cookie-based, redirects unauthenticated to /admin/login |
 | Monorepo | Turborepo + pnpm workspaces | Task caching, clean separation, shared base tsconfig |
-| Client data | TanStack React Query | Server-state for admin CRUD pages |
+| Client data | TanStack React Query | Server-state for admin CRUD pages. queryOptions/infiniteQueryOptions factories in features/<name>/queries/. useQuery for queryOptions, useInfiniteQuery for infiniteQueryOptions. Query invalidation in onSettled |
 | Admin layout | shadcn SidebarProvider | Collapsible sidebar + breadcrumb header pattern |
-| Image upload | Sharp + R2 | Resize to 1920px max, WebP quality 75, blurHash for placeholders |
+| Image upload | Sharp + R2 | Resize to 1920px max, WebP quality 75, blurHash for placeholders. Multi-file via `File[]` schema, parallel `Promise.all`. Frontend: drag-and-drop, file validation (type + size), file list with remove, max 10 files |
 | API response format | `successResponse`/`errorResponse` | Unified `{ success, data, message, error }` contract for frontend consumers |
 
 ## Database Models (Prisma 7)
@@ -128,7 +132,8 @@ frontend/src/lib/auth-client.ts
 frontend/src/lib/api-client.ts
   └── Hono RPC client (hc<AppType>) — NEXT_PUBLIC_API_URL env var
       ├── credentials: include (cookie-based auth)
-      └── Used for typed client-side API calls
+      ├── Used for typed client-side API calls
+      └── Mutations destructure response, check json.success, throw on failure
 
 frontend/src/lib/form.tsx (useAppForm)
   └── TanStack React Form factory
@@ -160,7 +165,16 @@ backend/src/utils/
 backend/src/modules/image/
   ├── image.route.ts — Hono routes (GET public, mutations auth)
   ├── image.service.ts — Business logic (R2 + DB)
-  └── image.schema.ts — Zod schemas (upload, update)
+  └── image.schema.ts — Zod schemas (upload multi-file, update)
+
+frontend/src/features/image/
+  ├── queries/ — queryOptions + infiniteQueryOptions factories
+  ├── mutations/ — useMutation hooks (upload, update, delete)
+  ├── stores/ — zustand stores for UI state (sheet, dialog)
+  ├── hooks/ — feature hooks (use-image-filters, use-update-image-form)
+  ├── components/ — feature components (image-detail-sheet/, upload-images-dialog/)
+  ├── dto/ — Zod schemas + inferred types
+  └── lib/ — blurhash helpers
 
 backend/src/middlewares/
   ├── require-auth.ts — Auth guard (narrows to AppAuthContext)

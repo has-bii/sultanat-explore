@@ -52,24 +52,36 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │
     ├── components/
     │   ├── ui/                    # shadcn/ui primitives
+    │   │   ├── alert-dialog.tsx       # Confirm dialogs (delete, destructive actions)
+    │   │   ├── alert.tsx              # Alert banners (info, warning, error)
     │   │   ├── avatar.tsx
+    │   │   ├── badge.tsx              # Status/tag badges
     │   │   ├── breadcrumb.tsx
     │   │   ├── button.tsx
+    │   │   ├── card.tsx               # Card layout (ImageCard, etc.)
     │   │   ├── carousel.tsx
     │   │   ├── collapsible.tsx
+    │   │   ├── dialog.tsx             # Modal dialogs (upload, picker)
     │   │   ├── dropdown-menu.tsx
+    │   │   ├── empty.tsx              # Empty state placeholder
     │   │   ├── field.tsx
     │   │   ├── hero-3.tsx
+    │   │   ├── input-group.tsx
     │   │   ├── input.tsx
+    │   │   ├── item.tsx               # ItemGroup for stacked lists
     │   │   ├── label.tsx
+    │   │   ├── scroll-area.tsx
+    │   │   ├── select.tsx
     │   │   ├── separator.tsx
     │   │   ├── sheet.tsx
-    │   │   ├── sidebar.tsx        # shadcn Sidebar (SidebarProvider, SidebarTrigger, etc.)
+    │   │   ├── sidebar.tsx            # shadcn Sidebar (SidebarProvider, SidebarTrigger, etc.)
     │   │   ├── skeleton.tsx
     │   │   ├── sonner.tsx
     │   │   ├── testimonials-columns-1.tsx
+    │   │   ├── textarea.tsx
     │   │   └── tooltip.tsx
     │   │
+    │   ├── button-copy.tsx        # Copy-to-clipboard button with tooltip
     │   ├── header.tsx             # Admin header with breadcrumb + sidebar trigger
     │   ├── main-page.tsx          # Admin page layout wrapper
     │   ├── navbar.tsx             # Public navbar
@@ -95,7 +107,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── open-trip/             # Components, data, types
     │   ├── private-trip/          # Components, data, types
     │   ├── umrah/                 # Components, data, types
-    │   └── collaborate/           # (empty — not started)
+    │   ├── collaborate/           # (empty — not started)
+    │   └── image/                 # Image CRUD (admin) — queries, mutations, stores, components
     │
     ├── providers/                 # React provider wrappers
     │   ├── root.tsx               # RootProviders (TooltipProvider + QueryProvider + Toaster)
