@@ -25,4 +25,5 @@ Travel agency website. Turkey-based, serving Indonesian travelers. Open trips, p
 - [CONVENTION.md](.pi/project/CONVENTION.md) — naming, styling, file org rules
 - [FEATURES.md](.pi/project/FEATURES.md) — implemented features status
 - [LOG.md](.pi/project/LOG.md) — decisions timeline
+- [DESIGN.md](DESIGN.md) — Uber-inspired design system (colors, typography, components, layout)
 - [PRD.md](.pi/project/PRD.md) — full product requirements

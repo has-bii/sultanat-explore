@@ -293,3 +293,15 @@ What makes Uber's design truly distinctive is its use of full-bleed photography 
 6. Keep layouts compact and information-dense -- Uber is efficient, not airy
 7. Illustrations should be warm and human -- describe "stylized people in warm tones" not abstract shapes
 8. Pair black CTAs with white secondaries for balanced dual-action layouts
+
+## 10. Implementation Notes
+
+### CSS / globals.css Hybrid Decisions
+The following diverge from strict DESIGN.md spec for practical reasons:
+- **Primary**: Uses near-black `oklch(0.205 0 0)` ≈ `#1a1a1a` instead of pure `#000000`. Softer on screens, follows shadcn convention.
+- **Borders**: Light gray `oklch(0.922 0 0)` for inputs/borders instead of pure black. Less aggressive, standard shadcn default.
+- **Tokens added**: `--text-body-gray (#4b4b4b)`, `--text-muted-gray (#afafaf)`, `--link-default (#0000ee)`, `--link-white (#ffffff)`, `--link-black (#000000)` for use in components.
+
+### Path-Based Design Source
+- **Public paths** (landing, trip pages, Umrah, etc.): Follow this DESIGN.md as source of truth.
+- **Authenticated paths** (admin dashboard): Use shadcn/ui component defaults. Don't force Uber styling on admin UI.
