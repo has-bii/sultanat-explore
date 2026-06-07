@@ -21,6 +21,8 @@ interface ImageGridProps {
   mode?: "view" | "pick"
   onPick?: (image: Image) => void
   selectedId?: string | null
+  onToggleSelection?: (id: string) => void
+  selectedIds?: Set<string>
 }
 
 function SkeletonGrid() {
@@ -51,6 +53,8 @@ export function ImageGrid({
   mode = "view",
   onPick,
   selectedId,
+  onToggleSelection,
+  selectedIds = new Set(),
 }: ImageGridProps) {
   const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
 
@@ -103,7 +107,9 @@ export function ImageGrid({
             onClick={() => onImageClick(image)}
             mode={mode}
             onPick={() => onPick?.(image)}
-            isSelected={selectedId === image.id}
+            isSelected={selectedId === image.id || selectedIds.has(image.id)}
+            onCheckboxChange={onToggleSelection ? () => onToggleSelection(image.id) : undefined}
+            checked={selectedIds.has(image.id)}
           />
         ))}
       </div>

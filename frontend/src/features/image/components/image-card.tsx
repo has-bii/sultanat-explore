@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 import { intlFormatDistance } from "date-fns"
 import Image from "next/image"
@@ -15,6 +16,8 @@ interface ImageCardProps {
   mode?: "view" | "pick"
   onPick?: () => void
   isSelected?: boolean
+  onCheckboxChange?: () => void
+  checked?: boolean
 }
 
 function formatFileSize(bytes: number): string {
@@ -22,12 +25,20 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-export function ImageCard({ image, onClick, mode = "view", onPick, isSelected }: ImageCardProps) {
+export function ImageCard({
+  image,
+  onClick,
+  mode = "view",
+  onPick,
+  isSelected,
+  onCheckboxChange,
+  checked,
+}: ImageCardProps) {
   return (
     <Card
       role="button"
       className={cn(
-        "hover:ring-primary gap-4 pt-0 pb-4 transition-shadow",
+        "group hover:ring-primary relative gap-4 pt-0 pb-4 transition-shadow",
         isSelected && "ring-primary",
       )}
       onClick={mode === "pick" ? onPick : onClick}
@@ -43,6 +54,21 @@ export function ImageCard({ image, onClick, mode = "view", onPick, isSelected }:
           className="object-cover"
         />
       </figure>
+      {onCheckboxChange && mode === "view" && (
+        <div
+          className={cn(
+            "absolute top-2 left-2 z-20 transition-opacity",
+            checked ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Checkbox
+            checked={checked}
+            onCheckedChange={onCheckboxChange}
+            className="data-checked:bg-primary data-checked:border-primary size-5 rounded-full border-white bg-black/40"
+          />
+        </div>
+      )}
       <CardHeader className="px-4">
         {mode === "pick" && (
           <CardAction>
