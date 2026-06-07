@@ -36,7 +36,7 @@ Status of implemented features per PRD.
 | Dashboard home | ✅ Done | Session-aware, user name + logout, placeholder cards |
 | React Query infra | ✅ Done | QueryClient + QueryProvider in root, devtools available |
 | Toast/theme infra | ✅ Done | sonner (toasts) + next-themes wired via RootProviders |
-| Destination Management | 🔶 In progress | DB schema done (Destination, Image, Attraction, AttractionCategory models + migrations). Admin shell pages for list + category list created. CRUD not implemented
+| Destination Management | 🔶 In progress | Backend CRUD complete (Destination, Attraction, AttractionCategory + gallery endpoints). Admin shell pages for list + category list created. Frontend CRUD not implemented
 | Trip Management | 🔲 Not started | CRUD open trips + private packages |
 | Article (SEO) | 🔲 Not started | Rich text editor, SEO fields, publish/draft |
 | Image CRUD | ✅ Done | Upload multi-file via drag-and-drop (Sharp→WebP + blurHash), list (cursor paginated, infinite query), get detail, update alt with form validation, delete with confirm dialog (R2 + DB). Image detail sheet with edit/delete/copy-URL. Zustand stores for UI state (sheet, dialog). Unified API response handling in all mutations. Public GET, auth for mutations |

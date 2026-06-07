@@ -158,10 +158,22 @@ backend/                           # Workspace package: API + DB + Auth
     │   ├── r2.ts                  # S3Client + upload/delete wrappers
     │   └── image-processing.ts    # Sharp resize + blurHash pipeline
     └── modules/
-        └── image/
-            ├── image.route.ts     # Hono routes (GET public, mutations auth)
-            ├── image.service.ts   # Business logic (R2 + DB)
-            └── image.schema.ts   # Zod schemas (upload, update)
+        ├── image/
+        │   ├── image.route.ts     # Hono routes (GET public, mutations auth)
+        │   ├── image.service.ts   # Business logic (R2 + DB)
+        │   └── image.schema.ts   # Zod schemas (upload, update)
+        ├── destination/
+        │   ├── destination.route.ts    # CRUD + gallery endpoints (GET public, mutations auth)
+        │   ├── destination.service.ts  # Business logic (DB + slug auto-gen, cascade delete)
+        │   └── destination.schema.ts  # Zod schemas (create, update, query, gallery)
+        ├── attraction/
+        │   ├── attraction.route.ts    # CRUD + gallery, nested under /destinations/:destinationId/attractions
+        │   ├── attraction.service.ts  # Business logic (DB, destination-scoped)
+        │   └── attraction.schema.ts  # Zod schemas (create, update, query, gallery)
+        └── attraction-category/
+            ├── attraction-category.route.ts    # CRUD at /attraction-categories
+            ├── attraction-category.service.ts  # Business logic (DB, auto-slug, _count)
+            └── attraction-category.schema.ts  # Zod schemas (create, update)
 
 public/                            # Static assets (root level, served by Next.js)
 

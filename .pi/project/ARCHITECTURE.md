@@ -167,6 +167,21 @@ backend/src/modules/image/
   ├── image.service.ts — Business logic (R2 + DB)
   └── image.schema.ts — Zod schemas (upload multi-file, update)
 
+backend/src/modules/destination/
+  ├── destination.route.ts — CRUD + gallery endpoints (GET public, mutations auth)
+  ├── destination.service.ts — Business logic (DB + slug auto-gen, cascade delete)
+  └── destination.schema.ts — Zod schemas (create, update, query, gallery)
+
+backend/src/modules/attraction/
+  ├── attraction.route.ts — CRUD + gallery endpoints, nested under /destinations/:destinationId/attractions
+  ├── attraction.service.ts — Business logic (DB, destination-scoped)
+  └── attraction.schema.ts — Zod schemas (create, update, query, gallery)
+
+backend/src/modules/attraction-category/
+  ├── attraction-category.route.ts — CRUD endpoints at /attraction-categories
+  ├── attraction-category.service.ts — Business logic (DB, auto-slug, _count.attractions)
+  └── attraction-category.schema.ts — Zod schemas (create, update)
+
 frontend/src/features/image/
   ├── queries/ — queryOptions + infiniteQueryOptions factories
   ├── mutations/ — useMutation hooks (upload, update, delete)
