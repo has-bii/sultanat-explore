@@ -22,18 +22,27 @@ import {
 } from "backend/modules/attraction/attraction.service"
 import { successResponse } from "backend/utils/response"
 
-// Param schema for nested route: /destinations/:destinationId/attractions/:id?
-const attractionParamsSchema = z.object({
+// Param schemas per route shape
+const listParamsSchema = z.object({
   destinationId: z.uuid("Invalid destination id"),
-  id: z.uuid("Invalid id").optional(),
-  imageId: z.uuid("Invalid image id").optional(),
+})
+
+const idParamsSchema = z.object({
+  destinationId: z.uuid("Invalid destination id"),
+  id: z.uuid("Invalid id"),
+})
+
+const galleryImageParamsSchema = z.object({
+  destinationId: z.uuid("Invalid destination id"),
+  id: z.uuid("Invalid id"),
+  imageId: z.uuid("Invalid image id"),
 })
 
 const attractionRoute = new Hono()
   // List attractions for a destination
   .get(
     "/",
-    zValidator("param", attractionParamsSchema),
+    zValidator("param", listParamsSchema),
     zValidator("query", attractionQuerySchema),
     async (c) => {
       const { destinationId } = c.req.valid("param")
@@ -43,16 +52,16 @@ const attractionRoute = new Hono()
     },
   )
   // Get single attraction
-  .get("/:id", zValidator("param", attractionParamsSchema), async (c) => {
+  .get("/:id", zValidator("param", idParamsSchema), async (c) => {
     const { destinationId, id } = c.req.valid("param")
-    const attraction = await getAttraction(destinationId, id!)
+    const attraction = await getAttraction(destinationId, id)
     return c.json(successResponse(attraction, "ok"))
   })
   .use(requireAuth)
   // Create attraction
   .post(
     "/",
-    zValidator("param", attractionParamsSchema),
+    zValidator("param", listParamsSchema),
     zValidator("json", createAttractionSchema),
     async (c) => {
       const { destinationId } = c.req.valid("param")
@@ -64,48 +73,48 @@ const attractionRoute = new Hono()
   // Update attraction
   .patch(
     "/:id",
-    zValidator("param", attractionParamsSchema),
+    zValidator("param", idParamsSchema),
     zValidator("json", updateAttractionSchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
       const json = c.req.valid("json")
-      const attraction = await updateAttraction(destinationId, id!, json)
+      const attraction = await updateAttraction(destinationId, id, json)
       return c.json(successResponse(attraction, "Atraksi berhasil diperbarui"))
     },
   )
   // Delete attraction
-  .delete("/:id", zValidator("param", attractionParamsSchema), async (c) => {
+  .delete("/:id", zValidator("param", idParamsSchema), async (c) => {
     const { destinationId, id } = c.req.valid("param")
-    await deleteAttraction(destinationId, id!)
+    await deleteAttraction(destinationId, id)
     return c.json(successResponse(null, "Atraksi berhasil dihapus"))
   })
   // Gallery: Add image
   .post(
     "/:id/gallery",
-    zValidator("param", attractionParamsSchema),
+    zValidator("param", idParamsSchema),
     zValidator("json", addAttractionGalleryImageSchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
       const json = c.req.valid("json")
-      const result = await addGalleryImage(destinationId, id!, json)
+      const result = await addGalleryImage(destinationId, id, json)
       return c.json(successResponse(result, "Foto berhasil ditambahkan"), 201)
     },
   )
   // Gallery: Remove image
-  .delete("/:id/gallery/:imageId", zValidator("param", attractionParamsSchema), async (c) => {
+  .delete("/:id/gallery/:imageId", zValidator("param", galleryImageParamsSchema), async (c) => {
     const { destinationId, id, imageId } = c.req.valid("param")
-    await removeGalleryImage(destinationId, id!, imageId!)
+    await removeGalleryImage(destinationId, id, imageId)
     return c.json(successResponse(null, "Foto berhasil dihapus dari galeri"))
   })
   // Gallery: Reorder
   .put(
     "/:id/gallery/reorder",
-    zValidator("param", attractionParamsSchema),
+    zValidator("param", idParamsSchema),
     zValidator("json", reorderAttractionGallerySchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
       const json = c.req.valid("json")
-      await reorderGallery(destinationId, id!, json)
+      await reorderGallery(destinationId, id, json)
       return c.json(successResponse(null, "Urutan galeri berhasil diperbarui"))
     },
   )
