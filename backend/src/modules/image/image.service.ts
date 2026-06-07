@@ -100,3 +100,51 @@ export async function deleteImage(id: string) {
 
   await db.image.delete({ where: { id } })
 }
+
+export async function bulkDeleteImages(ids: string[]) {
+  const images = await db.image.findMany({ where: { id: { in: ids } } })
+  if (images.length === 0) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
+
+  // Collect referenced image IDs (FK from destinations, attractions, galleries)
+  const refChecks = await Promise.all([
+    db.destination.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+    db.attraction.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+    db.destinationImage.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+    db.attractionImage.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+  ])
+
+  const referencedIds = new Set(
+    refChecks.flat().map((r) => r.imageId),
+  )
+
+  const deletable = images.filter((img) => !referencedIds.has(img.id))
+  const skipped = images.length - deletable.length
+
+  // Delete from R2 in parallel
+  await Promise.all(
+    deletable.map((img) =>
+      r2Delete(r2KeyFromUrl(img.url)).catch(() => {
+        // R2 delete failure shouldn't block DB cleanup
+      }),
+    ),
+  )
+
+  // Delete from DB
+  const deleteResult = await db.image.deleteMany({
+    where: { id: { in: deletable.map((img) => img.id) } },
+  })
+
+  return { deleted: deleteResult.count, skipped }
+}

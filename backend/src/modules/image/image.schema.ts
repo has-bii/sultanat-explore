@@ -22,5 +22,13 @@ export const updateImageSchema = z.object({
   alt: z.string().optional(),
 })
 
+export const bulkDeleteImageSchema = z.object({
+  ids: z
+    .array(z.string().uuidv7("Invalid id"))
+    .min(1, "At least one id is required")
+    .max(100, "Maximum 100 ids allowed"),
+})
+
 export type UploadImageInput = z.infer<typeof uploadImageSchema>
 export type UpdateImageInput = z.infer<typeof updateImageSchema>
+export type BulkDeleteImageInput = z.infer<typeof bulkDeleteImageSchema>

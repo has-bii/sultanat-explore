@@ -2,8 +2,13 @@ import { Hono } from "hono"
 
 import { requireAuth } from "backend/middlewares/require-auth"
 import { zValidator } from "backend/middlewares/validator-wrapper"
-import { updateImageSchema, uploadImageSchema } from "backend/modules/image/image.schema"
 import {
+  bulkDeleteImageSchema,
+  updateImageSchema,
+  uploadImageSchema,
+} from "backend/modules/image/image.schema"
+import {
+  bulkDeleteImages,
   deleteImage,
   getImage,
   listImages,
@@ -26,6 +31,11 @@ const imageRoute = new Hono()
     return c.json(successResponse(image, "ok"))
   })
   .use(requireAuth)
+  .post("/bulk-delete", zValidator("json", bulkDeleteImageSchema), async (c) => {
+    const json = c.req.valid("json")
+    const result = await bulkDeleteImages(json.ids)
+    return c.json(successResponse(result, "Foto berhasil dihapus"))
+  })
   .post("/", zValidator("form", uploadImageSchema), async (c) => {
     const valid = c.req.valid("form")
     const images = await uploadImages(valid.files)
