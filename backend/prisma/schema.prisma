@@ -134,7 +134,7 @@ model DestinationImage {
 model AttractionCategory {
   id        String   @id @db.Uuid @default(uuid(7))
   name      String
-  label     String
+  slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -148,13 +148,13 @@ model Attraction {
   name          String
   description   String
   imageId       String   @db.Uuid
-  categoryId    String   @db.Uuid
+  categoryId    String?  @db.Uuid
   destinationId String   @db.Uuid
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   image       Image             @relation(fields: [imageId], references: [id])
-  category    AttractionCategory @relation(fields: [categoryId], references: [id])
+  category    AttractionCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   destination Destination        @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   images      AttractionImage[]
 
