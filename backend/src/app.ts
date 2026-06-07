@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception"
 
 import type { AppContext } from "backend/app.type"
 import { auth } from "backend/lib/auth"
+import attractionCategoryRoute from "backend/modules/attraction-category/attraction-category.route"
 import imageRoute from "backend/modules/image/image.route"
 import { errorResponse } from "backend/utils/response"
 
@@ -53,7 +54,9 @@ app.use("*", async (c, next) => {
   await next()
 })
 
-const routes = app.route("/images", imageRoute)
+const routes = app
+  .route("/images", imageRoute)
+  .route("/attraction-categories", attractionCategoryRoute)
 
 export default routes
 export type AppType = ApplyGlobalResponse<
