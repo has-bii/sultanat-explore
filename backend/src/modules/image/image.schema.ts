@@ -24,7 +24,7 @@ export const updateImageSchema = z.object({
 
 export const bulkDeleteImageSchema = z.object({
   ids: z
-    .array(z.string().uuidv7("Invalid id"))
+    .array(z.uuid("Invalid id"))
     .min(1, "At least one id is required")
     .max(100, "Maximum 100 ids allowed"),
 })
