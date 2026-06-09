@@ -1,6 +1,6 @@
 # PRD: Destination CRUD — Admin Frontend
 
-**Status:** Not started  
+**Status:** Phase 3 complete  
 **Last Updated:** June 2026  
 **Scope:** Destination CRUD frontend only. Backend already complete.
 
@@ -195,72 +195,91 @@ frontend/src/app/admin/dashboard/destination/
 
 ## 8. Phase Breakdown
 
-### Phase 1: Foundation + List Page
+### Phase 1: Foundation + List Page ✅
 
 **Goal:** Feature structure + working list page with table, filters, pagination.
 
 **Deliverables:**
-- [ ] `dto/destination.schema.ts` — Zod schemas mirroring backend
-- [ ] `queries/get-destinations.query.ts` — infiniteQueryOptions factory
-- [ ] `hooks/use-destination-filters.ts` — URL param hooks for search, featured, sort
-- [ ] `stores/image-picker-dialog.store.ts` — zustand store (scaffold, used in Phase 2)
-- [ ] `components/destinations-table.tsx` — table with columns
-- [ ] `components/destinations-filters.tsx` — search + featured + sort toolbar
-- [ ] `pages/destinations-list.page.tsx` — list page client component
-- [ ] `app/admin/dashboard/destination/page.tsx` — updated with list page
-- [ ] Empty state component
-- [ ] Load more pagination
+- [x] `dto/destination.schema.ts` — Zod schemas mirroring backend
+- [x] `queries/get-destinations.query.ts` — infiniteQueryOptions factory
+- [x] `hooks/use-destination-filters.ts` — URL param hooks for search, featured, sort
+- [x] `stores/image-picker-dialog.store.ts` — zustand store (scaffold, used in Phase 2)
+- [x] `components/destinations-table.tsx` — table with columns
+- [x] `components/destinations-filters.tsx` — search + featured + sort toolbar
+- [x] `pages/destinations-list.page.tsx` — list page client component
+- [x] `app/admin/dashboard/destination/page.tsx` — updated with list page
+- [x] Empty state component (inside destinations-list.page.tsx)
+- [x] Load more pagination (inside destinations-list.page.tsx)
 
 **Dependencies:** None. Backend already complete.
 
 **Estimated scope:** ~6-8 files.
 
+**Files created:** 7 feature files + 1 route update = 8 total.
+
 ---
 
-### Phase 2: Create Form
+### Phase 2: Create Form ✅
 
 **Goal:** Working create form with all fields, image picker, highlights array.
 
 **Deliverables:**
-- [ ] `mutations/create-destination.mutation.ts` — mutation hook
-- [ ] `components/image-picker-dialog.tsx` — Image Library as picker dialog
-- [ ] `components/destination-form.tsx` — shared form (used by create + edit)
-- [ ] `hooks/use-destination-form.ts` — form factory with TanStack Form
-- [ ] `pages/create-destination.page.tsx` — create page
-- [ ] `app/admin/dashboard/destination/create/page.tsx` — route page
-- [ ] Highlights array field (TanStack Form array mode)
-- [ ] Hero image preview + picker integration
-- [ ] Submit → redirect to list with toast
+- [x] `mutations/create-destination.mutation.ts` — mutation hook
+- [x] `components/image-picker-dialog.tsx` — Image Library as picker dialog
+- [x] `components/destination-form.tsx` — shared form (used by create + edit)
+- [x] `hooks/use-destination-form.ts` — form factory with TanStack Form
+- [x] `pages/create-destination.page.tsx` — create page
+- [x] `app/admin/dashboard/destination/create/page.tsx` — route page
+- [x] Highlights array field (TanStack Form array mode)
+- [x] Hero image preview + picker integration
+- [x] Submit → redirect to list with toast
 
 **Dependencies:** Phase 1 (dto, queries structure).
 
 **Estimated scope:** ~6-8 files.
 
+**Files created:** 6 feature files + 1 route = 7 total. Plus 2 shared edits (`form.tsx` TextareaField, `dto/destination.schema.ts` create schema).
+
+**Deviations:**
+- Added `TextareaField` component to `@/lib/form` (shared, reusable).
+- Schema uses `.boolean()` and `.array()` without `.default()` — defaults handled in form `defaultValues` to avoid Zod input type mismatch with TanStack Form's StandardSchemaV1.
+- `ImagePickerDialog` tracks selected image locally via `useState` for preview; form only stores `imageId`.
+
 ---
 
-### Phase 3: Edit Form + Gallery + Delete
+### Phase 3: Edit Form + Gallery + Delete ✅
 
 **Goal:** Edit page with data loading, gallery management, delete action.
 
 **Deliverables:**
-- [ ] `queries/get-destination.query.ts` — queryOptions for single destination
-- [ ] `mutations/update-destination.mutation.ts` — update mutation
-- [ ] `mutations/delete-destination.mutation.ts` — delete mutation
-- [ ] `mutations/add-gallery-image.mutation.ts` — add gallery image
-- [ ] `mutations/remove-gallery-image.mutation.ts` — remove gallery image
-- [ ] `mutations/reorder-gallery.mutation.ts` — reorder gallery
-- [ ] `components/destination-gallery.tsx` — gallery section (grid + add/remove)
-- [ ] `components/delete-destination-dialog.tsx` — confirm delete dialog
-- [ ] `components/destination-skeleton.tsx` — skeleton loading
-- [ ] `pages/edit-destination.page.tsx` — edit page
-- [ ] `app/admin/dashboard/destination/[id]/edit/page.tsx` — route page
-- [ ] Pre-populate form with existing data
-- [ ] Inline gallery management (add, remove, reorder)
-- [ ] Delete with confirm dialog → redirect to list
+- [x] `queries/get-destination.query.ts` — queryOptions for single destination
+- [x] `mutations/update-destination.mutation.ts` — update mutation
+- [x] `mutations/delete-destination.mutation.ts` — delete mutation
+- [x] `mutations/add-gallery-image.mutation.ts` — add gallery image
+- [x] `mutations/remove-gallery-image.mutation.ts` — remove gallery image
+- [x] `mutations/reorder-gallery.mutation.ts` — reorder gallery
+- [x] `components/destination-gallery.tsx` — gallery section (grid + add/remove/reorder)
+- [x] `components/delete-destination-dialog.tsx` — confirm delete dialog
+- [x] `components/destination-skeleton.tsx` — skeleton loading
+- [x] `pages/edit-destination.page.tsx` — edit page
+- [x] `app/admin/dashboard/destination/[id]/edit/page.tsx` — route page
+- [x] Pre-populate form with existing data
+- [x] Inline gallery management (add, remove, reorder)
+- [x] Delete with confirm dialog → redirect to list
 
 **Dependencies:** Phase 1 + Phase 2 (form component, image picker).
 
 **Estimated scope:** ~10-12 files.
+
+**Files created:** 9 new feature files + 1 route page = 10 total. Plus 4 edits (dto, hooks, form, image-picker, image-picker-store).
+
+**Deviations:**
+- `EditDestinationForm` extracted as separate component inside `edit-destination.page.tsx` to ensure form is only created after data loads (prevents stale defaultValues from first render).
+- `ImagePickerDialog` `onSelect` prop widened to `ImageType | ImageType[]` to support both single-select (hero) and multi-select ( gallery) modes.
+- `useDestinationForm` schema prop is `typeof createDestinationSchema | typeof updateDestinationSchema` (not generic) — avoids Zod v4 StandardSchemaV1 type mismatch with TanStack Form.
+- `removeGalleryImage` mutation uses `as any` cast for Hono RPC param type inference gap with nested `:imageId` param.
+- `destinationDetailSchema.images[]` uses `imageId`/`destinationId` (not `id`) to match Prisma's `DestinationImage` model.
+- `destinationDetailSchema.attractions[].category` is nullable to match the Prisma query.
 
 ---
 
