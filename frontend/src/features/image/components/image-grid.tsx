@@ -1,68 +1,57 @@
 "use client"
 
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { ImageOff, ImagePlus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from "@/lib/utils"
+import { DateToString } from "@/utils/date-to-string.type"
 
-import type { Image } from "../dto/image.schema"
+import type { Image as TImage } from "backend/generated/prisma/client"
+
+import { GetImagesQuery, getImagesQueryOptions } from "../query"
 import { useUploadImagesDialogStore } from "../stores/upload-images-dialog.store"
 import { ImageCard } from "./image-card"
 
-interface ImageGridProps {
-  images: Image[]
-  isLoading: boolean
-  hasNextPage: boolean
-  isFetchingNextPage: boolean
-  search: string
-  onLoadMore: () => void
-  onImageClick: (image: Image) => void
+type Image = DateToString<TImage>
+
+interface Props {
+  // Params
+  query: GetImagesQuery
   onClearSearch: () => void
-  mode?: "view" | "pick"
-  onPick?: (image: Image) => void
-  selectedId?: string | null
-  onToggleSelection?: (id: string) => void
+
+  // Actions
+  onImageClick?: (image: Image) => void
+  onImageCheckedChange?: (image: Image) => void
   selectedIds?: Set<string>
+  selectedId?: string
+
+  // Style
+  className?: string
 }
 
-function SkeletonGrid() {
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="overflow-hidden rounded-lg border">
-          <Skeleton className="aspect-square" />
-          <div className="space-y-2 p-3">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-3 w-1/2" />
-          </div>
-        </div>
-      ))}
-    </div>
+export function ImageGrid(props: Props) {
+  const {
+    query,
+    onClearSearch,
+    onImageClick,
+    onImageCheckedChange,
+    selectedIds,
+    selectedId,
+    className,
+  } = props
+
+  // Fetching images
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    getImagesQueryOptions(query),
   )
-}
+  const images = data.pages.flatMap((p) => p.data) ?? []
 
-export function ImageGrid({
-  images,
-  isLoading,
-  hasNextPage,
-  isFetchingNextPage,
-  search,
-  onLoadMore,
-  onImageClick,
-  onClearSearch,
-  mode = "view",
-  onPick,
-  selectedId,
-  onToggleSelection,
-  selectedIds = new Set(),
-}: ImageGridProps) {
+  // Upload image dialog stores
   const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
 
-  // Loading state
-  if (isLoading) return <SkeletonGrid />
-
   // Empty state — no images at all
-  if (images.length === 0 && !search) {
+  if (images.length === 0 && !query.search) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center">
         <ImagePlus className="size-16 text-neutral-300" strokeWidth={1} />
@@ -72,25 +61,23 @@ export function ImageGrid({
             Upload foto pertama untuk mulai membangun library
           </p>
         </div>
-        <Button onClick={onUpload} className="rounded-full">
-          Upload foto
-        </Button>
+        <Button onClick={onUpload}>Upload foto</Button>
       </div>
     )
   }
 
   // Empty state — search no results
-  if (images.length === 0 && search) {
+  if (images.length === 0 && query.search) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center">
         <ImageOff className="size-16 text-neutral-300" strokeWidth={1} />
         <div>
           <h3 className="text-heading font-heading text-lg font-bold">Tidak ada hasil</h3>
           <p className="text-caption mt-1 max-w-sm text-neutral-500">
-            Tidak ada foto yang cocok dengan &ldquo;{search}&rdquo;
+            Tidak ada foto yang cocok dengan &ldquo;{query.search}&rdquo;
           </p>
         </div>
-        <Button onClick={onClearSearch} variant="outline" className="rounded-full">
+        <Button onClick={onClearSearch} variant="outline">
           Hapus pencarian
         </Button>
       </div>
@@ -98,29 +85,22 @@ export function ImageGrid({
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className={cn("flex flex-col gap-4", className)}>
+      <div className="grid grid-cols-2 gap-4 @lg/main:grid-cols-4 @xl/main:grid-cols-5">
         {images.map((image) => (
           <ImageCard
             key={image.id}
             image={image}
-            onClick={() => onImageClick(image)}
-            mode={mode}
-            onPick={() => onPick?.(image)}
-            isSelected={selectedId === image.id || selectedIds.has(image.id)}
-            onCheckboxChange={onToggleSelection ? () => onToggleSelection(image.id) : undefined}
-            checked={selectedIds.has(image.id)}
+            onClick={onImageClick}
+            isSelected={selectedId ? selectedId === image.id : undefined}
+            isChecked={selectedIds?.has(image.id)}
+            onCheckedChange={onImageCheckedChange ? () => onImageCheckedChange(image) : undefined}
           />
         ))}
       </div>
       {hasNextPage && (
         <div className="flex justify-center py-4">
-          <Button
-            onClick={onLoadMore}
-            disabled={isFetchingNextPage}
-            variant="outline"
-            className="rounded-full"
-          >
+          <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage} variant="outline">
             {isFetchingNextPage ? "Memuat..." : "Muat lainnya"}
           </Button>
         </div>

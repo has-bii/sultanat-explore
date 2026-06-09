@@ -1,21 +1,31 @@
 "use client"
 
-import { useInfiniteQuery } from "@tanstack/react-query"
+import dynamic from "next/dynamic"
 
 import { FiltersToolbar } from "../components/filters-toolbar"
 import { ImageSheet } from "../components/image-detail-sheet"
-import { ImageErrorMessage } from "../components/image-error-message"
-import { ImageGrid } from "../components/image-grid"
+import { ImageGridSkeleton } from "../components/image-grid-skeleton"
 import { SelectionBar } from "../components/selection-bar"
 import { UploadImagesDialog } from "../components/upload-images-dialog"
 import { useImageFilters } from "../hooks/use-image-filters"
-import { getImagesQueryOptions } from "../query/get-images.query"
 import { useImageDetailSheetStore } from "../stores/image-detail-sheet.store"
 import { useImageSelectionStore } from "../stores/image-selection.store"
 
+const ImageGrid = dynamic(
+  () => import("@/features/image/components/image-grid").then((m) => ({ default: m.ImageGrid })),
+  { ssr: false, loading: () => <ImageGridSkeleton count={10} /> },
+)
+
 export function ImagesPage() {
   // Get SearchURL Query
-  const { search, setSearch, order, setOrder, sort } = useImageFilters()
+  const { search, setSearch, order, setOrder } = useImageFilters()
+  //   Restructure query
+  const query = {
+    order,
+    sort: "createdAt" as const,
+    limit: "10",
+    ...(search ? { search } : {}),
+  }
 
   // Image Detail Sheet
   const onOpen = useImageDetailSheetStore((s) => s.onOpen)
@@ -24,26 +34,8 @@ export function ImagesPage() {
   const selectedIds = useImageSelectionStore((s) => s.selectedIds)
   const toggle = useImageSelectionStore((s) => s.toggle)
 
-  //   Restructure query
-  const query = {
-    sort: sort as "createdAt",
-    order: order as "asc" | "desc",
-    ...(search ? { search } : {}),
-    limit: 10,
-  }
-
-  //   Fetching data
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, isError, error } =
-    useInfiniteQuery(getImagesQueryOptions(query))
-
-  const images = data?.pages.flatMap((p) => p.data) ?? []
-
   const handleImageClick = (image: { id: string }) => {
     onOpen(image.id)
-  }
-
-  if (isError) {
-    return <ImageErrorMessage error={error} />
   }
 
   return (
@@ -55,19 +47,14 @@ export function ImagesPage() {
         onOrderChange={setOrder}
       />
 
-      <SelectionBar allImageIds={images.map((i) => i.id)} />
+      <SelectionBar />
 
       <ImageGrid
-        images={images}
-        isLoading={isLoading}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        search={search}
-        onLoadMore={fetchNextPage}
-        onImageClick={handleImageClick}
+        query={query}
         onClearSearch={() => setSearch("")}
-        onToggleSelection={toggle}
+        onImageClick={handleImageClick}
         selectedIds={selectedIds}
+        onImageCheckedChange={(image) => toggle(image.id)}
       />
 
       <UploadImagesDialog />

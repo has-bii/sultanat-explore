@@ -3,12 +3,11 @@ import { useMutation } from "@tanstack/react-query"
 import { apiClient } from "@/lib/api-client"
 import { toast } from "sonner"
 
-import { IMAGE_QUERY_KEY } from "../query/get-image-detail.query"
-import { IMAGES_QUERY_KEY } from "../query/get-images.query"
+import { imageQueryKeys } from "../query"
 
-export const useDeleteImage = (id: string) => {
+export const useDeleteImage = () => {
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async (id: string) => {
       const res = await apiClient.api.images[":id"].$delete({ param: { id } })
       const json = await res.json()
       if (!json.success) {
@@ -22,13 +21,13 @@ export const useDeleteImage = (id: string) => {
     onError: (e) => {
       toast.error(e.message)
     },
-    onSettled: (_data, _error, _vars, _result, context) => {
+    onSettled: (_data, _error, vars, _result, context) => {
       context.client.invalidateQueries({
-        queryKey: [IMAGES_QUERY_KEY],
+        queryKey: imageQueryKeys.all(),
         exact: false,
       })
       context.client.invalidateQueries({
-        queryKey: [IMAGE_QUERY_KEY, id],
+        queryKey: imageQueryKeys.detail(vars),
         exact: true,
       })
     },

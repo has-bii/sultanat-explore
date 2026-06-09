@@ -1,8 +1,8 @@
 "use client"
 
-import { useForm } from "@tanstack/react-form"
+import { useAppForm } from "@/lib/form"
 
-import { UpdateImageInput, updateImageSchema } from "backend/modules/image/image.schema"
+import { type UpdateImageInput, updateImageSchema } from "backend/modules/image/image.schema"
 
 interface Props {
   defaultValues: UpdateImageInput
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const useUpdateImageForm = ({ defaultValues, onSubmit }: Props) => {
-  return useForm({
+  return useAppForm({
     defaultValues,
     validators: {
       onSubmit: updateImageSchema,

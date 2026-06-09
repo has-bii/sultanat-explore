@@ -1,5 +1,5 @@
 import { Upload } from "lucide-react"
-import React from "react"
+import React, { useRef } from "react"
 
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -12,6 +12,7 @@ type Props = {
 }
 
 export function DndImages({ onChange }: Props) {
+  const inputFileRef = useRef<HTMLInputElement>(null)
   const [isDragging, setisDragging] = React.useState(false)
 
   const addFiles = (files: FileList | File[]) => {
@@ -67,7 +68,7 @@ export function DndImages({ onChange }: Props) {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        onClick={() => document.getElementById("file-input")?.click()}
+        onClick={() => inputFileRef.current?.click()}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-8 text-center transition-colors hover:border-neutral-400",
           isDragging ? "border-primary" : "border-neutral-300",
@@ -80,7 +81,7 @@ export function DndImages({ onChange }: Props) {
 
       {/* Input file */}
       <input
-        id="file-input"
+        ref={inputFileRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
         multiple

@@ -1,10 +1,10 @@
 "use client"
 
-import { Search, Upload } from "lucide-react"
+import { SearchIcon, Upload } from "lucide-react"
 import { useCallback, useRef } from "react"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import {
   Select,
   SelectContent,
@@ -19,7 +19,7 @@ interface Props {
   search: string
   order: string
   onSearchChange: (value: string) => void
-  onOrderChange: (value: string) => void
+  onOrderChange: (value: "asc" | "desc") => void
 }
 
 export function FiltersToolbar({ search, order, onSearchChange, onOrderChange }: Props) {
@@ -38,30 +38,35 @@ export function FiltersToolbar({ search, order, onSearchChange, onOrderChange }:
   )
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative flex-1">
-        <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
-        <Input
-          type="text"
-          defaultValue={search}
-          onChange={(e) => debouncedSearch(e.target.value)}
-          placeholder="Cari berdasar alt..."
-          className="pl-9"
-        />
+    <div className="flex items-center justify-between gap-3">
+      <div className="flex-1">
+        <InputGroup>
+          <InputGroupAddon align="inline-start">
+            <SearchIcon />
+          </InputGroupAddon>
+          <InputGroupInput
+            type="text"
+            defaultValue={search}
+            onChange={(e) => debouncedSearch(e.target.value)}
+            placeholder="Cari berdasarkan deskripsi..."
+          />
+        </InputGroup>
       </div>
-      <Select value={order} onValueChange={onOrderChange}>
-        <SelectTrigger className="w-36">
-          <SelectValue placeholder="Urutan" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="desc">Terbaru</SelectItem>
-          <SelectItem value="asc">Terlama</SelectItem>
-        </SelectContent>
-      </Select>
-      <Button onClick={onUpload}>
-        <Upload />
-        Upload
-      </Button>
+      <div className="inline-flex items-center gap-2">
+        <Select value={order} onValueChange={onOrderChange}>
+          <SelectTrigger className="w-36">
+            <SelectValue placeholder="Urutan" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="desc">Terbaru</SelectItem>
+            <SelectItem value="asc">Terlama</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button onClick={onUpload}>
+          <Upload />
+          Upload
+        </Button>
+      </div>
     </div>
   )
 }

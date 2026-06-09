@@ -4,14 +4,16 @@ import { apiClient } from "@/lib/api-client"
 import { InferRequestType } from "hono"
 import { toast } from "sonner"
 
-import { IMAGE_QUERY_KEY } from "../query/get-image-detail.query"
-import { IMAGES_QUERY_KEY } from "../query/get-images.query"
+import { imageQueryKeys } from "../query"
 
 const $updateImage = apiClient.api.images[":id"].$patch
 type UpdateImageInputType = InferRequestType<typeof $updateImage>["json"]
 
+export const updateImageMutationKey = (id: string) => ["update-image", id] as const
+
 export const useUpdateImage = (id: string) => {
   return useMutation({
+    mutationKey: updateImageMutationKey(id),
     mutationFn: async (input: UpdateImageInputType) => {
       const res = await $updateImage({
         param: { id },
@@ -24,16 +26,13 @@ export const useUpdateImage = (id: string) => {
     onSuccess: (res) => {
       toast.success(res.message)
     },
-    onError: (err) => {
-      toast.error(err.message)
-    },
     onSettled: (_res, _error, _vars, _result, context) => {
       context.client.invalidateQueries({
-        queryKey: [IMAGES_QUERY_KEY],
+        queryKey: imageQueryKeys.all(),
         exact: false,
       })
       context.client.invalidateQueries({
-        queryKey: [IMAGE_QUERY_KEY, id],
+        queryKey: imageQueryKeys.detail(id),
         exact: true,
       })
     },

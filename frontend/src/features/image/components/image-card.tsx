@@ -1,39 +1,30 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
+import { DateToString } from "@/utils/date-to-string.type"
+import { formatFileSize } from "@/utils/format-file-size"
 import { intlFormatDistance } from "date-fns"
 import Image from "next/image"
 
-import type { Image as ImageType } from "../dto/image.schema"
+import type { Image as TImage } from "backend/generated/prisma/client"
+
 import { blurhashToDataUrl } from "../lib/blurhash"
 
+type Image = DateToString<TImage>
+
 interface ImageCardProps {
-  image: ImageType
-  onClick: () => void
-  mode?: "view" | "pick"
-  onPick?: () => void
+  image: Image
+  onClick?: (image: Image) => void
   isSelected?: boolean
-  onCheckboxChange?: () => void
-  checked?: boolean
+  isChecked?: boolean
+  onCheckedChange?: (value: boolean) => void
 }
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
+export function ImageCard(props: ImageCardProps) {
+  const { image, onClick, isSelected, isChecked, onCheckedChange } = props
 
-export function ImageCard({
-  image,
-  onClick,
-  mode = "view",
-  onPick,
-  isSelected,
-  onCheckboxChange,
-  checked,
-}: ImageCardProps) {
   return (
     <Card
       role="button"
@@ -41,7 +32,7 @@ export function ImageCard({
         "group hover:ring-primary relative gap-4 pt-0 pb-4 transition-shadow",
         isSelected && "ring-primary",
       )}
-      onClick={mode === "pick" ? onPick : onClick}
+      onClick={() => onClick?.(image)}
     >
       <figure className="relative aspect-square overflow-hidden bg-neutral-100">
         <Image
@@ -54,33 +45,28 @@ export function ImageCard({
           className="object-cover"
         />
       </figure>
-      {onCheckboxChange && mode === "view" && (
+      {onCheckedChange && (
         <div
           className={cn(
             "absolute top-2 left-2 z-20 transition-opacity",
-            checked ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+            isChecked ? "opacity-100" : "opacity-0 group-hover:opacity-100",
           )}
           onClick={(e) => e.stopPropagation()}
         >
           <Checkbox
-            checked={checked}
-            onCheckedChange={onCheckboxChange}
+            checked={isChecked}
+            onCheckedChange={onCheckedChange}
             className="data-checked:bg-primary data-checked:border-primary size-5 rounded-full border-white bg-black/40"
           />
         </div>
       )}
       <CardHeader className="px-4">
-        {mode === "pick" && (
-          <CardAction>
-            <Badge variant="secondary">Pilih</Badge>
-          </CardAction>
-        )}
         <CardTitle className="line-clamp-1">{image.alt || "Tanpa deskripsi"}</CardTitle>
         <div className="flex items-center justify-between gap-2">
           <CardDescription>{formatFileSize(image.fileSize)}</CardDescription>
-          <CardDescription>
+          <span className="text-muted-foreground block text-xs">
             {intlFormatDistance(image.createdAt, new Date(), { locale: "id" })}
-          </CardDescription>
+          </span>
         </div>
       </CardHeader>
     </Card>

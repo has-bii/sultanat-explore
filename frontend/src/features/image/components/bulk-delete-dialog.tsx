@@ -1,11 +1,11 @@
 "use client"
 
-import { InfoIcon, Loader, Trash2Icon } from "lucide-react"
+import { InfoIcon, Loader, Trash2, Trash2Icon } from "lucide-react"
+import { useState } from "react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -15,35 +15,37 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
 
 import { useBulkDeleteImages } from "../mutations/bulk-delete-images.mutation"
 import { useImageSelectionStore } from "../stores/image-selection.store"
 
 export function BulkDeleteDialog() {
+  const [open, setOpen] = useState(false)
   const selectedIds = useImageSelectionStore((s) => s.selectedIds)
   const clearSelection = useImageSelectionStore((s) => s.clear)
 
   const count = selectedIds.size
-  const ids = Array.from(selectedIds)
 
-  const { mutateAsync, isPending, error } = useBulkDeleteImages({
-    onSuccess: () => {
-      clearSelection()
-    },
-  })
+  const { mutate, isPending, error } = useBulkDeleteImages()
 
   const handleConfirm = () => {
     if (count === 0) return
-    toast.promise(async () => mutateAsync(ids), {
-      loading: `Menghapus ${count} foto...`,
-      success: (res) => res.message,
-      error: (err: Error) => err.message,
+    mutate(Array.from(selectedIds), {
+      onSuccess: () => {
+        setOpen(false)
+        clearSelection()
+      },
     })
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog
+      open={open}
+      onOpenChange={(state) => {
+        if (isPending) return
+        setOpen(state)
+      }}
+    >
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size="sm">
           <Trash2Icon className="size-4" />
@@ -68,16 +70,19 @@ export function BulkDeleteDialog() {
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
-          <AlertDialogAction variant="destructive" disabled={isPending} onClick={handleConfirm}>
+          <Button variant="destructive" disabled={isPending} onClick={handleConfirm}>
             {isPending ? (
               <>
-                <Loader className="size-4 animate-spin" />
-                Menghapus...
+                <Loader className="animate-spin" />
+                <span>Menghapus...</span>
               </>
             ) : (
-              `Hapus (${count})`
+              <>
+                <Trash2 />
+                <span>Hapus</span>
+              </>
             )}
-          </AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
