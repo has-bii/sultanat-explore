@@ -1,5 +1,6 @@
 "use client"
 
+import { Copy } from "lucide-react"
 import { ComponentProps, useEffect, useRef, useState } from "react"
 
 import { Button } from "./ui/button"
@@ -32,6 +33,7 @@ export function ButtonCopy({ children, value, ...props }: Props) {
     <Tooltip open={open}>
       <TooltipTrigger asChild>
         <Button {...props} onClick={handleCopyUrl}>
+          <Copy />
           {children}
         </Button>
       </TooltipTrigger>

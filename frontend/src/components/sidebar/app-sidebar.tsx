@@ -29,16 +29,8 @@ const navMain = [
     icon: PinIcon,
     items: [
       {
-        title: "Kategori",
-        url: "/admin/dashboard/destination/category",
-      },
-      {
-        title: "Kota",
-        url: "/admin/dashboard/destination/city",
-      },
-      {
-        title: "Atraksi",
-        url: "/admin/dashboard/destination/attraction",
+        title: "Overview",
+        url: "/admin/dashboard/destination",
       },
     ],
   },
@@ -46,6 +38,12 @@ const navMain = [
     title: "Foto",
     url: "/admin/dashboard/image",
     icon: Image,
+    items: [
+      {
+        title: "Overview",
+        url: "/admin/dashboard/image",
+      },
+    ],
   },
 ]
 

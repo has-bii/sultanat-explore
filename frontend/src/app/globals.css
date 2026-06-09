@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@custom-variant dark (&:is(.dark *));
 
 /* ─── Theme: Tailwind CSS variable bindings ─── */
 @theme inline {
@@ -38,16 +39,6 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Radius — DESIGN.md scale: sharp 0, standard 8, comfortable 12, pill 999 */
-  --radius-px: 1px;
-  --radius-sm: 8px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-3xl: 24px;
-  --radius-4xl: 999px;
-
   /* Fonts */
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
@@ -80,61 +71,40 @@
   --shadow-uber-md: 0 4px 16px rgba(0, 0, 0, 0.16);
   --shadow-uber-lg: 0 2px 8px rgba(0, 0, 0, 0.16);
   --shadow-uber-pressed: inset 0 0 0 999px rgba(0, 0, 0, 0.08);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 /* ─── Light theme — Uber achromatic palette (DESIGN.md §2) ─── */
 :root {
-  /* Core — DESIGN.md §2 hybrid: near-black primary (softer on screen), light borders (shadcn default) */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-
-  /* Cards & surfaces */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-
-  /* Primary = Uber Black */
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-
-  /* Secondary = chip gray */
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-
-  /* Muted = subtle gray bg */
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-
-  /* Accent */
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-
-  /* Destructive — keep semantic but achromatic-leaning */
   --destructive: oklch(0.577 0.245 27.325);
-
-  /* Text — DESIGN.md §2 */
-  --text-body-gray: #4b4b4b;
-  --text-muted-gray: #afafaf;
-
-  /* Links — DESIGN.md §2 */
-  --link-default: #0000ee;
-  --link-white: #ffffff;
-  --link-black: #000000;
-
-  /* Borders — whisper-soft (shadcn default, softer than DESIGN's pure black border) */
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-
-  /* Charts — grayscale */
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-
-  /* Sidebar */
+  --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -143,9 +113,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
-
 
 /* ─── Base styles ─── */
 @layer base {
