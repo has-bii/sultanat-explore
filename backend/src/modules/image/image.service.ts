@@ -1,10 +1,11 @@
 import { HTTPException } from "hono/http-exception"
 import { randomUUID } from "node:crypto"
 
+import { PrismaClientKnownRequestError } from "backend/generated/prisma/internal/prismaNamespace"
 import { db } from "backend/lib/db"
 import { processImage } from "backend/lib/image-processing"
 import { r2Delete, r2KeyFromUrl, r2Upload } from "backend/lib/r2"
-import type { UpdateImageInput } from "backend/modules/image/image.schema"
+import type { ImageQueryOutput, UpdateImageInput } from "backend/modules/image/image.schema"
 
 function r2Key(): string {
   const now = new Date()
@@ -48,14 +49,8 @@ export async function uploadImages(files: File[] | File) {
   return await processAndUpload(files)
 }
 
-export async function listImages(params: {
-  cursor?: string
-  limit?: number
-  sort?: "createdAt"
-  order?: "asc" | "desc"
-  search?: string
-}) {
-  const { cursor, limit = 20, sort = "createdAt", order = "desc", search } = params
+export async function listImages(params: ImageQueryOutput) {
+  const { cursor, limit, sort, order, search } = params
   const take = Math.min(limit, 100) + 1
 
   const images = await db.image.findMany({
@@ -88,17 +83,24 @@ export async function updateImage(id: string, input: UpdateImageInput) {
 }
 
 export async function deleteImage(id: string) {
-  const image = await db.image.findUnique({ where: { id } })
-  if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
-
-  const key = r2KeyFromUrl(image.url)
   try {
-    await r2Delete(key)
-  } catch {
-    throw new HTTPException(500, { message: "Gagal menghapus foto" })
-  }
+    const image = await db.image.findUnique({ where: { id } })
+    if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
 
-  await db.image.delete({ where: { id } })
+    await db.image.delete({ where: { id } })
+
+    const key = r2KeyFromUrl(image.url)
+    try {
+      await r2Delete(key)
+    } catch {
+      throw new HTTPException(500, { message: "Gagal menghapus foto" })
+    }
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError && err.code === "P2003") {
+      throw new HTTPException(400, { message: "Gagal menghapus foto. Foto masih digunakan." })
+    }
+    throw err
+  }
 }
 
 export async function bulkDeleteImages(ids: string[]) {
@@ -125,9 +127,7 @@ export async function bulkDeleteImages(ids: string[]) {
     }),
   ])
 
-  const referencedIds = new Set(
-    refChecks.flat().map((r) => r.imageId),
-  )
+  const referencedIds = new Set(refChecks.flat().map((r) => r.imageId))
 
   const deletable = images.filter((img) => !referencedIds.has(img.id))
   const skipped = images.length - deletable.length

@@ -1,9 +1,10 @@
 import { Hono } from "hono"
 
 import { requireAuth } from "backend/middlewares/require-auth"
-import { zValidator } from "backend/middlewares/validator-wrapper"
+import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
   bulkDeleteImageSchema,
+  imageQuerySchema,
   updateImageSchema,
   uploadImageSchema,
 } from "backend/modules/image/image.schema"
@@ -16,27 +17,26 @@ import {
   uploadImages,
 } from "backend/modules/image/image.service"
 import { paramIdSchema } from "backend/schemas/param.schema"
-import { imageQuerySchema } from "backend/schemas/query.schema"
 import { successResponse } from "backend/utils/response"
 
 const imageRoute = new Hono()
-  .get("/", zValidator("query", imageQuerySchema), async (c) => {
+  .get("/", sValidator("query", imageQuerySchema), async (c) => {
     const query = c.req.valid("query")
     const result = await listImages(query)
     return c.json(successResponse(result, "ok"))
   })
-  .get("/:id", zValidator("param", paramIdSchema), async (c) => {
+  .get("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     const image = await getImage(param.id)
     return c.json(successResponse(image, "ok"))
   })
   .use(requireAuth)
-  .post("/bulk-delete", zValidator("json", bulkDeleteImageSchema), async (c) => {
+  .post("/bulk-delete", sValidator("json", bulkDeleteImageSchema), async (c) => {
     const json = c.req.valid("json")
     const result = await bulkDeleteImages(json.ids)
     return c.json(successResponse(result, "Foto berhasil dihapus"))
   })
-  .post("/", zValidator("form", uploadImageSchema), async (c) => {
+  .post("/", sValidator("form", uploadImageSchema), async (c) => {
     const valid = c.req.valid("form")
     const images = await uploadImages(valid.files)
     const msg = "Foto berhasil diunggah"
@@ -44,8 +44,8 @@ const imageRoute = new Hono()
   })
   .patch(
     "/:id",
-    zValidator("param", paramIdSchema),
-    zValidator("json", updateImageSchema),
+    sValidator("param", paramIdSchema),
+    sValidator("json", updateImageSchema),
     async (c) => {
       const param = c.req.valid("param")
       const json = c.req.valid("json")
@@ -53,7 +53,7 @@ const imageRoute = new Hono()
       return c.json(successResponse(image, "Foto berhasil diperbarui"))
     },
   )
-  .delete("/:id", zValidator("param", paramIdSchema), async (c) => {
+  .delete("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     await deleteImage(param.id)
     return c.json(successResponse(null, "Foto berhasil dihapus"))
