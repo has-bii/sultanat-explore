@@ -1,6 +1,6 @@
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
-import { DestinationsListPage } from "@/features/destination/pages/destinations-list.page"
+import { CreateDestinationPage } from "@/features/destination/pages/create-destination.page"
 
 const breadcrumb: HeaderBreadcrumbItem = [
   {
@@ -9,6 +9,10 @@ const breadcrumb: HeaderBreadcrumbItem = [
   },
   {
     label: "Destinasi",
+    href: "/admin/dashboard/destination",
+  },
+  {
+    label: "Tambah Destinasi",
   },
 ]
 
@@ -21,7 +25,7 @@ export default function Page() {
         </HeaderLeft>
       </Header>
       <MainPageContent>
-        <DestinationsListPage />
+        <CreateDestinationPage />
       </MainPageContent>
     </MainPage>
   )
