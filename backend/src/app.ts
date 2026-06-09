@@ -5,8 +5,8 @@ import { HTTPException } from "hono/http-exception"
 
 import type { AppContext } from "backend/app.type"
 import { auth } from "backend/lib/auth"
-import attractionRoute from "backend/modules/attraction/attraction.route"
 import attractionCategoryRoute from "backend/modules/attraction-category/attraction-category.route"
+import attractionRoute from "backend/modules/attraction/attraction.route"
 import destinationRoute from "backend/modules/destination/destination.route"
 import imageRoute from "backend/modules/image/image.route"
 import { errorResponse } from "backend/utils/response"
@@ -30,8 +30,6 @@ app.notFound((c) => {
 })
 
 app.onError((err, c) => {
-  console.error(err)
-
   if (err instanceof HTTPException) {
     return c.json(errorResponse(err.message, err.cause || err.message), err.status)
   }
