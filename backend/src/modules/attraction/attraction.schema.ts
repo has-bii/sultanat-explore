@@ -1,46 +1,52 @@
-import { z } from "zod"
+import * as v from "valibot"
 
-export const createAttractionSchema = z.object({
-  name: z.string().min(1, "Nama harus diisi").max(100, "Nama maksimal 100 karakter"),
-  description: z
-    .string()
-    .min(1, "Deskripsi harus diisi")
-    .max(5000, "Deskripsi maksimal 5000 karakter"),
-  imageId: z.uuid("ID gambar tidak valid"),
-  categoryId: z.uuid("ID kategori tidak valid").optional(),
+export const createAttractionSchema = v.object({
+  name: v.pipe(v.string(), v.minLength(1, "Nama harus diisi"), v.maxLength(100, "Nama maksimal 100 karakter")),
+  description: v.pipe(
+    v.string(),
+    v.minLength(1, "Deskripsi harus diisi"),
+    v.maxLength(5000, "Deskripsi maksimal 5000 karakter"),
+  ),
+  imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
+  categoryId: v.optional(v.pipe(v.string(), v.uuid("ID kategori tidak valid"))),
 })
 
-export const updateAttractionSchema = z.object({
-  name: z.string().min(1, "Nama harus diisi").max(100, "Nama maksimal 100 karakter").optional(),
-  description: z
-    .string()
-    .min(1, "Deskripsi harus diisi")
-    .max(5000, "Deskripsi maksimal 5000 karakter")
-    .optional(),
-  imageId: z.uuid("ID gambar tidak valid").optional(),
-  categoryId: z.uuid("ID kategori tidak valid").optional(),
+export const updateAttractionSchema = v.object({
+  name: v.optional(v.pipe(v.string(), v.minLength(1, "Nama harus diisi"), v.maxLength(100, "Nama maksimal 100 karakter"))),
+  description: v.optional(
+    v.pipe(
+      v.string(),
+      v.minLength(1, "Deskripsi harus diisi"),
+      v.maxLength(5000, "Deskripsi maksimal 5000 karakter"),
+    ),
+  ),
+  imageId: v.optional(v.pipe(v.string(), v.uuid("ID gambar tidak valid"))),
+  categoryId: v.optional(v.pipe(v.string(), v.uuid("ID kategori tidak valid"))),
 })
 
-export const attractionQuerySchema = z.object({
-  cursor: z.uuidv7("Invalid cursor").optional().catch(undefined),
-  limit: z.coerce.number<number>().min(10).max(100).default(10).catch(10),
-  search: z.string().optional().catch(undefined),
-  categoryId: z.uuid("ID kategori tidak valid").optional().catch(undefined),
-  sort: z.enum(["name", "createdAt"]).default("createdAt"),
-  order: z.enum(["asc", "desc"]).default("desc"),
+export const attractionQuerySchema = v.object({
+  cursor: v.fallback(v.optional(v.pipe(v.string(), v.uuid("Invalid cursor"))), undefined),
+  limit: v.fallback(v.pipe(v.string(), v.toNumber(), v.minValue(10), v.maxValue(100)), 10),
+  search: v.fallback(v.optional(v.string()), undefined),
+  categoryId: v.fallback(v.optional(v.pipe(v.string(), v.uuid("ID kategori tidak valid"))), undefined),
+  sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
+  order: v.optional(v.picklist(["asc", "desc"]), "desc"),
 })
 
-export const addAttractionGalleryImageSchema = z.object({
-  imageId: z.uuid("ID gambar tidak valid"),
-  order: z.number().int().min(0).optional(),
+export const addAttractionGalleryImageSchema = v.object({
+  imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
+  order: v.optional(v.pipe(v.number(), v.integer(), v.minValue(0))),
 })
 
-export const reorderAttractionGallerySchema = z.object({
-  imageIds: z.array(z.uuid("ID gambar tidak valid")).min(1, "Minimal 1 gambar"),
+export const reorderAttractionGallerySchema = v.object({
+  imageIds: v.pipe(
+    v.array(v.pipe(v.string(), v.uuid("ID gambar tidak valid"))),
+    v.minLength(1, "Minimal 1 gambar"),
+  ),
 })
 
-export type CreateAttractionInput = z.infer<typeof createAttractionSchema>
-export type UpdateAttractionInput = z.infer<typeof updateAttractionSchema>
-export type AttractionQueryInput = z.infer<typeof attractionQuerySchema>
-export type AddAttractionGalleryImageInput = z.infer<typeof addAttractionGalleryImageSchema>
-export type ReorderAttractionGalleryInput = z.infer<typeof reorderAttractionGallerySchema>
+export type CreateAttractionInput = v.InferInput<typeof createAttractionSchema>
+export type UpdateAttractionInput = v.InferInput<typeof updateAttractionSchema>
+export type AttractionQueryInput = v.InferOutput<typeof attractionQuerySchema>
+export type AddAttractionGalleryImageInput = v.InferInput<typeof addAttractionGalleryImageSchema>
+export type ReorderAttractionGalleryInput = v.InferInput<typeof reorderAttractionGallerySchema>

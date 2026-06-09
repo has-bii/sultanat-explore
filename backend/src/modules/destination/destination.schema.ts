@@ -1,64 +1,70 @@
-import { z } from "zod"
+import * as v from "valibot"
 
-export const createDestinationSchema = z.object({
-  name: z.string().min(1, "Nama harus diisi").max(100, "Nama maksimal 100 karakter"),
-  tagline: z.string().min(1, "Tagline harus diisi").max(200, "Tagline maksimal 200 karakter"),
-  description: z
-    .string()
-    .min(1, "Deskripsi harus diisi")
-    .max(5000, "Deskripsi maksimal 5000 karakter"),
-  imageId: z.uuid("ID gambar tidak valid"),
-  featured: z.boolean().optional().default(false),
-  highlights: z
-    .array(z.string().min(1).max(200, "Highlight maksimal 200 karakter"))
-    .max(20, "Maksimal 20 highlights")
-    .optional(),
+export const createDestinationSchema = v.object({
+  name: v.pipe(
+    v.string(),
+    v.minLength(1, "Nama harus diisi"),
+    v.maxLength(100, "Nama maksimal 100 karakter"),
+  ),
+  tagline: v.pipe(
+    v.string(),
+    v.minLength(1, "Tagline harus diisi"),
+    v.maxLength(200, "Tagline maksimal 200 karakter"),
+  ),
+  description: v.pipe(
+    v.string(),
+    v.minLength(1, "Deskripsi harus diisi"),
+    v.maxLength(5000, "Deskripsi maksimal 5000 karakter"),
+  ),
+  imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
+  featured: v.boolean(),
+  highlights: v.pipe(
+    v.array(
+      v.pipe(
+        v.string(),
+        v.minLength(1, "Highlight tidak boleh kosong"),
+        v.maxLength(200, "Highlight maksimal 200 karakter"),
+      ),
+    ),
+    v.minLength(1, "Minimal 1 highlights"),
+    v.maxLength(20, "Maksimal 20 highlights"),
+  ),
 })
 
-export const updateDestinationSchema = z.object({
-  name: z.string().min(1, "Nama harus diisi").max(100, "Nama maksimal 100 karakter").optional(),
-  tagline: z
-    .string()
-    .min(1, "Tagline harus diisi")
-    .max(200, "Tagline maksimal 200 karakter")
-    .optional(),
-  description: z
-    .string()
-    .min(1, "Deskripsi harus diisi")
-    .max(5000, "Deskripsi maksimal 5000 karakter")
-    .optional(),
-  imageId: z.uuid("ID gambar tidak valid").optional(),
-  featured: z.boolean().optional(),
-  highlights: z
-    .array(z.string().min(1).max(200, "Highlight maksimal 200 karakter"))
-    .max(20, "Maksimal 20 highlights")
-    .optional(),
+export const updateDestinationSchema = v.partial(createDestinationSchema)
+
+export const destinationQuerySchema = v.object({
+  cursor: v.fallback(v.optional(v.pipe(v.string(), v.uuid("Invalid cursor"))), undefined),
+  limit: v.fallback(v.pipe(v.string(), v.toNumber(), v.minValue(10), v.maxValue(100)), 10),
+  search: v.fallback(v.optional(v.string()), undefined),
+  featured: v.fallback(
+    v.optional(
+      v.pipe(
+        v.picklist(["true", "false"]),
+        v.transform((val) => val === "true"),
+      ),
+    ),
+    undefined,
+  ),
+  sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
+  order: v.optional(v.picklist(["asc", "desc"]), "desc"),
 })
 
-export const destinationQuerySchema = z.object({
-  cursor: z.uuidv7("Invalid cursor").optional().catch(undefined),
-  limit: z.coerce.number<number>().min(10).max(100).default(10).catch(10),
-  search: z.string().optional().catch(undefined),
-  featured: z
-    .enum(["true", "false"])
-    .transform((v) => v === "true")
-    .optional()
-    .catch(undefined),
-  sort: z.enum(["name", "createdAt"]).default("createdAt"),
-  order: z.enum(["asc", "desc"]).default("desc"),
+export const addGalleryImageSchema = v.object({
+  imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
+  order: v.optional(v.pipe(v.number(), v.integer(), v.minValue(0))),
 })
 
-export const addGalleryImageSchema = z.object({
-  imageId: z.uuid("ID gambar tidak valid"),
-  order: z.number().int().min(0).optional(),
+export const reorderGallerySchema = v.object({
+  imageIds: v.pipe(
+    v.array(v.pipe(v.string(), v.uuid("ID gambar tidak valid"))),
+    v.minLength(1, "Minimal 1 gambar"),
+  ),
 })
 
-export const reorderGallerySchema = z.object({
-  imageIds: z.array(z.uuid("ID gambar tidak valid")).min(1, "Minimal 1 gambar"),
-})
-
-export type CreateDestinationInput = z.infer<typeof createDestinationSchema>
-export type UpdateDestinationInput = z.infer<typeof updateDestinationSchema>
-export type DestinationQueryInput = z.infer<typeof destinationQuerySchema>
-export type AddGalleryImageInput = z.infer<typeof addGalleryImageSchema>
-export type ReorderGalleryInput = z.infer<typeof reorderGallerySchema>
+export type CreateDestinationInput = v.InferInput<typeof createDestinationSchema>
+export type CreateDestinationOutput = v.InferOutput<typeof createDestinationSchema>
+export type UpdateDestinationInput = v.InferInput<typeof updateDestinationSchema>
+export type DestinationQueryInput = v.InferOutput<typeof destinationQuerySchema>
+export type AddGalleryImageInput = v.InferInput<typeof addGalleryImageSchema>
+export type ReorderGalleryInput = v.InferInput<typeof reorderGallerySchema>

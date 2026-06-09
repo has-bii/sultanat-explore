@@ -1,7 +1,7 @@
 import { Hono } from "hono"
 
 import { requireAuth } from "backend/middlewares/require-auth"
-import { zValidator } from "backend/middlewares/validator-wrapper"
+import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
   addGalleryImageSchema,
   createDestinationSchema,
@@ -23,26 +23,26 @@ import { paramIdSchema } from "backend/schemas/param.schema"
 import { successResponse } from "backend/utils/response"
 
 const destinationRoute = new Hono()
-  .get("/", zValidator("query", destinationQuerySchema), async (c) => {
+  .get("/", sValidator("query", destinationQuerySchema), async (c) => {
     const query = c.req.valid("query")
     const result = await listDestinations(query)
     return c.json(successResponse(result, "ok"))
   })
-  .get("/:id", zValidator("param", paramIdSchema), async (c) => {
+  .get("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     const destination = await getDestination(param.id)
     return c.json(successResponse(destination, "ok"))
   })
   .use(requireAuth)
-  .post("/", zValidator("json", createDestinationSchema), async (c) => {
+  .post("/", sValidator("json", createDestinationSchema), async (c) => {
     const json = c.req.valid("json")
     const destination = await createDestination(json)
     return c.json(successResponse(destination, "Destinasi berhasil dibuat"), 201)
   })
   .patch(
     "/:id",
-    zValidator("param", paramIdSchema),
-    zValidator("json", updateDestinationSchema),
+    sValidator("param", paramIdSchema),
+    sValidator("json", updateDestinationSchema),
     async (c) => {
       const param = c.req.valid("param")
       const json = c.req.valid("json")
@@ -52,7 +52,7 @@ const destinationRoute = new Hono()
   )
   .delete(
     "/:id",
-    zValidator("param", paramIdSchema),
+    sValidator("param", paramIdSchema),
     async (c) => {
       const param = c.req.valid("param")
       await deleteDestination(param.id)
@@ -62,8 +62,8 @@ const destinationRoute = new Hono()
   // Gallery endpoints
   .post(
     "/:id/gallery",
-    zValidator("param", paramIdSchema),
-    zValidator("json", addGalleryImageSchema),
+    sValidator("param", paramIdSchema),
+    sValidator("json", addGalleryImageSchema),
     async (c) => {
       const param = c.req.valid("param")
       const json = c.req.valid("json")
@@ -73,7 +73,7 @@ const destinationRoute = new Hono()
   )
   .delete(
     "/:id/gallery/:imageId",
-    zValidator("param", paramIdSchema),
+    sValidator("param", paramIdSchema),
     async (c) => {
       const param = c.req.valid("param")
       const imageId = c.req.param("imageId")
@@ -83,8 +83,8 @@ const destinationRoute = new Hono()
   )
   .put(
     "/:id/gallery/reorder",
-    zValidator("param", paramIdSchema),
-    zValidator("json", reorderGallerySchema),
+    sValidator("param", paramIdSchema),
+    sValidator("json", reorderGallerySchema),
     async (c) => {
       const param = c.req.valid("param")
       const json = c.req.valid("json")

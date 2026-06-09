@@ -1,8 +1,8 @@
 import { Hono } from "hono"
-import { z } from "zod"
+import * as v from "valibot"
 
 import { requireAuth } from "backend/middlewares/require-auth"
-import { zValidator } from "backend/middlewares/validator-wrapper"
+import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
   addAttractionGalleryImageSchema,
   attractionQuerySchema,
@@ -23,27 +23,27 @@ import {
 import { successResponse } from "backend/utils/response"
 
 // Param schemas per route shape
-const listParamsSchema = z.object({
-  destinationId: z.uuid("Invalid destination id"),
+const listParamsSchema = v.object({
+  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
 })
 
-const idParamsSchema = z.object({
-  destinationId: z.uuid("Invalid destination id"),
-  id: z.uuid("Invalid id"),
+const idParamsSchema = v.object({
+  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
+  id: v.pipe(v.string(), v.uuid("Invalid id")),
 })
 
-const galleryImageParamsSchema = z.object({
-  destinationId: z.uuid("Invalid destination id"),
-  id: z.uuid("Invalid id"),
-  imageId: z.uuid("Invalid image id"),
+const galleryImageParamsSchema = v.object({
+  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
+  id: v.pipe(v.string(), v.uuid("Invalid id")),
+  imageId: v.pipe(v.string(), v.uuid("Invalid image id")),
 })
 
 const attractionRoute = new Hono()
   // List attractions for a destination
   .get(
     "/",
-    zValidator("param", listParamsSchema),
-    zValidator("query", attractionQuerySchema),
+    sValidator("param", listParamsSchema),
+    sValidator("query", attractionQuerySchema),
     async (c) => {
       const { destinationId } = c.req.valid("param")
       const query = c.req.valid("query")
@@ -52,7 +52,7 @@ const attractionRoute = new Hono()
     },
   )
   // Get single attraction
-  .get("/:id", zValidator("param", idParamsSchema), async (c) => {
+  .get("/:id", sValidator("param", idParamsSchema), async (c) => {
     const { destinationId, id } = c.req.valid("param")
     const attraction = await getAttraction(destinationId, id)
     return c.json(successResponse(attraction, "ok"))
@@ -61,8 +61,8 @@ const attractionRoute = new Hono()
   // Create attraction
   .post(
     "/",
-    zValidator("param", listParamsSchema),
-    zValidator("json", createAttractionSchema),
+    sValidator("param", listParamsSchema),
+    sValidator("json", createAttractionSchema),
     async (c) => {
       const { destinationId } = c.req.valid("param")
       const json = c.req.valid("json")
@@ -73,8 +73,8 @@ const attractionRoute = new Hono()
   // Update attraction
   .patch(
     "/:id",
-    zValidator("param", idParamsSchema),
-    zValidator("json", updateAttractionSchema),
+    sValidator("param", idParamsSchema),
+    sValidator("json", updateAttractionSchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
       const json = c.req.valid("json")
@@ -83,7 +83,7 @@ const attractionRoute = new Hono()
     },
   )
   // Delete attraction
-  .delete("/:id", zValidator("param", idParamsSchema), async (c) => {
+  .delete("/:id", sValidator("param", idParamsSchema), async (c) => {
     const { destinationId, id } = c.req.valid("param")
     await deleteAttraction(destinationId, id)
     return c.json(successResponse(null, "Atraksi berhasil dihapus"))
@@ -91,8 +91,8 @@ const attractionRoute = new Hono()
   // Gallery: Add image
   .post(
     "/:id/gallery",
-    zValidator("param", idParamsSchema),
-    zValidator("json", addAttractionGalleryImageSchema),
+    sValidator("param", idParamsSchema),
+    sValidator("json", addAttractionGalleryImageSchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
       const json = c.req.valid("json")
@@ -101,7 +101,7 @@ const attractionRoute = new Hono()
     },
   )
   // Gallery: Remove image
-  .delete("/:id/gallery/:imageId", zValidator("param", galleryImageParamsSchema), async (c) => {
+  .delete("/:id/gallery/:imageId", sValidator("param", galleryImageParamsSchema), async (c) => {
     const { destinationId, id, imageId } = c.req.valid("param")
     await removeGalleryImage(destinationId, id, imageId)
     return c.json(successResponse(null, "Foto berhasil dihapus dari galeri"))
@@ -109,8 +109,8 @@ const attractionRoute = new Hono()
   // Gallery: Reorder
   .put(
     "/:id/gallery/reorder",
-    zValidator("param", idParamsSchema),
-    zValidator("json", reorderAttractionGallerySchema),
+    sValidator("param", idParamsSchema),
+    sValidator("json", reorderAttractionGallerySchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
       const json = c.req.valid("json")
