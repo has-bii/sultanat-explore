@@ -1,36 +1,41 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
+import { Loader, LucideIcon } from "lucide-react"
+import { HTMLInputTypeAttribute } from "react"
 
-import { Button } from "@/components/ui/button"
-import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { ImagePickerDialog } from "@/features/image/components/image-picker-dialog"
+import { VariantProps } from "class-variance-authority"
 
-export const { fieldContext, formContext } = createFormHookContexts()
+export const { fieldContext, formContext, useFieldContext, useFormContext } =
+  createFormHookContexts()
 
-function TextField({
-  field,
-  label,
-  type = "text",
-  placeholder,
-}: {
-  field: any
-  label: string
-  type?: string
+interface Props {
+  label?: string
   placeholder?: string
-}) {
+  type?: HTMLInputTypeAttribute
+  description?: string
+}
+
+function TextField({ label, type = "text", placeholder }: Props) {
+  const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
   return (
     <Field data-invalid={isInvalid}>
-      <FieldLabel>{label}</FieldLabel>
+      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
       <Input
+        id={field.name}
+        name={field.name}
         type={type}
         placeholder={placeholder}
         value={field.state.value}
         onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.value as any)}
+        onChange={(e) => field.handleChange(e.target.value)}
         aria-invalid={isInvalid}
         autoComplete="off"
       />
@@ -39,20 +44,66 @@ function TextField({
   )
 }
 
-function SubmitButton({
-  form,
-  label,
-  pendingLabel,
-}: {
-  form: any
-  label: string
-  pendingLabel?: string
-}) {
+function TextareaField({ label, placeholder, rows = 4 }: Props & { rows?: number }) {
+  const field = useFieldContext<string>()
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
   return (
-    <form.Subscribe selector={(state: any) => [state.canSubmit, state.isSubmitting]}>
-      {([canSubmit, isSubmitting]: boolean[]) => (
-        <Button type="submit" disabled={!canSubmit} className="w-full">
-          {isSubmitting ? (pendingLabel ?? "Memproses...") : label}
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+      <Textarea
+        id={field.name}
+        name={field.name}
+        placeholder={placeholder}
+        value={field.state.value}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
+        aria-invalid={isInvalid}
+        rows={rows}
+      />
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
+  )
+}
+
+function ImagePickerField({ label, description }: Props) {
+  const field = useFieldContext<string>()
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
+  return (
+    <Field data-invalid={isInvalid}>
+      {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+      <ImagePickerDialog value={field.state.value} onChange={field.handleChange} />
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
+  )
+}
+
+function SubmitButton(props: {
+  label: string
+  icon?: LucideIcon
+  pendingLabel?: string
+  isDisabled?: boolean
+  className?: string
+  size?: VariantProps<typeof buttonVariants>["size"]
+  variant?: VariantProps<typeof buttonVariants>["variant"]
+}) {
+  const { label, pendingLabel, isDisabled, className, size, variant, icon: Icon } = props
+  const form = useFormContext()
+
+  return (
+    <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}>
+      {([canSubmit, isSubmitting, isDirty]) => (
+        <Button
+          type="submit"
+          size={size}
+          variant={variant}
+          disabled={!canSubmit || isSubmitting || isDisabled || !isDirty}
+          className={className}
+        >
+          {isSubmitting || isDisabled ? <Loader className="animate-spin" /> : Icon && <Icon />}
+          {isSubmitting || isDisabled ? (pendingLabel ?? "Memproses...") : label}
         </Button>
       )}
     </form.Subscribe>
@@ -60,7 +111,7 @@ function SubmitButton({
 }
 
 const { useAppForm } = createFormHook({
-  fieldComponents: { TextField },
+  fieldComponents: { TextField, TextareaField, ImagePickerField },
   formComponents: { SubmitButton },
   fieldContext,
   formContext,

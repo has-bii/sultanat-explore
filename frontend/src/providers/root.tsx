@@ -17,7 +17,7 @@ export default function RootProviders({ children }: Props) {
     <NuqsAdapter>
       <TooltipProvider>
         <QueryProvider>{children}</QueryProvider>
-        <Toaster richColors theme="light" />
+        <Toaster richColors theme="light" position="top-right" />
       </TooltipProvider>
     </NuqsAdapter>
   )

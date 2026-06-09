@@ -42,27 +42,19 @@ export function LoginForm() {
       }}
       className="flex flex-col gap-6"
     >
-      <form.AppField name="email">
-        {(field) => (
-          <field.TextField
-            field={field}
-            label="Email"
-            type="email"
-            placeholder="admin@sultanatexplore.com"
-          />
+      <form.AppField
+        name="email"
+        children={(field) => (
+          <field.TextField label="Email" type="email" placeholder="admin@sultanatexplore.com" />
         )}
-      </form.AppField>
+      />
 
-      <form.AppField name="password">
-        {(field) => (
-          <field.TextField
-            field={field}
-            label="Password"
-            type="password"
-            placeholder="Masukkan password"
-          />
+      <form.AppField
+        name="password"
+        children={(field) => (
+          <field.TextField label="Password" type="password" placeholder="Masukkan password" />
         )}
-      </form.AppField>
+      />
 
       {formError && (
         <div role="alert" className="text-destructive text-sm">
@@ -70,7 +62,9 @@ export function LoginForm() {
         </div>
       )}
 
-      <form.SubmitButton form={form} label="Masuk" pendingLabel="Memproses..." />
+      <form.AppForm>
+        <form.SubmitButton label="Masuk" pendingLabel="Memproses..." />
+      </form.AppForm>
 
       <a
         href="/admin/forgot-password"

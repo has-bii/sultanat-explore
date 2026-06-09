@@ -55,16 +55,12 @@ export function ForgotPasswordForm() {
       }}
       className="flex flex-col gap-6"
     >
-      <form.AppField name="email">
-        {(field) => (
-          <field.TextField
-            field={field}
-            label="Email"
-            type="email"
-            placeholder="admin@sultanatexplore.com"
-          />
+      <form.AppField
+        name="email"
+        children={(field) => (
+          <field.TextField label="Email" type="email" placeholder="admin@sultanatexplore.com" />
         )}
-      </form.AppField>
+      />
 
       {formError && (
         <div role="alert" className="text-destructive text-sm">
@@ -72,7 +68,9 @@ export function ForgotPasswordForm() {
         </div>
       )}
 
-      <form.SubmitButton form={form} label="Kirim Link Reset" pendingLabel="Mengirim..." />
+      <form.AppForm>
+        <form.SubmitButton label="Kirim Link Reset" pendingLabel="Mengirim..." />
+      </form.AppForm>
     </form>
   )
 }

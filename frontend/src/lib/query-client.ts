@@ -4,8 +4,9 @@ export const getQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000,
+        staleTime: 5 * 60 * 1000,
         retry: 0,
+        refetchOnWindowFocus: false,
       },
       mutations: {
         retry: 0,

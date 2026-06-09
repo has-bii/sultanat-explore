@@ -59,27 +59,23 @@ function ResetPasswordFormInner() {
       }}
       className="flex flex-col gap-6"
     >
-      <form.AppField name="password">
-        {(field) => (
-          <field.TextField
-            field={field}
-            label="Password Baru"
-            type="password"
-            placeholder="Minimal 8 karakter"
-          />
+      <form.AppField
+        name="password"
+        children={(field) => (
+          <field.TextField label="Password Baru" type="password" placeholder="Minimal 8 karakter" />
         )}
-      </form.AppField>
+      />
 
-      <form.AppField name="confirmPassword">
-        {(field) => (
+      <form.AppField
+        name="confirmPassword"
+        children={(field) => (
           <field.TextField
-            field={field}
             label="Konfirmasi Password"
             type="password"
             placeholder="Ulangi password"
           />
         )}
-      </form.AppField>
+      />
 
       {formError && (
         <div role="alert" className="text-destructive text-sm">
@@ -87,7 +83,9 @@ function ResetPasswordFormInner() {
         </div>
       )}
 
-      <form.SubmitButton form={form} label="Reset Password" pendingLabel="Memproses..." />
+      <form.AppForm>
+        <form.SubmitButton label="Reset Password" pendingLabel="Memproses..." />
+      </form.AppForm>
     </form>
   )
 }
