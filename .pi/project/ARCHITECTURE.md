@@ -81,7 +81,7 @@ sultanat-explore/
 | Client data | TanStack React Query | Server-state for admin CRUD pages. queryOptions/infiniteQueryOptions factories in features/<name>/queries/. useQuery for queryOptions, useInfiniteQuery for infiniteQueryOptions. Query invalidation in onSettled |
 | Admin layout | shadcn SidebarProvider | Collapsible sidebar + breadcrumb header pattern |
 | Image upload | Sharp + R2 | Resize to 1920px max, WebP quality 75, blurHash for placeholders. Multi-file via `File[]` schema, parallel `Promise.all`. Frontend: drag-and-drop, file validation (type + size), file list with remove, max 10 files |
-| Gallery management | MultiImagePickerDialog + @dnd-kit | Pick existing images (max 10), drag-to-reorder, sync via PUT endpoint. Join tables (`DestinationImage`, `AttractionImage`) with `order` field |
+| Gallery management | MultiImagePickerDialog + @dnd-kit | Pick existing images (max 10), drag-to-reorder, sync via PUT endpoint. Join table `DestinationImage` with `order` field. Attractions have no gallery. |
 | Image pickers | ImagePickerDialog (single) + MultiImagePickerDialog (multi) | Reusable across features. Single for hero images, multi for galleries. Dynamic import ImageGrid (SSR disabled) |
 | API response format | `successResponse`/`errorResponse` | Unified `{ success, data, message, error }` contract for frontend consumers |
 
@@ -93,12 +93,10 @@ sultanat-explore/
 ### Content models
 - `Image` — Reusable image entity (`url`, `alt`, `fileSize`, `blurHash`). Referenced by typed FKs from destinations and attractions.
 - `Destination` — City/region (slug, name, tagline, description, highlights[], featured flag). FK to Image (hero).
-- `DestinationImage` — Join table for gallery images, ordered.
-- `AttractionCategory` — Category entity (budaya, alam, pantai, etc.) — not an enum.
-- `Attraction` — Landmark/activity per destination. FK to Image (hero), Category, Destination.
-- `AttractionImage` — Join table for attraction gallery images, ordered.
+- `DestinationImage` — Join table for destination gallery images, ordered.
+- `Attraction` — Landmark/activity per destination. FK to Image (hero), Destination. No category, no gallery — flat entity.
 
-Gallery pattern uses join tables (`DestinationImage`, `AttractionImage`) with `order` field instead of JSON arrays or polymorphic relations.
+Gallery pattern uses a join table (`DestinationImage`) with `order` field instead of JSON arrays or polymorphic relations.
 
 ## Dependency Map
 

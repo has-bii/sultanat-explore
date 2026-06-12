@@ -212,7 +212,7 @@ backend/                           # Workspace package: API + DB + Auth
 ├── prisma/
 │   ├── schema.prisma              # Models: User, Session, Account, Verification
 │   │                             #   Image (url, alt, fileSize, blurHash), Destination, DestinationImage,
-│   │                             #   AttractionCategory, Attraction, AttractionImage
+│   │                             #   Attraction
 │   ├── migrations/                # Migration files (auth + destination + image fields)
 │   └── seed.ts                    # Admin user seed
 │
@@ -243,13 +243,9 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── destination.service.ts  # Business logic (DB + slug auto-gen, cascade delete)
         │   └── destination.schema.ts  # Valibot schemas (create, update, query, gallery)
         ├── attraction/
-        │   ├── attraction.route.ts    # CRUD + gallery, nested under /destinations/:destinationId/attractions
+        │   ├── attraction.route.ts    # CRUD, nested under /destinations/:destinationId/attractions
         │   ├── attraction.service.ts  # Business logic (DB, destination-scoped)
-        │   └── attraction.schema.ts  # Valibot schemas (create, update, query, gallery)
-        └── attraction-category/
-            ├── attraction-category.route.ts    # CRUD at /attraction-categories
-            ├── attraction-category.service.ts  # Business logic (DB, auto-slug, _count)
-            └── attraction-category.schema.ts  # Valibot schemas (create, update)
+        │   └── attraction.schema.ts  # Valibot schemas (create, update, query)
 
 public/                            # Static assets (root level, served by Next.js)
 

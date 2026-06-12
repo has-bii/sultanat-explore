@@ -17,7 +17,6 @@ const includeDetail = {
       id: true,
       name: true,
       image: { select: { id: true, url: true, blurHash: true } },
-      category: { select: { id: true, name: true, slug: true } },
     },
   },
   _count: { select: { attractions: true, images: true } },
