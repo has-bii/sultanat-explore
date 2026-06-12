@@ -102,7 +102,11 @@ function SubmitButton(props: {
           disabled={!canSubmit || isSubmitting || isDisabled || !isDirty}
           className={className}
         >
-          {isSubmitting || isDisabled ? <Loader className="animate-spin" /> : Icon && <Icon />}
+          {isSubmitting || isDisabled ? (
+            <Loader data-icon="inline-start" className="animate-spin" />
+          ) : (
+            Icon && <Icon data-icon="inline-start" />
+          )}
           {isSubmitting || isDisabled ? (pendingLabel ?? "Memproses...") : label}
         </Button>
       )}
