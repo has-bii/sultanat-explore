@@ -1,7 +1,6 @@
 "use client"
 
 import { useAppForm } from "@/lib/form"
-import "@tanstack/valibot-form-adapter"
 
 import {
   type CreateDestinationInput,

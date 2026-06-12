@@ -104,7 +104,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     ├── features/                  # Feature modules (domain-driven)
     │   ├── about-us/              # Components, data, types
     │   ├── articles/              # Components, data, types
-    │   ├── auth/                  # Login/forgot/reset forms + Zod schemas
+    │   ├── auth/                  # Login/forgot/reset forms + Zod schemas (legacy, needs migration to Valibot)
     │   ├── contact/               # Components, data
     │   ├── destinations/          # Components, data, types
     │   ├── faq/                   # Components, data
@@ -217,7 +217,7 @@ backend/                           # Workspace package: API + DB + Auth
     ├── app.type.ts                # AppContext (nullable) + AppAuthContext (guaranteed)
     ├── middlewares/
     │   ├── require-auth.ts        # Auth guard middleware (narrows context)
-    │   └── validator-wrapper.ts   # zValidator wrapper (auto HTTPException)
+    │   └── validator-wrapper.ts   # sValidator wrapper (auto HTTPException)
     ├── schemas/
     │   ├── param.schema.ts        # Shared param schemas (paramIdSchema)
     │   └── query.schema.ts        # Shared query schemas (querySchema)
@@ -233,19 +233,19 @@ backend/                           # Workspace package: API + DB + Auth
         ├── image/
         │   ├── image.route.ts     # Hono routes (GET public, mutations auth)
         │   ├── image.service.ts   # Business logic (R2 + DB)
-        │   └── image.schema.ts   # Zod schemas (upload, update)
+        │   └── image.schema.ts   # Valibot schemas (upload, update)
         ├── destination/
         │   ├── destination.route.ts    # CRUD + gallery endpoints (GET public, mutations auth)
         │   ├── destination.service.ts  # Business logic (DB + slug auto-gen, cascade delete)
-        │   └── destination.schema.ts  # Zod schemas (create, update, query, gallery)
+        │   └── destination.schema.ts  # Valibot schemas (create, update, query, gallery)
         ├── attraction/
         │   ├── attraction.route.ts    # CRUD + gallery, nested under /destinations/:destinationId/attractions
         │   ├── attraction.service.ts  # Business logic (DB, destination-scoped)
-        │   └── attraction.schema.ts  # Zod schemas (create, update, query, gallery)
+        │   └── attraction.schema.ts  # Valibot schemas (create, update, query, gallery)
         └── attraction-category/
             ├── attraction-category.route.ts    # CRUD at /attraction-categories
             ├── attraction-category.service.ts  # Business logic (DB, auto-slug, _count)
-            └── attraction-category.schema.ts  # Zod schemas (create, update)
+            └── attraction-category.schema.ts  # Valibot schemas (create, update)
 
 public/                            # Static assets (root level, served by Next.js)
 

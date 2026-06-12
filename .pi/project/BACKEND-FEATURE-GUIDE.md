@@ -13,7 +13,7 @@ backend/src/
 ├── modules/<domain>/
 │   ├── <domain>.route.ts     # Hono route handlers
 │   ├── <domain>.service.ts   # Business logic
-│   └── <domain>.schema.ts   # Zod validation schemas
+│   └── <domain>.schema.ts   # Valibot validation schemas
 ├── middlewares/               # Shared (require-auth, validator-wrapper)
 ├── schemas/                  # Shared (param.schema, query.schema)
 ├── utils/                    # Shared helpers (response.ts)
@@ -46,31 +46,32 @@ pnpm --filter backend db:generate
 
 ---
 
-## Step 2: Zod Schemas
+## Step 2: Valibot Schemas
 
 Create `backend/src/modules/<domain>/<domain>.schema.ts`:
 
 ```ts
-import * as z from "zod"
+import * as v from "valibot"
 
-export const create<Model>Schema = z.object({
-  name: z.string().min(1),
+export const create<Model>Schema = v.object({
+  name: v.pipe(v.string(), v.minLength(1)),
   // fields...
 })
 
-export const update<Model>Schema = z.object({
-  name: z.string().min(1).optional(),
+export const update<Model>Schema = v.object({
+  name: v.pipe(v.string(), v.minLength(1)),
   // only fields allowed to update
 })
 
-export type Create<Model>Input = z.infer<typeof create<Model>Schema>
-export type Update<Model>Input = z.infer<typeof update<Model>Schema>
+export type Create<Model>Input = v.InferOutput<typeof create<Model>Schema>
+export type Update<Model>Input = v.InferOutput<typeof update<Model>Schema>
 ```
 
 **Rules:**
 - Named `<Name>Schema` (PascalCase)
 - Export inferred types alongside
 - One schema file per feature
+- Import as `import * as v from "valibot"`
 
 ---
 
@@ -138,7 +139,7 @@ Create `backend/src/modules/<domain>/<domain>.route.ts`:
 ```ts
 import { Hono } from "hono"
 import { requireAuth } from "backend/middlewares/require-auth"
-import { zValidator } from "backend/middlewares/validator-wrapper"
+import { sValidator } from "backend/middlewares/validator-wrapper"
 import { successResponse } from "backend/utils/response"
 import { paramIdSchema } from "backend/schemas/param.schema"
 import { querySchema } from "backend/schemas/query.schema"
@@ -147,30 +148,30 @@ import { create<Model>, list<Model>s, get<Model>, update<Model>, delete<Model> }
 
 const <domain>Route = new Hono()
   // Public routes (before requireAuth)
-  .get("/", zValidator("query", querySchema), async (c) => {
+  .get("/", sValidator("query", querySchema), async (c) => {
     const query = c.req.valid("query")
     const result = await list<Model>s(query.cursor, query.limit)
     return c.json(successResponse(result, "<Model>s fetched successfully"))
   })
-  .get("/:id", zValidator("param", paramIdSchema), async (c) => {
+  .get("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     const item = await get<Model>(param.id)
     return c.json(successResponse(item, "<Model> fetched successfully"))
   })
   // Auth-required routes
   .use(requireAuth)
-  .post("/", zValidator("json", create<Model>Schema), async (c) => {
+  .post("/", sValidator("json", create<Model>Schema), async (c) => {
     const body = c.req.valid("json")
     const item = await create<Model>(body)
     return c.json(successResponse(item, "<Model> created successfully"), 201)
   })
-  .patch("/:id", zValidator("param", paramIdSchema), zValidator("json", update<Model>Schema), async (c) => {
+  .patch("/:id", sValidator("param", paramIdSchema), sValidator("json", update<Model>Schema), async (c) => {
     const param = c.req.valid("param")
     const body = c.req.valid("json")
     const item = await update<Model>(param.id, body)
     return c.json(successResponse(item, "<Model> updated successfully"))
   })
-  .delete("/:id", zValidator("param", paramIdSchema), async (c) => {
+  .delete("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
     await delete<Model>(param.id)
     return c.json(successResponse(null, "<Model> deleted successfully"))
@@ -183,7 +184,7 @@ export default <domain>Route
 - Chain routes with `.get()`, `.post()`, etc.
 - Public routes BEFORE `.use(requireAuth)`
 - Auth-required routes AFTER `.use(requireAuth)`
-- Use `zValidator(target, schema)` — never manual `safeParse`
+- Use `sValidator(target, schema)` — never manual `safeParse`
 - Use `c.req.valid(target)` to get validated data
 - Wrap all responses with `successResponse(data, msg)` — never raw `c.json(data)`
 - Delete routes return `c.json(successResponse(null, "..."), 200)` to keep envelope uniform
@@ -217,7 +218,7 @@ Common additions:
 - `sharp` — image processing
 - `blurhash` — placeholder generation
 - `@aws-sdk/client-s3` — R2/S3 storage
-- `zod` — validation (already installed)
+- `valibot` — validation (already installed)
 
 ---
 
@@ -242,14 +243,15 @@ Reuse from `backend/src/schemas/`:
 
 | Schema | File | Usage |
 |---|---|---|
-| `paramIdSchema` | `param.schema.ts` | `{ id: z.uuidv7() }` |
+| `paramIdSchema` | `param.schema.ts` | `{ id: v.pipe(v.string(), v.uuid()) }` |
 | `querySchema` | `query.schema.ts` | `{ cursor?: uuid, limit: 10-100 }` |
 
 Extend if needed:
 
 ```ts
-const myParamSchema = paramIdSchema.extend({
-  slug: z.string(),
+const myParamSchema = v.object({
+  ...paramIdSchema.entries,
+  slug: v.string(),
 })
 ```
 
@@ -258,7 +260,7 @@ const myParamSchema = paramIdSchema.extend({
 ## Checklist
 
 - [ ] Prisma schema updated + migration run
-- [ ] Zod schemas created with inferred types
+- [ ] Valibot schemas created with inferred types
 - [ ] Service file with CRUD functions
 - [ ] Route file with chained routes
 - [ ] Public routes before `requireAuth`

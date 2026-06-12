@@ -24,7 +24,7 @@
 | Image storage | Cloudflare R2 (S3-compatible) |
 | Image processing | Sharp (resize + WebP)
 | Blur placeholder | blurhash (encode from 64×64 thumbnail) |
-| Validation | Zod (v4) + @hono/zod-validator |
+| Validation | Valibot + @hono/standard-validator |
 
 ## Monorepo Layout
 
@@ -41,34 +41,23 @@ sultanat-explore/
 - `frontend/` imports `"backend": "workspace:*"` — Hono app bundled into Next.js build.
 - Turborepo pipeline: `db:generate` → `typecheck` → `lint` → `build`.
 
-## Patterns
+## General Patterns
 
-- **Server Components by default.** Add `"use client"` only when needed (event handlers, hooks, browser APIs).
-- **Feature-based modules.** `frontend/src/features/<domain>/` owns components, hooks, types. Shared resources at `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/lib/`.
-- **Backend modules.** `backend/src/modules/<domain>/` owns route, service, schema. Shared middleware at `backend/src/middlewares/`, shared schemas at `backend/src/schemas/`.
-- **Unified API response format.** All endpoints return `{ success: true, data, message }` for success, `{ success: false, data: null, message, error }` for errors. Use `successResponse()` and `errorResponse()` from `backend/src/utils/response.ts`.
-- **Zod validation via zValidator.** Use `zValidator(target, schema)` wrapper — auto-throws HTTPException(400) on failure. Never manual `safeParse` in routes.
-- **Auth split.** `AppContext` (nullable user/session) for public routes. `AppAuthContext` (guaranteed) for protected routes. `requireAuth` middleware narrows context type.
-- **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
-- **API catch-all.** All API routes handled by `frontend/src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
-- **Route protection.** `frontend/src/proxy.ts` (Next.js config-based middleware) checks Better Auth session cookie before admin routes.
-- **Route groups.** Public pages in `(public)` route group (Navbar/Footer in its layout). Admin in `admin/` route group with dashboard layout (sidebar + header).
-- **Admin layout.** Dashboard pages wrapped in shadcn `SidebarProvider` + `AppSidebar` + `Header`/`MainPage` components.
-- **No CMS yet.** Content still static/hardcoded for public pages. CMS decision deferred until admin modules built.
-- **Zustand for UI state.** Feature-scoped zustand stores for transient UI state (sheet open/close, dialog open/close, selected item IDs). Never for server data — use React Query for that.
-- **Mutation pattern.** Each mutation is a custom hook wrapping `useMutation`. Always check `json.success` from the unified response and throw on failure. `toast.success`/`toast.error` in `onSuccess`/`onError`. Query invalidation in `onSettled` via `context.client.invalidateQueries`.
-- **Query factory pattern.** Always place `queryOptions` and `infiniteQueryOptions` factories in `features/<name>/queries/`. Use `queryOptions` for single-item fetches, `infiniteQueryOptions` for cursor-paginated lists. Factories are plain functions returning options objects — called via `useQuery(getXxxQueryOptions(...))` or `useInfiniteQuery(getXxxQueryOptions(...))` at the call site. Never pass `queryOptions` to `useInfiniteQuery` or vice versa.
-- **Sheet + dialog managed by stores.** Sheet open state + selected entity ID stored in zustand. Dialog open state also in zustand. Components subscribe via selector. Reset on close with `useEffect` cleanup.
+- TypeScript strict mode. `any` allowed only in `utils/response.ts` (generic error field) and Hono catch-all types.
+- RSC by default. `"use client"` only when necessary.
+- React Compiler enabled — avoid useMemo/useCallback unless compiler can't optimize.
+- No `console.log` in production code.
 
-## Design System
+## Monorepo Convention
 
-- **Source:** `DESIGN.md` — Uber-inspired achromatic design system.
-- **Fonts:** Inter (body / UberMoveText substitute), DM Sans (headings / UberMove substitute). Loaded via `next/font/google`.
-- **Colors:** Strictly black + white + gray. Zero chroma in UI chrome. See `DESIGN.md §2`.
-- **Radius:** Pill buttons (999px), standard cards (8px), comfortable containers (12px). No in-between.
-- **Shadows:** `rgba(0,0,0,0.12)`–`0.16` only. Whisper-subtle. No colored shadows.
-- **Typography:** Custom utilities (`text-display` thru `text-micro`) map to DESIGN.md §3 scale.
-- **Components:** shadcn/ui overridden to match — full-pill buttons, achromatic palette, minimal borders.
+- `frontend/` — Next.js app. All source code inside `frontend/src/`.
+- `backend/` — workspace package (`"backend": "workspace:*"` in root/frontend package.json).
+- Hono app (`backend/src/app.ts`) is the single entry point imported by API route.
+- Better Auth config lives in `backend/src/lib/auth.ts` with Prisma adapter.
+- Prisma 7 uses `prisma.config.ts` (not `datasource.url` in schema). Adapter-based PrismaClient with `@prisma/adapter-neon`.
+- Seed file at `backend/prisma/seed.ts` uses `npx tsx` via prisma config.
+- Auth route protection: `frontend/src/proxy.ts` (Next.js config matcher) — not `middleware.ts`.
+- Turborepo tasks: `db:generate` (generate Prisma client) → `typecheck` → `lint` → `build`.
 
 ## Key Decisions
 
@@ -84,7 +73,7 @@ sultanat-explore/
 | Auth | Better Auth | Full-stack auth (Hono handler + React client + cookies) |
 | Database | Prisma 7 + Neon | Serverless Postgres, adapter-based PrismaClient |
 | API routing | Hono catch-all | Single route handler in `[[...route]]` for all API paths |
-| Form system | TanStack React Form (useAppForm) | Type-safe forms with Zod validation, reactive submit state |
+| Form system | TanStack React Form (useAppForm) | Type-safe forms with Valibot validation (Standard Schema), reactive submit state |
 | Route protection | Next.js proxy.ts | Cookie-based, redirects unauthenticated to /admin/login |
 | Monorepo | Turborepo + pnpm workspaces | Task caching, clean separation, shared base tsconfig |
 | Client data | TanStack React Query | Server-state for admin CRUD pages. queryOptions/infiniteQueryOptions factories in features/<name>/queries/. useQuery for queryOptions, useInfiniteQuery for infiniteQueryOptions. Query invalidation in onSettled |
@@ -109,7 +98,7 @@ sultanat-explore/
 
 Gallery pattern uses join tables (`DestinationImage`, `AttractionImage`) with `order` field instead of JSON arrays or polymorphic relations.
 
-## Dependency map
+## Dependency Map
 
 ```
 frontend/src/app/api/[[...route]]/route.ts
@@ -139,7 +128,7 @@ frontend/src/lib/api-client.ts
 
 frontend/src/lib/form.tsx (useAppForm)
   └── TanStack React Form factory
-      ├── TextField: label + input + error (Zod validation)
+      ├── TextField: label + input + error (Valibot validation)
       └── SubmitButton: reactive disabled/loading state
 
 frontend/src/providers/
@@ -163,50 +152,4 @@ backend/src/lib/image-processing.ts
 
 backend/src/utils/
   └── response.ts — successResponse() / errorResponse() helpers
-
-backend/src/modules/image/
-  ├── image.route.ts — Hono routes (GET public, mutations auth)
-  ├── image.service.ts — Business logic (R2 + DB)
-  └── image.schema.ts — Zod schemas (upload multi-file, update)
-
-backend/src/modules/destination/
-  ├── destination.route.ts — CRUD + gallery endpoints (GET public, mutations auth)
-  ├── destination.service.ts — Business logic (DB + slug auto-gen, cascade delete)
-  └── destination.schema.ts — Zod schemas (create, update, query, gallery)
-
-backend/src/modules/attraction/
-  ├── attraction.route.ts — CRUD + gallery endpoints, nested under /destinations/:destinationId/attractions
-  ├── attraction.service.ts — Business logic (DB, destination-scoped)
-  └── attraction.schema.ts — Zod schemas (create, update, query, gallery)
-
-backend/src/modules/attraction-category/
-  ├── attraction-category.route.ts — CRUD endpoints at /attraction-categories
-  ├── attraction-category.service.ts — Business logic (DB, auto-slug, _count.attractions)
-  └── attraction-category.schema.ts — Zod schemas (create, update)
-
-frontend/src/features/image/
-  ├── queries/ — queryOptions + infiniteQueryOptions factories
-  ├── mutations/ — useMutation hooks (upload, update, delete, bulk-delete)
-  ├── stores/ — zustand stores for UI state (sheet, dialog, selection)
-  ├── hooks/ — feature hooks (use-image-filters, use-update-image-form)
-  ├── components/ — feature components (image-grid, image-detail-sheet/, upload-images-dialog/, image-picker-dialog, multi-image-picker-dialog, selection-bar, filters-toolbar)
-  ├── pages/ — images.page.tsx (FiltersToolbar + dynamic grid + dialogs)
-  ├── query/ — queryOptions + infiniteQueryOptions factories
-  └── lib/ — blurhash helpers (blurhash → data URL)
-
-frontend/src/features/destination/
-  ├── queries/ — queryOptions + infiniteQueryOptions factories (list, detail, gallery)
-  ├── mutations/ — useMutation hooks (create, update, delete, update-gallery sync)
-  ├── hooks/ — use-destination-filters (nuqs URL state), use-destination-form (TanStack Form + Valibot)
-  ├── components/ — destination-form, destination-table, destination-filters, delete-destination-dialog, destination-gallery/ (DnD reorder + MultiImagePickerDialog)
-  ├── pages/ — destination-list, create-destination, edit-destination (form + gallery side-by-side)
-  └── (no DTO — uses backend schemas directly via workspace import)
-
-backend/src/middlewares/
-  ├── require-auth.ts — Auth guard (narrows to AppAuthContext)
-  └── validator-wrapper.ts — zValidator wrapper (auto HTTPException)
-
-backend/src/schemas/
-  ├── param.schema.ts — UUID param validation
-  └── query.schema.ts — Cursor + limit query validation
 ```

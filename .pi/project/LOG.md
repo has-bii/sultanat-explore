@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-06-13 | Validation Migration: Zod → Valibot | [validation-migration-valibot.md](log/validation-migration-valibot.md) |
 | 2026-06-07 | Destination Create Form — Phase 2 Complete | [destination-create-form-phase2.md](log/destination-create-form-phase2.md) |
 | 2026-06-07 | Per-Route Param Schemas | [param-schema-per-route.md](log/param-schema-per-route.md) |
 | 2026-06-07 | Destination & Attraction CRUD Backend Complete | [destination-attraction-crud-complete.md](log/destination-attraction-crud-complete.md) |
