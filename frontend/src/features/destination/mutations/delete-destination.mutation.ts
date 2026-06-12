@@ -3,7 +3,7 @@ import { toast } from "sonner"
 
 import { apiClient } from "@/lib/api-client"
 
-import { DESTINATIONS_QUERY_KEY } from "../queries/get-destinations.query"
+import { destinationQueryKeys } from "../queries"
 
 const $deleteDestination = apiClient.api.destinations[":id"].$delete
 
@@ -25,7 +25,10 @@ export const useDeleteDestination = () => {
       toast.error(err.message)
     },
     onSettled: (_res, _err, _var, _result, context) => {
-      context.client.invalidateQueries({ queryKey: [DESTINATIONS_QUERY_KEY], exact: false })
+      context.client.invalidateQueries({
+        queryKey: destinationQueryKeys.all(),
+        exact: false,
+      })
     },
   })
 }

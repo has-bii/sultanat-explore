@@ -1,20 +1,20 @@
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 
 import { apiClient } from "@/lib/api-client"
 import type { InferRequestType } from "hono"
+import { toast } from "sonner"
 
 import { destinationQueryKeys } from "../queries"
 
-const $createDestination = apiClient.api.destinations.$post
+const $syncGallery = apiClient.api.destinations[":id"].gallery.$put
 
-export const CREATE_DESTINATION_MUTATION_KEY = ["create-destination"] as const
+export const UPDATE_GALLERY_MUTATION_KEY = ["update-gallery"] as const
 
-export const useCreateDestination = () => {
+export const useUpdateGallery = (destinationId: string) => {
   return useMutation({
-    mutationKey: CREATE_DESTINATION_MUTATION_KEY,
-    mutationFn: async (input: InferRequestType<typeof $createDestination>["json"]) => {
-      const res = await $createDestination({ json: input })
+    mutationKey: [...UPDATE_GALLERY_MUTATION_KEY, destinationId],
+    mutationFn: async (input: InferRequestType<typeof $syncGallery>["json"]) => {
+      const res = await $syncGallery({ param: { id: destinationId }, json: input })
       const json = await res.json()
       if (!json.success) throw new Error(json.message)
       return json
@@ -27,8 +27,8 @@ export const useCreateDestination = () => {
     },
     onSettled: (_res, _err, _var, _result, context) => {
       context.client.invalidateQueries({
-        queryKey: destinationQueryKeys.all(),
-        exact: false,
+        queryKey: destinationQueryKeys.gallery(destinationId),
+        exact: true,
       })
     },
   })

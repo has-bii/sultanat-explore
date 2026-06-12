@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus, Send, XIcon } from "lucide-react"
+import { Plus, Save, XIcon } from "lucide-react"
 
 import { ErrorComponent } from "@/components/error-component"
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group"
+import Link from "next/link"
 
 import { useDestinationForm } from "../hooks/use-destination-form"
 
@@ -90,7 +91,7 @@ export function DestinationForm(props: DestinationFormProps) {
             {(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
               return (
-                <FieldSet>
+                <FieldSet className="gap-3">
                   <FieldLabel>Highlights</FieldLabel>
                   <FieldContent className="gap-2">
                     {field.state.value.map((_, i) => (
@@ -98,8 +99,11 @@ export function DestinationForm(props: DestinationFormProps) {
                         key={i}
                         name={`highlights[${i}]`}
                         children={(subField) => {
+                          const isLast = i === field.state.value.length - 1
+                          const canAdd = subField.state.value.length > 0
                           const isSubFieldInvalid =
                             subField.state.meta.isTouched && !subField.state.meta.isValid
+
                           return (
                             <Field data-invalid={isSubFieldInvalid} orientation="horizontal">
                               <FieldContent>
@@ -111,7 +115,7 @@ export function DestinationForm(props: DestinationFormProps) {
                                     onBlur={subField.handleBlur}
                                     onChange={(e) => subField.handleChange(e.target.value)}
                                     aria-invalid={isSubFieldInvalid}
-                                    placeholder={`Highlight ${i}`}
+                                    placeholder="Hagia Sophia"
                                     onKeyDown={(e) => {
                                       if (e.key === "Enter") {
                                         e.preventDefault()
@@ -119,19 +123,21 @@ export function DestinationForm(props: DestinationFormProps) {
                                       }
                                     }}
                                   />
-                                  {field.state.value.length > 1 && (
-                                    <InputGroupAddon align="inline-end">
-                                      <InputGroupButton
-                                        type="button"
-                                        variant="ghost"
-                                        size="icon-xs"
-                                        onClick={() => field.removeValue(i)}
-                                        aria-label={`Remove email ${i + 1}`}
-                                      >
-                                        <XIcon />
-                                      </InputGroupButton>
-                                    </InputGroupAddon>
-                                  )}
+                                  <InputGroupAddon align="inline-end">
+                                    <InputGroupButton
+                                      type="button"
+                                      variant="ghost"
+                                      size="icon-xs"
+                                      onClick={() =>
+                                        isLast && canAdd
+                                          ? field.pushValue("")
+                                          : field.removeValue(i)
+                                      }
+                                      aria-label={`Remove email ${i + 1}`}
+                                    >
+                                      {isLast && canAdd ? <Plus /> : <XIcon />}
+                                    </InputGroupButton>
+                                  </InputGroupAddon>
                                 </InputGroup>
                                 {isSubFieldInvalid && (
                                   <FieldError errors={subField.state.meta.errors} />
@@ -177,20 +183,17 @@ export function DestinationForm(props: DestinationFormProps) {
 
         {/* Actions */}
         <Field orientation="horizontal" className="justify-end">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => window.history.back()}
-            disabled={isPending}
-          >
-            Batal
-          </Button>
+          {mode === "create" && (
+            <Button type="button" variant="outline" disabled={isPending} asChild>
+              <Link href="/admin/dashboard/destination">Batal</Link>
+            </Button>
+          )}
           <form.AppForm>
             <form.SubmitButton
               label={mode === "create" ? "Tambah" : "Perbarui"}
               pendingLabel="Menyimpan..."
               isDisabled={isPending}
-              icon={Send}
+              icon={mode === "create" ? Plus : Save}
             />
           </form.AppForm>
         </Field>

@@ -3,6 +3,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
 
+import { CreateDestinationInput } from "backend/modules/destination/destination.schema"
+
 import { DestinationForm } from "../components/destination-form"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useCreateDestination } from "../mutations/create-destination.mutation"
@@ -11,14 +13,16 @@ export function CreateDestinationPage() {
   const router = useRouter()
   const { mutate, isPending, error } = useCreateDestination()
 
+  const onSubmit = async (value: CreateDestinationInput) => {
+    mutate(value, {
+      onSuccess: () => {
+        router.push("/admin/dashboard/destination")
+      },
+    })
+  }
+
   const form = useDestinationForm({
-    onSubmit: async (value) => {
-      mutate(value, {
-        onSuccess: () => {
-          router.push("/admin/dashboard/destination")
-        },
-      })
-    },
+    onSubmit,
   })
 
   return (
@@ -26,7 +30,9 @@ export function CreateDestinationPage() {
       <Card className="w-full">
         <CardHeader className="border-b">
           <CardTitle>Tambah Destinasi</CardTitle>
-          <CardDescription>{/* TODO: Add description */}</CardDescription>
+          <CardDescription>
+            Galeri destinasi dapat ditambahkan setelah destinasi telah dibuat.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <DestinationForm form={form} mode="create" isPending={isPending} error={error} />

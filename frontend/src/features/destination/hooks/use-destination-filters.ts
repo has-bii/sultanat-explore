@@ -1,24 +1,40 @@
 "use client"
 
-import { parseAsString, useQueryState } from "nuqs"
+import { parseAsString, parseAsStringLiteral, useQueryStates } from "nuqs"
 
 export function useDestinationFilters() {
-  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""))
-  const [featured, setFeatured] = useQueryState("featured", parseAsString.withDefault(""))
-  const [sort, setSort] = useQueryState("sort", parseAsString.withDefault("createdAt"))
-  const [order, setOrder] = useQueryState("order", parseAsString.withDefault("desc"))
+  const [query, setQuery] = useQueryStates({
+    search: parseAsString.withDefault(""),
+    order: parseAsStringLiteral(["asc", "desc"]).withDefault("desc"),
+    sort: parseAsStringLiteral(["name", "createdAt"]).withDefault("createdAt"),
+    featured: parseAsStringLiteral(["true", "false"]),
+  })
 
-  const clearSearch = () => setSearch(null)
+  const onSearchChange = (search: string) => {
+    setQuery((prev) => ({ ...prev, search }))
+  }
+
+  const onSortOrderChange = (value: string) => {
+    const [sort, order] = value.split("-")
+
+    if (sort !== "name" && sort !== "createdAt") return
+    if (order !== "asc" && order !== "desc") return
+
+    setQuery((prev) => ({ ...prev, sort, order }))
+  }
+
+  const onFeaturedChange = (featured: "true" | "false" | null) => {
+    setQuery((prev) => ({ ...prev, featured }))
+  }
+
+  const methods = {
+    onSearchChange,
+    onFeaturedChange,
+    onSortOrderChange,
+  }
 
   return {
-    search,
-    setSearch,
-    featured,
-    setFeatured,
-    sort,
-    setSort,
-    order,
-    setOrder,
-    clearSearch,
+    query,
+    methods,
   }
 }

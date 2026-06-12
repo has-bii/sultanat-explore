@@ -2,10 +2,17 @@
 
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
-import { QueryBoundary } from "@/components/query-boundary"
 import { DestinationSkeleton } from "@/features/destination/components/destination-skeleton"
-import { EditDestinationPage } from "@/features/destination/pages/edit-destination.page"
+import dynamic from "next/dynamic"
 import { useParams } from "next/navigation"
+
+const EditDestinationPage = dynamic(
+  () =>
+    import("@/features/destination/pages/edit-destination.page").then((m) => ({
+      default: m.EditDestinationPage,
+    })),
+  { ssr: false, loading: () => <DestinationSkeleton /> },
+)
 
 const breadcrumb: HeaderBreadcrumbItem = [
   {
@@ -31,9 +38,7 @@ export default function Page() {
         </HeaderLeft>
       </Header>
       <MainPageContent>
-        <QueryBoundary loadingFallback={<DestinationSkeleton />}>
-          <EditDestinationPage destinationId={id} />
-        </QueryBoundary>
+        <EditDestinationPage destinationId={id} />
       </MainPageContent>
     </MainPage>
   )

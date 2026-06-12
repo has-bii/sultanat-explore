@@ -1,46 +1,49 @@
 "use client"
 
+import { Trash2 } from "lucide-react"
+import { useState } from "react"
+
+import { ButtonLoading } from "@/components/button-loading"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 import { useDeleteDestination } from "../mutations/delete-destination.mutation"
 
-interface DeleteDestinationDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+interface Props {
   destinationId: string
   destinationName: string
-  onSuccess: () => void
 }
 
-export function DeleteDestinationDialog({
-  open,
-  onOpenChange,
-  destinationId,
-  destinationName,
-  onSuccess,
-}: DeleteDestinationDialogProps) {
+export function DeleteDestinationDialog({ destinationId, destinationName }: Props) {
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
+
   const deleteMutation = useDeleteDestination()
 
   const handleDelete = () => {
     deleteMutation.mutate(destinationId, {
-      onSuccess: () => {
-        onOpenChange(false)
-        onSuccess()
-      },
+      onSuccess: () => router.push("/admin/dashboard/destination"),
     })
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">
+          <Trash2 />
+          <span>Hapus</span>
+        </Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Hapus Destinasi</AlertDialogTitle>
@@ -51,13 +54,15 @@ export function DeleteDestinationDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={deleteMutation.isPending}>Batal</AlertDialogCancel>
-          <AlertDialogAction
+          <ButtonLoading
             variant="destructive"
             onClick={handleDelete}
-            disabled={deleteMutation.isPending}
+            isLoading={deleteMutation.isPending}
+            loadingLabel="Menghapus..."
           >
-            {deleteMutation.isPending ? "Menghapus..." : "Hapus"}
-          </AlertDialogAction>
+            <Trash2 />
+            <span>Hapus</span>
+          </ButtonLoading>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

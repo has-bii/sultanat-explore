@@ -28,9 +28,8 @@ export function useDestinationForm({ defaultValues: _defaultValues, onSubmit }: 
     validators: {
       onChange: createDestinationSchema,
     },
-    onSubmit: async ({ value, formApi }) => {
+    onSubmit: async ({ value }) => {
       await onSubmit(value)
-      formApi.reset()
     },
   })
 
