@@ -1,10 +1,19 @@
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY!)
+function getEnv(key: string): string {
+  const value = process.env[key]
+  if (!value) throw new Error(`${key} is not set`)
+  return value
+}
+
+const RESEND_API_KEY = getEnv("RESEND_API_KEY")
+const RESEND_EMAIL = getEnv("RESEND_EMAIL")
+
+const resend = new Resend(RESEND_API_KEY)
 
 export async function sendResetPasswordEmail({ to, url }: { to: string; url: string }) {
   await resend.emails.send({
-    from: `Sultanat Explore ${process.env.RESEND_EMAIL}`,
+    from: `Sultanat Explore ${RESEND_EMAIL}`,
     to,
     subject: "Reset Password - Sultanat Explore",
     html: `

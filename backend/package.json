@@ -6,7 +6,8 @@
   },
   "scripts": {
     "db:generate": "npx prisma generate",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1060.0",
@@ -24,8 +25,10 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "eslint": "^9.39.4",
     "prisma": "^7.8.0",
     "tsx": "^4.22.4",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0"
   }
 }

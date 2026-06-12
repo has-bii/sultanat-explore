@@ -26,7 +26,7 @@ const includeList = {
 } as const
 
 export async function listAttractions(destinationId: string, params: AttractionQueryInput) {
-  const { cursor, limit = 10, search, categoryId, sort = "createdAt", order = "desc" } = params
+  const { cursor, limit, search, categoryId, sort, order } = params
   const take = Math.min(limit, 100) + 1
 
   const where = {

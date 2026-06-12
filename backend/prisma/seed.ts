@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import "dotenv/config"
 
 import { PrismaNeon } from "@prisma/adapter-neon"
@@ -5,9 +6,10 @@ import { hashPassword } from "better-auth/crypto"
 
 import { PrismaClient } from "backend/generated/prisma/client"
 
-const adapter = new PrismaNeon({
-  connectionString: process.env.DATABASE_URL!,
-})
+const connectionString = process.env.DATABASE_URL
+if (!connectionString) throw new Error("DATABASE_URL is not set")
+
+const adapter = new PrismaNeon({ connectionString })
 
 export const db = new PrismaClient({ adapter })
 
@@ -51,7 +53,7 @@ export async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch((e: unknown) => {
     console.error(e)
     process.exit(1)
   })

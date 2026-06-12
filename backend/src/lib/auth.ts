@@ -13,6 +13,7 @@ export const auth = betterAuth({
     disableSignUp: true,
     async sendResetPassword({ user, url }) {
       if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
         console.log("[auth] Password reset URL:", url)
         return
       }

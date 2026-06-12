@@ -7,7 +7,7 @@ export const sValidator = <T extends StandardSchemaV1, Target extends keyof Vali
   target: Target,
   schema: T,
 ) =>
-  sV(target, schema, (result, c) => {
+  sV(target, schema, (result) => {
     if (!result.success) {
       throw new HTTPException(400, { message: "Invalid input provided", cause: result.error })
     }

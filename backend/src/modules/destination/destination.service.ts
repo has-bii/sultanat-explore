@@ -4,7 +4,6 @@ import { db } from "backend/lib/db"
 import { toSlug } from "backend/lib/slug"
 import type {
   CreateDestinationInput,
-  DestinationQueryInput,
   DestinationQueryOutput,
   SyncGalleryInput,
   UpdateDestinationInput,
@@ -29,7 +28,7 @@ const includeList = {
 } as const
 
 export async function listDestinations(params: DestinationQueryOutput) {
-  const { cursor, limit, search, featured, sort = "createdAt", order = "desc" } = params
+  const { cursor, limit, search, featured, sort, order } = params
   const take = Math.min(limit, 100) + 1
 
   const where = {
@@ -77,7 +76,7 @@ export async function createDestination(input: CreateDestinationInput) {
       description: input.description,
       imageId: input.imageId,
       featured: input.featured,
-      highlights: input.highlights ?? [],
+      highlights: input.highlights,
     },
     include: includeList,
   })

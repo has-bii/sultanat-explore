@@ -9,7 +9,7 @@ import type { ImageQueryOutput, UpdateImageInput } from "backend/modules/image/i
 
 function r2Key(): string {
   const now = new Date()
-  const year = now.getFullYear()
+  const year = String(now.getFullYear())
   const month = String(now.getMonth() + 1).padStart(2, "0")
   return `images/${year}/${month}/${randomUUID()}.webp`
 }

@@ -4,8 +4,9 @@ import { PrismaNeon } from "@prisma/adapter-neon"
 
 import { PrismaClient } from "backend/generated/prisma/client"
 
-const adapter = new PrismaNeon({
-  connectionString: process.env.DATABASE_URL!,
-})
+const connectionString = process.env.DATABASE_URL
+if (!connectionString) throw new Error("DATABASE_URL is not set")
+
+const adapter = new PrismaNeon({ connectionString })
 
 export const db = new PrismaClient({ adapter })

@@ -69,7 +69,7 @@ export type AppType = ApplyGlobalResponse<
         success: false
         data: null
         message: string
-        error: any
+        error: unknown
       }
     }
     500: {
@@ -77,7 +77,7 @@ export type AppType = ApplyGlobalResponse<
         success: false
         data: null
         message: string
-        error: any
+        error: unknown
       }
     }
   }

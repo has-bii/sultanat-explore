@@ -1,6 +1,5 @@
 import * as v from "valibot"
 
-import { paramIdSchema } from "backend/schemas/param.schema"
 import { querySchema } from "backend/schemas/query.schema"
 
 export const createDestinationSchema = v.object({
