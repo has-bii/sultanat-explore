@@ -1,7 +1,13 @@
 import * as v from "valibot"
 
+import { cursorPaginationSchema } from "backend/schemas/query.schema"
+
 export const createAttractionSchema = v.object({
-  name: v.pipe(v.string(), v.minLength(1, "Nama harus diisi"), v.maxLength(100, "Nama maksimal 100 karakter")),
+  name: v.pipe(
+    v.string(),
+    v.minLength(1, "Nama harus diisi"),
+    v.maxLength(100, "Nama maksimal 100 karakter"),
+  ),
   description: v.pipe(
     v.string(),
     v.minLength(1, "Deskripsi harus diisi"),
@@ -11,7 +17,13 @@ export const createAttractionSchema = v.object({
 })
 
 export const updateAttractionSchema = v.object({
-  name: v.optional(v.pipe(v.string(), v.minLength(1, "Nama harus diisi"), v.maxLength(100, "Nama maksimal 100 karakter"))),
+  name: v.optional(
+    v.pipe(
+      v.string(),
+      v.minLength(1, "Nama harus diisi"),
+      v.maxLength(100, "Nama maksimal 100 karakter"),
+    ),
+  ),
   description: v.optional(
     v.pipe(
       v.string(),
@@ -23,13 +35,23 @@ export const updateAttractionSchema = v.object({
 })
 
 export const attractionQuerySchema = v.object({
-  cursor: v.fallback(v.optional(v.pipe(v.string(), v.uuid("Invalid cursor"))), undefined),
-  limit: v.fallback(v.pipe(v.string(), v.toNumber(), v.minValue(10), v.maxValue(100)), 10),
+  ...cursorPaginationSchema.entries,
   search: v.fallback(v.optional(v.string()), undefined),
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
   order: v.optional(v.picklist(["asc", "desc"]), "desc"),
 })
 
+// Param schemas — previously inline in route file
+export const attractionListParamSchema = v.object({
+  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
+})
+
+export const attractionIdParamSchema = v.object({
+  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
+  id: v.pipe(v.string(), v.uuid("Invalid id")),
+})
+
 export type CreateAttractionInput = v.InferInput<typeof createAttractionSchema>
 export type UpdateAttractionInput = v.InferInput<typeof updateAttractionSchema>
-export type AttractionQueryInput = v.InferOutput<typeof attractionQuerySchema>
+export type AttractionQueryInput = v.InferInput<typeof attractionQuerySchema>
+export type AttractionQueryOutput = v.InferOutput<typeof attractionQuerySchema>

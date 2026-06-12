@@ -3,8 +3,39 @@ import { randomUUID } from "node:crypto"
 
 import { db } from "backend/lib/db"
 import { processImage } from "backend/lib/image-processing"
+import { logger } from "backend/lib/logger"
+import { cursorArgs, toPage } from "backend/lib/paginate"
 import { r2Delete, r2KeyFromUrl, r2Upload } from "backend/lib/r2"
 import type { ImageQueryOutput, UpdateImageInput } from "backend/modules/image/image.schema"
+
+// ── Shared helpers (exported for destination / attraction) ──────────
+
+/** Throws 400 if image not found. Use in destination + attraction create/update. */
+export async function assertImageExists(id: string) {
+  const img = await db.image.findUnique({ where: { id }, select: { id: true } })
+  if (!img) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
+}
+
+/** Returns the set of imageIds still referenced by destination / attraction / gallery. */
+export async function findReferencedImageIds(ids: string[]): Promise<Set<string>> {
+  const [dest, attr, gallery] = await Promise.all([
+    db.destination.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+    db.attraction.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+    db.destinationImage.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
+  ])
+  return new Set([...dest, ...attr, ...gallery].map((r) => r.imageId))
+}
+
+// ── Private helpers ────────────────────────────────────────────────
 
 function r2Key(): string {
   const now = new Date()
@@ -40,6 +71,8 @@ async function processAndUpload(file: File) {
   })
 }
 
+// ── CRUD ───────────────────────────────────────────────────────────
+
 export async function uploadImages(files: File[] | File) {
   const arr = Array.isArray(files) ? files : [files]
   return Promise.all(arr.map(processAndUpload))
@@ -47,19 +80,14 @@ export async function uploadImages(files: File[] | File) {
 
 export async function listImages(params: ImageQueryOutput) {
   const { cursor, limit, sort, order, search } = params
-  const take = Math.min(limit, 100) + 1
 
   const images = await db.image.findMany({
-    take,
-    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+    ...cursorArgs({ cursor, limit }),
     orderBy: { [sort]: order },
     ...(search ? { where: { alt: { startsWith: search, mode: "insensitive" } } } : {}),
   })
 
-  const data = images.slice(0, Math.min(limit, 100))
-  const nextCursor = images.length > Math.min(limit, 100) ? data[data.length - 1].id : null
-
-  return { data, nextCursor }
+  return toPage(images, limit)
 }
 
 export async function getImage(id: string) {
@@ -82,14 +110,11 @@ export async function deleteImage(id: string) {
   const image = await db.image.findUnique({ where: { id } })
   if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
 
-  // Check references before touching R2 — prevent orphaned DB records
-  const [destinations, attractions, galleries] = await Promise.all([
-    db.destination.count({ where: { imageId: id } }),
-    db.attraction.count({ where: { imageId: id } }),
-    db.destinationImage.count({ where: { imageId: id } }),
-  ])
-  if (destinations + attractions + galleries > 0) {
-    throw new HTTPException(400, { message: "Gagal menghapus foto. Foto masih digunakan." })
+  const refs = await findReferencedImageIds([id])
+  if (refs.size) {
+    throw new HTTPException(400, {
+      message: "Gagal menghapus foto. Foto masih digunakan.",
+    })
   }
 
   const key = r2KeyFromUrl(image.url)
@@ -104,38 +129,20 @@ export async function bulkDeleteImages(ids: string[]) {
   const images = await db.image.findMany({ where: { id: { in: ids } } })
   if (images.length === 0) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
 
-  // Collect referenced image IDs (FK from destinations, attractions, galleries)
-  const refChecks = await Promise.all([
-    db.destination.findMany({
-      where: { imageId: { in: ids } },
-      select: { imageId: true },
-    }),
-    db.attraction.findMany({
-      where: { imageId: { in: ids } },
-      select: { imageId: true },
-    }),
-    db.destinationImage.findMany({
-      where: { imageId: { in: ids } },
-      select: { imageId: true },
-    }),
-  ])
-
-  const referencedIds = new Set(refChecks.flat().map((r) => r.imageId))
+  const referencedIds = await findReferencedImageIds(ids)
 
   const deletable = images.filter((img) => !referencedIds.has(img.id))
   const skipped = images.length - deletable.length
 
-  // Delete from R2 in parallel — log failures, don't block DB cleanup
+  // Delete from R2 — best-effort, log failures, don't block DB cleanup
   await Promise.all(
     deletable.map((img) =>
       r2Delete(r2KeyFromUrl(img.url)).catch((err: unknown) => {
-        // eslint-disable-next-line no-console
-        console.error(`[image] R2 delete failed for ${img.id}:`, err)
+        logger.error(`R2 delete failed for ${img.id}:`, err)
       }),
     ),
   )
 
-  // Delete from DB
   const deleteResult = await db.image.deleteMany({
     where: { id: { in: deletable.map((img) => img.id) } },
   })

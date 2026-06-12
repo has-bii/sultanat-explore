@@ -1,9 +1,10 @@
 import { Hono } from "hono"
-import * as v from "valibot"
 
 import { requireAuth } from "backend/middlewares/require-auth"
 import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
+  attractionIdParamSchema,
+  attractionListParamSchema,
   attractionQuerySchema,
   createAttractionSchema,
   updateAttractionSchema,
@@ -17,21 +18,11 @@ import {
 } from "backend/modules/attraction/attraction.service"
 import { successResponse } from "backend/utils/response"
 
-// Param schemas per route shape
-const listParamsSchema = v.object({
-  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
-})
-
-const idParamsSchema = v.object({
-  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
-  id: v.pipe(v.string(), v.uuid("Invalid id")),
-})
-
 const attractionRoute = new Hono()
   // List attractions for a destination
   .get(
     "/",
-    sValidator("param", listParamsSchema),
+    sValidator("param", attractionListParamSchema),
     sValidator("query", attractionQuerySchema),
     async (c) => {
       const { destinationId } = c.req.valid("param")
@@ -41,7 +32,7 @@ const attractionRoute = new Hono()
     },
   )
   // Get single attraction
-  .get("/:id", sValidator("param", idParamsSchema), async (c) => {
+  .get("/:id", sValidator("param", attractionIdParamSchema), async (c) => {
     const { destinationId, id } = c.req.valid("param")
     const attraction = await getAttraction(destinationId, id)
     return c.json(successResponse(attraction, "ok"))
@@ -50,7 +41,7 @@ const attractionRoute = new Hono()
   // Create attraction
   .post(
     "/",
-    sValidator("param", listParamsSchema),
+    sValidator("param", attractionListParamSchema),
     sValidator("json", createAttractionSchema),
     async (c) => {
       const { destinationId } = c.req.valid("param")
@@ -62,7 +53,7 @@ const attractionRoute = new Hono()
   // Update attraction
   .patch(
     "/:id",
-    sValidator("param", idParamsSchema),
+    sValidator("param", attractionIdParamSchema),
     sValidator("json", updateAttractionSchema),
     async (c) => {
       const { destinationId, id } = c.req.valid("param")
@@ -72,7 +63,7 @@ const attractionRoute = new Hono()
     },
   )
   // Delete attraction
-  .delete("/:id", sValidator("param", idParamsSchema), async (c) => {
+  .delete("/:id", sValidator("param", attractionIdParamSchema), async (c) => {
     const { destinationId, id } = c.req.valid("param")
     await deleteAttraction(destinationId, id)
     return c.json(successResponse(null, "Atraksi berhasil dihapus"))

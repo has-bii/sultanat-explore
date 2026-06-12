@@ -1,6 +1,6 @@
 import * as v from "valibot"
 
-import { querySchema } from "backend/schemas/query.schema"
+import { cursorPaginationSchema } from "backend/schemas/query.schema"
 
 export const createDestinationSchema = v.object({
   name: v.pipe(
@@ -36,7 +36,7 @@ export const createDestinationSchema = v.object({
 export const updateDestinationSchema = v.partial(createDestinationSchema)
 
 export const destinationQuerySchema = v.object({
-  ...querySchema.entries,
+  ...cursorPaginationSchema.entries,
   search: v.optional(v.string()),
   featured: v.optional(
     v.pipe(

@@ -1,20 +1,21 @@
 import { HTTPException } from "hono/http-exception"
 
 import { db } from "backend/lib/db"
+import { cursorArgs, toPage } from "backend/lib/paginate"
+import { imageCardSelect } from "backend/lib/prisma-fragments"
 import type {
-  AttractionQueryInput,
+  AttractionQueryOutput,
   CreateAttractionInput,
   UpdateAttractionInput,
 } from "backend/modules/attraction/attraction.schema"
+import { assertImageExists } from "backend/modules/image/image.service"
 
 const include = {
-  image: { select: { id: true, url: true, blurHash: true } },
+  image: { select: imageCardSelect },
 } as const
 
-export async function listAttractions(destinationId: string, params: AttractionQueryInput) {
+export async function listAttractions(destinationId: string, params: AttractionQueryOutput) {
   const { cursor, limit, search, sort, order } = params
-  const pageSize = Math.min(limit, 100)
-  const take = pageSize + 1
 
   const where = {
     destinationId,
@@ -22,17 +23,13 @@ export async function listAttractions(destinationId: string, params: AttractionQ
   }
 
   const attractions = await db.attraction.findMany({
-    take,
-    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+    ...cursorArgs({ cursor, limit }),
     where,
     orderBy: { [sort]: order },
     include,
   })
 
-  const data = attractions.slice(0, pageSize)
-  const nextCursor = attractions.length > pageSize ? data[data.length - 1].id : null
-
-  return { data, nextCursor }
+  return toPage(attractions, limit)
 }
 
 export async function getAttraction(destinationId: string, id: string) {
@@ -45,11 +42,12 @@ export async function getAttraction(destinationId: string, id: string) {
 }
 
 export async function createAttraction(destinationId: string, input: CreateAttractionInput) {
-  const destination = await db.destination.findUnique({ where: { id: destinationId } })
+  const destination = await db.destination.findUnique({
+    where: { id: destinationId },
+  })
   if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
 
-  const image = await db.image.findUnique({ where: { id: input.imageId } })
-  if (!image) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
+  await assertImageExists(input.imageId)
 
   return db.attraction.create({
     data: {
@@ -73,8 +71,7 @@ export async function updateAttraction(
   if (!existing) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
 
   if (input.imageId) {
-    const image = await db.image.findUnique({ where: { id: input.imageId } })
-    if (!image) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
+    await assertImageExists(input.imageId)
   }
 
   return db.attraction.update({

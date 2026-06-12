@@ -1,7 +1,9 @@
 import { HTTPException } from "hono/http-exception"
-import { Prisma } from "backend/generated/prisma/client"
 
+import { Prisma } from "backend/generated/prisma/client"
 import { db } from "backend/lib/db"
+import { cursorArgs, toPage } from "backend/lib/paginate"
+import { imageCardSelect } from "backend/lib/prisma-fragments"
 import { toSlug } from "backend/lib/slug"
 import type {
   CreateDestinationInput,
@@ -9,27 +11,37 @@ import type {
   SyncGalleryInput,
   UpdateDestinationInput,
 } from "backend/modules/destination/destination.schema"
+import { assertImageExists } from "backend/modules/image/image.service"
 
 const includeDetail = {
-  image: { select: { id: true, url: true, blurHash: true } },
+  image: { select: imageCardSelect },
   attractions: {
     select: {
       id: true,
       name: true,
-      image: { select: { id: true, url: true, blurHash: true } },
+      image: { select: imageCardSelect },
     },
   },
   _count: { select: { attractions: true, images: true } },
 } as const
 
 const includeList = {
-  image: { select: { id: true, url: true, blurHash: true } },
+  image: { select: imageCardSelect },
   _count: { select: { attractions: true, images: true } },
 } as const
 
+const galleryImageSelect = { image: { select: imageCardSelect } } as const
+
+async function findGallery(destinationId: string) {
+  return db.destinationImage.findMany({
+    where: { destinationId },
+    orderBy: { order: "asc" },
+    include: galleryImageSelect,
+  })
+}
+
 export async function listDestinations(params: DestinationQueryOutput) {
   const { cursor, limit, search, featured, sort, order } = params
-  const take = Math.min(limit, 100) + 1
 
   const where = {
     ...(search ? { name: { startsWith: search, mode: "insensitive" as const } } : {}),
@@ -37,17 +49,13 @@ export async function listDestinations(params: DestinationQueryOutput) {
   }
 
   const destinations = await db.destination.findMany({
-    take,
-    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+    ...cursorArgs({ cursor, limit }),
     where,
     orderBy: { [sort]: order },
     include: includeList,
   })
 
-  const data = destinations.slice(0, Math.min(limit, 100))
-  const nextCursor = destinations.length > Math.min(limit, 100) ? data[data.length - 1].id : null
-
-  return { data, nextCursor }
+  return toPage(destinations, limit)
 }
 
 export async function getDestination(id: string) {
@@ -74,8 +82,7 @@ export async function createDestination(input: CreateDestinationInput) {
   const existingSlug = await db.destination.findUnique({ where: { slug } })
   if (existingSlug) throw new HTTPException(409, { message: "Slug sudah digunakan" })
 
-  const existingImage = await db.image.findUnique({ where: { id: input.imageId } })
-  if (!existingImage) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
+  await assertImageExists(input.imageId)
 
   return db.destination.create({
     data: {
@@ -113,8 +120,7 @@ export async function updateDestination(id: string, input: UpdateDestinationInpu
   if (input.highlights !== undefined) data.highlights = input.highlights
 
   if (input.imageId !== undefined) {
-    const existingImage = await db.image.findUnique({ where: { id: input.imageId } })
-    if (!existingImage) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
+    await assertImageExists(input.imageId)
     data.image = { connect: { id: input.imageId } }
   }
 
@@ -126,16 +132,12 @@ export async function updateDestination(id: string, input: UpdateDestinationInpu
 }
 
 export async function getDestinationGallery(destinationId: string) {
-  const destination = await db.destination.findUnique({ where: { id: destinationId } })
+  const destination = await db.destination.findUnique({
+    where: { id: destinationId },
+  })
   if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
 
-  const images = await db.destinationImage.findMany({
-    where: { destinationId },
-    orderBy: { order: "asc" },
-    include: { image: { select: { id: true, url: true, blurHash: true } } },
-  })
-
-  return images
+  return findGallery(destinationId)
 }
 
 export async function deleteDestination(id: string) {
@@ -147,7 +149,9 @@ export async function deleteDestination(id: string) {
 }
 
 export async function syncGallery(destinationId: string, input: SyncGalleryInput) {
-  const destination = await db.destination.findUnique({ where: { id: destinationId } })
+  const destination = await db.destination.findUnique({
+    where: { id: destinationId },
+  })
   if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
 
   // Validate images exist
@@ -176,10 +180,5 @@ export async function syncGallery(destinationId: string, input: SyncGalleryInput
     }
   })
 
-  // Return updated gallery
-  return db.destinationImage.findMany({
-    where: { destinationId },
-    orderBy: { order: "asc" },
-    include: { image: { select: { id: true, url: true, blurHash: true } } },
-  })
+  return findGallery(destinationId)
 }

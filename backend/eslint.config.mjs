@@ -1,10 +1,11 @@
+import { defineConfig } from "eslint/config"
 import tseslint from "typescript-eslint"
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: ["node_modules/**", "src/generated/**", "dist/**"],
   },
-  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.recommended,
   {
     languageOptions: {
       parserOptions: {
@@ -14,14 +15,7 @@ export default tseslint.config(
     },
     rules: {
       "no-console": "warn",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     },
-  },
-  {
-    files: ["**/*.mjs"],
-    ...tseslint.configs.disableTypeChecked,
   },
 )
