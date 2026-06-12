@@ -1,7 +1,6 @@
 import { HTTPException } from "hono/http-exception"
 import { randomUUID } from "node:crypto"
 
-import { PrismaClientKnownRequestError } from "backend/generated/prisma/internal/prismaNamespace"
 import { db } from "backend/lib/db"
 import { processImage } from "backend/lib/image-processing"
 import { r2Delete, r2KeyFromUrl, r2Upload } from "backend/lib/r2"
@@ -42,11 +41,8 @@ async function processAndUpload(file: File) {
 }
 
 export async function uploadImages(files: File[] | File) {
-  if (Array.isArray(files)) {
-    const results = await Promise.all(files.map(processAndUpload))
-    return results
-  }
-  return await processAndUpload(files)
+  const arr = Array.isArray(files) ? files : [files]
+  return Promise.all(arr.map(processAndUpload))
 }
 
 export async function listImages(params: ImageQueryOutput) {
@@ -83,24 +79,25 @@ export async function updateImage(id: string, input: UpdateImageInput) {
 }
 
 export async function deleteImage(id: string) {
-  try {
-    const image = await db.image.findUnique({ where: { id } })
-    if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
+  const image = await db.image.findUnique({ where: { id } })
+  if (!image) throw new HTTPException(404, { message: "Foto tidak ditemukan" })
 
-    await db.image.delete({ where: { id } })
-
-    const key = r2KeyFromUrl(image.url)
-    try {
-      await r2Delete(key)
-    } catch {
-      throw new HTTPException(500, { message: "Gagal menghapus foto" })
-    }
-  } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError && err.code === "P2003") {
-      throw new HTTPException(400, { message: "Gagal menghapus foto. Foto masih digunakan." })
-    }
-    throw err
+  // Check references before touching R2 — prevent orphaned DB records
+  const [destinations, attractions, galleries] = await Promise.all([
+    db.destination.count({ where: { imageId: id } }),
+    db.attraction.count({ where: { imageId: id } }),
+    db.destinationImage.count({ where: { imageId: id } }),
+  ])
+  if (destinations + attractions + galleries > 0) {
+    throw new HTTPException(400, { message: "Gagal menghapus foto. Foto masih digunakan." })
   }
+
+  const key = r2KeyFromUrl(image.url)
+  await r2Delete(key).catch(() => {
+    throw new HTTPException(500, { message: "Gagal menghapus foto dari storage" })
+  })
+
+  await db.image.delete({ where: { id } })
 }
 
 export async function bulkDeleteImages(ids: string[]) {
@@ -128,11 +125,12 @@ export async function bulkDeleteImages(ids: string[]) {
   const deletable = images.filter((img) => !referencedIds.has(img.id))
   const skipped = images.length - deletable.length
 
-  // Delete from R2 in parallel
+  // Delete from R2 in parallel — log failures, don't block DB cleanup
   await Promise.all(
     deletable.map((img) =>
-      r2Delete(r2KeyFromUrl(img.url)).catch(() => {
-        // R2 delete failure shouldn't block DB cleanup
+      r2Delete(r2KeyFromUrl(img.url)).catch((err: unknown) => {
+        // eslint-disable-next-line no-console
+        console.error(`[image] R2 delete failed for ${img.id}:`, err)
       }),
     ),
   )
