@@ -1,4 +1,5 @@
 import { HTTPException } from "hono/http-exception"
+import { Prisma } from "backend/generated/prisma/client"
 
 import { db } from "backend/lib/db"
 import { toSlug } from "backend/lib/slug"
@@ -59,6 +60,15 @@ export async function getDestination(id: string) {
   return destination
 }
 
+export async function getDestinationBySlug(slug: string) {
+  const destination = await db.destination.findUnique({
+    where: { slug },
+    include: includeDetail,
+  })
+  if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
+  return destination
+}
+
 export async function createDestination(input: CreateDestinationInput) {
   const slug = toSlug(input.name)
 
@@ -86,9 +96,9 @@ export async function updateDestination(id: string, input: UpdateDestinationInpu
   const existing = await db.destination.findUnique({ where: { id } })
   if (!existing) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
 
-  const data: Record<string, unknown> = {}
+  const data: Prisma.DestinationUpdateInput = {}
 
-  if (input.name) {
+  if (input.name !== undefined) {
     const slug = toSlug(input.name)
     const slugTaken = await db.destination.findFirst({
       where: { slug, id: { not: id } },
@@ -103,10 +113,10 @@ export async function updateDestination(id: string, input: UpdateDestinationInpu
   if (input.featured !== undefined) data.featured = input.featured
   if (input.highlights !== undefined) data.highlights = input.highlights
 
-  if (input.imageId) {
+  if (input.imageId !== undefined) {
     const existingImage = await db.image.findUnique({ where: { id: input.imageId } })
     if (!existingImage) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
-    data.imageId = input.imageId
+    data.image = { connect: { id: input.imageId } }
   }
 
   return db.destination.update({

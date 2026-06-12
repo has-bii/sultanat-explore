@@ -12,6 +12,7 @@ import {
   createDestination,
   deleteDestination,
   getDestination,
+  getDestinationBySlug,
   getDestinationGallery,
   listDestinations,
   syncGallery,
@@ -26,6 +27,11 @@ const destinationRoute = new Hono()
     const query = c.req.valid("query")
     const result = await listDestinations(query)
     return c.json(successResponse(result, "ok"))
+  })
+  .get("/slug/:slug", async (c) => {
+    const slug = c.req.param("slug")
+    const destination = await getDestinationBySlug(slug)
+    return c.json(successResponse(destination, "ok"))
   })
   .get("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
