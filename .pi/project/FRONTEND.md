@@ -32,7 +32,7 @@ features/<name>/
 - Inferred types exported alongside: `export type <Name>Input = v.InferOutput<typeof <Name>Schema>`.
 - Components import schemas from `../dto/<name>.schema` — no Valibot in component files.
 - One schema file per feature. Split to multiple only if schemas >150 lines.
-- **Validation lib: Valibot.** Do not use Zod. Legacy auth schemas still on Zod (needs migration).
+- **Validation lib: Valibot.** Do not use Zod.
 
 ## Form Convention (TanStack Form)
 

@@ -48,6 +48,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │           └── [id]/
     │   │               └── edit/
     │   │                   └── page.tsx       # Edit destination (form + gallery)
+    │   │       ├── category/
+    │   │       │   └── page.tsx           # Destination category management
     │   │       └── image/       # Image management
     │   │           └── page.tsx               # Image grid + upload + detail sheet
     │   │
@@ -65,6 +67,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── button.tsx
     │   │   ├── card.tsx               # Card layout (ImageCard, etc.)
     │   │   ├── carousel.tsx
+    │   │   ├── checkbox.tsx
     │   │   ├── collapsible.tsx
     │   │   ├── dialog.tsx             # Modal dialogs (upload, picker)
     │   │   ├── dropdown-menu.tsx
@@ -82,6 +85,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── sidebar.tsx            # shadcn Sidebar (SidebarProvider, SidebarTrigger, etc.)
     │   │   ├── skeleton.tsx
     │   │   ├── sonner.tsx
+    │   │   ├── switch.tsx
+    │   │   ├── table.tsx
     │   │   ├── testimonials-columns-1.tsx
     │   │   ├── textarea.tsx
     │   │   └── tooltip.tsx
@@ -104,7 +109,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     ├── features/                  # Feature modules (domain-driven)
     │   ├── about-us/              # Components, data, types
     │   ├── articles/              # Components, data, types
-    │   ├── auth/                  # Login/forgot/reset forms + Zod schemas (legacy, needs migration to Valibot)
+    │   ├── auth/                  # Login/forgot/reset forms + Valibot schemas
     │   ├── contact/               # Components, data
     │   ├── destinations/          # Components, data, types
     │   ├── faq/                   # Components, data
@@ -112,7 +117,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── open-trip/             # Components, data, types
     │   ├── private-trip/          # Components, data, types
     │   ├── umrah/                 # Components, data, types
-    │   ├── collaborate/           # (empty — not started)
     │   ├── destination/             # Destination CRUD (admin) — queries, mutations, hooks, components, pages
     │   │   ├── components/
     │   │   │   ├── destination-form.tsx         # Create/edit form (name, tagline, description, image, highlights, featured)
@@ -124,7 +128,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── delete-destination-dialog.tsx
     │   │   │   └── destination-gallery/         # Gallery management sub-feature
     │   │   │       ├── index.tsx               # Gallery card with save button, uses MultiImagePickerDialog
-    │   │   │       ├── gallery-view.tsx        # DnD sortable grid (@dnd-kit)
+    │   │   │       ├── gallery-view.tsx        # Sortable grid (native HTML5 DnD)
     │   │   │       ├── draggable-item.tsx      # Wrapper for sortable items
     │   │   │       └── image-card.tsx          # Gallery image with delete overlay
     │   │   ├── hooks/
@@ -160,7 +164,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   │   └── image-update-form-skeleton.tsx
     │   │   │   └── upload-images-dialog/        # Multi-file upload dialog
     │   │   │       ├── index.tsx                # Dialog with DnD + file list + submit
-    │   │   │       ├── dnd-images.tsx           # Drag-and-drop zone (react-dropzone)
+    │   │   │       ├── dnd-images.tsx           # Drag-and-drop zone (native HTML5 DnD)
     │   │   │       ├── file-list.tsx            # File list container + max 10 alert
     │   │   │       └── file-list-item.tsx       # File preview (blob URL) + size + remove
     │   │   ├── hooks/

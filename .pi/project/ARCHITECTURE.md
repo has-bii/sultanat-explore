@@ -13,6 +13,7 @@
 | Package mgr | pnpm |
 | Monorepo | Turborepo (task orchestration + caching) |
 | Forms | TanStack React Form (useAppForm) |
+| URL state | nuqs | Type-safe URL search params for filters |
 | Auth | Better Auth (server) + auth-client (browser) |
 | API layer | Hono (catch-all route in `frontend/src/app/api/[[...route]]`) |
 | Database | PostgreSQL via Neon + Prisma 7 |
@@ -25,6 +26,7 @@
 | Image processing | Sharp (resize + WebP)
 | Blur placeholder | blurhash (encode from 64×64 thumbnail) |
 | Validation | Valibot + @hono/standard-validator |
+| DnD / Upload | Native HTML5 drag + File API |
 
 ## Monorepo Layout
 
@@ -69,7 +71,7 @@ sultanat-explore/
 | File naming | kebab-case | Next.js App Router convention |
 | State | React state / URL params + zustand for UI state | zustand for sheet, dialog, and other transient UI state. React state + URL params for persistent/route-level state |
 | Design system | Uber-inspired (DESIGN.md) | High-contrast achromatic, content-dense, pill buttons |
-| Fonts | Inter + DM Sans | Closest open-source to UberMove / UberMoveText |
+| Fonts | DM Sans + Inter + Geist | DM Sans for headings, Inter/Geist for body |
 | Auth | Better Auth | Full-stack auth (Hono handler + React client + cookies) |
 | Database | Prisma 7 + Neon | Serverless Postgres, adapter-based PrismaClient |
 | API routing | Hono catch-all | Single route handler in `[[...route]]` for all API paths |

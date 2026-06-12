@@ -4,7 +4,7 @@
 
 - **Backend modules.** `backend/src/modules/<domain>/` owns route, service, schema. Shared middleware at `backend/src/middlewares/`, shared schemas at `backend/src/schemas/`.
 - **Unified API response format.** All endpoints return `{ success: true, data, message }` for success, `{ success: false, data: null, message, error }` for errors. Use `successResponse()` and `errorResponse()` from `backend/src/utils/response.ts`.
-- **Valibot validation via sValidator.** Use `sValidator(target, schema)` wrapper from `@hono/standard-validator` — auto-throws HTTPException(400) on failure. Never manual `safeParse` in routes. Legacy auth schemas still use Zod (needs migration).
+- **Valibot validation via sValidator.** Use `sValidator(target, schema)` wrapper from `@hono/standard-validator` — auto-throws HTTPException(400) on failure. Never manual `safeParse` in routes.
 - **Auth split.** `AppContext` (nullable user/session) for public routes. `AppAuthContext` (guaranteed) for protected routes. `requireAuth` middleware narrows context type.
 - **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
 - **API catch-all.** All API routes handled by `frontend/src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
