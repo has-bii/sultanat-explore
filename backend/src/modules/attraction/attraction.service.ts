@@ -7,17 +7,14 @@ import type {
   UpdateAttractionInput,
 } from "backend/modules/attraction/attraction.schema"
 
-const includeDetail = {
-  image: { select: { id: true, url: true, blurHash: true } },
-} as const
-
-const includeList = {
+const include = {
   image: { select: { id: true, url: true, blurHash: true } },
 } as const
 
 export async function listAttractions(destinationId: string, params: AttractionQueryInput) {
   const { cursor, limit, search, sort, order } = params
-  const take = Math.min(limit, 100) + 1
+  const pageSize = Math.min(limit, 100)
+  const take = pageSize + 1
 
   const where = {
     destinationId,
@@ -29,11 +26,11 @@ export async function listAttractions(destinationId: string, params: AttractionQ
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     where,
     orderBy: { [sort]: order },
-    include: includeList,
+    include,
   })
 
-  const data = attractions.slice(0, Math.min(limit, 100))
-  const nextCursor = attractions.length > Math.min(limit, 100) ? data[data.length - 1].id : null
+  const data = attractions.slice(0, pageSize)
+  const nextCursor = attractions.length > pageSize ? data[data.length - 1].id : null
 
   return { data, nextCursor }
 }
@@ -41,7 +38,7 @@ export async function listAttractions(destinationId: string, params: AttractionQ
 export async function getAttraction(destinationId: string, id: string) {
   const attraction = await db.attraction.findFirst({
     where: { id, destinationId },
-    include: includeDetail,
+    include,
   })
   if (!attraction) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
   return attraction
@@ -61,7 +58,7 @@ export async function createAttraction(destinationId: string, input: CreateAttra
       imageId: input.imageId,
       destinationId,
     },
-    include: includeList,
+    include,
   })
 }
 
@@ -75,21 +72,19 @@ export async function updateAttraction(
   })
   if (!existing) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
 
-  const data: Record<string, unknown> = {}
-
-  if (input.name !== undefined) data.name = input.name
-  if (input.description !== undefined) data.description = input.description
-
   if (input.imageId) {
     const image = await db.image.findUnique({ where: { id: input.imageId } })
     if (!image) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
-    data.imageId = input.imageId
   }
 
   return db.attraction.update({
     where: { id },
-    data,
-    include: includeList,
+    data: {
+      name: input.name,
+      description: input.description,
+      ...(input.imageId && { imageId: input.imageId }),
+    },
+    include,
   })
 }
 
@@ -99,5 +94,5 @@ export async function deleteAttraction(destinationId: string, id: string) {
   })
   if (!existing) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
 
-  await db.attraction.delete({ where: { id } })
+  return db.attraction.delete({ where: { id } })
 }
