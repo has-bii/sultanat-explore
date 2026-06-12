@@ -1,23 +1,27 @@
-import { z } from "zod"
+import * as v from "valibot"
 
-export const loginSchema = z.object({
-  email: z.email("Email tidak valid"),
-  password: z.string().min(1, "Password wajib diisi"),
+export const loginSchema = v.object({
+  email: v.pipe(v.string(), v.email("Email tidak valid")),
+  password: v.pipe(v.string(), v.minLength(1, "Password wajib diisi")),
 })
-export type LoginInput = z.infer<typeof loginSchema>
+export type LoginInput = v.InferOutput<typeof loginSchema>
 
-export const forgotPasswordSchema = z.object({
-  email: z.email("Email tidak valid"),
+export const forgotPasswordSchema = v.object({
+  email: v.pipe(v.string(), v.email("Email tidak valid")),
 })
-export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
+export type ForgotPasswordInput = v.InferOutput<typeof forgotPasswordSchema>
 
-export const resetPasswordSchema = z
-  .object({
-    password: z.string().min(8, "Password minimal 8 karakter"),
-    confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password tidak cocok",
-    path: ["confirmPassword"],
-  })
-export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>
+export const resetPasswordSchema = v.pipe(
+  v.object({
+    password: v.pipe(v.string(), v.minLength(8, "Password minimal 8 karakter")),
+    confirmPassword: v.pipe(v.string(), v.minLength(1, "Konfirmasi password wajib diisi")),
+  }),
+  v.forward(
+    v.check(
+      (data) => data.password === data.confirmPassword,
+      "Password tidak cocok",
+    ),
+    ["confirmPassword"],
+  ),
+)
+export type ResetPasswordInput = v.InferOutput<typeof resetPasswordSchema>
