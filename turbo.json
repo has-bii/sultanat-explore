@@ -21,19 +21,33 @@
     "db:generate": {
       "cache": true,
       "inputs": ["prisma/schema.prisma"],
-      "outputs": ["src/generated/**"]
+      "outputs": ["src/generated/prisma/**"]
     },
     "typecheck": {
       "dependsOn": ["db:generate"],
-      "cache": false
+      "cache": true,
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", "tsconfig.json", "prisma/schema.prisma"],
+      "outputs": []
     },
     "lint": {
       "dependsOn": ["typecheck"],
+      "cache": true,
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", ".eslintrc*", "eslint.config*"],
+      "outputs": []
+    },
+    "clean": {
       "cache": false
     },
     "build": {
       "dependsOn": ["lint"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "public/**",
+        "next.config*",
+        "tsconfig.json",
+        ".env*"
+      ],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "dev": {
