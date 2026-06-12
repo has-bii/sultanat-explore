@@ -36,7 +36,7 @@ Status of implemented features per PRD.
 | Dashboard home | ✅ Done | Session-aware, user name + logout, placeholder cards |
 | React Query infra | ✅ Done | QueryClient + QueryProvider in root, devtools available |
 | Toast/theme infra | ✅ Done | sonner (toasts) + next-themes wired via RootProviders |
-| Destination Management | 🔶 In progress | Backend CRUD complete (Destination, Attraction, AttractionCategory + gallery endpoints). Admin shell pages for list + category list created. Frontend CRUD not implemented
+| Destination Management | ✅ Done | Full CRUD: list (infinite scroll table with search/sort/featured filters), create, edit, delete with confirm dialog. Gallery management with MultiImagePickerDialog + drag-to-reorder via @dnd-kit. Inline featured toggle. Form: TanStack Form + Valibot (createDestinationSchema). Fields: name, tagline, description, imageId (hero image), highlights (dynamic array), featured. Query factory + mutation hooks. Nuqs URL state for filters. Backend: slug auto-gen, cascade delete, gallery sync endpoint
 | Trip Management | 🔲 Not started | CRUD open trips + private packages |
 | Article (SEO) | 🔲 Not started | Rich text editor, SEO fields, publish/draft |
 | Image CRUD | ✅ Done | Upload multi-file via drag-and-drop (Sharp→WebP + blurHash), list (cursor paginated, infinite query), get detail, update alt with form validation, delete with confirm dialog (R2 + DB). Image detail sheet with edit/delete/copy-URL. Zustand stores for UI state (sheet, dialog). Unified API response handling in all mutations. Public GET, auth for mutations |

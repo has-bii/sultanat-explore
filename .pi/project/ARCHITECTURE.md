@@ -90,6 +90,8 @@ sultanat-explore/
 | Client data | TanStack React Query | Server-state for admin CRUD pages. queryOptions/infiniteQueryOptions factories in features/<name>/queries/. useQuery for queryOptions, useInfiniteQuery for infiniteQueryOptions. Query invalidation in onSettled |
 | Admin layout | shadcn SidebarProvider | Collapsible sidebar + breadcrumb header pattern |
 | Image upload | Sharp + R2 | Resize to 1920px max, WebP quality 75, blurHash for placeholders. Multi-file via `File[]` schema, parallel `Promise.all`. Frontend: drag-and-drop, file validation (type + size), file list with remove, max 10 files |
+| Gallery management | MultiImagePickerDialog + @dnd-kit | Pick existing images (max 10), drag-to-reorder, sync via PUT endpoint. Join tables (`DestinationImage`, `AttractionImage`) with `order` field |
+| Image pickers | ImagePickerDialog (single) + MultiImagePickerDialog (multi) | Reusable across features. Single for hero images, multi for galleries. Dynamic import ImageGrid (SSR disabled) |
 | API response format | `successResponse`/`errorResponse` | Unified `{ success, data, message, error }` contract for frontend consumers |
 
 ## Database Models (Prisma 7)
@@ -184,12 +186,21 @@ backend/src/modules/attraction-category/
 
 frontend/src/features/image/
   ├── queries/ — queryOptions + infiniteQueryOptions factories
-  ├── mutations/ — useMutation hooks (upload, update, delete)
-  ├── stores/ — zustand stores for UI state (sheet, dialog)
+  ├── mutations/ — useMutation hooks (upload, update, delete, bulk-delete)
+  ├── stores/ — zustand stores for UI state (sheet, dialog, selection)
   ├── hooks/ — feature hooks (use-image-filters, use-update-image-form)
-  ├── components/ — feature components (image-detail-sheet/, upload-images-dialog/)
-  ├── dto/ — Zod schemas + inferred types
-  └── lib/ — blurhash helpers
+  ├── components/ — feature components (image-grid, image-detail-sheet/, upload-images-dialog/, image-picker-dialog, multi-image-picker-dialog, selection-bar, filters-toolbar)
+  ├── pages/ — images.page.tsx (FiltersToolbar + dynamic grid + dialogs)
+  ├── query/ — queryOptions + infiniteQueryOptions factories
+  └── lib/ — blurhash helpers (blurhash → data URL)
+
+frontend/src/features/destination/
+  ├── queries/ — queryOptions + infiniteQueryOptions factories (list, detail, gallery)
+  ├── mutations/ — useMutation hooks (create, update, delete, update-gallery sync)
+  ├── hooks/ — use-destination-filters (nuqs URL state), use-destination-form (TanStack Form + Valibot)
+  ├── components/ — destination-form, destination-table, destination-filters, delete-destination-dialog, destination-gallery/ (DnD reorder + MultiImagePickerDialog)
+  ├── pages/ — destination-list, create-destination, edit-destination (form + gallery side-by-side)
+  └── (no DTO — uses backend schemas directly via workspace import)
 
 backend/src/middlewares/
   ├── require-auth.ts — Auth guard (narrows to AppAuthContext)

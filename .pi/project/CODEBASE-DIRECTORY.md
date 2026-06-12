@@ -41,10 +41,15 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── dashboard/         # Admin dashboard (SidebarProvider layout)
     │   │       ├── layout.tsx     # Admin dashboard layout (SidebarProvider + AppSidebar)
     │   │       ├── page.tsx       # Dashboard home (cards placeholder)
-    │   │       └── destination/   # Destination management (shell pages)
-    │   │           ├── page.tsx   # Destination list
-    │   │           └── category/  # Attraction category management
-    │   │               └── page.tsx
+    │   │       └── destination/   # Destination management
+    │   │           ├── page.tsx               # Destination list (table + filters)
+    │   │           ├── create/
+    │   │           │   └── page.tsx           # Create destination form
+    │   │           └── [id]/
+    │   │               └── edit/
+    │   │                   └── page.tsx       # Edit destination (form + gallery)
+    │   │       └── image/       # Image management
+    │   │           └── page.tsx               # Image grid + upload + detail sheet
     │   │
     │   └── api/
     │       └── [[...route]]/
@@ -108,7 +113,74 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── private-trip/          # Components, data, types
     │   ├── umrah/                 # Components, data, types
     │   ├── collaborate/           # (empty — not started)
-    │   └── image/                 # Image CRUD (admin) — queries, mutations, stores, components
+    │   ├── destination/             # Destination CRUD (admin) — queries, mutations, hooks, components, pages
+    │   │   ├── components/
+    │   │   │   ├── destination-form.tsx         # Create/edit form (name, tagline, description, image, highlights, featured)
+    │   │   │   ├── destination-table.tsx        # Infinite scroll table with filters
+    │   │   │   ├── destination-table-row.tsx    # Table row with inline featured toggle
+    │   │   │   ├── destination-table-skeleton.tsx
+    │   │   │   ├── destination-filters.tsx      # Search + sort + featured filter controls
+    │   │   │   ├── destination-skeleton.tsx
+    │   │   │   ├── delete-destination-dialog.tsx
+    │   │   │   └── destination-gallery/         # Gallery management sub-feature
+    │   │   │       ├── index.tsx               # Gallery card with save button, uses MultiImagePickerDialog
+    │   │   │       ├── gallery-view.tsx        # DnD sortable grid (@dnd-kit)
+    │   │   │       ├── draggable-item.tsx      # Wrapper for sortable items
+    │   │   │       └── image-card.tsx          # Gallery image with delete overlay
+    │   │   ├── hooks/
+    │   │   │   ├── use-destination-filters.ts   # Nuqs URL state (search, sort, order, featured)
+    │   │   │   └── use-destination-form.ts      # TanStack Form + Valibot (createDestinationSchema)
+    │   │   ├── mutations/
+    │   │   │   ├── create-destination.mutation.ts
+    │   │   │   ├── update-destination.mutation.ts
+    │   │   │   ├── delete-destination.mutation.ts
+    │   │   │   └── update-gallery.mutation.ts    # Sync gallery image IDs (PUT)
+    │   │   ├── pages/
+    │   │   │   ├── destination-list.page.tsx     # Table + filters + empty states
+    │   │   │   ├── create-destination.page.tsx   # Card-wrapped form
+    │   │   │   └── edit-destination.page.tsx     # Form + gallery side-by-side, lazy delete dialog
+    │   │   └── queries/
+    │   │       └── index.ts                     # Query factory (infinite list, detail, gallery)
+    │   ├── image/                 # Image CRUD (admin) — queries, mutations, stores, components
+    │   │   ├── components/
+    │   │   │   ├── image-grid.tsx               # Infinite query grid (cursor paginated)
+    │   │   │   ├── image-grid-with-filters.tsx  # Grid + selection + filter wiring
+    │   │   │   ├── image-grid-skeleton.tsx
+    │   │   │   ├── image-card.tsx               # Card with checkbox + click-to-detail
+    │   │   │   ├── image-picker-dialog.tsx      # Single image picker (form field)
+    │   │   │   ├── multi-image-picker-dialog.tsx # Multi image picker (gallery, max 10)
+    │   │   │   ├── filters-toolbar.tsx          # Search + featured + sort controls
+    │   │   │   ├── selection-bar.tsx            # Bulk selection count + clear + bulk delete
+    │   │   │   ├── bulk-delete-dialog.tsx       # Confirm bulk delete
+    │   │   │   ├── image-delete-dialog.tsx      # Confirm single delete
+    │   │   │   ├── image-error-message.tsx
+    │   │   │   ├── image-detail-sheet/          # Side sheet for image detail + edit
+    │   │   │   │   ├── index.tsx                # Sheet wrapper (mutation-aware close)
+    │   │   │   │   ├── image-update-form.tsx    # Alt text form + delete button
+    │   │   │   │   └── image-update-form-skeleton.tsx
+    │   │   │   └── upload-images-dialog/        # Multi-file upload dialog
+    │   │   │       ├── index.tsx                # Dialog with DnD + file list + submit
+    │   │   │       ├── dnd-images.tsx           # Drag-and-drop zone (react-dropzone)
+    │   │   │       ├── file-list.tsx            # File list container + max 10 alert
+    │   │   │       └── file-list-item.tsx       # File preview (blob URL) + size + remove
+    │   │   ├── hooks/
+    │   │   │   ├── use-image-filters.ts         # Nuqs URL state (search, sort, order, featured)
+    │   │   │   └── use-update-image-form.ts     # TanStack Form (updateImageSchema)
+    │   │   ├── lib/
+    │   │   │   └── blurhash.ts                  # blurhash → data URL (OffscreenCanvas)
+    │   │   ├── mutations/
+    │   │   │   ├── upload-images.mutation.ts
+    │   │   │   ├── delete-image.mutation.ts
+    │   │   │   ├── bulk-delete-images.mutation.ts
+    │   │   │   └── update-image.mutation.ts
+    │   │   ├── pages/
+    │   │   │   └── images.page.tsx               # FiltersToolbar + dynamic grid + dialogs
+    │   │   ├── query/
+    │   │   │   └── index.ts                      # Query factory (infinite list, detail)
+    │   │   └── stores/
+    │   │       ├── image-detail-sheet.store.ts    # Zustand: open/close + selectedImageId
+    │   │       ├── image-selection.store.ts       # Zustand: Set<string> + toggle/clear
+    │   │       └── upload-images-dialog.store.ts  # Zustand: open/close
     │
     ├── providers/                 # React provider wrappers
     │   ├── root.tsx               # RootProviders (TooltipProvider + QueryProvider + Toaster)
