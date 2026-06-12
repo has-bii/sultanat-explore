@@ -1,18 +1,40 @@
 "use client"
 
-import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs"
+import { parseAsString, parseAsStringLiteral, useQueryStates } from "nuqs"
 
 export function useImageFilters() {
-  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""))
-  const [order, setOrder] = useQueryState(
-    "order",
-    parseAsStringLiteral(["asc", "desc"]).withDefault("desc"),
-  )
+  const [query, setQuery] = useQueryStates({
+    search: parseAsString.withDefault(""),
+    order: parseAsStringLiteral(["asc", "desc"]).withDefault("desc"),
+    sort: parseAsStringLiteral(["createdAt"]).withDefault("createdAt"),
+    featured: parseAsStringLiteral(["true", "false"]),
+  })
+
+  const onSearchChange = (search: string) => {
+    setQuery((prev) => ({ ...prev, search }))
+  }
+
+  const onSortOrderChange = (value: string) => {
+    const [sort, order] = value.split("-")
+
+    if (sort !== "createdAt") return
+    if (order !== "asc" && order !== "desc") return
+
+    setQuery((prev) => ({ ...prev, sort, order }))
+  }
+
+  const onFeaturedChange = (featured: "true" | "false" | null) => {
+    setQuery((prev) => ({ ...prev, featured }))
+  }
+
+  const methods = {
+    onSearchChange,
+    onFeaturedChange,
+    onSortOrderChange,
+  }
 
   return {
-    search,
-    setSearch,
-    order,
-    setOrder,
+    query,
+    methods,
   }
 }

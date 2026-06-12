@@ -1,4 +1,4 @@
-import { Loader, Send, UploadIcon } from "lucide-react"
+import { UploadIcon } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 import { ButtonLoading } from "@/components/button-loading"

@@ -1,10 +1,15 @@
 "use client"
 
-import { SearchIcon, Upload } from "lucide-react"
-import { useCallback, useRef } from "react"
+import { SearchIcon, Upload, X } from "lucide-react"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 import {
   Select,
   SelectContent,
@@ -13,29 +18,20 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+import { useImageFilters } from "../hooks/use-image-filters"
 import { useUploadImagesDialogStore } from "../stores/upload-images-dialog.store"
 
-interface Props {
-  search: string
-  order: string
-  onSearchChange: (value: string) => void
-  onOrderChange: (value: "asc" | "desc") => void
-}
-
-export function FiltersToolbar({ search, order, onSearchChange, onOrderChange }: Props) {
+export function FiltersToolbar() {
+  const { query, methods } = useImageFilters()
   const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
 
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const [searchLocal, setSearchLocal] = useState(query.search || "")
 
-  const debouncedSearch = useCallback(
-    (value: string) => {
-      clearTimeout(timerRef.current)
-      timerRef.current = setTimeout(() => {
-        onSearchChange(value || "")
-      }, 300)
-    },
-    [onSearchChange],
-  )
+  useEffect(() => {
+    const timeout = setTimeout(() => methods.onSearchChange(searchLocal), 300)
+
+    return () => clearTimeout(timeout)
+  }, [methods, searchLocal])
 
   return (
     <div className="flex items-center justify-between gap-3">
@@ -46,22 +42,55 @@ export function FiltersToolbar({ search, order, onSearchChange, onOrderChange }:
           </InputGroupAddon>
           <InputGroupInput
             type="text"
-            defaultValue={search}
-            onChange={(e) => debouncedSearch(e.target.value)}
+            value={searchLocal}
+            onChange={(e) => setSearchLocal(e.target.value)}
             placeholder="Cari berdasarkan deskripsi..."
           />
+          {query.search && (
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton onClick={() => setSearchLocal("")}>
+                <X />
+              </InputGroupButton>
+            </InputGroupAddon>
+          )}
         </InputGroup>
       </div>
       <div className="inline-flex items-center gap-2">
-        <Select value={order} onValueChange={onOrderChange}>
+        {/* Featured filter */}
+        <Select
+          value={query.featured ? query.featured : "all"}
+          onValueChange={(value) => {
+            if (value === "all") {
+              methods.onFeaturedChange(null)
+              return
+            }
+            methods.onFeaturedChange(value as "true" | "false")
+          }}
+        >
+          <SelectTrigger className="w-fit">
+            <SelectValue placeholder="Filter" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Semua</SelectItem>
+            <SelectItem value="true">Featured</SelectItem>
+            <SelectItem value="false">Non Featured</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Sort */}
+        <Select
+          value={`${query.sort}-${query.order}`}
+          onValueChange={(value) => methods.onSortOrderChange(value)}
+        >
           <SelectTrigger className="w-36">
             <SelectValue placeholder="Urutan" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="desc">Terbaru</SelectItem>
-            <SelectItem value="asc">Terlama</SelectItem>
+            <SelectItem value="createdAt-desc">Terbaru</SelectItem>
+            <SelectItem value="createdAt-asc">Terlama</SelectItem>
           </SelectContent>
         </Select>
+
         <Button onClick={onUpload}>
           <Upload />
           Upload

@@ -13,11 +13,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import { blurhashToDataUrl } from "../lib/blurhash"
 import { getImageDetailQueryOptions } from "../query"
-import { ImageGrid } from "./image-grid"
+import { ImageGridSkeleton } from "./image-grid-skeleton"
+
+const ImageGrid = dynamic(() => import("./image-grid").then((m) => ({ default: m.ImageGrid })), {
+  ssr: false,
+  loading: () => (
+    <div className="@container/main">
+      <ImageGridSkeleton />
+    </div>
+  ),
+})
 
 type Props = {
   value?: string
@@ -70,8 +80,8 @@ export function ImagePickerDialog({ value, onChange }: Props) {
           />
         </InputGroup>
         <ImageGrid
-          className="min-h-0 flex-1"
-          query={{ limit: "10", sort: "createdAt", order: "asc", search }}
+          className="@container/main min-h-0 flex-1"
+          query={{ limit: "10", sort: "createdAt", order: "desc", search }}
           onClearSearch={() => setSearch("")}
           selectedId={selectedId || undefined}
           onImageClick={(image) => {
