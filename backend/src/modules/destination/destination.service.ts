@@ -3,19 +3,15 @@ import { HTTPException } from "hono/http-exception"
 import { db } from "backend/lib/db"
 import { toSlug } from "backend/lib/slug"
 import type {
-  AddGalleryImageInput,
   CreateDestinationInput,
   DestinationQueryInput,
-  ReorderGalleryInput,
+  DestinationQueryOutput,
+  SyncGalleryInput,
   UpdateDestinationInput,
 } from "backend/modules/destination/destination.schema"
 
 const includeDetail = {
   image: { select: { id: true, url: true, blurHash: true } },
-  images: {
-    orderBy: { order: "asc" as const },
-    include: { image: { select: { id: true, url: true, blurHash: true } } },
-  },
   attractions: {
     select: {
       id: true,
@@ -32,8 +28,8 @@ const includeList = {
   _count: { select: { attractions: true, images: true } },
 } as const
 
-export async function listDestinations(params: DestinationQueryInput) {
-  const { cursor, limit = 10, search, featured, sort = "createdAt", order = "desc" } = params
+export async function listDestinations(params: DestinationQueryOutput) {
+  const { cursor, limit, search, featured, sort = "createdAt", order = "desc" } = params
   const take = Math.min(limit, 100) + 1
 
   const where = {
@@ -50,8 +46,7 @@ export async function listDestinations(params: DestinationQueryInput) {
   })
 
   const data = destinations.slice(0, Math.min(limit, 100))
-  const nextCursor =
-    destinations.length > Math.min(limit, 100) ? data[data.length - 1].id : null
+  const nextCursor = destinations.length > Math.min(limit, 100) ? data[data.length - 1].id : null
 
   return { data, nextCursor }
 }
@@ -122,6 +117,19 @@ export async function updateDestination(id: string, input: UpdateDestinationInpu
   })
 }
 
+export async function getDestinationGallery(destinationId: string) {
+  const destination = await db.destination.findUnique({ where: { id: destinationId } })
+  if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
+
+  const images = await db.destinationImage.findMany({
+    where: { destinationId },
+    orderBy: { order: "asc" },
+    include: { image: { select: { id: true, url: true, blurHash: true } } },
+  })
+
+  return images
+}
+
 export async function deleteDestination(id: string) {
   const existing = await db.destination.findUnique({ where: { id } })
   if (!existing) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
@@ -130,66 +138,40 @@ export async function deleteDestination(id: string) {
   await db.destination.delete({ where: { id } })
 }
 
-export async function addGalleryImage(destinationId: string, input: AddGalleryImageInput) {
+export async function syncGallery(destinationId: string, input: SyncGalleryInput) {
   const destination = await db.destination.findUnique({ where: { id: destinationId } })
   if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
 
-  const image = await db.image.findUnique({ where: { id: input.imageId } })
-  if (!image) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
-
-  const exists = await db.destinationImage.findUnique({
-    where: { destinationId_imageId: { destinationId, imageId: input.imageId } },
-  })
-  if (exists) throw new HTTPException(409, { message: "Foto sudah ada di galeri" })
-
-  let order = input.order
-  if (order === undefined) {
-    const last = await db.destinationImage.findFirst({
-      where: { destinationId },
-      orderBy: { order: "desc" },
+  // Validate images exist
+  if (input.imageIds.length > 0) {
+    const images = await db.image.findMany({
+      where: { id: { in: input.imageIds } },
+      select: { id: true },
     })
-    order = (last?.order ?? -1) + 1
+    if (images.length !== input.imageIds.length) {
+      throw new HTTPException(400, { message: "Beberapa gambar tidak ditemukan" })
+    }
   }
 
-  return db.destinationImage.create({
-    data: { destinationId, imageId: input.imageId, order },
+  // Full replace in transaction: delete all then create all
+  await db.$transaction(async (tx) => {
+    await tx.destinationImage.deleteMany({ where: { destinationId } })
+
+    if (input.imageIds.length > 0) {
+      await tx.destinationImage.createMany({
+        data: input.imageIds.map((imageId, index) => ({
+          destinationId,
+          imageId,
+          order: index,
+        })),
+      })
+    }
+  })
+
+  // Return updated gallery
+  return db.destinationImage.findMany({
+    where: { destinationId },
+    orderBy: { order: "asc" },
     include: { image: { select: { id: true, url: true, blurHash: true } } },
   })
-}
-
-export async function removeGalleryImage(destinationId: string, imageId: string) {
-  const existing = await db.destinationImage.findUnique({
-    where: { destinationId_imageId: { destinationId, imageId } },
-  })
-  if (!existing)
-    throw new HTTPException(404, { message: "Foto tidak ditemukan di galeri" })
-
-  await db.destinationImage.delete({
-    where: { destinationId_imageId: { destinationId, imageId } },
-  })
-}
-
-export async function reorderGallery(destinationId: string, input: ReorderGalleryInput) {
-  const destination = await db.destination.findUnique({ where: { id: destinationId } })
-  if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
-
-  // Verify all images belong to this destination
-  const existing = await db.destinationImage.findMany({
-    where: { destinationId },
-    select: { imageId: true },
-  })
-  const existingIds = new Set(existing.map((e) => e.imageId))
-  const allValid = input.imageIds.every((id) => existingIds.has(id))
-  if (!allValid || existingIds.size !== input.imageIds.length) {
-    throw new HTTPException(400, { message: "Daftar gambar tidak valid" })
-  }
-
-  await db.$transaction(
-    input.imageIds.map((imageId, index) =>
-      db.destinationImage.update({
-        where: { destinationId_imageId: { destinationId, imageId } },
-        data: { order: index },
-      }),
-    ),
-  )
 }

@@ -1,5 +1,8 @@
 import * as v from "valibot"
 
+import { paramIdSchema } from "backend/schemas/param.schema"
+import { querySchema } from "backend/schemas/query.schema"
+
 export const createDestinationSchema = v.object({
   name: v.pipe(
     v.string(),
@@ -34,37 +37,28 @@ export const createDestinationSchema = v.object({
 export const updateDestinationSchema = v.partial(createDestinationSchema)
 
 export const destinationQuerySchema = v.object({
-  cursor: v.fallback(v.optional(v.pipe(v.string(), v.uuid("Invalid cursor"))), undefined),
-  limit: v.fallback(v.pipe(v.string(), v.toNumber(), v.minValue(10), v.maxValue(100)), 10),
-  search: v.fallback(v.optional(v.string()), undefined),
-  featured: v.fallback(
-    v.optional(
-      v.pipe(
-        v.picklist(["true", "false"]),
-        v.transform((val) => val === "true"),
-      ),
+  ...querySchema.entries,
+  search: v.optional(v.string()),
+  featured: v.optional(
+    v.pipe(
+      v.picklist(["true", "false"]),
+      v.transform((val) => val === "true"),
     ),
-    undefined,
   ),
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
   order: v.optional(v.picklist(["asc", "desc"]), "desc"),
 })
 
-export const addGalleryImageSchema = v.object({
-  imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
-  order: v.optional(v.pipe(v.number(), v.integer(), v.minValue(0))),
-})
-
-export const reorderGallerySchema = v.object({
+export const syncGallerySchema = v.object({
   imageIds: v.pipe(
     v.array(v.pipe(v.string(), v.uuid("ID gambar tidak valid"))),
-    v.minLength(1, "Minimal 1 gambar"),
+    v.maxLength(20, "Maksimal 20 gambar"),
   ),
 })
 
 export type CreateDestinationInput = v.InferInput<typeof createDestinationSchema>
 export type CreateDestinationOutput = v.InferOutput<typeof createDestinationSchema>
 export type UpdateDestinationInput = v.InferInput<typeof updateDestinationSchema>
-export type DestinationQueryInput = v.InferOutput<typeof destinationQuerySchema>
-export type AddGalleryImageInput = v.InferInput<typeof addGalleryImageSchema>
-export type ReorderGalleryInput = v.InferInput<typeof reorderGallerySchema>
+export type DestinationQueryInput = v.InferInput<typeof destinationQuerySchema>
+export type DestinationQueryOutput = v.InferOutput<typeof destinationQuerySchema>
+export type SyncGalleryInput = v.InferInput<typeof syncGallerySchema>
