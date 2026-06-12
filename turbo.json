@@ -24,16 +24,17 @@
       "outputs": ["src/generated/**"]
     },
     "typecheck": {
-      "dependsOn": ["db:generate"]
+      "dependsOn": ["db:generate"],
+      "cache": false
     },
     "lint": {
-      "dependsOn": ["typecheck"]
+      "dependsOn": ["typecheck"],
+      "cache": false
     },
     "build": {
       "dependsOn": ["lint"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
-      "cache": false
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "dev": {
       "dependsOn": ["^db:generate"],
