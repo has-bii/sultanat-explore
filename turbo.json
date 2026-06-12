@@ -24,7 +24,7 @@
       "outputs": ["src/generated/**"]
     },
     "typecheck": {
-      "dependsOn": ["^db:generate"]
+      "dependsOn": ["db:generate"]
     },
     "lint": {
       "dependsOn": ["typecheck"]
