@@ -9,7 +9,7 @@
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "format": "prettier --write .",
-    "db:generated": "turbo db:generate"
+    "db:generate": "turbo db:generate"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
