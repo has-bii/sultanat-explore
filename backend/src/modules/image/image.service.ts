@@ -121,10 +121,6 @@ export async function bulkDeleteImages(ids: string[]) {
       where: { imageId: { in: ids } },
       select: { imageId: true },
     }),
-    db.attractionImage.findMany({
-      where: { imageId: { in: ids } },
-      select: { imageId: true },
-    }),
   ])
 
   const referencedIds = new Set(refChecks.flat().map((r) => r.imageId))

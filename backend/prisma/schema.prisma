@@ -88,7 +88,6 @@ model Image {
   destinations         Destination[]
   attractions          Attraction[]
   destinationGalleries DestinationImage[]
-  attractionGalleries  AttractionImage[]
 
   @@map("image")
 }
@@ -131,49 +130,19 @@ model DestinationImage {
 
 // ─── Attraction ────────────────────────────────────────────────
 
-model AttractionCategory {
-  id        String   @id @db.Uuid @default(uuid(7))
-  name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  attractions Attraction[]
-
-  @@map("attraction_category")
-}
-
 model Attraction {
   id            String   @id @db.Uuid @default(uuid(7))
   name          String
   description   String
   imageId       String   @db.Uuid
-  categoryId    String?  @db.Uuid
   destinationId String   @db.Uuid
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   image       Image             @relation(fields: [imageId], references: [id])
-  category    AttractionCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   destination Destination        @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  images      AttractionImage[]
 
   @@index([imageId])
-  @@index([categoryId])
   @@index([destinationId])
   @@map("attraction")
-}
-
-model AttractionImage {
-  attractionId String @db.Uuid
-  imageId      String @db.Uuid
-  order        Int    @default(0)
-
-  attraction Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
-  image      Image       @relation(fields: [imageId], references: [id], onDelete: Cascade)
-
-  @@id([attractionId, imageId])
-  @@index([attractionId])
-  @@index([imageId])
-  @@map("attraction_image")
 }

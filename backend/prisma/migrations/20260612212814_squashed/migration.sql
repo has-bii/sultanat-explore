@@ -1,8 +1,68 @@
 -- CreateTable
+CREATE TABLE "user" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "image" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "session" (
+    "id" UUID NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "token" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "ipAddress" TEXT,
+    "userAgent" TEXT,
+    "userId" UUID NOT NULL,
+
+    CONSTRAINT "session_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "account" (
+    "id" UUID NOT NULL,
+    "accountId" TEXT NOT NULL,
+    "providerId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
+    "accessToken" TEXT,
+    "refreshToken" TEXT,
+    "idToken" TEXT,
+    "accessTokenExpiresAt" TIMESTAMP(3),
+    "refreshTokenExpiresAt" TIMESTAMP(3),
+    "scope" TEXT,
+    "password" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "account_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "verification" (
+    "id" UUID NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "verification_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "image" (
     "id" UUID NOT NULL,
     "url" TEXT NOT NULL,
     "alt" TEXT,
+    "fileSize" INTEGER NOT NULL,
+    "blurHash" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "image_pkey" PRIMARY KEY ("id")
@@ -34,23 +94,11 @@ CREATE TABLE "destination_image" (
 );
 
 -- CreateTable
-CREATE TABLE "attraction_category" (
-    "id" UUID NOT NULL,
-    "name" TEXT NOT NULL,
-    "label" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "attraction_category_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "attraction" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "imageId" UUID NOT NULL,
-    "categoryId" UUID NOT NULL,
     "destinationId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -58,14 +106,20 @@ CREATE TABLE "attraction" (
     CONSTRAINT "attraction_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "attraction_image" (
-    "attractionId" UUID NOT NULL,
-    "imageId" UUID NOT NULL,
-    "order" INTEGER NOT NULL DEFAULT 0,
+-- CreateIndex
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
-    CONSTRAINT "attraction_image_pkey" PRIMARY KEY ("attractionId","imageId")
-);
+-- CreateIndex
+CREATE INDEX "session_userId_idx" ON "session"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "session_token_key" ON "session"("token");
+
+-- CreateIndex
+CREATE INDEX "account_userId_idx" ON "account"("userId");
+
+-- CreateIndex
+CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "destination_slug_key" ON "destination"("slug");
@@ -83,16 +137,13 @@ CREATE INDEX "destination_image_imageId_idx" ON "destination_image"("imageId");
 CREATE INDEX "attraction_imageId_idx" ON "attraction"("imageId");
 
 -- CreateIndex
-CREATE INDEX "attraction_categoryId_idx" ON "attraction"("categoryId");
-
--- CreateIndex
 CREATE INDEX "attraction_destinationId_idx" ON "attraction"("destinationId");
 
--- CreateIndex
-CREATE INDEX "attraction_image_attractionId_idx" ON "attraction_image"("attractionId");
+-- AddForeignKey
+ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE INDEX "attraction_image_imageId_idx" ON "attraction_image"("imageId");
+-- AddForeignKey
+ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "destination" ADD CONSTRAINT "destination_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -107,13 +158,4 @@ ALTER TABLE "destination_image" ADD CONSTRAINT "destination_image_imageId_fkey" 
 ALTER TABLE "attraction" ADD CONSTRAINT "attraction_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "attraction" ADD CONSTRAINT "attraction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "attraction_category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "attraction" ADD CONSTRAINT "attraction_destinationId_fkey" FOREIGN KEY ("destinationId") REFERENCES "destination"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "attraction_image" ADD CONSTRAINT "attraction_image_attractionId_fkey" FOREIGN KEY ("attractionId") REFERENCES "attraction"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "attraction_image" ADD CONSTRAINT "attraction_image_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "image"("id") ON DELETE CASCADE ON UPDATE CASCADE;
