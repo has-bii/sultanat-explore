@@ -4,7 +4,7 @@ import { apiClient } from "@/lib/api-client"
 import { InferRequestType } from "hono"
 import { toast } from "sonner"
 
-import { imageQueryKeys } from "../query"
+import { imageQueryKeys } from "../queries"
 
 const $uploadImage = apiClient.api.images.$post
 type UploadImageInputType = InferRequestType<typeof $uploadImage>
@@ -22,6 +22,9 @@ export const useUploadImages = () => {
     },
     onSuccess: (res) => {
       toast.success(res.message)
+    },
+    onError: (e) => {
+      toast.error(e.message)
     },
     onSettled: (_res, _err, _var, _result, context) => {
       context.client.invalidateQueries({

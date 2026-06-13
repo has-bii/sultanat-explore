@@ -3,20 +3,16 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
-import { DateToString } from "@/utils/date-to-string.type"
 import { formatFileSize } from "@/utils/format-file-size"
 import { intlFormatDistance } from "date-fns"
 import Image from "next/image"
 
-import type { Image as TImage } from "backend/generated/prisma/client"
-
 import { blurhashToDataUrl } from "../lib/blurhash"
-
-type Image = DateToString<TImage>
+import type { Image as TImage } from "../types"
 
 interface ImageCardProps {
-  image: Image
-  onClick?: (image: Image) => void
+  image: TImage
+  onClick?: (image: TImage) => void
   isSelected?: boolean
   isChecked?: boolean
   onCheckedChange?: (value: boolean) => void

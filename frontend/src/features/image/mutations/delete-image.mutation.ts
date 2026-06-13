@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import { apiClient } from "@/lib/api-client"
 import { toast } from "sonner"
 
-import { imageQueryKeys } from "../query"
+import { imageQueryKeys } from "../queries"
 
 export const useDeleteImage = () => {
   return useMutation({

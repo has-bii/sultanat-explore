@@ -5,15 +5,11 @@ import { ImageOff, ImagePlus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { DateToString } from "@/utils/date-to-string.type"
 
-import type { Image as TImage } from "backend/generated/prisma/client"
-
-import { GetImagesQuery, getImagesQueryOptions } from "../query"
+import { GetImagesQuery, getImagesQueryOptions } from "../queries"
 import { useUploadImagesDialogStore } from "../stores/upload-images-dialog.store"
+import type { Image as TImage } from "../types"
 import { ImageCard } from "./image-card"
-
-type Image = DateToString<TImage>
 
 interface Props {
   // Params
@@ -21,8 +17,8 @@ interface Props {
   onClearSearch: () => void
 
   // Actions
-  onImageClick?: (image: Image) => void
-  onImageCheckedChange?: (image: Image) => void
+  onImageClick?: (image: TImage) => void
+  onImageCheckedChange?: (image: TImage) => void
   selectedIds?: Set<string>
   selectedId?: string
 

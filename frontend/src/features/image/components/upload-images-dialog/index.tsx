@@ -1,3 +1,5 @@
+"use client"
+
 import { UploadIcon } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 

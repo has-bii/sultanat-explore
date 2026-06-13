@@ -4,7 +4,7 @@ import { apiClient } from "@/lib/api-client"
 import { InferRequestType } from "hono"
 import { toast } from "sonner"
 
-import { imageQueryKeys } from "../query"
+import { imageQueryKeys } from "../queries"
 
 const $updateImage = apiClient.api.images[":id"].$patch
 type UpdateImageInputType = InferRequestType<typeof $updateImage>["json"]

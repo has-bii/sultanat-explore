@@ -70,7 +70,7 @@ sultanat-explore/
 | Styling | Tailwind only | No CSS modules, no styled-components |
 | File naming | kebab-case | Next.js App Router convention |
 | State | React state / URL params + zustand for UI state | zustand for sheet, dialog, and other transient UI state. React state + URL params for persistent/route-level state |
-| Design system | Uber-inspired (DESIGN.md) | High-contrast achromatic, content-dense, pill buttons |
+| Design system | Uber-inspired (DESIGN.md) — public pages only; admin uses default shadcn | High-contrast achromatic, content-dense, pill buttons |
 | Fonts | DM Sans + Inter + Geist | DM Sans for headings, Inter/Geist for body |
 | Auth | Better Auth | Full-stack auth (Hono handler + React client + cookies) |
 | Database | Prisma 7 + Neon | Serverless Postgres, adapter-based PrismaClient |

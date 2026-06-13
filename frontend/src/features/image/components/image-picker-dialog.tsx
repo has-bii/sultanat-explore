@@ -17,7 +17,7 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import { blurhashToDataUrl } from "../lib/blurhash"
-import { getImageDetailQueryOptions } from "../query"
+import { getImageDetailQueryOptions } from "../queries"
 import { ImageGridSkeleton } from "./image-grid-skeleton"
 
 const ImageGrid = dynamic(() => import("./image-grid"), {

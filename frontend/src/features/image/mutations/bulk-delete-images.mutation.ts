@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import { apiClient } from "@/lib/api-client"
 import { toast } from "sonner"
 
-import { imageQueryKeys } from "../query"
+import { imageQueryKeys } from "../queries"
 
 export const useBulkDeleteImages = () => {
   return useMutation({
@@ -15,6 +15,9 @@ export const useBulkDeleteImages = () => {
     },
     onSuccess: (res) => {
       toast.success(res.message)
+    },
+    onError: (e) => {
+      toast.error(e.message)
     },
     onSettled: (_data, _error, _vars, _result, context) => {
       context.client.invalidateQueries({ queryKey: imageQueryKeys.all(), exact: false })

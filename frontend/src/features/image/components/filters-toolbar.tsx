@@ -33,10 +33,6 @@ export function ImageToolbar() {
     return () => clearTimeout(timeout)
   }, [methods, searchLocal])
 
-  useEffect(() => {
-    console.log("featured: ", query.featured)
-  }, [query.featured])
-
   return (
     <div className="flex items-center gap-2">
       <div className="flex-1">

@@ -5,6 +5,7 @@
 ### Routing
 
 - **Server Components by default.** Add `"use client"` only when needed (event handlers, hooks, browser APIs).
+- **Page components** (`features/<name>/pages/*.page.tsx`) should be **server components** that compose client children. Do not add `"use client"` unless the page itself uses hooks/browser APIs.
 - **Feature-based modules.** `frontend/src/features/<domain>/` owns components, hooks, types. Shared resources at `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/lib/`.
 - **Route groups.** Public pages in `(public)` route group (Navbar/Footer in its layout). Admin in `admin/` route group with dashboard layout (sidebar + header).
 - **Admin layout.** Dashboard pages wrapped in shadcn `SidebarProvider` + `AppSidebar` + `Header`/`MainPage` components.
@@ -15,7 +16,7 @@
 ```
 features/<name>/
 ├── components/       # Feature-specific components
-├── dto/              # Valibot schemas + inferred types
+├── dto/              # Valibot schemas + inferred types (only if no backend schema)
 │   └── <name>.schema.ts
 ├── hooks/            # Feature-specific hooks (if any)
 ├── mutations/        # TanStack Query mutation hooks
@@ -24,13 +25,13 @@ features/<name>/
 ├── pages/            # Page components (imported by app/page.tsx)
 ├── lib/              # Feature-specific utilities
 ├── types.ts          # Feature types
-├── index.ts          # Public barrel export
 └── data.ts           # Feature static data (if any)
 ```
 
 ### Design System
 
 - **Source:** `DESIGN.md` — Uber-inspired achromatic design system.
+- **Scope:** DESIGN.md governs **public-facing pages only**. Admin pages use default shadcn/ui styling — no custom overrides needed.
 - **Fonts:** Inter (body / UberMoveText substitute), DM Sans (headings / UberMove substitute). Loaded via `next/font/google`.
 - **Colors:** Strictly black + white + gray. Zero chroma in UI chrome. See `DESIGN.md §2`.
 - **Radius:** Pill buttons (999px), standard cards (8px), comfortable containers (12px). No in-between.
@@ -57,13 +58,18 @@ features/<name>/
 - One component per file. Co-locate variants in same file if small.
 - Barrel exports via `index.ts` in feature folders.
 - **Suspense components use `export default`** — never barrel-export. Components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery` must `export default` and be consumed via `next/dynamic`.
+- **Non-Suspense client components use named exports** — dialogs, sheets, toolbars, forms, etc. import directly, no `lazy()` or `dynamic()`.
 - Every suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
-- Consume pattern:
+- Consume pattern for Suspense components:
   ```ts
   const Component = dynamic(() => import("..."), {
     ssr: false,
     loading: ComponentSkeleton,
   })
+  ```
+- Consume pattern for non-Suspense client components:
+  ```ts
+  import { SomeDialog } from "@/features/x/components/some-dialog"
   ```
 
 ### Import Aliases
@@ -170,7 +176,7 @@ export function useXFilters() {
 ### Query Convention
 
 - Always use `queryOptions` for single-item fetches and `infiniteQueryOptions` for cursor-paginated lists.
-- Always place factories in `features/<name>/queries/`. Factories are plain functions returning options objects.
+- Always place factories in `features/<name>/queries/`. Keep a single `index.ts` when the module is small (2–3 queries + keys). Split into separate files only when a query's logic becomes complex.
 - `queryOptions` → use with `useQuery(...)`. `infiniteQueryOptions` → use with `useInfiniteQuery(...)`. Never mix.
 - Always create `infiniteQueryOptions` for cursor-based pagination response data.
 - Always check `json.success` from the unified response.
@@ -262,3 +268,9 @@ Rules:
 - Always use `ButtonLoading` for form submit buttons and async CTAs.
 - Keep `loadingLabel` in Bahasa Indonesia, descriptive of the action.
 - Button is automatically disabled while `isLoading` is true.
+
+### No console.log
+
+- Do not leave `console.log` / `console.warn` / `console.error` in production code.
+- Use `toast.error()` for user-facing errors and proper logging services for debug info.
+- If temporarily needed, use `// TODO:` comment to mark for removal.
