@@ -10,7 +10,9 @@
     "typecheck": "turbo typecheck",
     "format": "prettier --write .",
     "db:generate": "turbo db:generate",
-    "clean": "turbo clean && rm -rf node_modules/.cache/turbo"
+    "clean": "turbo clean && rm -rf node_modules/.cache/turbo",
+    "generate:dir": "node scripts/generate-codebase-dir.js",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",

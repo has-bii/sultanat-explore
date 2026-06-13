@@ -16,16 +16,13 @@
 ```
 features/<name>/
 ├── components/       # Feature-specific components
-├── dto/              # Valibot schemas + inferred types (only if no backend schema)
-│   └── <name>.schema.ts
 ├── hooks/            # Feature-specific hooks (if any)
 ├── mutations/        # TanStack Query mutation hooks
 ├── queries/          # queryOptions + infiniteQueryOptions factories
 ├── stores/           # Zustand UI stores
 ├── pages/            # Page components (imported by app/page.tsx)
 ├── lib/              # Feature-specific utilities
-├── types.ts          # Feature types
-└── data.ts           # Feature static data (if any)
+└── types.ts          # Feature types
 ```
 
 ### Design System
@@ -46,7 +43,8 @@ features/<name>/
 | Type | Pattern | Example |
 |---|---|---|
 | Components | `kebab-case.tsx` | `trip-card.tsx` |
-| Pages | Next.js convention | `page.tsx`, `layout.tsx`, `loading.tsx` |
+| Pages (route) | Next.js convention | `page.tsx`, `layout.tsx`, `loading.tsx` |
+| Pages (feature) | `<name>.page.tsx` | `destination-list.page.tsx` |
 | Hooks | `use-<name>.ts` | `use-trip-filter.ts` |
 | Utilities | `kebab-case.ts` | `format-currency.ts` |
 | Types | `kebab-case.ts` | `trip.ts` |
@@ -56,7 +54,6 @@ features/<name>/
 
 - File: `trip-card.tsx` → Export: `TripCard` (PascalCase)
 - One component per file. Co-locate variants in same file if small.
-- Barrel exports via `index.ts` in feature folders.
 - **Suspense components use `export default`** — never barrel-export. Components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery` must `export default` and be consumed via `next/dynamic`.
 - **Non-Suspense client components use named exports** — dialogs, sheets, toolbars, forms, etc. import directly, no `lazy()` or `dynamic()`.
 - Every suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
@@ -71,6 +68,14 @@ features/<name>/
   ```ts
   import { SomeDialog } from "@/features/x/components/some-dialog"
   ```
+
+#### Suspense Component Identification
+
+Any component that uses `useSuspenseQuery` or `useSuspenseInfiniteQuery` **must** follow the Suspense component pattern (export default + dynamic import + skeleton). To make these easy to identify:
+
+- Add a `// @suspense` comment at the top of the file.
+- The component name should clearly indicate data loading (e.g. `DestinationTable`, `ImageGrid`, `TripCardList`).
+- If a component refactors from `useQuery` to `useSuspenseQuery`, it must be converted to the Suspense pattern immediately — no exceptions.
 
 ### Import Aliases
 
@@ -112,31 +117,10 @@ Do NOT create store files from scratch for dialog/sheet state. Use the factory.
 - Use for **transient UI state only** (sheet open/close, dialog open/close, selected item IDs).
 - Never store server data in zustand — use React Query for that.
 - Place in `features/<name>/stores/<name>.store.ts`.
-- Export store via `create<State>()((set) => ({ ... }))`.
+- **Dialog/sheet stores:** Always use `createDialogStore<TMeta>()` or `createToggleStore()` factories — never write manual `create<State>()` stores for open/close patterns.
+- **Complex UI stores** (e.g. multi-field selection): Use `create<State>()((set) => ({ ... }))` only when the state shape doesn't fit the factory pattern.
 - Components subscribe via selector: `useStore((s) => s.onOpen)`.
-- Clean up on close: use `useEffect` to reset state when component closes.
-
-```ts
-// Pattern
-import { create } from "zustand"
-
-interface State {
-  open: boolean
-  selectedImageId: string | null
-  onOpen: (imageId: string) => void
-  onClose: () => void
-}
-
-export const useImageDetailSheetStore = create<State>()((set) => ({
-  open: false,
-  selectedImageId: null,
-  onOpen: (imageId) => set({ selectedImageId: imageId, open: true }),
-  onClose: () => {
-    set({ open: false })
-    setTimeout(() => set({ selectedImageId: null }), 300)
-  },
-}))
-```
+- Clean up on close: use `useEffect` or `setTimeout` in `onClose` to reset transient state after animation.
 
 ### List Filter Hooks
 
@@ -213,7 +197,7 @@ Rules:
 - Always destructure `res.json()`, check `json.success`, throw on failure.
 - Show toast in `onSuccess` (message from API) and `onError` (error message).
 - Invalidate related queries in `onSettled` via `context.client.invalidateQueries`.
-- Export a const query key (e.g. `export const UPLOAD_MUTATION_KEY = ["upload-images"] as const`).
+- Export a const **mutation key** for `useMutation` deduplication (e.g. `export const UPLOAD_MUTATION_KEY = ["upload-images"] as const`). Mutations also need the related **query key** from `queries/` for invalidation in `onSettled`.
 
 ### Form Convention
 

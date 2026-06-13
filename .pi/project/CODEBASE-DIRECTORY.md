@@ -21,14 +21,14 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── (public)/              # Public route group (Navbar + Footer)
     │   │   ├── layout.tsx         # Public layout (Navbar + Footer)
     │   │   ├── page.tsx           # Homepage
-    │   │   ├── open-trip/         # Open Trip listing + detail
-    │   │   ├── private-trip/      # Private Trip page
-    │   │   ├── umrah/             # Private Umrah page
-    │   │   ├── destinations/      # Destinations listing + detail
-    │   │   ├── artikel/           # Articles listing + detail
-    │   │   ├── about/             # About Us page
-    │   │   ├── faq/               # FAQ page
-    │   │   └── contact/           # Contact page
+    │   │   ├── open-trip/
+    │   │   ├── private-trip/
+    │   │   ├── umrah/
+    │   │   ├── destinations/
+    │   │   ├── artikel/
+    │   │   ├── about/
+    │   │   ├── faq/
+    │   │   ├── contact/
     │   │
     │   ├── admin/                 # Admin route group (no Navbar/Footer)
     │   │   ├── page.tsx           # Admin index (redirects to dashboard or login)
@@ -40,217 +40,355 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   └── reset-password/
     │   │   └── dashboard/         # Admin dashboard (SidebarProvider layout)
     │   │       ├── layout.tsx     # Admin dashboard layout (SidebarProvider + AppSidebar)
-    │   │       ├── page.tsx       # Dashboard home (cards placeholder)
-    │   │       └── destination/   # Destination management
-    │   │           ├── page.tsx               # Destination list (table + filters)
-    │   │           ├── create/
-    │   │           │   └── page.tsx           # Create destination form
-    │   │           └── [id]/
-    │   │               └── edit/
-    │   │                   └── page.tsx       # Edit destination (form + gallery)
-    │   │       ├── category/
-    │   │       │   └── page.tsx           # Destination category management
-    │   │       └── image/       # Image management
-    │   │           └── page.tsx               # Image grid + upload + detail sheet
+    │   │       ├── page.tsx       # Dashboard home
+    │   │       ├── destination/
+    │   │       ├── image/
     │   │
     │   └── api/
     │       └── [[...route]]/
     │           └── route.ts       # Hono catch-all API handler
     │
     ├── components/
-    │   ├── ui/                    # shadcn/ui primitives
-    │   │   ├── alert-dialog.tsx       # Confirm dialogs (delete, destructive actions)
-    │   │   ├── alert.tsx              # Alert banners (info, warning, error)
+    │   ├── ui/                    # shadcn/ui (auto-generated) + shadcn-originated custom primitives
+    │   │   ├── alert-dialog.tsx
+    │   │   ├── alert.tsx
     │   │   ├── avatar.tsx
-    │   │   ├── badge.tsx              # Status/tag badges
+    │   │   ├── badge.tsx
     │   │   ├── breadcrumb.tsx
     │   │   ├── button.tsx
-    │   │   ├── card.tsx               # Card layout (ImageCard, etc.)
+    │   │   ├── card.tsx
     │   │   ├── carousel.tsx
     │   │   ├── checkbox.tsx
     │   │   ├── collapsible.tsx
-    │   │   ├── dialog.tsx             # Modal dialogs (upload, picker)
+    │   │   ├── dialog.tsx
     │   │   ├── dropdown-menu.tsx
-    │   │   ├── empty.tsx              # Empty state placeholder
+    │   │   ├── empty.tsx
     │   │   ├── field.tsx
-    │   │   ├── hero-3.tsx
     │   │   ├── input-group.tsx
     │   │   ├── input.tsx
-    │   │   ├── item.tsx               # ItemGroup for stacked lists
+    │   │   ├── item.tsx
     │   │   ├── label.tsx
     │   │   ├── scroll-area.tsx
     │   │   ├── select.tsx
     │   │   ├── separator.tsx
     │   │   ├── sheet.tsx
-    │   │   ├── sidebar.tsx            # shadcn Sidebar (SidebarProvider, SidebarTrigger, etc.)
+    │   │   ├── sidebar.tsx
     │   │   ├── skeleton.tsx
     │   │   ├── sonner.tsx
     │   │   ├── switch.tsx
     │   │   ├── table.tsx
-    │   │   ├── testimonials-columns-1.tsx
     │   │   ├── textarea.tsx
-    │   │   └── tooltip.tsx
+    │   │   ├── tooltip.tsx
     │   │
-    │   ├── button-copy.tsx        # Copy-to-clipboard button with tooltip
-    │   ├── header.tsx             # Admin header with breadcrumb + sidebar trigger
-    │   ├── main-page.tsx          # Admin page layout wrapper
-    │   ├── navbar.tsx             # Public navbar
-    │   ├── footer.tsx             # Public footer
-    │   ├── cta-section.tsx        # Shared CTA section
-    │   ├── faq-section.tsx        # Shared FAQ accordion
-    │   ├── floating-whatsapp.tsx  # Floating WhatsApp button
+    │   ├── button-copy.tsx
+    │   ├── button-loading.tsx
+    │   ├── cta-section.tsx
+    │   ├── error-component.tsx
+    │   ├── faq-section.tsx
+    │   ├── floating-whatsapp.tsx
+    │   ├── footer.tsx
+    │   ├── header.tsx
+    │   ├── hero-3.tsx
+    │   ├── main-page.tsx
+    │   ├── navbar.tsx
+    │   ├── query-boundary.tsx
+    │   ├── table-skeleton.tsx
+    │   ├── testimonials-columns-1.tsx
     │   └── sidebar/               # Admin sidebar components
-    │       ├── app-sidebar.tsx    # Main sidebar with nav groups
-    │       ├── nav-main.tsx       # Nav items (Dashboard, Destinasi, etc.)
-    │       ├── nav-user.tsx       # User menu in sidebar footer
-    │       ├── nav-skeleton.tsx   # Loading skeleton for sidebar
-    │       └── sidebar-header-item.tsx
+    │       ├── app-sidebar.tsx
+    │       ├── nav-dashboard.tsx
+    │       ├── nav-main.tsx
+    │       ├── nav-skeleton.tsx
+    │       ├── nav-user-skeleton.tsx
+    │       ├── nav-user.tsx
+    │       ├── sidebar-header-item.tsx
     │
     ├── features/                  # Feature modules (domain-driven)
-    │   ├── about-us/              # Components, data, types
-    │   ├── articles/              # Components, data, types
-    │   ├── auth/                  # Login/forgot/reset forms + Valibot schemas
-    │   ├── contact/               # Components, data
-    │   ├── destinations/          # Components, data, types
-    │   ├── faq/                   # Components, data
-    │   ├── homepage/              # Homepage section components
-    │   ├── open-trip/             # Components, data, types
-    │   ├── private-trip/          # Components, data, types
-    │   ├── umrah/                 # Components, data, types
-    │   ├── destination/             # Destination CRUD (admin) — queries, mutations, hooks, components, pages
+    │   ├── about-us/
     │   │   ├── components/
-    │   │   │   ├── destination-form.tsx         # Create/edit form (name, tagline, description, image, highlights, featured)
-    │   │   │   ├── destination-table.tsx        # Infinite scroll table with filters
-    │   │   │   ├── destination-table-row.tsx    # Table row with inline featured toggle
-    │   │   │   ├── destination-table-skeleton.tsx
-    │   │   │   ├── destination-filters.tsx      # Search + sort + featured filter controls
-    │   │   │   ├── destination-skeleton.tsx
-    │   │   │   ├── delete-destination-dialog.tsx
-    │   │   │   └── destination-gallery/         # Gallery management sub-feature
-    │   │   │       ├── index.tsx               # Gallery card with save button, uses MultiImagePickerDialog
-    │   │   │       ├── gallery-view.tsx        # Sortable grid (native HTML5 DnD)
-    │   │   │       ├── draggable-item.tsx      # Wrapper for sortable items
-    │   │   │       └── image-card.tsx          # Gallery image with delete overlay
+    │   │   │   ├── about-hero.tsx
+    │   │   │   ├── company-story.tsx
+    │   │   │   ├── team-section.tsx
+    │   │   │   ├── testimonials-section.tsx
+    │   │   │   ├── values-section.tsx
+    │   │   │   ├── why-turkey.tsx
+    │   │   ├── data.ts
+    │   │   ├── types.ts
+    │   │   └── index.ts
+    │   ├── articles/
+    │   │   ├── components/
+    │   │   │   ├── article-body.tsx
+    │   │   │   ├── article-card.tsx
+    │   │   │   ├── article-grid.tsx
+    │   │   │   ├── article-hero.tsx
+    │   │   │   ├── author-card.tsx
+    │   │   │   ├── category-filter.tsx
+    │   │   │   ├── featured-article.tsx
+    │   │   │   ├── hero-section.tsx
+    │   │   │   ├── related-articles.tsx
+    │   │   ├── data.ts
+    │   │   ├── types.ts
+    │   │   └── index.ts
+    │   ├── attraction/
+    │   │   ├── components/
+    │   │   │   ├── attraction-dialog.tsx
+    │   │   │   ├── attraction-filters.tsx
+    │   │   │   ├── attraction-form-skeleton.tsx
+    │   │   │   ├── attraction-form.tsx
+    │   │   │   ├── attraction-table-row.tsx
+    │   │   │   ├── attraction-table-skeleton.tsx
+    │   │   │   ├── attraction-table.tsx
+    │   │   │   ├── delete-attraction-dialog.tsx
     │   │   ├── hooks/
-    │   │   │   ├── use-destination-filters.ts   # Nuqs URL state (search, sort, order, featured)
-    │   │   │   └── use-destination-form.ts      # TanStack Form + Valibot (createDestinationSchema)
+    │   │   │   ├── use-attraction-filters.ts
+    │   │   │   ├── use-attraction-form.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-attraction.mutation.ts
+    │   │   │   ├── delete-attraction.mutation.ts
+    │   │   │   ├── update-attraction.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── stores/
+    │   │   │   ├── attraction-dialog.store.ts
+    │   │   │   ├── delete-attraction-dialog.store.ts
+    │   ├── auth/
+    │   │   ├── components/
+    │   │   │   ├── forgot-password-form.tsx
+    │   │   │   ├── login-form.tsx
+    │   │   │   ├── reset-password-form.tsx
+    │   │   ├── dto/
+    │   │   │   ├── auth.schema.ts
+    │   │   ├── mutations/
+    │   │   │   ├── logout.mutation.ts
+    │   │   ├── query/
+    │   │   │   ├── index.ts
+    │   │   └── index.ts
+    │   ├── contact/
+    │   │   ├── components/
+    │   │   │   ├── contact-cards.tsx
+    │   │   │   ├── contact-hero.tsx
+    │   │   │   ├── faq-mini.tsx
+    │   │   │   ├── inquiry-form.tsx
+    │   │   │   ├── operating-hours.tsx
+    │   │   └── index.ts
+    │   ├── destination/
+    │   │   ├── components/
+    │   │   │   ├── delete-destination-dialog.tsx
+    │   │   │   ├── destination-filters.tsx
+    │   │   │   ├── destination-form.tsx
+    │   │   │   ├── destination-gallery/
+    │   │   │   │   ├── draggable-item.tsx
+    │   │   │   │   ├── gallery-view.tsx
+    │   │   │   │   ├── image-card.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── destination-skeleton.tsx
+    │   │   │   ├── destination-table-row.tsx
+    │   │   │   ├── destination-table-skeleton.tsx
+    │   │   │   ├── destination-table.tsx
+    │   │   │   ├── edit-destination-page-skeleton.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-destination-filters.ts
+    │   │   │   ├── use-destination-form.ts
     │   │   ├── mutations/
     │   │   │   ├── create-destination.mutation.ts
-    │   │   │   ├── update-destination.mutation.ts
     │   │   │   ├── delete-destination.mutation.ts
-    │   │   │   └── update-gallery.mutation.ts    # Sync gallery image IDs (PUT)
+    │   │   │   ├── update-destination.mutation.ts
+    │   │   │   ├── update-gallery.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
     │   │   ├── pages/
-    │   │   │   ├── destination-list.page.tsx     # Table + filters + empty states
-    │   │   │   ├── create-destination.page.tsx   # Card-wrapped form
-    │   │   │   └── edit-destination.page.tsx     # Form + gallery side-by-side, lazy delete dialog
-    │   │   └── queries/
-    │   │       └── index.ts                     # Query factory (infinite list, detail, gallery)
-    │   ├── image/                 # Image CRUD (admin) — queries, mutations, stores, components
+    │   │   │   ├── create-destination.page.tsx
+    │   │   │   ├── destination-list.page.tsx
+    │   │   │   ├── edit-destination.page.tsx
+    │   ├── destinations/
     │   │   ├── components/
-    │   │   │   ├── image-grid.tsx               # Infinite query grid (cursor paginated)
-    │   │   │   ├── image-grid-with-filters.tsx  # Grid + selection + filter wiring
+    │   │   │   ├── about-section.tsx
+    │   │   │   ├── destinations-grid.tsx
+    │   │   │   ├── detail-hero.tsx
+    │   │   │   ├── featured-attractions.tsx
+    │   │   │   ├── featured-destinations.tsx
+    │   │   │   ├── gallery-section.tsx
+    │   │   │   ├── hero-section.tsx
+    │   │   │   ├── other-destinations.tsx
+    │   │   │   ├── related-trips.tsx
+    │   │   │   ├── why-turkey.tsx
+    │   │   ├── data.ts
+    │   │   ├── types.ts
+    │   │   └── index.ts
+    │   ├── faq/
+    │   │   ├── components/
+    │   │   │   ├── faq-page-content.tsx
+    │   │   ├── data.ts
+    │   │   └── index.ts
+    │   ├── homepage/
+    │   │   ├── components/
+    │   │   │   ├── about-section.tsx
+    │   │   │   ├── destinations-section.tsx
+    │   │   │   ├── hero-section.tsx
+    │   │   │   ├── open-trip-section.tsx
+    │   │   │   ├── private-trip-section.tsx
+    │   │   │   ├── services-section.tsx
+    │   │   │   ├── testimonials-section.tsx
+    │   │   │   ├── umrah-section.tsx
+    │   │   ├── data.ts
+    │   │   └── index.ts
+    │   ├── image/
+    │   │   ├── components/
+    │   │   │   ├── bulk-delete-dialog.tsx
+    │   │   │   ├── filters-toolbar.tsx
+    │   │   │   ├── image-card.tsx
+    │   │   │   ├── image-delete-dialog.tsx
+    │   │   │   ├── image-detail-sheet/
+    │   │   │   │   ├── image-update-form-skeleton.tsx
+    │   │   │   │   ├── image-update-form.tsx
+    │   │   │   │   ├── index.tsx
     │   │   │   ├── image-grid-skeleton.tsx
-    │   │   │   ├── image-card.tsx               # Card with checkbox + click-to-detail
-    │   │   │   ├── image-picker-dialog.tsx      # Single image picker (form field)
-    │   │   │   ├── multi-image-picker-dialog.tsx # Multi image picker (gallery, max 10)
-    │   │   │   ├── filters-toolbar.tsx          # Search + featured + sort controls
-    │   │   │   ├── selection-bar.tsx            # Bulk selection count + clear + bulk delete
-    │   │   │   ├── bulk-delete-dialog.tsx       # Confirm bulk delete
-    │   │   │   ├── image-delete-dialog.tsx      # Confirm single delete
-    │   │   │   ├── image-error-message.tsx
-    │   │   │   ├── image-detail-sheet/          # Side sheet for image detail + edit
-    │   │   │   │   ├── index.tsx                # Sheet wrapper (mutation-aware close)
-    │   │   │   │   ├── image-update-form.tsx    # Alt text form + delete button
-    │   │   │   │   └── image-update-form-skeleton.tsx
-    │   │   │   └── upload-images-dialog/        # Multi-file upload dialog
-    │   │   │       ├── index.tsx                # Dialog with DnD + file list + submit
-    │   │   │       ├── dnd-images.tsx           # Drag-and-drop zone (native HTML5 DnD)
-    │   │   │       ├── file-list.tsx            # File list container + max 10 alert
-    │   │   │       └── file-list-item.tsx       # File preview (blob URL) + size + remove
+    │   │   │   ├── image-grid-with-filters.tsx
+    │   │   │   ├── image-grid.tsx
+    │   │   │   ├── image-picker-dialog.tsx
+    │   │   │   ├── multi-image-picker-dialog.tsx
+    │   │   │   ├── selection-bar.tsx
+    │   │   │   ├── upload-images-dialog/
+    │   │   │   │   ├── dnd-images.tsx
+    │   │   │   │   ├── file-list-item.tsx
+    │   │   │   │   ├── file-list.tsx
+    │   │   │   │   ├── index.tsx
     │   │   ├── hooks/
-    │   │   │   ├── use-image-filters.ts         # Nuqs URL state (search, sort, order, featured)
-    │   │   │   └── use-update-image-form.ts     # TanStack Form (updateImageSchema)
-    │   │   ├── lib/
-    │   │   │   └── blurhash.ts                  # blurhash → data URL (OffscreenCanvas)
+    │   │   │   ├── use-image-filters.ts
+    │   │   │   ├── use-update-image-form.ts
     │   │   ├── mutations/
-    │   │   │   ├── upload-images.mutation.ts
-    │   │   │   ├── delete-image.mutation.ts
     │   │   │   ├── bulk-delete-images.mutation.ts
-    │   │   │   └── update-image.mutation.ts
+    │   │   │   ├── delete-image.mutation.ts
+    │   │   │   ├── update-image.mutation.ts
+    │   │   │   ├── upload-images.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
     │   │   ├── pages/
-    │   │   │   └── images.page.tsx               # FiltersToolbar + dynamic grid + dialogs
-    │   │   ├── query/
-    │   │   │   └── index.ts                      # Query factory (infinite list, detail)
-    │   │   └── stores/
-    │   │       ├── image-detail-sheet.store.ts    # Zustand: open/close + selectedImageId
-    │   │       ├── image-selection.store.ts       # Zustand: Set<string> + toggle/clear
-    │   │       └── upload-images-dialog.store.ts  # Zustand: open/close
+    │   │   │   ├── images.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── image-detail-sheet.store.ts
+    │   │   │   ├── image-selection.store.ts
+    │   │   │   ├── upload-images-dialog.store.ts
+    │   │   ├── lib/
+    │   │   │   ├── blurhash.ts
+    │   │   ├── types.ts
+    │   ├── open-trip/
+    │   │   ├── components/
+    │   │   │   ├── how-it-works.tsx
+    │   │   │   ├── inclusion-section.tsx
+    │   │   │   ├── itinerary-section.tsx
+    │   │   │   ├── open-trip-explanation.tsx
+    │   │   │   ├── past-trip-gallery.tsx
+    │   │   │   ├── social-proof-bar.tsx
+    │   │   │   ├── trip-card.tsx
+    │   │   │   ├── trip-list.tsx
+    │   │   │   ├── why-us.tsx
+    │   │   ├── data.ts
+    │   │   ├── types.ts
+    │   │   └── index.ts
+    │   ├── private-trip/
+    │   │   ├── components/
+    │   │   │   ├── benefits-section.tsx
+    │   │   │   ├── comparison-table.tsx
+    │   │   │   ├── past-trip-gallery.tsx
+    │   │   │   ├── private-faq.tsx
+    │   │   │   ├── private-trip-explanation.tsx
+    │   │   │   ├── process-timeline.tsx
+    │   │   │   ├── sample-itinerary.tsx
+    │   │   │   ├── social-proof-bar.tsx
+    │   │   │   ├── testimonials-section.tsx
+    │   │   │   ├── travel-advisor.tsx
+    │   │   │   ├── trip-builder-wizard.tsx
+    │   │   ├── data.ts
+    │   │   ├── types.ts
+    │   │   └── index.ts
+    │   ├── umrah/
+    │   │   ├── components/
+    │   │   │   ├── gallery.tsx
+    │   │   │   ├── inclusion-grid.tsx
+    │   │   │   ├── itinerary-preview.tsx
+    │   │   │   ├── package-cards.tsx
+    │   │   │   ├── process-timeline.tsx
+    │   │   │   ├── social-proof-bar.tsx
+    │   │   │   ├── testimonials.tsx
+    │   │   │   ├── travel-advisor.tsx
+    │   │   │   ├── umrah-explanation.tsx
+    │   │   │   ├── umrah-faq.tsx
+    │   │   ├── data.ts
+    │   │   ├── types.ts
+    │   │   └── index.ts
     │
     ├── providers/                 # React provider wrappers
-    │   ├── root.tsx               # RootProviders (TooltipProvider + QueryProvider + Toaster)
-    │   └── query-provider.tsx     # React Query provider (TanStack Query)
+    │   ├── query-provider.tsx  # React Query provider (TanStack Query)
+    │   ├── root.tsx  # RootProviders (TooltipProvider + QueryProvider + Toaster)
     │
     ├── hooks/                     # Shared custom hooks
-    │   └── use-mobile.ts          # Mobile detection hook (used by sidebar)
+    │   ├── create-dialog-store.ts  # Zustand dialog/toggle store factory
+    │   ├── use-list-filters.ts  # Shared list filter hooks (nuqs)
+    │   ├── use-mobile.ts  # Mobile detection hook (used by sidebar)
     │
     ├── lib/                       # Utilities
-    │   ├── utils.ts               # cn() helper (clsx + tailwind-merge)
-    │   ├── auth-client.ts         # Better Auth browser client
-    │   ├── form.tsx               # useAppForm (TanStack Form factory)
-    │   └── query-client.ts        # React Query client instance
+    │   ├── api-client.ts  # Hono RPC client
+    │   ├── auth-client.ts  # Better Auth browser client
+    │   ├── form.tsx  # useAppForm (TanStack Form factory)
+    │   ├── query-client.ts  # React Query client instance
+    │   ├── query-schema-parser.ts  # URL query schema parser
+    │   ├── utils.ts  # cn() helper (clsx + tailwind-merge)
+    │
+    ├── utils/                     # Shared utility functions
+    │   ├── date-to-string.type.ts  # Date-to-string type helper
+    │   ├── format-file-size.ts  # File size formatter
     │
     ├── data/                      # Static data (testimonials only)
     ├── types/                     # Shared TypeScript types (empty — types in features)
     └── proxy.ts                   # Next.js auth middleware (route protection)
 
 backend/                           # Workspace package: API + DB + Auth
-├── package.json                   # Dependencies: hono, better-auth, prisma, resend, sharp, blurhash, @aws-sdk/client-s3
+├── package.json
 ├── tsconfig.json                  # Extends root tsconfig.base.json
 ├── prisma.config.ts               # Prisma 7 config (schema path, datasource URL, seed)
-├── .env                           # Env vars (DATABASE_URL, RESEND_API_KEY, R2_*, etc.)
+├── .env                           # Env vars
 │
 ├── prisma/
-│   ├── schema.prisma              # Models: User, Session, Account, Verification
-│   │                             #   Image (url, alt, fileSize, blurHash), Destination, DestinationImage,
-│   │                             #   Attraction
-│   ├── migrations/                # Migration files (auth + destination + image fields)
+│   ├── schema.prisma              # Prisma schema models
+│   ├── migrations/                # Migration files
 │   └── seed.ts                    # Admin user seed
 │
 └── src/
     ├── app.ts                     # Hono app (CORS, auth, route registration)
     ├── app.type.ts                # AppContext (nullable) + AppAuthContext (guaranteed)
     ├── middlewares/
-    │   ├── require-auth.ts        # Auth guard middleware (narrows context)
-    │   └── validator-wrapper.ts   # sValidator wrapper (auto HTTPException)
+    │   ├── require-auth.ts
+    │   ├── validator-wrapper.ts
     ├── schemas/
-    │   ├── param.schema.ts        # Shared param schemas (paramIdSchema)
-    │   └── query.schema.ts        # Shared query schemas (querySchema)
+    │   ├── param.schema.ts  # Shared param schemas (paramIdSchema)
+    │   ├── query.schema.ts  # Shared query schemas (querySchema)
     ├── utils/
-    │   └── response.ts            # successResponse() / errorResponse() helpers
+    │   └── response.ts  # successResponse() / errorResponse() helpers
     ├── lib/
-    │   ├── db.ts                  # PrismaClient with Neon adapter
-    │   ├── auth.ts                # Better Auth config (email+password, resend)
-    │   ├── resend.ts              # Resend email client
-    │   ├── r2.ts                  # S3Client + upload/delete wrappers
-    │   └── image-processing.ts    # Sharp resize + blurHash pipeline
+    │   ├── auth.ts  # Better Auth config (email+password, resend)
+    │   ├── db.ts  # PrismaClient with Neon adapter
+    │   ├── image-processing.ts  # Sharp resize + blurHash pipeline
+    │   ├── logger.ts  # Server logger
+    │   ├── paginate.ts  # Cursor pagination helper
+    │   ├── prisma-fragments.ts  # Prisma select fragments
+    │   ├── r2.ts  # S3Client + upload/delete wrappers
+    │   ├── resend.ts  # Resend email client
+    │   ├── slug.ts  # Slug generation utility
     └── modules/
-        ├── image/
-        │   ├── image.route.ts     # Hono routes (GET public, mutations auth)
-        │   ├── image.service.ts   # Business logic (R2 + DB)
-        │   └── image.schema.ts   # Valibot schemas (upload, update)
-        ├── destination/
-        │   ├── destination.route.ts    # CRUD + gallery endpoints (GET public, mutations auth)
-        │   ├── destination.service.ts  # Business logic (DB + slug auto-gen, cascade delete)
-        │   └── destination.schema.ts  # Valibot schemas (create, update, query, gallery)
         ├── attraction/
-        │   ├── attraction.route.ts    # CRUD, nested under /destinations/:destinationId/attractions
-        │   ├── attraction.service.ts  # Business logic (DB, destination-scoped)
-        │   └── attraction.schema.ts  # Valibot schemas (create, update, query)
-
-public/                            # Static assets (root level, served by Next.js)
-
-.github/workflows/
-└── migrate.yml                    # CI: Prisma migrate deploy + seed on push to main
+        │   ├── attraction.route.ts
+        │   ├── attraction.schema.ts
+        │   ├── attraction.service.ts
+        ├── destination/
+        │   ├── destination.route.ts
+        │   ├── destination.schema.ts
+        │   ├── destination.service.ts
+        ├── image/
+        │   ├── image.route.ts
+        │   ├── image.schema.ts
+        │   ├── image.service.ts
+```
 
 ## Monorepo Structure
 
@@ -262,7 +400,8 @@ public/                            # Static assets (root level, served by Next.j
 
 ## Rules
 
-- `components/ui/` — **shadcn only.** Auto-generated. Don't hand-edit.
+- `components/ui/` — shadcn/ui registry components + shadcn-originated custom primitives (empty, field, input-group, item). Don't hand-edit core shadcn files.
+- `components/` (root level) — shared custom components (hero-3, testimonials-columns-1, etc.). Not from shadcn, reused across 2+ features.
 - `features/<x>/` — feature owns its stuff. Import from features, not the other way.
 - `data/` — static TS data until CMS replaces it.
 - Pages in `app/` import from `features/` and `components/`. Pages stay thin.
