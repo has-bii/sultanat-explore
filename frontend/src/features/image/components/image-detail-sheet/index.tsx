@@ -21,7 +21,7 @@ const ImageUpdateForm = dynamic(() => import("./image-update-form"), {
 })
 
 export function ImageSheet() {
-  const { open, onClose, selectedImageId } = useImageDetailSheetStore()
+  const { open, onClose, meta: selectedImageId } = useImageDetailSheetStore()
 
   const mutation = useMutationState({
     filters: {

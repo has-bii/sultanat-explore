@@ -17,8 +17,7 @@ import { useDeleteAttraction } from "../mutations/delete-attraction.mutation"
 import { useDeleteAttractionDialogStore } from "../stores/delete-attraction-dialog.store"
 
 export function DeleteAttractionDialog() {
-  const { open, onClose, selectedAttractionId, selectedAttractionName } =
-    useDeleteAttractionDialogStore()
+  const { open, onClose, meta } = useDeleteAttractionDialogStore()
 
   const deleteMutation = useDeleteAttraction()
 
@@ -28,8 +27,8 @@ export function DeleteAttractionDialog() {
   }
 
   const handleDelete = () => {
-    if (!selectedAttractionId) return
-    deleteMutation.mutate(selectedAttractionId, {
+    if (!meta?.id) return
+    deleteMutation.mutate(meta.id, {
       onSuccess: () => onClose(),
     })
   }
@@ -40,7 +39,7 @@ export function DeleteAttractionDialog() {
         <DialogHeader>
           <DialogTitle>Hapus Atraksi</DialogTitle>
           <DialogDescription>
-            Hapus atraksi &ldquo;{selectedAttractionName ?? ""}&rdquo;? Tindakan ini tidak dapat
+            Hapus atraksi &ldquo;{meta?.name ?? ""}&rdquo;? Tindakan ini tidak dapat
             dibatalkan.
           </DialogDescription>
         </DialogHeader>

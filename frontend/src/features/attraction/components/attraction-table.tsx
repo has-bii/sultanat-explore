@@ -100,7 +100,7 @@ export default function AttractionTable({ destinationId }: Props) {
                 key={attraction.id}
                 attraction={attraction}
                 onUpdate={(id) => openDialog(id)}
-                onDelete={(id, name) => openDeleteDialog(id, name)}
+                onDelete={(id, name) => openDeleteDialog({ id, name })}
               />
             ))}
           </TableBody>

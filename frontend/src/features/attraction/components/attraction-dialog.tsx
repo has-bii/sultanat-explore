@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function AttractionDialog({ destinationId }: Props) {
-  const { open, onClose, selectedAttractionId: attractionId } = useAttractionDialogStore()
+  const { open, onClose, meta: attractionId } = useAttractionDialogStore()
 
   const pendingMutations = useMutationState({
     filters: {

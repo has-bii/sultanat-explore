@@ -1,40 +1,18 @@
 "use client"
 
-import { parseAsString, parseAsStringLiteral, useQueryStates } from "nuqs"
+import { parseAsStringLiteral } from "nuqs"
+import { useQueryStates } from "nuqs"
+
+import { createFilterMethods, featuredParser, filterParsers } from "@/hooks/use-list-filters"
 
 export function useImageFilters() {
   const [query, setQuery] = useQueryStates({
-    search: parseAsString.withDefault(""),
-    order: parseAsStringLiteral(["asc", "desc"]).withDefault("desc"),
-    sort: parseAsStringLiteral(["createdAt"]).withDefault("createdAt"),
-    featured: parseAsStringLiteral(["true", "false"]),
+    ...filterParsers,
+    ...featuredParser,
+    sort: parseAsStringLiteral(["createdAt"] as const).withDefault("createdAt"),
   })
 
-  const onSearchChange = (search: string) => {
-    setQuery((prev) => ({ ...prev, search }))
-  }
+  const methods = createFilterMethods(setQuery, ["createdAt"])
 
-  const onSortOrderChange = (value: string) => {
-    const [sort, order] = value.split("-")
-
-    if (sort !== "createdAt") return
-    if (order !== "asc" && order !== "desc") return
-
-    setQuery((prev) => ({ ...prev, sort, order }))
-  }
-
-  const onFeaturedChange = (featured: "true" | "false" | null) => {
-    setQuery((prev) => ({ ...prev, featured }))
-  }
-
-  const methods = {
-    onSearchChange,
-    onFeaturedChange,
-    onSortOrderChange,
-  }
-
-  return {
-    query,
-    methods,
-  }
+  return { query, methods }
 }
