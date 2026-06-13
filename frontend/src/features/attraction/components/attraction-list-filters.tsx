@@ -1,5 +1,6 @@
 "use client"
 
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { SearchIcon, X } from "lucide-react"
 import { Suspense, useEffect, useState } from "react"
 
@@ -16,8 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
 import { getDestinationsQueryOptions } from "@/features/destination/queries"
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 
 import { useAttractionListFilters } from "../hooks/use-attraction-list-filters"
 
@@ -54,11 +55,8 @@ export function AttractionListFilters() {
       </InputGroup>
 
       {/* Destination filter */}
-      <Suspense fallback={<div className="h-9 w-48 animate-pulse rounded-md bg-muted" />}>
-        <DestinationSelect
-          value={query.destinationId}
-          onChange={methods.onDestinationChange}
-        />
+      <Suspense fallback={<Skeleton className="h-9 w-48" />}>
+        <DestinationSelect value={query.destinationId} onChange={methods.onDestinationChange} />
       </Suspense>
 
       {/* Sort */}

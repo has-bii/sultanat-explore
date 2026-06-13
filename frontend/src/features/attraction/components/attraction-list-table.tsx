@@ -1,4 +1,3 @@
-// @suspense
 "use client"
 
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
@@ -49,7 +48,9 @@ export default function AttractionListTable() {
             <MapPinOff />
           </EmptyMedia>
           <EmptyTitle>Tidak ada hasil</EmptyTitle>
-          <EmptyDescription>Tidak ditemukan atraksi yang cocok dengan filter Anda.</EmptyDescription>
+          <EmptyDescription>
+            Tidak ditemukan atraksi yang cocok dengan filter Anda.
+          </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <ButtonLoading
