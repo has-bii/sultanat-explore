@@ -14,11 +14,11 @@ const include = {
   image: { select: imageCardSelect },
 } as const
 
-export async function listAttractions(destinationId: string, params: AttractionQueryOutput) {
-  const { cursor, limit, search, sort, order } = params
+export async function listAttractions(params: AttractionQueryOutput) {
+  const { cursor, limit, search, sort, order, destinationId } = params
 
   const where = {
-    destinationId,
+    ...(destinationId ? { destinationId } : {}),
     ...(search ? { name: { startsWith: search, mode: "insensitive" as const } } : {}),
   }
 
@@ -32,18 +32,18 @@ export async function listAttractions(destinationId: string, params: AttractionQ
   return toPage(attractions, limit)
 }
 
-export async function getAttraction(destinationId: string, id: string) {
+export async function getAttraction(id: string) {
   const attraction = await db.attraction.findFirst({
-    where: { id, destinationId },
+    where: { id },
     include,
   })
   if (!attraction) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
   return attraction
 }
 
-export async function createAttraction(destinationId: string, input: CreateAttractionInput) {
+export async function createAttraction(input: CreateAttractionInput) {
   const destination = await db.destination.findUnique({
-    where: { id: destinationId },
+    where: { id: input.destinationId },
   })
   if (!destination) throw new HTTPException(404, { message: "Destinasi tidak ditemukan" })
 
@@ -54,19 +54,15 @@ export async function createAttraction(destinationId: string, input: CreateAttra
       name: input.name,
       description: input.description,
       imageId: input.imageId,
-      destinationId,
+      destinationId: input.destinationId,
     },
     include,
   })
 }
 
-export async function updateAttraction(
-  destinationId: string,
-  id: string,
-  input: UpdateAttractionInput,
-) {
+export async function updateAttraction(id: string, input: UpdateAttractionInput) {
   const existing = await db.attraction.findFirst({
-    where: { id, destinationId },
+    where: { id },
   })
   if (!existing) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
 
@@ -85,9 +81,9 @@ export async function updateAttraction(
   })
 }
 
-export async function deleteAttraction(destinationId: string, id: string) {
+export async function deleteAttraction(id: string) {
   const existing = await db.attraction.findFirst({
-    where: { id, destinationId },
+    where: { id },
   })
   if (!existing) throw new HTTPException(404, { message: "Atraksi tidak ditemukan" })
 

@@ -56,7 +56,7 @@ app.use("*", async (c, next) => {
 const routes = app
   .route("/images", imageRoute)
   .route("/destinations", destinationRoute)
-  .route("/destinations/:destinationId/attractions", attractionRoute)
+  .route("/attractions", attractionRoute)
 
 export default routes
 export type AppType = ApplyGlobalResponse<

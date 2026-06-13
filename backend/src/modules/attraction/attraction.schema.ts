@@ -3,6 +3,7 @@ import * as v from "valibot"
 import { cursorPaginationSchema } from "backend/schemas/query.schema"
 
 export const createAttractionSchema = v.object({
+  destinationId: v.pipe(v.string(), v.uuid("ID destinasi tidak valid")),
   name: v.pipe(
     v.string(),
     v.minLength(1, "Nama harus diisi"),
@@ -39,15 +40,10 @@ export const attractionQuerySchema = v.object({
   search: v.fallback(v.optional(v.string()), undefined),
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
   order: v.optional(v.picklist(["asc", "desc"]), "desc"),
-})
-
-// Param schemas — previously inline in route file
-export const attractionListParamSchema = v.object({
-  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
+  destinationId: v.optional(v.pipe(v.string(), v.uuid("ID destinasi tidak valid"))),
 })
 
 export const attractionIdParamSchema = v.object({
-  destinationId: v.pipe(v.string(), v.uuid("Invalid destination id")),
   id: v.pipe(v.string(), v.uuid("Invalid id")),
 })
 
