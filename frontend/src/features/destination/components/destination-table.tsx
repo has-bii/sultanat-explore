@@ -54,10 +54,10 @@ export default function DestinationTable() {
             <TableRow>
               <TableHead className="pl-4">Destinasi</TableHead>
               <TableHead>Tagline</TableHead>
-              <TableHead className="text-center">Featured</TableHead>
+              <TableHead className="text-center">Unggulan</TableHead>
               <TableHead className="text-center">Atraksi</TableHead>
               <TableHead className="text-center">Galeri</TableHead>
-              <TableHead className="sr-only">Actions</TableHead>
+              <TableHead className="sr-only">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -74,7 +74,7 @@ export default function DestinationTable() {
           onClick={() => fetchNextPage()}
           isLoading={isFetchingNextPage}
         >
-          Load more
+          Muat lagi
         </ButtonLoading>
       )}
     </div>
