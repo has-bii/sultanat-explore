@@ -33,6 +33,10 @@ const navMain = [
         title: "Overview",
         url: "/admin/dashboard/destination",
       },
+      {
+        title: "Atraksi",
+        url: "/admin/dashboard/destination/attraction",
+      },
     ],
   },
   {

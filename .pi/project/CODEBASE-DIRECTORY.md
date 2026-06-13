@@ -135,6 +135,9 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── attraction-filters.tsx
     │   │   │   ├── attraction-form-skeleton.tsx
     │   │   │   ├── attraction-form.tsx
+    │   │   │   ├── attraction-list-filters.tsx
+    │   │   │   ├── attraction-list-table-skeleton.tsx
+    │   │   │   ├── attraction-list-table.tsx
     │   │   │   ├── attraction-table-row.tsx
     │   │   │   ├── attraction-table-skeleton.tsx
     │   │   │   ├── attraction-table.tsx
@@ -142,12 +145,15 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── hooks/
     │   │   │   ├── use-attraction-filters.ts
     │   │   │   ├── use-attraction-form.ts
+    │   │   │   ├── use-attraction-list-filters.ts
     │   │   ├── mutations/
     │   │   │   ├── create-attraction.mutation.ts
     │   │   │   ├── delete-attraction.mutation.ts
     │   │   │   ├── update-attraction.mutation.ts
     │   │   ├── queries/
     │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── attraction-list.page.tsx
     │   │   ├── stores/
     │   │   │   ├── attraction-dialog.store.ts
     │   │   │   ├── delete-attraction-dialog.store.ts
