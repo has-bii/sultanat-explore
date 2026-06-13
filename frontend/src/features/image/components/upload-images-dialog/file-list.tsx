@@ -10,7 +10,7 @@ type Props = {
   onRemove: (fileName: string) => void
 }
 
-export default function FileList({ files, onRemove }: Props) {
+export function FileList({ files, onRemove }: Props) {
   return (
     <>
       {/* Alert */}

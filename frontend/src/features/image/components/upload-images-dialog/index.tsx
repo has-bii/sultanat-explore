@@ -18,7 +18,7 @@ import {
 import { useUploadImages } from "../../mutations/upload-images.mutation"
 import { useUploadImagesDialogStore } from "../../stores/upload-images-dialog.store"
 import { DndImages } from "./dnd-images"
-import FileList from "./file-list"
+import { FileList } from "./file-list"
 
 export function UploadImagesDialog() {
   const { open, onOpenChange } = useUploadImagesDialogStore()

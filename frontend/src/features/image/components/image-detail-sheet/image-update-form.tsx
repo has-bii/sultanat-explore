@@ -11,7 +11,7 @@ import Image from "next/image"
 import { useUpdateImageForm } from "../../hooks/use-update-image-form"
 import { blurhashToDataUrl } from "../../lib/blurhash"
 import { useUpdateImage } from "../../mutations/update-image.mutation"
-import { getImageDetailQueryOptions } from "../../query"
+import { getImageDetailQueryOptions } from "../../queries"
 import { ImageDeleteDialog } from "../image-delete-dialog"
 
 type Props = {
