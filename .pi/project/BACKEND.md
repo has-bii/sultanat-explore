@@ -1,16 +1,8 @@
-# Backend Patterns
+# Backend
 
 ## Architecture
 
-- **Backend modules.** `backend/src/modules/<domain>/` owns route, service, schema. Shared middleware at `backend/src/middlewares/`, shared schemas at `backend/src/schemas/`.
-- **Unified API response format.** All endpoints return `{ success: true, data, message }` for success, `{ success: false, data: null, message, error }` for errors. Use `successResponse()` and `errorResponse()` from `backend/src/utils/response.ts`.
-- **Valibot validation via sValidator.** Use `sValidator(target, schema)` wrapper from `@hono/standard-validator` — auto-throws HTTPException(400) on failure. Never manual `safeParse` in routes.
-- **Auth split.** `AppContext` (nullable user/session) for public routes. `AppAuthContext` (guaranteed) for protected routes. `requireAuth` middleware narrows context type.
-- **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
-- **API catch-all.** All API routes handled by `frontend/src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
-- **Route protection.** `frontend/src/proxy.ts` (Next.js config-based middleware) checks Better Auth session cookie before admin routes.
-
-## Module Structure
+### Module Structure
 
 ```
 backend/src/
@@ -24,7 +16,38 @@ backend/src/
 └── lib/                       # Shared utilities (db, auth, r2, etc.)
 ```
 
-## Route File
+### Key Architectural Decisions
+
+- **Backend modules.** `backend/src/modules/<domain>/` owns route, service, schema. Shared middleware at `backend/src/middlewares/`, shared schemas at `backend/src/schemas/`.
+- **Auth split.** `AppContext` (nullable user/session) for public routes. `AppAuthContext` (guaranteed) for protected routes. `requireAuth` middleware narrows context type.
+- **Workspace backend.** `backend/` is a local workspace package with its own `package.json`, Prisma schema, Hono app, auth config, and Resend integration.
+- **API catch-all.** All API routes handled by `frontend/src/app/api/[[...route]]/route.ts` which imports the Hono app from `backend/`.
+- **Route protection.** `frontend/src/proxy.ts` (Next.js config-based middleware) checks Better Auth session cookie before admin routes.
+
+## Conventions
+
+### File Naming
+
+| Type | Pattern | Example |
+|---|---|---|
+| Route files | `<domain>.route.ts` | `image.route.ts` |
+| Service files | `<domain>.service.ts` | `image.service.ts` |
+| Schema files | `<domain>.schema.ts` | `image.schema.ts` |
+| Middleware | `kebab-case.ts` | `require-auth.ts` |
+| Shared schemas | `kebab-case.ts` | `pagination.ts` |
+| Utilities | `kebab-case.ts` | `response.ts` |
+
+### Import Aliases
+
+- `backend/*` → `backend/src/*` (workspace package, accessible from frontend via monorepo workspace)
+
+### Schema Convention
+
+- Export Valibot schemas + inferred types (`v.InferOutput<typeof Schema>`).
+- Named `<Name>Schema` (PascalCase).
+- Import from `valibot` (as `import * as v from "valibot"`).
+
+### Route Convention
 
 - Chain routes with `.get()`, `.post()`, etc.
 - Place public routes before `requireAuth`, auth-required routes after.
@@ -32,19 +55,13 @@ backend/src/
 - Wrap success responses with `successResponse(data, msg)` from `backend/utils/response` — `c.json(successResponse(data, msg), status)`.
 - `delete` routes return `c.json(successResponse(null, "..."), 200)` — 204 is avoided to keep the response envelope uniform.
 
-## Service File
+### Service Convention
 
 - One exported function per operation (uploadImage, listImages, etc.)
 - Throw `HTTPException` with specific status + message.
 - Keep R2/external ops and DB ops in same function (service owns full flow).
 
-## Schema File
-
-- Export Valibot schemas + inferred types (`v.InferOutput<typeof Schema>`).
-- Named `<Name>Schema` (PascalCase).
-- Import from `valibot` (as `import * as v from "valibot"`).
-
-## API Response Format
+### API Response Format
 
 All endpoints must return one of two shapes:
 
@@ -63,3 +80,16 @@ All endpoints must return one of two shapes:
 - Every route handler returns data via `successResponse()` — never raw `c.json(data)`.
 - `message` should be descriptive Indonesian (e.g. `"Foto berhasil dihapus"`).
 - `error` field in error responses carries the technical cause or a user-safe string when cause is internal.
+
+### Validation Convention
+
+- **Validation lib: Valibot.** Do not use Zod.
+- Use `sValidator(target, schema)` wrapper from `@hono/standard-validator` — auto-throws HTTPException(400) on failure.
+- Never manual `safeParse` in routes.
+
+### Auth Convention
+
+- `AppContext` (nullable user/session) for public routes.
+- `AppAuthContext` (guaranteed) for protected routes.
+- `requireAuth` middleware narrows context type from `AppContext` → `AppAuthContext`.
+- Session managed via Better Auth cookies.

@@ -1,6 +1,8 @@
-# Frontend Patterns
+# Frontend
 
-## Routing
+## Architecture
+
+### Routing
 
 - **Server Components by default.** Add `"use client"` only when needed (event handlers, hooks, browser APIs).
 - **Feature-based modules.** `frontend/src/features/<domain>/` owns components, hooks, types. Shared resources at `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/lib/`.
@@ -8,7 +10,7 @@
 - **Admin layout.** Dashboard pages wrapped in shadcn `SidebarProvider` + `AppSidebar` + `Header`/`MainPage` components.
 - **No CMS yet.** Content still static/hardcoded for public pages. CMS decision deferred until admin modules built.
 
-## Feature Module Structure
+### Feature Module Structure
 
 ```
 features/<name>/
@@ -26,146 +28,80 @@ features/<name>/
 └── data.ts           # Feature static data (if any)
 ```
 
-## DTO Convention
+### Design System
 
-- Schemas in `dto/<name>.schema.ts`, named `<Name>Schema` (PascalCase).
-- Inferred types exported alongside: `export type <Name>Input = v.InferOutput<typeof <Name>Schema>`.
-- Components import schemas from `../dto/<name>.schema` — no Valibot in component files.
-- One schema file per feature. Split to multiple only if schemas >150 lines.
-- **Validation lib: Valibot.** Do not use Zod.
+- **Source:** `DESIGN.md` — Uber-inspired achromatic design system.
+- **Fonts:** Inter (body / UberMoveText substitute), DM Sans (headings / UberMove substitute). Loaded via `next/font/google`.
+- **Colors:** Strictly black + white + gray. Zero chroma in UI chrome. See `DESIGN.md §2`.
+- **Radius:** Pill buttons (999px), standard cards (8px), comfortable containers (12px). No in-between.
+- **Shadows:** `rgba(0,0,0,0.12)`–`0.16` only. Whisper-subtle. No colored shadows.
+- **Typography:** Custom utilities (`text-display` thru `text-micro`) map to DESIGN.md §3 scale.
+- **Components:** shadcn/ui overridden to match — full-pill buttons, achromatic palette, minimal borders.
 
-## Form Convention (TanStack Form)
+## Conventions
 
-- Use `useAppForm()` from `@/lib/form` — never raw `useForm` from TanStack.
-- `useAppForm()` exposes `form.AppField`, `form.AppForm`, `field.TextField`, `form.SubmitButton`.
-- Valibot validators passed via `validators: { onSubmit: <ValibotSchema> }` — TanStack Form supports Standard Schema natively.
-- Do NOT use `@tanstack/valibot-form-adapter` — deprecated. Pass Valibot schema directly.
-- Form error display via local `formError` state (set in `onSubmit` handler).
-- Reference: `src/features/destination/hooks/use-destination-form.ts`.
+### File Naming
 
-## Query Factory Convention
+| Type | Pattern | Example |
+|---|---|---|
+| Components | `kebab-case.tsx` | `trip-card.tsx` |
+| Pages | Next.js convention | `page.tsx`, `layout.tsx`, `loading.tsx` |
+| Hooks | `use-<name>.ts` | `use-trip-filter.ts` |
+| Utilities | `kebab-case.ts` | `format-currency.ts` |
+| Types | `kebab-case.ts` | `trip.ts` |
+| Data files | `kebab-case.ts` or `.json` | `destinations.ts` |
 
-Always use `queryOptions` for single-item fetches and `infiniteQueryOptions` for cursor-paginated lists. Always place factories in `features/<name>/queries/`. Factories are plain functions returning options objects.
+### Component Naming
 
-```ts
-// Pattern — single item (useQuery)
-export const IMAGE_QUERY_KEY = "image" as const
-
-export const getImageDetailQueryOptions = (id: string) => {
-  return queryOptions({
-    queryKey: [IMAGE_QUERY_KEY, id],
-    queryFn: async () => {
-      const res = await $getImageDetail({ param: { id } })
-      const json = await res.json()
-      if (!json.success) throw new Error(json.message)
-      return json.data
-    },
+- File: `trip-card.tsx` → Export: `TripCard` (PascalCase)
+- One component per file. Co-locate variants in same file if small.
+- Barrel exports via `index.ts` in feature folders.
+- **Suspense components use `export default`** — never barrel-export. Components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery` must `export default` and be consumed via `next/dynamic`.
+- Every suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
+- Consume pattern:
+  ```ts
+  const Component = dynamic(() => import("..."), {
+    ssr: false,
+    loading: ComponentSkeleton,
   })
-}
+  ```
 
-// Pattern — cursor-paginated list (useInfiniteQuery)
-export const IMAGES_QUERY_KEY = "images" as const
+### Import Aliases
 
-export const getImagesQueryOptions = (query: GetImagesQuery = {}) => {
-  return infiniteQueryOptions({
-    queryKey: [IMAGES_QUERY_KEY, query],
-    queryFn: async ({ pageParam }) => {
-      const res = await $getImages({ query: { ...query, cursor: pageParam } })
-      const json = await res.json()
-      if (!json.success) throw new Error(json.message)
-      return json.data
-    },
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-    initialPageParam: undefined as string | undefined,
-  })
-}
-```
+- `@/components` → `frontend/src/components`
+- `@/features` → `frontend/src/features`
+- `@/hooks` → `frontend/src/hooks`
+- `@/lib` → `frontend/src/lib`
+- `@/types` → `frontend/src/types`
+- `@/data` → `frontend/src/data`
+- `backend/*` → `backend/src/*` (workspace package)
 
-- `queryOptions` → use with `useQuery(...)`. `infiniteQueryOptions` → use with `useInfiniteQuery(...)`. Never mix.
-- Always create `infiniteQueryOptions` for cursor-based pagination response data.
-- Components call `useQuery(getImageDetailQueryOptions(id))` or `useInfiniteQuery(getImagesQueryOptions(query))` directly.
-- Always check `json.success` from the unified response.
-- Export query key as a const for cross-file reference (mutations need it for invalidation).
+### Zustand Store Convention
 
-## Suspense Component Convention
+#### Shared Factories
 
-Components that use `useSuspenseQuery` or `useSuspenseInfiniteQuery` **must**:
-
-1. **`export default`** — never barrel-export these components. Named exports are fine for the Skeleton.
-2. **Provide a `<Name>Skeleton`** component that mimics the layout (e.g. `TripCard` → `TripCardSkeleton`).
-3. Be consumed via `next/dynamic` with `ssr: false`:
-
-```tsx
-// In the parent page or layout:
-import dynamic from "next/dynamic"
-import { TripCardSkeleton } from "@/features/destination/components/trip-card-skeleton"
-
-const TripCard = dynamic(() => import("@/features/destination/components/trip-card"), {
-  ssr: false,
-  loading: TripCardSkeleton,
-})
-```
-
-### Why?
-
-- `useSuspenseQuery` suspends the component tree — without a boundary, the entire page blocks.
-- `next/dynamic` + `ssr: false` creates a client-side Suspense boundary.
-- The Skeleton component shows immediately while data loads, avoiding layout shift.
-- Barrel exports break `next/dynamic` tree-shaking; `export default` ensures clean code-splitting.
-
-### File structure
+Use `createDialogStore<TMeta>()` from `@/hooks/create-dialog-store` for open/close + metadata stores:
 
 ```ts
-// features/destination/components/trip-card.tsx
+// Simple open/close with entity ID
+export const useXDialogStore = createDialogStore<string>()
 
-export default function TripCard() {
-  const query = useSuspenseQuery(getDestinationQueryOptions(id))
-  // ...
-}
+// Open/close with multiple fields
+export const useXDialogStore = createDialogStore<{ id: string; name: string }>()
+
+// Toggle-only (no metadata)
+export const useXDialogStore = createToggleStore()
 ```
 
-```ts
-// features/destination/components/trip-card-skeleton.tsx
+Store shape:
+- `createDialogStore<TMeta>` → `{ open, meta: TMeta | null, onOpen(meta: TMeta | null), onClose() }`
+- `createToggleStore()` → `{ open, onOpen(), onOpenChange(bool) }`
 
-export function TripCardSkeleton() {
-  return <TripCardSkeletonLayout /> // or inline skeleton JSX
-}
-```
+`onOpen` accepts `TMeta | null` to support "create mode" (e.g. `openDialog(null)` to open form with no pre-selected entity).
 
-## Mutation Convention
+Do NOT create store files from scratch for dialog/sheet state. Use the factory.
 
-Every mutation is a custom hook file in `features/<name>/mutations/<name>.mutation.ts`:
-
-```ts
-// Pattern
-export const useUpdateImage = (id: string) => {
-  return useMutation({
-    mutationFn: async (input) => {
-      const res = await $api({ param: { id }, json: input })
-      const json = await res.json()
-      if (!json.success) throw new Error(json.message)  // check unified response
-      return json
-    },
-    onSuccess: (res) => {
-      toast.success(res.message)       // user-facing message from API
-    },
-    onError: (err) => {
-      toast.error(err.message)         // error toast on failure
-    },
-    onSettled: (_res, _error, _vars, _result, context) => {
-      context.client.invalidateQueries({ queryKey: [...] })  // invalidate in onSettled
-    },
-  })
-}
-```
-
-Rules:
-- Always destructure `res.json()`, check `json.success`, throw on failure.
-- Show toast in `onSuccess` (message from API) and `onError` (error message).
-- Invalidate related queries in `onSettled` via `context.client.invalidateQueries`.
-- Export a const query key (e.g. `export const UPLOAD_MUTATION_KEY = ["upload-images"] as const`).
-
-## Zustand Store Convention
+#### General Zustand Rules
 
 - Use for **transient UI state only** (sheet open/close, dialog open/close, selected item IDs).
 - Never store server data in zustand — use React Query for that.
@@ -196,31 +132,103 @@ export const useImageDetailSheetStore = create<State>()((set) => ({
 }))
 ```
 
-## Design System
+### List Filter Hooks
 
-- **Source:** `DESIGN.md` — Uber-inspired achromatic design system.
-- **Fonts:** Inter (body / UberMoveText substitute), DM Sans (headings / UberMove substitute). Loaded via `next/font/google`.
-- **Colors:** Strictly black + white + gray. Zero chroma in UI chrome. See `DESIGN.md §2`.
-- **Radius:** Pill buttons (999px), standard cards (8px), comfortable containers (12px). No in-between.
-- **Shadows:** `rgba(0,0,0,0.12)`–`0.16` only. Whisper-subtle. No colored shadows.
-- **Typography:** Custom utilities (`text-display` thru `text-micro`) map to DESIGN.md §3 scale.
-- **Components:** shadcn/ui overridden to match — full-pill buttons, achromatic palette, minimal borders.
+For paginated list pages with search + sort filters, use shared utilities from `@/hooks/use-list-filters`:
 
-## Button Icon Convention
+- `filterParsers` — spread into `useQueryStates` for `search` and `order` params.
+- `featuredParser` — spread separately for features that need a `featured` filter.
+- `createFilterMethods(setQuery, sortFields)` — returns `onSearchChange`, `onSortOrderChange`, `onFeaturedChange`.
+
+Each feature still defines its own `useQueryStates` call with feature-specific `sort` options. Custom filters (beyond search/sort/featured) are added as additional nuqs params.
+
+```ts
+import { createFilterMethods, filterParsers, featuredParser } from "@/hooks/use-list-filters"
+
+// Without featured
+export function useXFilters() {
+  const [query, setQuery] = useQueryStates({
+    ...filterParsers,
+    sort: parseAsStringLiteral(["name", "createdAt"] as const).withDefault("createdAt"),
+  })
+  const { onSearchChange, onSortOrderChange } = createFilterMethods(setQuery, ["name", "createdAt"])
+  return { query, methods: { onSearchChange, onSortOrderChange } }
+}
+
+// With featured
+export function useXFilters() {
+  const [query, setQuery] = useQueryStates({
+    ...filterParsers,
+    ...featuredParser,
+    sort: parseAsStringLiteral(["name", "createdAt"] as const).withDefault("createdAt"),
+  })
+  const methods = createFilterMethods(setQuery, ["name", "createdAt"])
+  return { query, methods }
+}
+```
+
+### Query Convention
+
+- Always use `queryOptions` for single-item fetches and `infiniteQueryOptions` for cursor-paginated lists.
+- Always place factories in `features/<name>/queries/`. Factories are plain functions returning options objects.
+- `queryOptions` → use with `useQuery(...)`. `infiniteQueryOptions` → use with `useInfiniteQuery(...)`. Never mix.
+- Always create `infiniteQueryOptions` for cursor-based pagination response data.
+- Always check `json.success` from the unified response.
+- Export query key as a const for cross-file reference (mutations need it for invalidation).
+
+### Mutation Convention
+
+Every mutation is a custom hook file in `features/<name>/mutations/<name>.mutation.ts`:
+
+```ts
+// Pattern
+export const useUpdateImage = (id: string) => {
+  return useMutation({
+    mutationFn: async (input) => {
+      const res = await $api({ param: { id }, json: input })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      return json
+    },
+    onSuccess: (res) => {
+      toast.success(res.message)
+    },
+    onError: (err) => {
+      toast.error(err.message)
+    },
+    onSettled: (_res, _error, _vars, _result, context) => {
+      context.client.invalidateQueries({ queryKey: [...] })
+    },
+  })
+}
+```
+
+Rules:
+- Always destructure `res.json()`, check `json.success`, throw on failure.
+- Show toast in `onSuccess` (message from API) and `onError` (error message).
+- Invalidate related queries in `onSettled` via `context.client.invalidateQueries`.
+- Export a const query key (e.g. `export const UPLOAD_MUTATION_KEY = ["upload-images"] as const`).
+
+### Form Convention
+
+- Use `useAppForm()` from `@/lib/form` — never raw `useForm` from TanStack.
+- `useAppForm()` exposes `form.AppField`, `form.AppForm`, `field.TextField`, `form.SubmitButton`.
+- Valibot validators passed via `validators: { onSubmit: <ValibotSchema> }` — TanStack Form supports Standard Schema natively.
+- Do NOT use `@tanstack/valibot-form-adapter` — deprecated. Pass Valibot schema directly.
+- Form error display via local `formError` state (set in `onSubmit` handler).
+
+### Button Icon Convention
 
 Use the `Button` component from `@/components/ui/button` for icon + label buttons. Do **not** apply explicit icon size classes; the button sizes icons automatically via `data-icon`.
 
 - Left icon:
-
   ```tsx
   <Button>
     <Icon data-icon="inline-start" />
     <span>Label</span>
   </Button>
   ```
-
 - Right icon:
-
   ```tsx
   <Button>
     <span>Label</span>
@@ -233,11 +241,11 @@ Rules:
 - Skip plain `<button>` elements.
 - Skip icon-only buttons (`size="icon"`, `size="icon-sm"`, etc.).
 - Always wrap the label in `<span>`.
-- Never set icon size classes (e.g. `size-4`, `h-4 w-4`) on the icon; spacing and sizing are handled by the button styles via `has-data-[icon=...]` selectors.
+- Never set icon size classes on the icon; spacing and sizing are handled by the button styles.
 
-## Button Loading Convention
+### Button Loading Convention
 
-Use the `ButtonLoading` component from `@/components/button-loading` for any submit or async action button that needs a loading state. It wraps the shadcn `Button` and follows the same icon rules.
+Use the `ButtonLoading` component from `@/components/button-loading` for any submit or async action button:
 
 ```tsx
 import { ButtonLoading } from "@/components/button-loading"
@@ -247,15 +255,10 @@ import { ButtonLoading } from "@/components/button-loading"
 </ButtonLoading>
 ```
 
-Props:
+Rules:
 - `isLoading: boolean` — required; shows spinner and swaps label while true.
 - `loadingLabel?: string` — label during loading. Default: `"Memuat..."`.
 - `icon?: LucideIcon` — optional left icon shown when not loading.
-- Inherits all props from `Button`.
-
-Rules:
 - Always use `ButtonLoading` for form submit buttons and async CTAs.
-- Keep `loadingLabel` in Bahasa Indonesia, descriptive of the action (e.g. `"Menyimpan..."`, `"Mengirim..."`).
-- The spinner icon uses `data-icon="inline-start"` and `animate-spin`; do not add size classes.
-- The visible label is always wrapped in `<span>`.
-- The button is automatically disabled while `isLoading` is true.
+- Keep `loadingLabel` in Bahasa Indonesia, descriptive of the action.
+- Button is automatically disabled while `isLoading` is true.

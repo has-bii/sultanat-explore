@@ -21,10 +21,9 @@ Travel agency website. Turkey-based, serving Indonesian travelers. Open trips, p
 **Docs:**
 
 - [ARCHITECTURE.md](.pi/project/ARCHITECTURE.md) — tech stack, monorepo, key decisions, DB models
-- [FRONTEND.md](.pi/project/FRONTEND.md) — feature modules, queries, mutations, forms, design system
-- [BACKEND.md](.pi/project/BACKEND.md) — API modules, route/service/schema conventions
+- [FRONTEND.md](.pi/project/FRONTEND.md) — feature modules, routing, design system, naming & coding conventions
+- [BACKEND.md](.pi/project/BACKEND.md) — API modules, route/service/schema conventions, API response format
 - [CODEBASE-DIRECTORY.md](.pi/project/CODEBASE-DIRECTORY.md) — folder structure overview
-- [CONVENTION.md](.pi/project/CONVENTION.md) — naming rules, import aliases
 - [LOG.md](.pi/project/LOG.md) — decisions timeline
 - [DESIGN.md](DESIGN.md) — Uber-inspired design system (colors, typography, components, layout)
 
@@ -32,6 +31,6 @@ Travel agency website. Turkey-based, serving Indonesian travelers. Open trips, p
 
 | Domain | Load | Skip |
 |---|---|---|
-| Frontend (UI, components, pages) | `ARCHITECTURE` + `FRONTEND` + `CONVENTION` + `DESIGN` | `BACKEND` |
-| Backend (API, DB, services) | `ARCHITECTURE` + `BACKEND` + `CONVENTION` | `FRONTEND`, `DESIGN` |
+| Frontend (UI, components, pages) | `ARCHITECTURE` + `FRONTEND` + `DESIGN` | `BACKEND` |
+| Backend (API, DB, services) | `ARCHITECTURE` + `BACKEND` | `FRONTEND`, `DESIGN` |
 | Full stack / cross-cutting | All docs | — |
