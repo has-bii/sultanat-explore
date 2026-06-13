@@ -1,4 +1,4 @@
-import { AnimatedMarqueeHero } from "@/components/ui/hero-3"
+import { AnimatedMarqueeHero } from "@/components/hero-3"
 
 const TURKEY_IMAGES = [
   "https://images.unsplash.com/photo-1756312148347-611b60723c7a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzN3x8fGVufDB8fHx8fA%3D%3D",

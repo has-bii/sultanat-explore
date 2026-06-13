@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react"
 
-import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1"
+import { TestimonialsColumn } from "@/components/testimonials-columns-1"
 import { testimonials } from "@/data/testimonials"
 
 const firstColumn = testimonials.slice(0, 3)
