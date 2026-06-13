@@ -1,5 +1,3 @@
-"use client"
-
 import { decode } from "blurhash"
 
 export function blurhashToDataUrl(hash: string, w = 32, h = 32): string {
