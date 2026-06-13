@@ -1,18 +1,29 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Undo2 } from "lucide-react"
-import { lazy } from "react"
+import { Plus, Undo2 } from "lucide-react"
+import { Suspense, lazy } from "react"
 
+import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { AttractionDialog, DeleteAttractionDialog } from "@/features/attraction"
+import { AttractionTable } from "@/features/attraction/components/attraction-table"
+import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
 import Link from "next/link"
 
 import { DestinationForm } from "../components/destination-form"
 import { DestinationGallery } from "../components/destination-gallery"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useUpdateDestination } from "../mutations/update-destination.mutation"
-import { getDestinationGalleryQueryOptions, getDestinationQueryOptions } from "../queries"
+import { getDestinationQueryOptions } from "../queries"
 
 const DeleteDestinationDialog = lazy(() =>
   import("../components/delete-destination-dialog").then((m) => ({
@@ -24,7 +35,7 @@ interface Props {
   destinationId: string
 }
 
-export function EditDestinationPage({ destinationId }: Props) {
+export default function EditDestinationPage({ destinationId }: Props) {
   const { data } = useSuspenseQuery(getDestinationQueryOptions(destinationId))
 
   const { mutate, isPending, error } = useUpdateDestination(destinationId)
@@ -43,12 +54,10 @@ export function EditDestinationPage({ destinationId }: Props) {
     },
   })
 
-  const { data: _images } = useSuspenseQuery(getDestinationGalleryQueryOptions(destinationId))
-
-  const images = _images.map((image) => ({ ...image.image }))
+  const openAttractionDialog = useAttractionDialogStore((s) => s.onOpen)
 
   return (
-    <div className="grid grid-cols-2 gap-8">
+    <div className="grid grid-cols-2 gap-4">
       <div className="col-span-2 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">{data.name}</h1>
 
@@ -61,6 +70,8 @@ export function EditDestinationPage({ destinationId }: Props) {
           </Button>
         </div>
       </div>
+
+      {/* Detail Form */}
       <Card className="w-full">
         <CardHeader className="border-b">
           <CardTitle>Edit Destinasi</CardTitle>
@@ -70,7 +81,31 @@ export function EditDestinationPage({ destinationId }: Props) {
           <DestinationForm mode="edit" form={form} isPending={isPending} error={error} />
         </CardContent>
       </Card>
-      <DestinationGallery destinationId={destinationId} images={images} />
+
+      {/* Gallery */}
+      <DestinationGallery destinationId={destinationId} />
+
+      {/* Attractions */}
+      <Card className="col-span-2 w-full">
+        <CardHeader>
+          <CardTitle>Atraksi</CardTitle>
+          <CardDescription>Kelola atraksi untuk destinasi ini.</CardDescription>
+          <CardAction>
+            <Button onClick={() => openAttractionDialog(null)}>
+              <Plus data-icon="inline-start" />
+              Tambah
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
+            <AttractionTable destinationId={destinationId} />
+          </Suspense>
+        </CardContent>
+      </Card>
+
+      <AttractionDialog destinationId={destinationId} />
+      <DeleteAttractionDialog />
     </div>
   )
 }

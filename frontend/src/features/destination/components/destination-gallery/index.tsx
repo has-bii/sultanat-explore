@@ -1,5 +1,6 @@
 "use client"
 
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { SaveIcon } from "lucide-react"
 import { useState } from "react"
 
@@ -21,19 +22,18 @@ import {
 import { Image as TImage } from "backend/generated/prisma/client"
 
 import { useUpdateGallery } from "../../mutations/update-gallery.mutation"
+import { getDestinationGalleryQueryOptions } from "../../queries"
 import { GalleryView } from "./gallery-view"
 
 type GalleryImage = Pick<TImage, "id" | "url" | "blurHash">
 
-interface DestinationGalleryProps {
+interface Props {
   destinationId: string
-  images: GalleryImage[]
 }
 
-export function DestinationGallery({
-  destinationId,
-  images: initialImages,
-}: DestinationGalleryProps) {
+export function DestinationGallery({ destinationId }: Props) {
+  const { data } = useSuspenseQuery(getDestinationGalleryQueryOptions(destinationId))
+  const initialImages = data.map(({ image }) => image)
   const syncMutation = useUpdateGallery(destinationId)
   const [localImages, setLocalImages] = useState<GalleryImage[]>(initialImages)
 

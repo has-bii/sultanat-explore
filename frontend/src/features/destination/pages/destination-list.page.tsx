@@ -4,10 +4,9 @@ import { Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { TableSkeleton } from "@/components/table-skeleton"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-
-import { DestinationTableSkeleton } from "../components/destination-table-skeleton"
 
 const DestinationFilters = dynamic(
   () =>
@@ -17,7 +16,7 @@ const DestinationFilters = dynamic(
 
 const DestinationTable = dynamic(
   () => import("../components/destination-table").then((m) => ({ default: m.DestinationTable })),
-  { ssr: false, loading: () => <DestinationTableSkeleton /> },
+  { ssr: false, loading: () => <TableSkeleton rowCount={5} columns={6} /> },
 )
 
 export function DestinationListPage() {
