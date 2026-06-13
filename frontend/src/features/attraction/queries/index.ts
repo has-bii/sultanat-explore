@@ -23,12 +23,12 @@ export const attractionQueryKeys = {
 }
 
 // ─── Query factories ────────────────────────────────────────────
-export const getAttractionsQueryOptions = (destinationId: string, query: GetAttractionsQuery) => {
+export const getAttractionsQueryOptions = (query: GetAttractionsQuery) => {
   return infiniteQueryOptions({
     queryKey: attractionQueryKeys.list(query),
     queryFn: async ({ pageParam }) => {
       const res = await $getAttractions({
-        query: { ...query, cursor: pageParam, destinationId },
+        query: { ...query, cursor: pageParam },
       })
       const json = await res.json()
       if (!json.success) throw new Error(json.message)

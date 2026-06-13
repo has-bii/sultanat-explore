@@ -38,7 +38,7 @@ export default function AttractionTable({ destinationId }: Props) {
   }
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    getAttractionsQueryOptions(destinationId, parsedQuery),
+    getAttractionsQueryOptions(parsedQuery),
   )
 
   const attractions = data.pages.flatMap((p) => p.data)

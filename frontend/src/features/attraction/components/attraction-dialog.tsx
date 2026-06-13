@@ -1,4 +1,4 @@
-import { useMutationState, useSuspenseQuery } from "@tanstack/react-query"
+import { useMutationState, useSuspenseInfiniteQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { Suspense } from "react"
 
 import {
@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { getDestinationsQueryOptions } from "@/features/destination/queries"
+
 import { useAttractionForm } from "../hooks/use-attraction-form"
 import { useCreateAttraction } from "../mutations/create-attraction.mutation"
 import { CREATE_ATTRACTION_MUTATION_KEY } from "../mutations/create-attraction.mutation"
@@ -19,7 +21,7 @@ import { AttractionForm } from "./attraction-form"
 import { AttractionFormSkeleton } from "./attraction-form-skeleton"
 
 interface Props {
-  destinationId: string
+  destinationId?: string
 }
 
 export default function AttractionDialog({ destinationId }: Props) {
@@ -76,11 +78,16 @@ export default function AttractionDialog({ destinationId }: Props) {
 }
 
 interface FormProps {
-  destinationId: string
+  destinationId?: string
   onSuccess: () => void
 }
 
 function CreateForm({ destinationId, onSuccess }: FormProps) {
+  const { data: destinationsData } = useSuspenseInfiniteQuery(
+    getDestinationsQueryOptions({ limit: "100" }),
+  )
+  const destinations = destinationsData.pages.flatMap((p) => p.data)
+
   const { mutate, isPending, error } = useCreateAttraction()
   const form = useAttractionForm({
     destinationId,
@@ -89,7 +96,16 @@ function CreateForm({ destinationId, onSuccess }: FormProps) {
     },
   })
 
-  return <AttractionForm form={form} error={error} isPending={isPending} mode="create" />
+  return (
+    <AttractionForm
+      form={form}
+      error={error}
+      isPending={isPending}
+      mode="create"
+      showDestinationSelector={!destinationId}
+      destinations={destinations}
+    />
+  )
 }
 
 interface UpdateFormProps extends FormProps {

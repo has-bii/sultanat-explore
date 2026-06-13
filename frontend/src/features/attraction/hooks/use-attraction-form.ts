@@ -8,14 +8,14 @@ import {
 } from "backend/modules/attraction/attraction.schema"
 
 interface Props {
-  destinationId: string
+  destinationId?: string
   defaultValues?: CreateAttractionInput
   onSubmit: (value: CreateAttractionInput) => Promise<void> | void
 }
 
 export function useAttractionForm({ destinationId, defaultValues: _defaultValues, onSubmit }: Props) {
   const defaultValues: CreateAttractionInput = {
-    destinationId: _defaultValues?.destinationId ?? destinationId,
+    destinationId: _defaultValues?.destinationId ?? destinationId ?? "",
     name: _defaultValues?.name ?? "",
     description: _defaultValues?.description ?? "",
     imageId: _defaultValues?.imageId ?? "",
