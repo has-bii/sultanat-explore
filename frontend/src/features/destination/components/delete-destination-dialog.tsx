@@ -40,7 +40,7 @@ export function DeleteDestinationDialog({ destinationId, destinationName }: Prop
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive">
-          <Trash2 />
+          <Trash2 data-icon="inline-start" />
           <span>Hapus</span>
         </Button>
       </AlertDialogTrigger>
@@ -59,9 +59,9 @@ export function DeleteDestinationDialog({ destinationId, destinationName }: Prop
             onClick={handleDelete}
             isLoading={deleteMutation.isPending}
             loadingLabel="Menghapus..."
+            icon={Trash2}
           >
-            <Trash2 />
-            <span>Hapus</span>
+            Hapus
           </ButtonLoading>
         </AlertDialogFooter>
       </AlertDialogContent>

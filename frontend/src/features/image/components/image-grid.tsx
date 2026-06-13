@@ -30,7 +30,7 @@ interface Props {
   className?: string
 }
 
-export function ImageGrid(props: Props) {
+export default function ImageGrid(props: Props) {
   const {
     query,
     onClearSearch,

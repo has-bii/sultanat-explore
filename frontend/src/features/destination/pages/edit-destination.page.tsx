@@ -2,9 +2,8 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Plus, Undo2 } from "lucide-react"
-import { Suspense, lazy } from "react"
+import { lazy } from "react"
 
-import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -15,12 +14,13 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { AttractionDialog, DeleteAttractionDialog } from "@/features/attraction"
-import { AttractionTable } from "@/features/attraction/components/attraction-table"
+import { AttractionTableSkeleton } from "@/features/attraction/components/attraction-table-skeleton"
 import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { DestinationForm } from "../components/destination-form"
-import { DestinationGallery } from "../components/destination-gallery"
+import { DestinationGallerySkeleton } from "../components/destination-gallery"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useUpdateDestination } from "../mutations/update-destination.mutation"
 import { getDestinationQueryOptions } from "../queries"
@@ -30,6 +30,16 @@ const DeleteDestinationDialog = lazy(() =>
     default: m.DeleteDestinationDialog,
   })),
 )
+
+const AttractionTable = dynamic(
+  () => import("@/features/attraction/components/attraction-table"),
+  { ssr: false, loading: AttractionTableSkeleton },
+)
+
+const DestinationGallery = dynamic(() => import("../components/destination-gallery"), {
+  ssr: false,
+  loading: DestinationGallerySkeleton,
+})
 
 interface Props {
   destinationId: string
@@ -65,7 +75,8 @@ export default function EditDestinationPage({ destinationId }: Props) {
           <DeleteDestinationDialog destinationId={destinationId} destinationName={data.name} />
           <Button asChild variant="outline">
             <Link href="/admin/dashboard/destination">
-              <Undo2 /> Kembali
+              <Undo2 data-icon="inline-start" />
+              <span>Kembali</span>
             </Link>
           </Button>
         </div>
@@ -93,14 +104,12 @@ export default function EditDestinationPage({ destinationId }: Props) {
           <CardAction>
             <Button onClick={() => openAttractionDialog(null)}>
               <Plus data-icon="inline-start" />
-              Tambah
+              <span>Tambah</span>
             </Button>
           </CardAction>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
-            <AttractionTable destinationId={destinationId} />
-          </Suspense>
+          <AttractionTable destinationId={destinationId} />
         </CardContent>
       </Card>
 

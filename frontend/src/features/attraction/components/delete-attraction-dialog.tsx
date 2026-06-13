@@ -53,9 +53,9 @@ export function DeleteAttractionDialog() {
             onClick={handleDelete}
             isLoading={deleteMutation.isPending}
             loadingLabel="Menghapus..."
+            icon={Trash2}
           >
-            <Trash2 data-icon="inline-start" />
-            <span>Hapus</span>
+            Hapus
           </ButtonLoading>
         </DialogFooter>
       </DialogContent>

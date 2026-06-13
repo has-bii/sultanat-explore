@@ -33,8 +33,8 @@ export function ButtonCopy({ children, value, ...props }: Props) {
     <Tooltip open={open}>
       <TooltipTrigger asChild>
         <Button {...props} onClick={handleCopyUrl}>
-          <Copy />
-          {children}
+          <Copy data-icon="inline-start" />
+          {children ? <span>{children}</span> : null}
         </Button>
       </TooltipTrigger>
       <TooltipContent>

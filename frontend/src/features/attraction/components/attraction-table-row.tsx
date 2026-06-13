@@ -45,15 +45,15 @@ export function AttractionTableRow({ attraction, onUpdate, onDelete }: Props) {
         <div className="inline-flex items-center gap-1">
           <Button size="sm" variant="secondary" onClick={() => onUpdate(attraction.id)}>
             <Pencil data-icon="inline-start" />
-            Edit
+            <span>Edit</span>
           </Button>
           <Button
             size="sm"
             variant="destructive"
             onClick={() => onDelete(attraction.id, attraction.name)}
           >
-            <Trash2 />
-            Hapus
+            <Trash2 data-icon="inline-start" />
+            <span>Hapus</span>
           </Button>
         </div>
       </TableCell>

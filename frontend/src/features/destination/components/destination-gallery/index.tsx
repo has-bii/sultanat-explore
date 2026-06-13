@@ -25,13 +25,29 @@ import { useUpdateGallery } from "../../mutations/update-gallery.mutation"
 import { getDestinationGalleryQueryOptions } from "../../queries"
 import { GalleryView } from "./gallery-view"
 
+export function DestinationGallerySkeleton() {
+  return (
+    <div className="flex w-full flex-col gap-0 rounded-2xl border">
+      <div className="flex flex-col gap-1 border-b p-6">
+        <div className="h-6 w-32 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-48 animate-pulse rounded bg-muted" />
+      </div>
+      <div className="grid grid-cols-4 gap-2 p-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="aspect-square animate-pulse rounded bg-muted" />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 type GalleryImage = Pick<TImage, "id" | "url" | "blurHash">
 
 interface Props {
   destinationId: string
 }
 
-export function DestinationGallery({ destinationId }: Props) {
+export default function DestinationGallery({ destinationId }: Props) {
   const { data } = useSuspenseQuery(getDestinationGalleryQueryOptions(destinationId))
   const initialImages = data.map(({ image }) => image)
   const syncMutation = useUpdateGallery(destinationId)
@@ -68,9 +84,9 @@ export function DestinationGallery({ destinationId }: Props) {
           isLoading={syncMutation.isPending}
           disabled={!hasChanges}
           loadingLabel="Menyimpan..."
+          icon={SaveIcon}
         >
-          <SaveIcon />
-          <span>Simpan</span>
+          Simpan
         </ButtonLoading>
       </CardFooter>
     </Card>

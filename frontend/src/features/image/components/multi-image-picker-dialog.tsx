@@ -16,7 +16,7 @@ import dynamic from "next/dynamic"
 
 import { ImageGridSkeleton } from "./image-grid-skeleton"
 
-const ImageGrid = dynamic(() => import("./image-grid").then((m) => ({ default: m.ImageGrid })), {
+const ImageGrid = dynamic(() => import("./image-grid"), {
   ssr: false,
   loading: () => (
     <div className="@container/main">
@@ -89,9 +89,9 @@ export function MultiImagePickerDialog({ selectedImages, onChange, max = DEFAULT
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <Button type="button" variant="outline" onClick={handleOpen} className="gap-2">
-        <ImagesIcon className="size-4" />
-        Pilih foto{count > 0 ? ` (${count}/${max})` : ""}
+      <Button type="button" variant="outline" onClick={handleOpen}>
+        <ImagesIcon data-icon="inline-start" />
+        <span>Pilih foto{count > 0 ? ` (${count}/${max})` : ""}</span>
       </Button>
 
       <DialogContent className="flex min-h-[90vh] min-w-9/10 flex-col gap-6">

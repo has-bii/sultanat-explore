@@ -15,10 +15,10 @@ import { updateImageMutationKey } from "../../mutations/update-image.mutation"
 import { useImageDetailSheetStore } from "../../stores/image-detail-sheet.store"
 import { ImageUpdateFormSkeleton } from "./image-update-form-skeleton"
 
-const ImageUpdateForm = dynamic(
-  () => import("./image-update-form").then((m) => ({ default: m.ImageUpdateForm })),
-  { ssr: false, loading: () => <ImageUpdateFormSkeleton /> },
-)
+const ImageUpdateForm = dynamic(() => import("./image-update-form"), {
+  ssr: false,
+  loading: () => <ImageUpdateFormSkeleton />,
+})
 
 export function ImageSheet() {
   const { open, onClose, selectedImageId } = useImageDetailSheetStore()

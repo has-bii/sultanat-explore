@@ -20,7 +20,7 @@ type Props = {
   onDeleteSuccess: () => void
 }
 
-export function ImageUpdateForm({ imageId, onSuccess, onDeleteSuccess }: Props) {
+export default function ImageUpdateForm({ imageId, onSuccess, onDeleteSuccess }: Props) {
   const { data } = useSuspenseQuery(getImageDetailQueryOptions(imageId))
 
   const { mutate, isPending, error } = useUpdateImage(imageId)

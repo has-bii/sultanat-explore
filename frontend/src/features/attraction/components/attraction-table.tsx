@@ -24,7 +24,7 @@ interface Props {
   destinationId: string
 }
 
-export function AttractionTable({ destinationId }: Props) {
+export default function AttractionTable({ destinationId }: Props) {
   const openDialog = useAttractionDialogStore((s) => s.onOpen)
   const openDeleteDialog = useDeleteAttractionDialogStore((s) => s.onOpen)
   const { query, methods } = useAttractionFilters()

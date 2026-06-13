@@ -1,16 +1,17 @@
 "use client"
 
-import { DateToString } from "@/utils/date-to-string.type"
-
-import type { Image as TImage } from "backend/generated/prisma/client"
+import dynamic from "next/dynamic"
 
 import { useImageFilters } from "../hooks/use-image-filters"
 import { useImageDetailSheetStore } from "../stores/image-detail-sheet.store"
 import { useImageSelectionStore } from "../stores/image-selection.store"
-import { ImageGrid } from "./image-grid"
+import { ImageGridSkeleton } from "./image-grid-skeleton"
 import { SelectionBar } from "./selection-bar"
 
-type Image = DateToString<TImage>
+const ImageGrid = dynamic(() => import("./image-grid"), {
+  ssr: false,
+  loading: () => <ImageGridSkeleton count={10} />,
+})
 
 interface Props {
   // Style
@@ -38,8 +39,8 @@ export function ImageGridWithFilters(props: Props) {
     sort: query.sort || undefined,
   }
 
-  const handleImageClick = (image: Image) => {
-    onOpen(image.id)
+  const handleImageClick = (id: string) => {
+    onOpen(id)
   }
 
   return (
@@ -48,7 +49,7 @@ export function ImageGridWithFilters(props: Props) {
       <ImageGrid
         query={apiQuery}
         onClearSearch={() => methods.onSearchChange("")}
-        onImageClick={handleImageClick}
+        onImageClick={(image) => handleImageClick(image.id)}
         selectedIds={selectedIds}
         onImageCheckedChange={(image) => toggle(image.id)}
         className={className}

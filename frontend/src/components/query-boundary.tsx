@@ -24,8 +24,8 @@ export function ErrorFallbackComponent({ error, resetErrorBoundary }: FallbackPr
       <AlertDescription className="flex items-center justify-between">
         <span>{errorMessage}</span>
         <Button variant="outline" size="sm" onClick={resetErrorBoundary}>
-          <RefreshCw />
-          Coba Lagi
+          <RefreshCw data-icon="inline-start" />
+          <span>Coba Lagi</span>
         </Button>
       </AlertDescription>
     </Alert>

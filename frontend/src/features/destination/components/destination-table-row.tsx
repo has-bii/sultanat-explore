@@ -51,8 +51,8 @@ export function DestinationTableRow({ dest }: { dest: Destination }) {
       <TableCell className="w-[120px] text-center">
         <Button size="sm" asChild>
           <Link href={`/admin/dashboard/destination/${dest.id}/edit`}>
-            <Eye />
-            Open
+            <Eye data-icon="inline-start" />
+            <span>Open</span>
           </Link>
         </Button>
       </TableCell>

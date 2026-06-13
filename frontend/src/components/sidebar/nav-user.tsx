@@ -1,7 +1,7 @@
 "use client"
 
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react"
-import { useMemo } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -14,69 +14,38 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
-import { authClient } from "@/lib/auth-client"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import { useLogout } from "@/features/auth/mutations/logout.mutation"
+import { getAuthSessionQueryOptions } from "@/features/auth/query"
 
 export function NavUser() {
-  const router = useRouter()
-  const { data } = authClient.useSession()
+  const { data } = useSuspenseQuery(getAuthSessionQueryOptions())
 
-  const user = useMemo(() => {
-    if (!data)
-      return {
-        avatar: undefined,
-        name: "Loading...",
-        email: "Loading...",
-      }
+  const { mutate, isPending } = useLogout()
 
-    return {
-      name: data.user.name,
-      email: data.user.email,
-      avatar: data.user.image || undefined,
-    }
-  }, [data])
-
-  const handleLogout = () => {
-    const promise = new Promise<{ message: string }>(async (resolve, reject) => {
-      const { error } = await authClient.signOut()
-      if (error) {
-        reject(new Error(error.message || "Failed to logout!"))
-      }
-      resolve({ message: "Logged out successfully" })
-    })
-
-    toast.promise(promise, {
-      loading: "Logging out...",
-      success: ({ message }) => {
-        return message
-      },
-      error: (err) => {
-        if (err instanceof Error) return err.message
-        return "Unexpected error has occurred"
-      },
-      finally: () => {
-        router.push("/admin/login")
-      },
-    })
+  const user = {
+    name: data.user.name,
+    email: data.user.email,
+    avatar: data.user.image || undefined,
   }
+
+  const handleLogout = () => mutate()
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild disabled={isPending}>
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar size="lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+              <div className="flex-1 space-y-0.5 text-left text-sm leading-tight">
+                <p className="truncate font-medium">{user.name}</p>
+                <p className="truncate text-xs">{user.email}</p>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>

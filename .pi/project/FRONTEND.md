@@ -87,6 +87,51 @@ export const getImagesQueryOptions = (query: GetImagesQuery = {}) => {
 - Always check `json.success` from the unified response.
 - Export query key as a const for cross-file reference (mutations need it for invalidation).
 
+## Suspense Component Convention
+
+Components that use `useSuspenseQuery` or `useSuspenseInfiniteQuery` **must**:
+
+1. **`export default`** — never barrel-export these components. Named exports are fine for the Skeleton.
+2. **Provide a `<Name>Skeleton`** component that mimics the layout (e.g. `TripCard` → `TripCardSkeleton`).
+3. Be consumed via `next/dynamic` with `ssr: false`:
+
+```tsx
+// In the parent page or layout:
+import dynamic from "next/dynamic"
+import { TripCardSkeleton } from "@/features/destination/components/trip-card-skeleton"
+
+const TripCard = dynamic(() => import("@/features/destination/components/trip-card"), {
+  ssr: false,
+  loading: TripCardSkeleton,
+})
+```
+
+### Why?
+
+- `useSuspenseQuery` suspends the component tree — without a boundary, the entire page blocks.
+- `next/dynamic` + `ssr: false` creates a client-side Suspense boundary.
+- The Skeleton component shows immediately while data loads, avoiding layout shift.
+- Barrel exports break `next/dynamic` tree-shaking; `export default` ensures clean code-splitting.
+
+### File structure
+
+```ts
+// features/destination/components/trip-card.tsx
+
+export default function TripCard() {
+  const query = useSuspenseQuery(getDestinationQueryOptions(id))
+  // ...
+}
+```
+
+```ts
+// features/destination/components/trip-card-skeleton.tsx
+
+export function TripCardSkeleton() {
+  return <TripCardSkeletonLayout /> // or inline skeleton JSX
+}
+```
+
 ## Mutation Convention
 
 Every mutation is a custom hook file in `features/<name>/mutations/<name>.mutation.ts`:
@@ -160,3 +205,57 @@ export const useImageDetailSheetStore = create<State>()((set) => ({
 - **Shadows:** `rgba(0,0,0,0.12)`–`0.16` only. Whisper-subtle. No colored shadows.
 - **Typography:** Custom utilities (`text-display` thru `text-micro`) map to DESIGN.md §3 scale.
 - **Components:** shadcn/ui overridden to match — full-pill buttons, achromatic palette, minimal borders.
+
+## Button Icon Convention
+
+Use the `Button` component from `@/components/ui/button` for icon + label buttons. Do **not** apply explicit icon size classes; the button sizes icons automatically via `data-icon`.
+
+- Left icon:
+
+  ```tsx
+  <Button>
+    <Icon data-icon="inline-start" />
+    <span>Label</span>
+  </Button>
+  ```
+
+- Right icon:
+
+  ```tsx
+  <Button>
+    <span>Label</span>
+    <Icon data-icon="inline-end" />
+  </Button>
+  ```
+
+Rules:
+- Only applies to the shadcn `Button` component.
+- Skip plain `<button>` elements.
+- Skip icon-only buttons (`size="icon"`, `size="icon-sm"`, etc.).
+- Always wrap the label in `<span>`.
+- Never set icon size classes (e.g. `size-4`, `h-4 w-4`) on the icon; spacing and sizing are handled by the button styles via `has-data-[icon=...]` selectors.
+
+## Button Loading Convention
+
+Use the `ButtonLoading` component from `@/components/button-loading` for any submit or async action button that needs a loading state. It wraps the shadcn `Button` and follows the same icon rules.
+
+```tsx
+import { ButtonLoading } from "@/components/button-loading"
+
+<ButtonLoading isLoading={isPending} loadingLabel="Menyimpan...">
+  Simpan
+</ButtonLoading>
+```
+
+Props:
+- `isLoading: boolean` — required; shows spinner and swaps label while true.
+- `loadingLabel?: string` — label during loading. Default: `"Memuat..."`.
+- `icon?: LucideIcon` — optional left icon shown when not loading.
+- Inherits all props from `Button`.
+
+Rules:
+- Always use `ButtonLoading` for form submit buttons and async CTAs.
+- Keep `loadingLabel` in Bahasa Indonesia, descriptive of the action (e.g. `"Menyimpan..."`, `"Mengirim..."`).
+- The spinner icon uses `data-icon="inline-start"` and `animate-spin`; do not add size classes.
+- The visible label is always wrapped in `<span>`.
+- The button is automatically disabled while `isLoading` is true.

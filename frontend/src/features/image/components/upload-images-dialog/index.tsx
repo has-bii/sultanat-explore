@@ -75,9 +75,13 @@ export function UploadImagesDialog() {
           <Button variant="outline" onClick={handleClose} disabled={isPending}>
             Batal
           </Button>
-          <ButtonLoading onClick={handleSubmit} disabled={!canSubmit} isLoading={isPending}>
-            <UploadIcon />
-            <span>Upload</span>
+          <ButtonLoading
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            isLoading={isPending}
+            icon={UploadIcon}
+          >
+            Upload
           </ButtonLoading>
         </DialogFooter>
       </DialogContent>

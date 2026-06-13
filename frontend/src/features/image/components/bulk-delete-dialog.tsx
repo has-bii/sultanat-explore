@@ -48,8 +48,8 @@ export function BulkDeleteDialog() {
     >
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size="sm">
-          <Trash2Icon className="size-4" />
-          Hapus
+          <Trash2Icon data-icon="inline-start" />
+          <span>Hapus</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -72,16 +72,11 @@ export function BulkDeleteDialog() {
           <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
           <Button variant="destructive" disabled={isPending} onClick={handleConfirm}>
             {isPending ? (
-              <>
-                <Loader className="animate-spin" />
-                <span>Menghapus...</span>
-              </>
+              <Loader data-icon="inline-start" className="animate-spin" />
             ) : (
-              <>
-                <Trash2 />
-                <span>Hapus</span>
-              </>
+              <Trash2 data-icon="inline-start" />
             )}
+            <span>{isPending ? "Menghapus..." : "Hapus"}</span>
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

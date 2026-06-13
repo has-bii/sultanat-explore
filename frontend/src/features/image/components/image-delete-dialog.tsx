@@ -44,7 +44,7 @@ export function ImageDeleteDialog({ imageId, onSuccess }: Props) {
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>
         <Button size="lg" variant="destructive">
-          <Trash2 />
+          <Trash2 data-icon="inline-start" />
           <span>Hapus</span>
         </Button>
       </AlertDialogTrigger>
@@ -63,9 +63,9 @@ export function ImageDeleteDialog({ imageId, onSuccess }: Props) {
             onClick={handleDelete}
             isLoading={isPending}
             loadingLabel="Menghapus..."
+            icon={Trash2}
           >
-            <Trash2 />
-            <span>Hapus</span>
+            Hapus
           </ButtonLoading>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -107,7 +107,7 @@ function SubmitButton(props: {
           ) : (
             Icon && <Icon data-icon="inline-start" />
           )}
-          {isSubmitting || isDisabled ? (pendingLabel ?? "Memproses...") : label}
+          <span>{isSubmitting || isDisabled ? (pendingLabel ?? "Memproses...") : label}</span>
         </Button>
       )}
     </form.Subscribe>

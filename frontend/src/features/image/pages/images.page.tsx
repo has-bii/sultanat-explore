@@ -1,24 +1,24 @@
 "use client"
 
-import dynamic from "next/dynamic"
+import { lazy } from "react"
 
-import { FiltersToolbar } from "../components/filters-toolbar"
-import { ImageSheet } from "../components/image-detail-sheet"
-import { ImageGridSkeleton } from "../components/image-grid-skeleton"
-import { UploadImagesDialog } from "../components/upload-images-dialog"
+import { ImageGridWithFilters } from "@/features/image/components/image-grid-with-filters"
 
-const ImageGridWithFilters = dynamic(
-  () =>
-    import("@/features/image/components/image-grid-with-filters").then((m) => ({
-      default: m.ImageGridWithFilters,
-    })),
-  { ssr: false, loading: () => <ImageGridSkeleton count={10} /> },
+import { ImageToolbar } from "../components/filters-toolbar"
+
+const UploadImagesDialog = lazy(() =>
+  import("@/features/image/components/upload-images-dialog").then((m) => ({
+    default: m.UploadImagesDialog,
+  })),
+)
+const ImageSheet = lazy(() =>
+  import("@/features/image/components/image-detail-sheet").then((m) => ({ default: m.ImageSheet })),
 )
 
 export function ImagesPage() {
   return (
     <>
-      <FiltersToolbar />
+      <ImageToolbar />
       <ImageGridWithFilters />
       <UploadImagesDialog />
       <ImageSheet />

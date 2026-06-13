@@ -31,9 +31,9 @@ export function DestinationFilters() {
   }, [methods, searchLocal])
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-1 flex-wrap items-center gap-2">
       {/* Search */}
-      <InputGroup className="max-w-sm flex-1">
+      <InputGroup className="flex-1">
         <InputGroupAddon>
           <SearchIcon />
         </InputGroupAddon>
@@ -62,7 +62,7 @@ export function DestinationFilters() {
           methods.onFeaturedChange(value as "true" | "false")
         }}
       >
-        <SelectTrigger className="w-fit">
+        <SelectTrigger className="w-32">
           <SelectValue placeholder="Filter" />
         </SelectTrigger>
         <SelectContent>
@@ -77,7 +77,7 @@ export function DestinationFilters() {
         value={`${query.sort}-${query.order}`}
         onValueChange={(value) => methods.onSortOrderChange(value)}
       >
-        <SelectTrigger className="w-fit">
+        <SelectTrigger className="w-32">
           <SelectValue placeholder="Urutkan" />
         </SelectTrigger>
         <SelectContent>

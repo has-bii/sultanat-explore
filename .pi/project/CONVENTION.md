@@ -16,6 +16,15 @@
 - File: `trip-card.tsx` → Export: `TripCard` (PascalCase)
 - One component per file. Co-locate variants in same file if small.
 - Barrel exports via `index.ts` in feature folders.
+- **Suspense components use `export default`** — never barrel-export. Components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery` must `export default` and be consumed via `next/dynamic`.
+- Every suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
+- Consume pattern:
+  ```ts
+  const Component = dynamic(() => import("..."), {
+    ssr: false,
+    loading: ComponentSkeleton,
+  })
+  ```
 
 ## Import Aliases
 

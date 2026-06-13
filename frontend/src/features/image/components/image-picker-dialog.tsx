@@ -20,7 +20,7 @@ import { blurhashToDataUrl } from "../lib/blurhash"
 import { getImageDetailQueryOptions } from "../query"
 import { ImageGridSkeleton } from "./image-grid-skeleton"
 
-const ImageGrid = dynamic(() => import("./image-grid").then((m) => ({ default: m.ImageGrid })), {
+const ImageGrid = dynamic(() => import("./image-grid"), {
   ssr: false,
   loading: () => (
     <div className="@container/main">
@@ -151,8 +151,8 @@ function SelectedImage({ id, onOpenImagePicker }: SelectedImageProps) {
           variant="secondary"
           onClick={onOpenImagePicker}
         >
-          <ImagesIcon />
-          Ganti
+          <ImagesIcon data-icon="inline-start" />
+          <span>Ganti</span>
         </Button>
       </>
     )

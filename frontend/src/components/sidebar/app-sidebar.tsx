@@ -1,26 +1,27 @@
 "use client"
 
-import { Home, Image, PinIcon } from "lucide-react"
-import * as React from "react"
+import { Image, PinIcon } from "lucide-react"
+import { Suspense } from "react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
-import { NavUser } from "@/components/sidebar/nav-user"
+import { NavUserSkeleton } from "@/components/sidebar/nav-user-skeleton"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import dynamic from "next/dynamic"
 
+import { NavDashboard } from "./nav-dashboard"
 import { NavSkeleton } from "./nav-skeleton"
 import { SidebarHeaderItem } from "./sidebar-header-item"
+
+const NavUser = dynamic(
+  () => import("@/components/sidebar/nav-user").then((m) => ({ default: m.NavUser })),
+  { ssr: false, loading: NavUserSkeleton },
+)
 
 const navMain = [
   {
@@ -54,38 +55,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarHeaderItem />
       </SidebarHeader>
       <SidebarContent>
-        <React.Suspense fallback={<NavSkeleton length={1} />}>
+        <Suspense fallback={<NavSkeleton length={1} />}>
           <NavDashboard />
-        </React.Suspense>
-        <React.Suspense fallback={<NavSkeleton label="Platform" length={navMain.length} />}>
+        </Suspense>
+        <Suspense fallback={<NavSkeleton label="Platform" length={navMain.length} />}>
           <NavMain items={navMain} />
-        </React.Suspense>
+        </Suspense>
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
-}
-
-export function NavDashboard() {
-  const pathname = usePathname()
-
-  const isActive = pathname === "/admin/dashboard"
-
-  return (
-    <SidebarGroup>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton asChild isActive={isActive}>
-            <Link href="/admin/dashboard">
-              <Home />
-              <span>Dashboard</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    </SidebarGroup>
   )
 }

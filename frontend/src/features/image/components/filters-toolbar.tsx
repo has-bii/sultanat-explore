@@ -21,7 +21,7 @@ import {
 import { useImageFilters } from "../hooks/use-image-filters"
 import { useUploadImagesDialogStore } from "../stores/upload-images-dialog.store"
 
-export function FiltersToolbar() {
+export function ImageToolbar() {
   const { query, methods } = useImageFilters()
   const onUpload = useUploadImagesDialogStore((s) => s.onOpen)
 
@@ -33,8 +33,12 @@ export function FiltersToolbar() {
     return () => clearTimeout(timeout)
   }, [methods, searchLocal])
 
+  useEffect(() => {
+    console.log("featured: ", query.featured)
+  }, [query.featured])
+
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex items-center gap-2">
       <div className="flex-1">
         <InputGroup>
           <InputGroupAddon align="inline-start">
@@ -67,7 +71,7 @@ export function FiltersToolbar() {
             methods.onFeaturedChange(value as "true" | "false")
           }}
         >
-          <SelectTrigger className="w-fit">
+          <SelectTrigger className="w-32">
             <SelectValue placeholder="Filter" />
           </SelectTrigger>
           <SelectContent>
@@ -82,7 +86,7 @@ export function FiltersToolbar() {
           value={`${query.sort}-${query.order}`}
           onValueChange={(value) => methods.onSortOrderChange(value)}
         >
-          <SelectTrigger className="w-36">
+          <SelectTrigger className="w-32">
             <SelectValue placeholder="Urutan" />
           </SelectTrigger>
           <SelectContent>
@@ -92,8 +96,8 @@ export function FiltersToolbar() {
         </Select>
 
         <Button onClick={onUpload}>
-          <Upload />
-          Upload
+          <Upload data-icon="inline-start" />
+          <span>Upload</span>
         </Button>
       </div>
     </div>

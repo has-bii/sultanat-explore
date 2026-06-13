@@ -13,21 +13,14 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
-
-import { DestinationTableRow } from "./destination-table-row"
 
 import { useDestinationFilters } from "../hooks/use-destination-filters"
 import { GetDestinationsQuery, getDestinationsQueryOptions } from "../queries"
+import { DestinationTableRow } from "./destination-table-row"
 
-export function DestinationTable() {
+export default function DestinationTable() {
   const { query, methods } = useDestinationFilters()
 
   const parsedQuery: GetDestinationsQuery = {
@@ -101,8 +94,8 @@ function EmptyDestinations() {
       <EmptyContent>
         <Button asChild className="rounded-full">
           <Link href="/admin/dashboard/destination/create">
-            <Plus className="size-4" />
-            Buat Destinasi
+            <Plus data-icon="inline-start" />
+            <span>Buat Destinasi</span>
           </Link>
         </Button>
       </EmptyContent>
