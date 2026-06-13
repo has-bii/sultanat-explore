@@ -22,7 +22,7 @@ interface Props {
   destinationId: string
 }
 
-export function AttractionDialog({ destinationId }: Props) {
+export default function AttractionDialog({ destinationId }: Props) {
   const { open, onClose, meta: attractionId } = useAttractionDialogStore()
 
   const pendingMutations = useMutationState({
@@ -112,5 +112,5 @@ function UpdateForm({ destinationId, attractionId, onSuccess }: UpdateFormProps)
     },
   })
 
-  return <AttractionForm form={form} error={error} isPending={isPending} mode="create" />
+  return <AttractionForm form={form} error={error} isPending={isPending} mode="edit" />
 }

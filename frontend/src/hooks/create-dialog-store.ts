@@ -20,7 +20,7 @@ export function createDialogStore<TMeta>() {
     open: false,
     meta: null,
     onOpen: (meta: TMeta | null) => set({ meta, open: true }),
-    onClose: () => set({ open: false, meta: null }),
+    onClose: () => set({ open: false }),
   }))
 }
 

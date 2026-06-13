@@ -2,7 +2,6 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Plus, Undo2 } from "lucide-react"
-import { lazy } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,28 +12,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { AttractionDialog, DeleteAttractionDialog } from "@/features/attraction"
+import { DeleteAttractionDialog } from "@/features/attraction/components/delete-attraction-dialog"
 import { AttractionTableSkeleton } from "@/features/attraction/components/attraction-table-skeleton"
 import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
+import { DeleteDestinationDialog } from "../components/delete-destination-dialog"
 import { DestinationForm } from "../components/destination-form"
 import { DestinationGallerySkeleton } from "../components/destination-gallery"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useUpdateDestination } from "../mutations/update-destination.mutation"
 import { getDestinationQueryOptions } from "../queries"
 
-const DeleteDestinationDialog = lazy(() =>
-  import("../components/delete-destination-dialog").then((m) => ({
-    default: m.DeleteDestinationDialog,
-  })),
-)
+const AttractionTable = dynamic(() => import("@/features/attraction/components/attraction-table"), {
+  ssr: false,
+  loading: AttractionTableSkeleton,
+})
 
-const AttractionTable = dynamic(
-  () => import("@/features/attraction/components/attraction-table"),
-  { ssr: false, loading: AttractionTableSkeleton },
-)
+const AttractionDialog = dynamic(() => import("@/features/attraction/components/attraction-dialog"), {
+  ssr: false,
+})
 
 const DestinationGallery = dynamic(() => import("../components/destination-gallery"), {
   ssr: false,

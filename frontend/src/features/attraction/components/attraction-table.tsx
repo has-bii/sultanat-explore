@@ -113,7 +113,7 @@ export default function AttractionTable({ destinationId }: Props) {
           onClick={() => fetchNextPage()}
           isLoading={isFetchingNextPage}
         >
-          Load more
+          Tampilkan lebih banyak
         </ButtonLoading>
       )}
     </div>
