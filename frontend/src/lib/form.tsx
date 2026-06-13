@@ -2,11 +2,12 @@
 
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
 import { Loader, LucideIcon } from "lucide-react"
-import { HTMLInputTypeAttribute } from "react"
+import { HTMLInputTypeAttribute, type ReactNode } from "react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { ImagePickerDialog } from "@/features/image/components/image-picker-dialog"
 import { VariantProps } from "class-variance-authority"
@@ -114,8 +115,38 @@ function SubmitButton(props: {
   )
 }
 
+function SelectField(props: {
+  label?: string
+  description?: string
+  placeholder?: string
+  children: ReactNode
+}) {
+  const field = useFieldContext<string>()
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
+  return (
+    <Field data-invalid={isInvalid}>
+      {props.label && <FieldLabel htmlFor={field.name}>{props.label}</FieldLabel>}
+      <Select
+        value={field.state.value}
+        onValueChange={(v) => field.handleChange(v)}
+        onOpenChange={(open) => {
+          if (!open) field.handleBlur()
+        }}
+      >
+        <SelectTrigger id={field.name} aria-invalid={isInvalid}>
+          <SelectValue placeholder={props.placeholder} />
+        </SelectTrigger>
+        <SelectContent>{props.children}</SelectContent>
+      </Select>
+      {props.description && <FieldDescription>{props.description}</FieldDescription>}
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
+  )
+}
+
 const { useAppForm } = createFormHook({
-  fieldComponents: { TextField, TextareaField, ImagePickerField },
+  fieldComponents: { TextField, TextareaField, ImagePickerField, SelectField },
   formComponents: { SubmitButton },
   fieldContext,
   formContext,
