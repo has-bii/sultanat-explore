@@ -1,8 +1,9 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { useEditorState } from "@tiptap/react"
 import {
   Bold,
-  Code,
   Heading2,
   Heading3,
   ImageIcon,
@@ -11,138 +12,159 @@ import {
   ListOrdered,
   Minus,
   Quote,
-  Redo,
-  Undo,
 } from "lucide-react"
-import type { Editor } from "@tiptap/react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface Props {
-  editor: Editor | null
-  onInsertImage?: () => void
+  editor: Editor
+  onOpenImagePicker: () => void
 }
 
 function ToolbarButton({
+  label,
+  shortcut,
+  icon,
   onClick,
   isActive = false,
   disabled = false,
-  children,
 }: {
+  label: string
+  shortcut?: string
+  icon: React.ReactNode
   onClick: () => void
   isActive?: boolean
   disabled?: boolean
-  children: React.ReactNode
 }) {
   return (
-    <Button
-      type="button"
-      variant={isActive ? "secondary" : "ghost"}
-      size="icon-sm"
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {children}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          type="button"
+          variant={isActive ? "secondary" : "ghost"}
+          size="icon-sm"
+          disabled={disabled}
+          onClick={onClick}
+          aria-label={label}
+          aria-pressed={isActive}
+        >
+          {icon}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        {label}
+        {shortcut && <kbd className="ml-1.5 text-[10px] opacity-60">{shortcut}</kbd>}
+      </TooltipContent>
+    </Tooltip>
   )
 }
 
-export function TiptapToolbar({ editor, onInsertImage }: Props) {
-  if (!editor) return null
+export function TiptapToolbar({ editor, onOpenImagePicker }: Props) {
+  const { isBold, isItalic, isHeading2, isHeading3, isBulletList, isOrderedList, isBlockquote } =
+    useEditorState({
+      editor,
+      selector: ({ editor: e }) => ({
+        isBold: e.isActive("bold"),
+        isItalic: e.isActive("italic"),
+        isHeading2: e.isActive("heading", { level: 2 }),
+        isHeading3: e.isActive("heading", { level: 3 }),
+        isBulletList: e.isActive("bulletList"),
+        isOrderedList: e.isActive("orderedList"),
+        isBlockquote: e.isActive("blockquote"),
+      }),
+    })
 
   return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b p-1.5">
-      {/* Text formatting */}
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        isActive={editor.isActive("bold")}
+    <TooltipProvider delayDuration={300}>
+      <div
+        className="flex flex-wrap items-center gap-0.5 border-b p-1.5"
+        role="toolbar"
+        aria-label="Formatting"
       >
-        <Bold />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        isActive={editor.isActive("italic")}
-      >
-        <Italic />
-      </ToolbarButton>
+        {/* Text formatting */}
+        <ToolbarButton
+          label="Tebal"
+          shortcut="Ctrl+B"
+          icon={<Bold />}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          isActive={isBold}
+        />
+        <ToolbarButton
+          label="Miring"
+          shortcut="Ctrl+I"
+          icon={<Italic />}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          isActive={isItalic}
+        />
 
-      <Separator orientation="vertical" className="mx-1 h-6" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 my-auto data-[orientation=vertical]:h-4"
+        />
 
-      {/* Headings */}
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        isActive={editor.isActive("heading", { level: 2 })}
-      >
-        <Heading2 />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        isActive={editor.isActive("heading", { level: 3 })}
-      >
-        <Heading3 />
-      </ToolbarButton>
+        {/* Headings */}
+        <ToolbarButton
+          label="Judul 2"
+          shortcut="Ctrl+Alt+2"
+          icon={<Heading2 />}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          isActive={isHeading2}
+        />
+        <ToolbarButton
+          label="Judul 3"
+          shortcut="Ctrl+Alt+3"
+          icon={<Heading3 />}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          isActive={isHeading3}
+        />
 
-      <Separator orientation="vertical" className="mx-1 h-6" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 my-auto data-[orientation=vertical]:h-4"
+        />
 
-      {/* Lists */}
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        isActive={editor.isActive("bulletList")}
-      >
-        <List />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        isActive={editor.isActive("orderedList")}
-      >
-        <ListOrdered />
-      </ToolbarButton>
+        {/* Lists */}
+        <ToolbarButton
+          label="Daftar Bullet"
+          icon={<List />}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          isActive={isBulletList}
+        />
+        <ToolbarButton
+          label="Daftar Nomor"
+          icon={<ListOrdered />}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          isActive={isOrderedList}
+        />
 
-      <Separator orientation="vertical" className="mx-1 h-6" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 my-auto data-[orientation=vertical]:h-4"
+        />
 
-      {/* Block elements */}
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        isActive={editor.isActive("blockquote")}
-      >
-        <Quote />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        isActive={editor.isActive("codeBlock")}
-      >
-        <Code />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        <Minus />
-      </ToolbarButton>
+        {/* Block elements */}
+        <ToolbarButton
+          label="Kutipan"
+          icon={<Quote />}
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          isActive={isBlockquote}
+        />
+        <ToolbarButton
+          label="Garis Horizontal"
+          icon={<Minus />}
+          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+        />
 
-      {/* Image */}
-      {onInsertImage && (
-        <>
-          <Separator orientation="vertical" className="mx-1 h-6" />
-          <ToolbarButton onClick={onInsertImage}>
-            <ImageIcon />
-          </ToolbarButton>
-        </>
-      )}
+        <Separator
+          orientation="vertical"
+          className="mx-2 my-auto data-[orientation=vertical]:h-4"
+        />
 
-      <Separator orientation="vertical" className="mx-1 h-6" />
-
-      {/* Undo/Redo */}
-      <ToolbarButton
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().undo()}
-      >
-        <Undo />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().redo()}
-      >
-        <Redo />
-      </ToolbarButton>
-    </div>
+        {/* Image */}
+        <ToolbarButton label="Sisip Gambar" icon={<ImageIcon />} onClick={onOpenImagePicker} />
+      </div>
+    </TooltipProvider>
   )
 }
