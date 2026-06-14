@@ -43,6 +43,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │       ├── page.tsx       # Dashboard home
     │   │       ├── destination/
     │   │       ├── image/
+    │   │       ├── settings/
     │   │
     │   └── api/
     │       └── [[...route]]/
@@ -309,6 +310,21 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts
+    │   ├── settings/
+    │   │   ├── components/
+    │   │   │   ├── avatar-upload.tsx
+    │   │   │   ├── password-section.tsx
+    │   │   │   ├── profile-section.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-password-form.ts
+    │   │   │   ├── use-profile-form.ts
+    │   │   ├── mutations/
+    │   │   │   ├── change-password.mutation.ts
+    │   │   │   ├── update-profile.mutation.ts
+    │   │   │   ├── upload-avatar.mutation.ts
+    │   │   ├── pages/
+    │   │   │   ├── settings.page.tsx
+    │   │   ├── types.ts
     │   ├── umrah/
     │   │   ├── components/
     │   │   │   ├── gallery.tsx
@@ -395,6 +411,10 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── image.route.ts
         │   ├── image.schema.ts
         │   ├── image.service.ts
+        ├── user/
+        │   ├── user.route.ts
+        │   ├── user.schema.ts
+        │   ├── user.service.ts
 ```
 
 ## Monorepo Structure

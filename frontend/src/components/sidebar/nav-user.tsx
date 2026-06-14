@@ -1,7 +1,8 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react"
+import { ChevronsUpDown, LogOut, Settings } from "lucide-react"
+import Link from "next/link"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -70,9 +71,11 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/admin/dashboard/settings">
+                  <Settings />
+                  Pengaturan
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={handleLogout}>
                 <LogOut />
