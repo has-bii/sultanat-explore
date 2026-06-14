@@ -20,7 +20,7 @@ import { useAttractionDialogStore } from "../stores/attraction-dialog.store"
 import { useDeleteAttractionDialogStore } from "../stores/delete-attraction-dialog.store"
 import { AttractionTableRow } from "./attraction-table-row"
 
-export default function AttractionListTable() {
+export function AttractionListTable() {
   const openDialog = useAttractionDialogStore((s) => s.onOpen)
   const openDeleteDialog = useDeleteAttractionDialogStore((s) => s.onOpen)
   const { query, methods } = useAttractionListFilters()

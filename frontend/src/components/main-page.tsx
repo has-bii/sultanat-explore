@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react"
 
+import { ClientOnly } from "@/components/client-only"
 import { cn } from "@/lib/utils"
 
 type Props = ComponentProps<"div">
@@ -15,7 +16,7 @@ export function MainPage({ children, className, ...props }: Props) {
 export function MainPageContent({ children, className, ...props }: Props) {
   return (
     <div className={cn("flex flex-1 flex-col gap-4 p-6", className)} {...props}>
-      {children}
+      <ClientOnly>{children}</ClientOnly>
     </div>
   )
 }

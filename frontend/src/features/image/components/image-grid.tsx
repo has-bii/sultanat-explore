@@ -26,7 +26,7 @@ interface Props {
   className?: string
 }
 
-export default function ImageGrid(props: Props) {
+export function ImageGrid(props: Props) {
   const {
     query,
     onClearSearch,

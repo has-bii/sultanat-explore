@@ -12,16 +12,12 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import dynamic from "next/dynamic"
 
+import { ClientOnly } from "../client-only"
 import { NavDashboard } from "./nav-dashboard"
 import { NavSkeleton } from "./nav-skeleton"
+import { NavUser } from "./nav-user"
 import { SidebarHeaderItem } from "./sidebar-header-item"
-
-const NavUser = dynamic(
-  () => import("@/components/sidebar/nav-user").then((m) => ({ default: m.NavUser })),
-  { ssr: false, loading: NavUserSkeleton },
-)
 
 const navMain = [
   {
@@ -67,7 +63,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Suspense>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        <ClientOnly>
+          <Suspense fallback={<NavUserSkeleton />}>
+            <NavUser />
+          </Suspense>
+        </ClientOnly>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

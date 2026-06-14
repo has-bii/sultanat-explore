@@ -20,7 +20,7 @@ import { useDestinationFilters } from "../hooks/use-destination-filters"
 import { GetDestinationsQuery, getDestinationsQueryOptions } from "../queries"
 import { DestinationTableRow } from "./destination-table-row"
 
-export default function DestinationTable() {
+export function DestinationTable() {
   const { query, methods } = useDestinationFilters()
 
   const parsedQuery: GetDestinationsQuery = {

@@ -82,6 +82,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │
     │   ├── button-copy.tsx
     │   ├── button-loading.tsx
+    │   ├── client-only.tsx
     │   ├── cta-section.tsx
     │   ├── error-component.tsx
     │   ├── faq-section.tsx

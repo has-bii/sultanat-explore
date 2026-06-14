@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { ImageIcon, ImagesIcon, Loader, SearchIcon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,21 +13,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import { blurhashToDataUrl } from "../lib/blurhash"
 import { getImageDetailQueryOptions } from "../queries"
+import { ImageGrid } from "./image-grid"
 import { ImageGridSkeleton } from "./image-grid-skeleton"
-
-const ImageGrid = dynamic(() => import("./image-grid"), {
-  ssr: false,
-  loading: () => (
-    <div className="@container/main">
-      <ImageGridSkeleton />
-    </div>
-  ),
-})
 
 type Props = {
   value?: string
@@ -79,16 +70,18 @@ export function ImagePickerDialog({ value, onChange }: Props) {
             onChange={(e) => setSearchLocal(e.target.value)}
           />
         </InputGroup>
-        <ImageGrid
-          className="@container/main min-h-0 flex-1"
-          query={{ limit: "10", sort: "createdAt", order: "desc", search }}
-          onClearSearch={() => setSearch("")}
-          selectedId={selectedId || undefined}
-          onImageClick={(image) => {
-            setSelectedId(image.id)
-            queryClient.prefetchQuery(getImageDetailQueryOptions(image.id))
-          }}
-        />
+        <Suspense fallback={<div className="@container/main"><ImageGridSkeleton /></div>}>
+          <ImageGrid
+            className="@container/main min-h-0 flex-1"
+            query={{ limit: "10", sort: "createdAt", order: "desc", search }}
+            onClearSearch={() => setSearch("")}
+            selectedId={selectedId || undefined}
+            onImageClick={(image) => {
+              setSelectedId(image.id)
+              queryClient.prefetchQuery(getImageDetailQueryOptions(image.id))
+            }}
+          />
+        </Suspense>
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary" onClick={() => setSelectedId(null)}>

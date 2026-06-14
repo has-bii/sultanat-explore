@@ -4,16 +4,11 @@ import { Plus } from "lucide-react"
 import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
-import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { DestinationFilters } from "../components/destination-filters"
+import { DestinationTable } from "../components/destination-table"
 import { DestinationTableSkeleton } from "../components/destination-table-skeleton"
-
-const DestinationTable = dynamic(() => import("../components/destination-table"), {
-  ssr: false,
-  loading: DestinationTableSkeleton,
-})
 
 export function DestinationListPage() {
   return (
@@ -32,7 +27,9 @@ export function DestinationListPage() {
       </div>
 
       {/* Table */}
-      <DestinationTable />
+      <Suspense fallback={<DestinationTableSkeleton />}>
+        <DestinationTable />
+      </Suspense>
     </div>
   )
 }

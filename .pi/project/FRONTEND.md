@@ -54,15 +54,18 @@ features/<name>/
 
 - File: `trip-card.tsx` → Export: `TripCard` (PascalCase)
 - One component per file. Co-locate variants in same file if small.
-- **Suspense components use `export default`** — never barrel-export. Components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery` must `export default` and be consumed via `next/dynamic`.
-- **Non-Suspense client components use named exports** — dialogs, sheets, toolbars, forms, etc. import directly, no `lazy()` or `dynamic()`.
-- Every suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
+- **All components use named exports** — no `export default`. Standard import pattern for everything.
+- **Suspense components** (components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery`) must be wrapped in `<Suspense fallback={...}>` at the call site. Never use `next/dynamic` with `ssr: false` for Suspense — use React `<Suspense>` instead.
+- Every Suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
 - Consume pattern for Suspense components:
-  ```ts
-  const Component = dynamic(() => import("..."), {
-    ssr: false,
-    loading: ComponentSkeleton,
-  })
+  ```tsx
+  import { Suspense } from "react"
+  import { DestinationTable } from "@/features/destination/components/destination-table"
+  import { DestinationTableSkeleton } from "@/features/destination/components/destination-table-skeleton"
+
+  <Suspense fallback={<DestinationTableSkeleton />}>
+    <DestinationTable />
+  </Suspense>
   ```
 - Consume pattern for non-Suspense client components:
   ```ts
@@ -71,11 +74,11 @@ features/<name>/
 
 #### Suspense Component Identification
 
-Any component that uses `useSuspenseQuery` or `useSuspenseInfiniteQuery` **must** follow the Suspense component pattern (export default + dynamic import + skeleton). To make these easy to identify:
+Any component that uses `useSuspenseQuery` or `useSuspenseInfiniteQuery` **must** be wrapped in `<Suspense>` at its call site. To make these easy to identify:
 
-- Add a `// @suspense` comment at the top of the file.
 - The component name should clearly indicate data loading (e.g. `DestinationTable`, `ImageGrid`, `TripCardList`).
-- If a component refactors from `useQuery` to `useSuspenseQuery`, it must be converted to the Suspense pattern immediately — no exceptions.
+- If a component refactors from `useQuery` to `useSuspenseQuery`, a `<Suspense fallback={...}>` wrapper must be added at the call site immediately — no exceptions.
+- **Never use `next/dynamic` with `ssr: false` for Suspense boundaries.** Use React `<Suspense>` with a skeleton fallback instead.
 
 ### Import Aliases
 

@@ -47,7 +47,7 @@ interface Props {
   destinationId: string
 }
 
-export default function DestinationGallery({ destinationId }: Props) {
+export function DestinationGallery({ destinationId }: Props) {
   const { data } = useSuspenseQuery(getDestinationGalleryQueryOptions(destinationId))
   const initialImages = data.map(({ image }) => image)
   const syncMutation = useUpdateGallery(destinationId)

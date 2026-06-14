@@ -24,7 +24,7 @@ interface Props {
   destinationId?: string
 }
 
-export default function AttractionDialog({ destinationId }: Props) {
+export function AttractionDialog({ destinationId }: Props) {
   const { open, onClose, meta: attractionId } = useAttractionDialogStore()
 
   const pendingMutations = useMutationState({
@@ -61,17 +61,17 @@ export default function AttractionDialog({ destinationId }: Props) {
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        {!attractionId && <CreateForm destinationId={destinationId} onSuccess={onClose} />}
-
-        {attractionId && (
-          <Suspense fallback={<AttractionFormSkeleton />}>
+        <Suspense fallback={<AttractionFormSkeleton />}>
+          {attractionId ? (
             <UpdateForm
               destinationId={destinationId}
               attractionId={attractionId}
               onSuccess={onClose}
             />
-          </Suspense>
-        )}
+          ) : (
+            <CreateForm destinationId={destinationId} onSuccess={onClose} />
+          )}
+        </Suspense>
       </DialogContent>
     </Dialog>
   )

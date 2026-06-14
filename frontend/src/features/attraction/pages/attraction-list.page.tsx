@@ -1,28 +1,17 @@
 "use client"
 
 import { Plus } from "lucide-react"
+import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import dynamic from "next/dynamic"
 
-import AttractionDialog from "../components/attraction-dialog"
+import { AttractionDialog } from "../components/attraction-dialog"
+import { AttractionListFilters } from "../components/attraction-list-filters"
+import { AttractionListTable } from "../components/attraction-list-table"
 import { AttractionListTableSkeleton } from "../components/attraction-list-table-skeleton"
 import { DeleteAttractionDialog } from "../components/delete-attraction-dialog"
 import { useAttractionDialogStore } from "../stores/attraction-dialog.store"
-
-const AttractionListFilters = dynamic(
-  () =>
-    import("../components/attraction-list-filters").then((m) => ({
-      default: m.AttractionListFilters,
-    })),
-  { ssr: false, loading: () => <Skeleton className="h-9 flex-1" /> },
-)
-
-const AttractionListTable = dynamic(() => import("../components/attraction-list-table"), {
-  ssr: false,
-  loading: AttractionListTableSkeleton,
-})
 
 export function AttractionListPage() {
   const openDialog = useAttractionDialogStore((s) => s.onOpen)
@@ -31,7 +20,9 @@ export function AttractionListPage() {
     <div className="flex flex-1 flex-col gap-4">
       {/* Toolbar: filters + create button */}
       <div className="flex items-center justify-between gap-2">
-        <AttractionListFilters />
+        <Suspense fallback={<Skeleton className="h-9 flex-1" />}>
+          <AttractionListFilters />
+        </Suspense>
         <Button onClick={() => openDialog(null)}>
           <Plus data-icon="inline-start" />
           <span>Tambah</span>
@@ -39,7 +30,9 @@ export function AttractionListPage() {
       </div>
 
       {/* Table */}
-      <AttractionListTable />
+      <Suspense fallback={<AttractionListTableSkeleton />}>
+        <AttractionListTable />
+      </Suspense>
 
       {/* Dialog (no destinationId — shows destination selector) */}
       <AttractionDialog />

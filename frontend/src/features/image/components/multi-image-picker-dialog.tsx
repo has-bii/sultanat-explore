@@ -1,5 +1,5 @@
 import { ImagesIcon, SearchIcon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -12,18 +12,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import dynamic from "next/dynamic"
 
+import { ImageGrid } from "./image-grid"
 import { ImageGridSkeleton } from "./image-grid-skeleton"
-
-const ImageGrid = dynamic(() => import("./image-grid"), {
-  ssr: false,
-  loading: () => (
-    <div className="@container/main">
-      <ImageGridSkeleton />
-    </div>
-  ),
-})
 
 const DEFAULT_MAX = 10
 
@@ -118,13 +109,15 @@ export function MultiImagePickerDialog({ selectedImages, onChange, max = DEFAULT
           />
         </InputGroup>
 
-        <ImageGrid
-          className="@container/main min-h-0 flex-1"
-          query={{ limit: "10", sort: "createdAt", order: "desc", search }}
-          onClearSearch={() => setSearch("")}
-          selectedIds={selectedIds}
-          onImageCheckedChange={({ id, url, blurHash }) => handleToggleImage({ id, url, blurHash })}
-        />
+        <Suspense fallback={<div className="@container/main"><ImageGridSkeleton /></div>}>
+          <ImageGrid
+            className="@container/main min-h-0 flex-1"
+            query={{ limit: "10", sort: "createdAt", order: "desc", search }}
+            onClearSearch={() => setSearch("")}
+            selectedIds={selectedIds}
+            onImageCheckedChange={({ id, url, blurHash }) => handleToggleImage({ id, url, blurHash })}
+          />
+        </Suspense>
 
         <DialogFooter>
           <DialogClose asChild>

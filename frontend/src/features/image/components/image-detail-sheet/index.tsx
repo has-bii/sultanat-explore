@@ -1,6 +1,7 @@
 "use client"
 
 import { useMutationState } from "@tanstack/react-query"
+import { Suspense } from "react"
 
 import {
   Sheet,
@@ -9,16 +10,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
-import dynamic from "next/dynamic"
 
 import { updateImageMutationKey } from "../../mutations/update-image.mutation"
 import { useImageDetailSheetStore } from "../../stores/image-detail-sheet.store"
+import { ImageUpdateForm } from "./image-update-form"
 import { ImageUpdateFormSkeleton } from "./image-update-form-skeleton"
-
-const ImageUpdateForm = dynamic(() => import("./image-update-form"), {
-  ssr: false,
-  loading: () => <ImageUpdateFormSkeleton />,
-})
 
 export function ImageSheet() {
   const { open, onClose, meta: selectedImageId } = useImageDetailSheetStore()
@@ -44,11 +40,13 @@ export function ImageSheet() {
           <SheetDescription>Ganti foto deskripsi atau hapus foto</SheetDescription>
         </SheetHeader>
         {selectedImageId && (
-          <ImageUpdateForm
-            imageId={selectedImageId}
-            onSuccess={onClose}
-            onDeleteSuccess={onClose}
-          />
+          <Suspense fallback={<ImageUpdateFormSkeleton />}>
+            <ImageUpdateForm
+              imageId={selectedImageId}
+              onSuccess={onClose}
+              onDeleteSuccess={onClose}
+            />
+          </Suspense>
         )}
       </SheetContent>
     </Sheet>

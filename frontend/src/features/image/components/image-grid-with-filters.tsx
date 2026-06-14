@@ -1,17 +1,13 @@
 "use client"
 
-import dynamic from "next/dynamic"
+import { Suspense } from "react"
 
 import { useImageFilters } from "../hooks/use-image-filters"
 import { useImageDetailSheetStore } from "../stores/image-detail-sheet.store"
 import { useImageSelectionStore } from "../stores/image-selection.store"
+import { ImageGrid } from "./image-grid"
 import { ImageGridSkeleton } from "./image-grid-skeleton"
 import { SelectionBar } from "./selection-bar"
-
-const ImageGrid = dynamic(() => import("./image-grid"), {
-  ssr: false,
-  loading: () => <ImageGridSkeleton count={10} />,
-})
 
 interface Props {
   // Style
@@ -46,14 +42,16 @@ export function ImageGridWithFilters(props: Props) {
   return (
     <>
       <SelectionBar />
-      <ImageGrid
-        query={apiQuery}
-        onClearSearch={() => methods.onSearchChange("")}
-        onImageClick={(image) => handleImageClick(image.id)}
-        selectedIds={selectedIds}
-        onImageCheckedChange={(image) => toggle(image.id)}
-        className={className}
-      />
+      <Suspense fallback={<ImageGridSkeleton count={10} />}>
+        <ImageGrid
+          query={apiQuery}
+          onClearSearch={() => methods.onSearchChange("")}
+          onImageClick={(image) => handleImageClick(image.id)}
+          selectedIds={selectedIds}
+          onImageCheckedChange={(image) => toggle(image.id)}
+          className={className}
+        />
+      </Suspense>
     </>
   )
 }

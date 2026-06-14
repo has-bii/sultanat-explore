@@ -2,6 +2,7 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Plus, Undo2 } from "lucide-react"
+import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -12,38 +13,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { DeleteAttractionDialog } from "@/features/attraction/components/delete-attraction-dialog"
+import { AttractionDialog } from "@/features/attraction/components/attraction-dialog"
+import { AttractionTable } from "@/features/attraction/components/attraction-table"
 import { AttractionTableSkeleton } from "@/features/attraction/components/attraction-table-skeleton"
+import { DeleteAttractionDialog } from "@/features/attraction/components/delete-attraction-dialog"
 import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
-import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { DeleteDestinationDialog } from "../components/delete-destination-dialog"
 import { DestinationForm } from "../components/destination-form"
+import { DestinationGallery } from "../components/destination-gallery"
 import { DestinationGallerySkeleton } from "../components/destination-gallery"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useUpdateDestination } from "../mutations/update-destination.mutation"
 import { getDestinationQueryOptions } from "../queries"
 
-const AttractionTable = dynamic(() => import("@/features/attraction/components/attraction-table"), {
-  ssr: false,
-  loading: AttractionTableSkeleton,
-})
-
-const AttractionDialog = dynamic(() => import("@/features/attraction/components/attraction-dialog"), {
-  ssr: false,
-})
-
-const DestinationGallery = dynamic(() => import("../components/destination-gallery"), {
-  ssr: false,
-  loading: DestinationGallerySkeleton,
-})
-
 interface Props {
   destinationId: string
 }
 
-export default function EditDestinationPage({ destinationId }: Props) {
+export function EditDestinationPage({ destinationId }: Props) {
   const { data } = useSuspenseQuery(getDestinationQueryOptions(destinationId))
 
   const { mutate, isPending, error } = useUpdateDestination(destinationId)
@@ -92,7 +81,9 @@ export default function EditDestinationPage({ destinationId }: Props) {
       </Card>
 
       {/* Gallery */}
-      <DestinationGallery destinationId={destinationId} />
+      <Suspense fallback={<DestinationGallerySkeleton />}>
+        <DestinationGallery destinationId={destinationId} />
+      </Suspense>
 
       {/* Attractions */}
       <Card className="col-span-2 w-full">
@@ -107,7 +98,9 @@ export default function EditDestinationPage({ destinationId }: Props) {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <AttractionTable destinationId={destinationId} />
+          <Suspense fallback={<AttractionTableSkeleton />}>
+            <AttractionTable destinationId={destinationId} />
+          </Suspense>
         </CardContent>
       </Card>
 
