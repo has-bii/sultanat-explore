@@ -34,7 +34,7 @@ const includeList = {
 const includeDetail = includeList
 
 export async function listArticles(params: ArticleQueryOutput) {
-  const { cursor, limit, search, category, sort, order } = params
+  const { cursor, limit, search, category, sort, order, published } = params
 
   let categoryId: string | undefined
   if (category) {
@@ -46,7 +46,7 @@ export async function listArticles(params: ArticleQueryOutput) {
   }
 
   const where: Prisma.ArticleWhereInput = {
-    published: true,
+    ...(published !== undefined ? { published } : {}),
     ...(categoryId ? { categoryId } : {}),
     ...(search
       ? {
@@ -126,7 +126,7 @@ export async function getRelatedArticles(slug: string, limit: number) {
   return [...sameCategory, ...others]
 }
 
-export async function createArticle(input: CreateArticleInput) {
+export async function createArticle(input: CreateArticleInput, authorId: string) {
   const slug = toSlug(input.title)
 
   const existingSlug = await db.article.findUnique({ where: { slug } })
@@ -139,9 +139,6 @@ export async function createArticle(input: CreateArticleInput) {
     if (!category) throw new HTTPException(400, { message: "Kategori tidak ditemukan" })
   }
 
-  const author = await db.user.findUnique({ where: { id: input.authorId } })
-  if (!author) throw new HTTPException(400, { message: "Penulis tidak ditemukan" })
-
   return db.article.create({
     data: {
       title: input.title,
@@ -150,8 +147,7 @@ export async function createArticle(input: CreateArticleInput) {
       content: input.content as Prisma.InputJsonValue,
       imageId: input.imageId,
       categoryId: input.categoryId ?? null,
-      authorId: input.authorId,
-      date: new Date(input.date),
+      authorId,
       published: input.published,
       publishedAt: input.published ? new Date() : null,
     },
@@ -177,7 +173,6 @@ export async function updateArticle(id: string, input: UpdateArticleInput) {
 
   if (input.excerpt !== undefined) data.excerpt = input.excerpt
   if (input.content !== undefined) data.content = input.content as Prisma.InputJsonValue
-  if (input.date !== undefined) data.date = new Date(input.date)
 
   if (input.imageId !== undefined) {
     await assertImageExists(input.imageId)
@@ -192,12 +187,6 @@ export async function updateArticle(id: string, input: UpdateArticleInput) {
       if (!category) throw new HTTPException(400, { message: "Kategori tidak ditemukan" })
       data.category = { connect: { id: input.categoryId } }
     }
-  }
-
-  if (input.authorId !== undefined) {
-    const author = await db.user.findUnique({ where: { id: input.authorId } })
-    if (!author) throw new HTTPException(400, { message: "Penulis tidak ditemukan" })
-    data.author = { connect: { id: input.authorId } }
   }
 
   // Publish transition: false→true sets publishedAt to now

@@ -16,8 +16,6 @@ export const createArticleSchema = v.object({
   content: v.any(), // opaque JSON — frontend owns block shapes
   imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
   categoryId: v.optional(v.pipe(v.string(), v.uuid("ID kategori tidak valid"))),
-  authorId: v.pipe(v.string(), v.uuid("ID penulis tidak valid")),
-  date: v.pipe(v.string(), v.isoTimestamp("Tanggal tidak valid")),
   published: v.boolean(),
 })
 
@@ -27,15 +25,13 @@ export const articleQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
   search: v.optional(v.string()),
   category: v.optional(v.string()), // category slug
+  published: v.optional(v.pipe(v.picklist(["true", "false"]), v.toBoolean())),
   sort: v.optional(v.picklist(["createdAt", "publishedAt"]), "createdAt"),
   order: orderDirectionSchema,
 })
 
 export const articleRelatedQuerySchema = v.object({
-  limit: v.optional(
-    v.pipe(v.string(), v.toNumber(), v.minValue(1), v.maxValue(20)),
-    "3",
-  ),
+  limit: v.optional(v.pipe(v.string(), v.toNumber(), v.minValue(1), v.maxValue(20)), "3"),
 })
 
 export type CreateArticleInput = v.InferInput<typeof createArticleSchema>

@@ -48,7 +48,8 @@ const articleRoute = new Hono()
   .use(requireAuth)
   .post("/", sValidator("json", createArticleSchema), async (c) => {
     const json = c.req.valid("json")
-    const article = await createArticle(json)
+    const user = c.get("user")!
+    const article = await createArticle(json, user.id)
     return c.json(successResponse(article, "Artikel berhasil dibuat"), 201)
   })
   .patch(

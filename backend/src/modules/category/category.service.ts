@@ -10,6 +10,9 @@ import type {
 export async function listCategories() {
   return db.category.findMany({
     orderBy: { name: "asc" },
+    include: {
+      _count: { select: { articles: true } },
+    },
   })
 }
 
