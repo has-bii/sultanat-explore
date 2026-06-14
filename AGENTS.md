@@ -14,9 +14,9 @@ Travel agency website. Turkey-based, serving Indonesian travelers. Open trips, p
 | `pnpm build` | Production build |
 | `pnpm start` | Start production server |
 | `pnpm lint` | Run ESLint |
-| `npx prettier --write .` | Format all files |
-| `npx tsc --noEmit` | Type check without build |
-| `npx shadcn@latest add <component>` | Add shadcn/ui component |
+| `pnpm typecheck` | Type check without build |
+| `pnpm format` | Format all files |
+| `pnpm dlx shadcn@latest add <component> -c frontend` | Add shadcn/ui component |
 
 **Docs:**
 
