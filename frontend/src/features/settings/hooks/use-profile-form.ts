@@ -17,7 +17,7 @@ export function useProfileForm({ defaultValues: _defaultValues, onSubmit }: Prop
   const form = useAppForm({
     defaultValues,
     validators: {
-      onChange: profileSchema,
+      onSubmit: profileSchema,
     },
     onSubmit: async ({ value }) => {
       await onSubmit(value)

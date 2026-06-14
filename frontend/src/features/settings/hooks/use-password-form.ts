@@ -18,7 +18,7 @@ export function usePasswordForm({ onSubmit }: Props) {
   const form = useAppForm({
     defaultValues,
     validators: {
-      onChange: passwordSchema,
+      onSubmit: passwordSchema,
     },
     onSubmit: async ({ value }) => {
       await onSubmit(value)

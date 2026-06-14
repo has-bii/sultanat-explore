@@ -314,6 +314,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── components/
     │   │   │   ├── avatar-upload.tsx
     │   │   │   ├── password-section.tsx
+    │   │   │   ├── profile-section-skeleton.tsx
     │   │   │   ├── profile-section.tsx
     │   │   ├── hooks/
     │   │   │   ├── use-password-form.ts

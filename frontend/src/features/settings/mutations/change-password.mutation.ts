@@ -22,5 +22,8 @@ export const useChangePassword = () => {
     onError: (err) => {
       toast.error(err.message)
     },
+    onSettled: (_res, _err, _vars, _result, context) => {
+      context.client.invalidateQueries({ queryKey: ["auth"] })
+    },
   })
 }

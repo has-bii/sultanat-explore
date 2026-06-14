@@ -1,12 +1,18 @@
 "use client"
 
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
-import { Loader, LucideIcon } from "lucide-react"
-import { HTMLInputTypeAttribute, type ReactNode } from "react"
+import { Eye, EyeOff, Loader, LucideIcon } from "lucide-react"
+import { HTMLInputTypeAttribute, type ReactNode, useState } from "react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { ImagePickerDialog } from "@/features/image/components/image-picker-dialog"
@@ -62,6 +68,37 @@ function TextareaField({ label, placeholder, rows = 4 }: Props & { rows?: number
         aria-invalid={isInvalid}
         rows={rows}
       />
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
+  )
+}
+
+function PasswordField({ label, placeholder }: Props) {
+  const field = useFieldContext<string>()
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+  const [visible, setVisible] = useState(false)
+
+  return (
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+      <InputGroup>
+        <InputGroupInput
+          id={field.name}
+          name={field.name}
+          type={visible ? "text" : "password"}
+          placeholder={placeholder}
+          value={field.state.value}
+          onBlur={field.handleBlur}
+          onChange={(e) => field.handleChange(e.target.value)}
+          aria-invalid={isInvalid}
+          autoComplete="off"
+        />
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton size="icon-xs" onClick={() => setVisible(!visible)} tabIndex={-1}>
+            {visible ? <EyeOff /> : <Eye />}
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
       {isInvalid && <FieldError errors={field.state.meta.errors} />}
     </Field>
   )
@@ -146,7 +183,7 @@ function SelectField(props: {
 }
 
 const { useAppForm } = createFormHook({
-  fieldComponents: { TextField, TextareaField, ImagePickerField, SelectField },
+  fieldComponents: { TextField, TextareaField, PasswordField, ImagePickerField, SelectField },
   formComponents: { SubmitButton },
   fieldContext,
   formContext,

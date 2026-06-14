@@ -3,6 +3,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Save } from "lucide-react"
 
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
 import { getAuthSessionQueryOptions } from "@/features/auth/query"
 
 import { useProfileForm } from "../hooks/use-profile-form"
@@ -23,12 +25,7 @@ export function ProfileSection() {
   })
 
   return (
-    <div className="w-full space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Profil</h3>
-        <p className="text-muted-foreground text-sm">Kelola informasi profil Anda.</p>
-      </div>
-
+    <div className="space-y-6">
       <AvatarUpload name={session.user.name} imageUrl={session.user.image} />
 
       <form
@@ -39,30 +36,27 @@ export function ProfileSection() {
         }}
         className="space-y-4"
       >
-        <form.AppField
-          name="name"
-          children={(field) => <field.TextField label="Nama" placeholder="Nama lengkap" />}
-        />
-
-        <div className="grid gap-2">
-          <label className="text-sm font-medium">Email</label>
-          <input
-            type="text"
-            value={session.user.email}
-            disabled
-            className="bg-muted border-input h-9 rounded-md border px-3 py-1 text-sm opacity-60"
+        <FieldGroup>
+          <form.AppField
+            name="name"
+            children={(field) => <field.TextField label="Nama" placeholder="Nama lengkap" />}
           />
-          <p className="text-muted-foreground text-xs">Email tidak dapat diubah.</p>
-        </div>
 
-        <form.AppForm>
-          <form.SubmitButton
-            label="Simpan"
-            pendingLabel="Menyimpan..."
-            icon={Save}
-            isDisabled={isPending}
-          />
-        </form.AppForm>
+          <Field>
+            <FieldLabel>Email</FieldLabel>
+            <Input type="text" value={session.user.email} disabled />
+            <FieldDescription>Email tidak dapat diubah.</FieldDescription>
+          </Field>
+
+          <form.AppForm>
+            <form.SubmitButton
+              label="Simpan"
+              pendingLabel="Menyimpan..."
+              icon={Save}
+              isDisabled={isPending}
+            />
+          </form.AppForm>
+        </FieldGroup>
       </form>
     </div>
   )
