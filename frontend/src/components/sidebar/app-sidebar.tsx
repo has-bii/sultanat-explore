@@ -1,6 +1,6 @@
 "use client"
 
-import { Image, PinIcon } from "lucide-react"
+import { FileText, Image, PinIcon } from "lucide-react"
 import { Suspense } from "react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
@@ -32,6 +32,21 @@ const navMain = [
       {
         title: "Atraksi",
         url: "/admin/dashboard/destination/attraction",
+      },
+    ],
+  },
+  {
+    title: "Artikel",
+    url: "/admin/dashboard/article",
+    icon: FileText,
+    items: [
+      {
+        title: "Overview",
+        url: "/admin/dashboard/article",
+      },
+      {
+        title: "Kategori",
+        url: "/admin/dashboard/article/category",
       },
     ],
   },
