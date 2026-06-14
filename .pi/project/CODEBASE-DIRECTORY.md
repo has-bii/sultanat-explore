@@ -400,10 +400,18 @@ backend/                           # Workspace package: API + DB + Auth
     │   ├── resend.ts  # Resend email client
     │   ├── slug.ts  # Slug generation utility
     └── modules/
+        ├── article/
+        │   ├── article.route.ts
+        │   ├── article.schema.ts
+        │   ├── article.service.ts
         ├── attraction/
         │   ├── attraction.route.ts
         │   ├── attraction.schema.ts
         │   ├── attraction.service.ts
+        ├── category/
+        │   ├── category.route.ts
+        │   ├── category.schema.ts
+        │   ├── category.service.ts
         ├── destination/
         │   ├── destination.route.ts
         │   ├── destination.schema.ts

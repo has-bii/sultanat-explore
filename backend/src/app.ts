@@ -5,7 +5,9 @@ import { HTTPException } from "hono/http-exception"
 
 import type { AppContext } from "backend/app.type"
 import { auth } from "backend/lib/auth"
+import articleRoute from "backend/modules/article/article.route"
 import attractionRoute from "backend/modules/attraction/attraction.route"
+import categoryRoute from "backend/modules/category/category.route"
 import destinationRoute from "backend/modules/destination/destination.route"
 import imageRoute from "backend/modules/image/image.route"
 import userRoute from "backend/modules/user/user.route"
@@ -58,6 +60,8 @@ const routes = app
   .route("/images", imageRoute)
   .route("/destinations", destinationRoute)
   .route("/attractions", attractionRoute)
+  .route("/articles", articleRoute)
+  .route("/categories", categoryRoute)
   .route("/me", userRoute)
 
 export default routes
