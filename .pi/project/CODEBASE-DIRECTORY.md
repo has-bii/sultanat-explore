@@ -41,6 +41,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── dashboard/         # Admin dashboard (SidebarProvider layout)
     │   │       ├── layout.tsx     # Admin dashboard layout (SidebarProvider + AppSidebar)
     │   │       ├── page.tsx       # Dashboard home
+    │   │       ├── article/
     │   │       ├── destination/
     │   │       ├── image/
     │   │       ├── settings/
@@ -117,6 +118,28 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts
+    │   ├── article/
+    │   │   ├── components/
+    │   │   │   ├── article-filters.tsx
+    │   │   │   ├── article-form.tsx
+    │   │   │   ├── article-table-row.tsx
+    │   │   │   ├── article-table-skeleton.tsx
+    │   │   │   ├── article-table.tsx
+    │   │   │   ├── delete-article-dialog.tsx
+    │   │   │   ├── edit-article-page-skeleton.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-article-filters.ts
+    │   │   │   ├── use-article-form.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-article.mutation.ts
+    │   │   │   ├── delete-article.mutation.ts
+    │   │   │   ├── update-article.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── article-list.page.tsx
+    │   │   │   ├── create-article.page.tsx
+    │   │   │   ├── edit-article.page.tsx
     │   ├── articles/
     │   │   ├── components/
     │   │   │   ├── article-body.tsx
@@ -171,6 +194,20 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── query/
     │   │   │   ├── index.ts
     │   │   └── index.ts
+    │   ├── category/
+    │   │   ├── components/
+    │   │   │   ├── category-dialog.tsx
+    │   │   │   ├── category-table-skeleton.tsx
+    │   │   │   ├── category-table.tsx
+    │   │   │   ├── delete-category-dialog.tsx
+    │   │   ├── mutations/
+    │   │   │   ├── create-category.mutation.ts
+    │   │   │   ├── delete-category.mutation.ts
+    │   │   │   ├── update-category.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── category-list.page.tsx
     │   ├── contact/
     │   │   ├── components/
     │   │   │   ├── contact-cards.tsx
