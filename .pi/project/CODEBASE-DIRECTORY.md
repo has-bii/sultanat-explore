@@ -80,6 +80,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── switch.tsx
     │   │   ├── table.tsx
     │   │   ├── textarea.tsx
+    │   │   ├── toggle-group.tsx
+    │   │   ├── toggle.tsx
     │   │   ├── tooltip.tsx
     │   │
     │   ├── button-copy.tsx
@@ -385,6 +387,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │
     ├── hooks/                     # Shared custom hooks
     │   ├── create-dialog-store.ts  # Zustand dialog/toggle store factory
+    │   ├── use-debounced-value.ts
     │   ├── use-list-filters.ts  # Shared list filter hooks (nuqs)
     │   ├── use-mobile.ts  # Mobile detection hook (used by sidebar)
     │
