@@ -29,8 +29,20 @@
       "inputs": ["src/**/*.ts", "src/**/*.tsx", "tsconfig.json", "prisma/schema.prisma"],
       "outputs": []
     },
+    "frontend#typecheck": {
+      "dependsOn": ["backend#typecheck", "db:generate"],
+      "cache": true,
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", "tsconfig.json", "prisma/schema.prisma"],
+      "outputs": []
+    },
     "lint": {
       "dependsOn": ["typecheck"],
+      "cache": true,
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", ".eslintrc*", "eslint.config*"],
+      "outputs": []
+    },
+    "frontend#lint": {
+      "dependsOn": ["backend#lint", "frontend#typecheck"],
       "cache": true,
       "inputs": ["src/**/*.ts", "src/**/*.tsx", ".eslintrc*", "eslint.config*"],
       "outputs": []
