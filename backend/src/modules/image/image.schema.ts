@@ -1,13 +1,13 @@
 import * as v from "valibot"
 
-import { cursorPaginationSchema } from "backend/schemas/query.schema"
+import { cursorPaginationSchema, orderDirectionSchema } from "backend/schemas/query.schema"
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"] as const
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
 
 export const imageQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
-  order: v.optional(v.picklist(["asc", "desc"]), "desc"),
+  order: orderDirectionSchema,
   sort: v.optional(v.picklist(["createdAt"]), "createdAt"),
   search: v.optional(v.pipe(v.string(), v.trim())),
 })

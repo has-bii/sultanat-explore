@@ -1,6 +1,6 @@
 import * as v from "valibot"
 
-import { cursorPaginationSchema } from "backend/schemas/query.schema"
+import { cursorPaginationSchema, orderDirectionSchema } from "backend/schemas/query.schema"
 
 export const createDestinationSchema = v.object({
   name: v.pipe(
@@ -45,7 +45,7 @@ export const destinationQuerySchema = v.object({
     ),
   ),
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
-  order: v.optional(v.picklist(["asc", "desc"]), "desc"),
+  order: orderDirectionSchema,
 })
 
 export const syncGallerySchema = v.object({

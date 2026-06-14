@@ -1,6 +1,6 @@
 import * as v from "valibot"
 
-import { cursorPaginationSchema } from "backend/schemas/query.schema"
+import { cursorPaginationSchema, orderDirectionSchema } from "backend/schemas/query.schema"
 
 export const createAttractionSchema = v.object({
   destinationId: v.pipe(v.string(), v.uuid("ID destinasi tidak valid")),
@@ -39,7 +39,7 @@ export const attractionQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
   search: v.fallback(v.optional(v.string()), undefined),
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
-  order: v.optional(v.picklist(["asc", "desc"]), "desc"),
+  order: orderDirectionSchema,
   destinationId: v.optional(v.pipe(v.string(), v.uuid("ID destinasi tidak valid"))),
 })
 

@@ -5,4 +5,6 @@ export const cursorPaginationSchema = v.object({
   limit: v.fallback(v.pipe(v.string(), v.toNumber(), v.minValue(10), v.maxValue(100)), 10),
 })
 
+export const orderDirectionSchema = v.optional(v.picklist(["asc", "desc"]), "desc")
+
 export type CursorPaginationOutput = v.InferOutput<typeof cursorPaginationSchema>
