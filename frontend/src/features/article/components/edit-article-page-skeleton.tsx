@@ -1,5 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import { TiptapEditorSkeleton } from "@/components/tiptap"
 
 export function EditArticlePageSkeleton() {
   return (
@@ -35,7 +34,7 @@ export function EditArticlePageSkeleton() {
           {/* Content — Tiptap */}
           <div className="flex w-full flex-col gap-3">
             <Skeleton className="h-4 w-14" />
-            <TiptapEditorSkeleton />
+            <Skeleton className="min-h-[300px] w-full" />
           </div>
 
           {/* Image + Category grid */}

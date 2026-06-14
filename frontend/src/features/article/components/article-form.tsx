@@ -25,11 +25,10 @@ interface ArticleFormProps {
   error: Error | null
   isPending: boolean
   categories: GetCategoriesResponse["data"]
-  onInsertImage?: () => void
 }
 
 export function ArticleForm(props: ArticleFormProps) {
-  const { form, mode, error, isPending, categories, onInsertImage } = props
+  const { form, mode, error, isPending, categories } = props
 
   return (
     <form
@@ -75,7 +74,6 @@ export function ArticleForm(props: ArticleFormProps) {
                 <TiptapEditor
                   content={field.state.value as Record<string, unknown> | null}
                   onChange={(json) => field.handleChange(json)}
-                  onInsertImage={onInsertImage}
                 />
                 {isInvalid && <p className="text-destructive text-sm">Konten harus diisi</p>}
               </Field>
