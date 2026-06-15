@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 
 import { CreateDestinationInput } from "backend/modules/destination/destination.schema"
 
-import { DestinationForm } from "../components/destination-form"
+import { DestinationForm } from "../components/form"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useCreateDestination } from "../mutations/create-destination.mutation"
 

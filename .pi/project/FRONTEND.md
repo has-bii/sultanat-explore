@@ -16,6 +16,12 @@
 ```
 features/<name>/
 ├── components/       # Feature-specific components
+│   ├── <concern>/    # Grouped by concern (form/, table/, dialog/, filter/, gallery/, etc.)
+│   │   ├── index.tsx     # Main component
+│   │   ├── skeleton.tsx  # Custom skeleton (layout-aware, substantial)
+│   │   └── <sub>.tsx     # Supporting pieces (row, view, card, etc.)
+│   ├── <singular>.tsx    # Standalone single file (rare)
+│   └── edit-skeleton.tsx # Page-level Suspense fallback
 ├── hooks/            # Feature-specific hooks (if any)
 ├── mutations/        # TanStack Query mutation hooks
 ├── queries/          # queryOptions + infiniteQueryOptions factories
@@ -24,6 +30,23 @@ features/<name>/
 ├── lib/              # Feature-specific utilities
 └── types.ts          # Feature types
 ```
+
+#### Component Naming Rules
+
+- **Drop feature prefix** inside `features/<name>/components/` — path provides context.
+- **Subfolder name** = concern noun: `form/`, `table/`, `dialog/`, `filter/`, `gallery/`, `grid/`, `detail-sheet/`, `upload-dialog/`.
+- **Export names stay PascalCase prefixed** — `DestinationForm`, `DestinationTable`.
+- **File names lose prefix** — `form/index.tsx` not `destination-form.tsx`.
+
+#### Skeleton Rules
+
+- **Thin wrapper** (`<TableSkeleton rows={5} cols={N} />`) → inline at call site, no separate file.
+- **Custom skeleton** (form layout, header, gallery grid) → `<concern>/skeleton.tsx`.
+- **Page-level skeleton** (edit page with header + form) → `components/edit-skeleton.tsx`.
+
+#### Store Rule
+
+- **Always separate file** in `stores/` — never define stores inside component files.
 
 ### Design System
 
@@ -56,15 +79,22 @@ features/<name>/
 - One component per file. Co-locate variants in same file if small.
 - **All components use named exports** — no `export default`. Standard import pattern for everything.
 - **Suspense components** (components that call `useSuspenseQuery` or `useSuspenseInfiniteQuery`) must be wrapped in `<Suspense fallback={...}>` at the call site. Never use `next/dynamic` with `ssr: false` for Suspense — use React `<Suspense>` instead.
-- Every Suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in the same file or a sibling `<name>-skeleton.tsx`.
+- Every Suspense component needs a **`<Name>Skeleton`** (e.g. `TripCardSkeleton`) collocated in `<concern>/skeleton.tsx` or inline at call site (thin wrappers).
 - Consume pattern for Suspense components:
   ```tsx
   import { Suspense } from "react"
-  import { DestinationTable } from "@/features/destination/components/destination-table"
-  import { DestinationTableSkeleton } from "@/features/destination/components/destination-table-skeleton"
+  import { DestinationTable } from "@/features/destination/components/table"
+  import { TableSkeleton } from "@/components/table-skeleton"
 
-  <Suspense fallback={<DestinationTableSkeleton />}>
+  // Thin skeleton — inline at call site
+  <Suspense fallback={<TableSkeleton rowCount={5} columns={6} />}>
     <DestinationTable />
+  </Suspense>
+
+  // Custom skeleton — from concern/skeleton.tsx
+  import { DestinationGallerySkeleton } from "@/features/destination/components/gallery/skeleton"
+  <Suspense fallback={<DestinationGallerySkeleton />}>
+    <DestinationGallery />
   </Suspense>
   ```
 - Consume pattern for non-Suspense client components:

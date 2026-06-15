@@ -122,13 +122,16 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── index.ts
     │   ├── article/
     │   │   ├── components/
-    │   │   │   ├── article-filters.tsx
-    │   │   │   ├── article-form.tsx
-    │   │   │   ├── article-table-row.tsx
-    │   │   │   ├── article-table-skeleton.tsx
-    │   │   │   ├── article-table.tsx
-    │   │   │   ├── delete-article-dialog.tsx
-    │   │   │   ├── edit-article-page-skeleton.tsx
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   ├── edit-skeleton.tsx
+    │   │   │   ├── filter/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
     │   │   ├── hooks/
     │   │   │   ├── use-article-filters.ts
     │   │   │   ├── use-article-form.ts
@@ -158,17 +161,21 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── index.ts
     │   ├── attraction/
     │   │   ├── components/
-    │   │   │   ├── attraction-dialog.tsx
-    │   │   │   ├── attraction-filters.tsx
-    │   │   │   ├── attraction-form-skeleton.tsx
-    │   │   │   ├── attraction-form.tsx
-    │   │   │   ├── attraction-list-filters.tsx
-    │   │   │   ├── attraction-list-table-skeleton.tsx
-    │   │   │   ├── attraction-list-table.tsx
-    │   │   │   ├── attraction-table-row.tsx
-    │   │   │   ├── attraction-table-skeleton.tsx
-    │   │   │   ├── attraction-table.tsx
-    │   │   │   ├── delete-attraction-dialog.tsx
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── filter/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── skeleton.tsx
+    │   │   │   ├── list-filter/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── list-table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
     │   │   ├── hooks/
     │   │   │   ├── use-attraction-filters.ts
     │   │   │   ├── use-attraction-form.ts
@@ -198,10 +205,11 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── index.ts
     │   ├── category/
     │   │   ├── components/
-    │   │   │   ├── category-dialog.tsx
-    │   │   │   ├── category-table-skeleton.tsx
-    │   │   │   ├── category-table.tsx
-    │   │   │   ├── delete-category-dialog.tsx
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
     │   │   ├── mutations/
     │   │   │   ├── create-category.mutation.ts
     │   │   │   ├── delete-category.mutation.ts
@@ -210,6 +218,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── index.ts
     │   │   ├── pages/
     │   │   │   ├── category-list.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── category-dialog.store.ts
     │   ├── contact/
     │   │   ├── components/
     │   │   │   ├── contact-cards.tsx
@@ -220,18 +230,23 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── index.ts
     │   ├── destination/
     │   │   ├── components/
-    │   │   │   ├── delete-destination-dialog.tsx
-    │   │   │   ├── destination-filters.tsx
-    │   │   │   ├── destination-form.tsx
     │   │   │   ├── destination-gallery/
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   ├── edit-skeleton.tsx
+    │   │   │   ├── filter/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── gallery/
     │   │   │   │   ├── draggable-item.tsx
     │   │   │   │   ├── gallery-view.tsx
     │   │   │   │   ├── image-card.tsx
     │   │   │   │   ├── index.tsx
-    │   │   │   ├── destination-skeleton.tsx
-    │   │   │   ├── destination-table-row.tsx
-    │   │   │   ├── destination-table-skeleton.tsx
-    │   │   │   ├── destination-table.tsx
+    │   │   │   │   ├── skeleton.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
     │   │   ├── hooks/
     │   │   │   ├── use-destination-filters.ts
     │   │   │   ├── use-destination-form.ts
@@ -281,20 +296,21 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── image/
     │   │   ├── components/
     │   │   │   ├── bulk-delete-dialog.tsx
-    │   │   │   ├── filters-toolbar.tsx
-    │   │   │   ├── image-card.tsx
-    │   │   │   ├── image-delete-dialog.tsx
-    │   │   │   ├── image-detail-sheet/
-    │   │   │   │   ├── image-update-form-skeleton.tsx
-    │   │   │   │   ├── image-update-form.tsx
+    │   │   │   ├── delete-dialog.tsx
+    │   │   │   ├── detail-sheet/
     │   │   │   │   ├── index.tsx
-    │   │   │   ├── image-grid-skeleton.tsx
-    │   │   │   ├── image-grid-with-filters.tsx
-    │   │   │   ├── image-grid.tsx
-    │   │   │   ├── image-picker-dialog.tsx
-    │   │   │   ├── multi-image-picker-dialog.tsx
+    │   │   │   │   ├── update-form-skeleton.tsx
+    │   │   │   │   ├── update-form.tsx
+    │   │   │   ├── filters-toolbar.tsx
+    │   │   │   ├── grid/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── skeleton.tsx
+    │   │   │   │   ├── with-filters.tsx
+    │   │   │   ├── image-card.tsx
+    │   │   │   ├── multi-picker-dialog.tsx
+    │   │   │   ├── picker-dialog.tsx
     │   │   │   ├── selection-bar.tsx
-    │   │   │   ├── upload-images-dialog/
+    │   │   │   ├── upload-dialog/
     │   │   │   │   ├── dnd-images.tsx
     │   │   │   │   ├── file-list-item.tsx
     │   │   │   │   ├── file-list.tsx

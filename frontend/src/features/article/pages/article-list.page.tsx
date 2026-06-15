@@ -6,9 +6,10 @@ import { Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-import { ArticleFilters } from "../components/article-filters"
-import { ArticleTable } from "../components/article-table"
-import { ArticleTableSkeleton } from "../components/article-table-skeleton"
+import { TableSkeleton } from "@/components/table-skeleton"
+
+import { ArticleFilters } from "../components/filter"
+import { ArticleTable } from "../components/table"
 
 export function ArticleListPage() {
   return (
@@ -23,7 +24,7 @@ export function ArticleListPage() {
         </Button>
       </div>
 
-      <Suspense fallback={<ArticleTableSkeleton />}>
+      <Suspense fallback={<TableSkeleton rowCount={5} columns={5} />}>
         <ArticleTable />
       </Suspense>
     </div>

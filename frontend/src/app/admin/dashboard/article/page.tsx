@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
 import { ArticleListPage } from "@/features/article/pages/article-list.page"
-import { ArticleTableSkeleton } from "@/features/article/components/article-table-skeleton"
+import { TableSkeleton } from "@/components/table-skeleton"
 
 const breadcrumb: HeaderBreadcrumbItem = [
   {
@@ -24,7 +24,7 @@ export default function Page() {
         </HeaderLeft>
       </Header>
       <MainPageContent>
-        <Suspense fallback={<ArticleTableSkeleton />}>
+        <Suspense fallback={<TableSkeleton rowCount={5} columns={5} />}>
           <ArticleListPage />
         </Suspense>
       </MainPageContent>

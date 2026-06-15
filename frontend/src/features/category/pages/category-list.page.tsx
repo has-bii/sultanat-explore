@@ -5,9 +5,10 @@ import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
 
-import { CategoryDialog, useCategoryDialogStore } from "../components/category-dialog"
-import { CategoryTable } from "../components/category-table"
-import { CategoryTableSkeleton } from "../components/category-table-skeleton"
+import { CategoryDialog } from "../components/dialog"
+import { useCategoryDialogStore } from "../stores/category-dialog.store"
+import { CategoryTable } from "../components/table"
+import { TableSkeleton } from "@/components/table-skeleton"
 
 export function CategoryListPage() {
   const open = useCategoryDialogStore((s) => s.onOpen)
@@ -21,7 +22,7 @@ export function CategoryListPage() {
         </Button>
       </div>
 
-      <Suspense fallback={<CategoryTableSkeleton />}>
+      <Suspense fallback={<TableSkeleton rowCount={5} columns={4} />}>
         <CategoryTable />
       </Suspense>
 

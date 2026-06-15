@@ -14,8 +14,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { ImageGrid } from "@/features/image/components/image-grid"
-import { ImageGridSkeleton } from "@/features/image/components/image-grid-skeleton"
+import { ImageGrid } from "@/features/image/components/grid"
+import { ImageGridSkeleton } from "@/features/image/components/grid/skeleton"
 import type { Image as TImage } from "@/features/image/types"
 import { useDebouncedValue } from "@/hooks/use-debounced-value"
 

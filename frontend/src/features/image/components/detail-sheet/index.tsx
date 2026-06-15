@@ -1,0 +1,54 @@
+"use client"
+
+import { useMutationState } from "@tanstack/react-query"
+import { Suspense } from "react"
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+
+import { updateImageMutationKey } from "../../mutations/update-image.mutation"
+import { useImageDetailSheetStore } from "../../stores/image-detail-sheet.store"
+import { ImageUpdateForm } from "./update-form"
+import { ImageUpdateFormSkeleton } from "./update-form-skeleton"
+
+export function ImageSheet() {
+  const { open, onClose, meta: selectedImageId } = useImageDetailSheetStore()
+
+  const mutation = useMutationState({
+    filters: {
+      mutationKey: updateImageMutationKey(selectedImageId!),
+      exact: true,
+    },
+  })
+
+  const handleClose = () => {
+    const isPending = mutation[0]?.status === "pending"
+    if (isPending) return
+    onClose()
+  }
+
+  return (
+    <Sheet open={open} onOpenChange={handleClose}>
+      <SheetContent>
+        <SheetHeader className="border-b">
+          <SheetTitle>Detail Foto</SheetTitle>
+          <SheetDescription>Ganti foto deskripsi atau hapus foto</SheetDescription>
+        </SheetHeader>
+        {selectedImageId && (
+          <Suspense fallback={<ImageUpdateFormSkeleton />}>
+            <ImageUpdateForm
+              imageId={selectedImageId}
+              onSuccess={onClose}
+              onDeleteSuccess={onClose}
+            />
+          </Suspense>
+        )}
+      </SheetContent>
+    </Sheet>
+  )
+}

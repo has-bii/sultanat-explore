@@ -6,11 +6,11 @@ import { Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
-import { AttractionDialog } from "../components/attraction-dialog"
-import { AttractionListFilters } from "../components/attraction-list-filters"
-import { AttractionListTable } from "../components/attraction-list-table"
-import { AttractionListTableSkeleton } from "../components/attraction-list-table-skeleton"
-import { DeleteAttractionDialog } from "../components/delete-attraction-dialog"
+import { AttractionDialog } from "../components/dialog"
+import { AttractionListFilters } from "../components/list-filter"
+import { AttractionListTable } from "../components/list-table"
+import { DeleteAttractionDialog } from "../components/dialog/delete"
+import { TableSkeleton } from "@/components/table-skeleton"
 import { useAttractionDialogStore } from "../stores/attraction-dialog.store"
 
 export function AttractionListPage() {
@@ -30,7 +30,7 @@ export function AttractionListPage() {
       </div>
 
       {/* Table */}
-      <Suspense fallback={<AttractionListTableSkeleton />}>
+      <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
         <AttractionListTable />
       </Suspense>
 

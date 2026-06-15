@@ -10,8 +10,8 @@ import Link from "next/link"
 
 import type { CreateArticleInput } from "backend/modules/article/article.schema"
 
-import { ArticleForm } from "../components/article-form"
-import { DeleteArticleDialog } from "../components/delete-article-dialog"
+import { ArticleForm } from "../components/form"
+import { DeleteArticleDialog } from "../components/dialog/delete"
 import { useArticleForm } from "../hooks/use-article-form"
 import { useUpdateArticle } from "../mutations/update-article.mutation"
 import { getArticleQueryOptions } from "../queries"

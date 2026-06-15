@@ -6,7 +6,7 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 
 import { getCategoriesQueryOptions } from "@/features/category/queries"
 
-import { ArticleForm } from "../components/article-form"
+import { ArticleForm } from "../components/form"
 import { useArticleForm } from "../hooks/use-article-form"
 import { useCreateArticle } from "../mutations/create-article.mutation"
 import type { CreateArticleInput } from "backend/modules/article/article.schema"

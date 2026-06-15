@@ -1,7 +1,7 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Plus, Trash2, Undo2 } from "lucide-react"
+import { Plus } from "lucide-react"
 import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -13,18 +13,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { AttractionDialog } from "@/features/attraction/components/attraction-dialog"
-import { AttractionTable } from "@/features/attraction/components/attraction-table"
-import { AttractionTableSkeleton } from "@/features/attraction/components/attraction-table-skeleton"
-import { DeleteAttractionDialog } from "@/features/attraction/components/delete-attraction-dialog"
+import { TableSkeleton } from "@/components/table-skeleton"
+import { AttractionDialog } from "@/features/attraction/components/dialog"
+import { AttractionTable } from "@/features/attraction/components/table"
+import { DeleteAttractionDialog } from "@/features/attraction/components/dialog/delete"
 import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
+import { Undo2 } from "lucide-react"
 import Link from "next/link"
 
-import { DeleteDestinationDialog } from "../components/delete-destination-dialog"
-import { DestinationForm } from "../components/destination-form"
-import { DestinationGallery } from "../components/destination-gallery"
-import { DestinationGallerySkeleton } from "../components/destination-gallery"
+import { DeleteDestinationDialog } from "../components/dialog/delete"
+import { DetailFormSkeleton, HeaderSkeleton } from "../components/edit-skeleton"
+import { DestinationForm } from "../components/form"
+import { DestinationGallery } from "../components/gallery"
+import { DestinationGallerySkeleton } from "../components/gallery/skeleton"
 import { useDestinationForm } from "../hooks/use-destination-form"
 import { useUpdateDestination } from "../mutations/update-destination.mutation"
 import { getDestinationQueryOptions } from "../queries"
@@ -66,7 +67,7 @@ export function EditDestinationPage({ destinationId }: Props) {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<AttractionTableSkeleton />}>
+          <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
             <AttractionTable destinationId={destinationId} />
           </Suspense>
         </CardContent>
@@ -87,27 +88,6 @@ function Header({ destinationId }: Props) {
 
       <div className="inline-flex items-center gap-2">
         <DeleteDestinationDialog destinationId={destinationId} destinationName={data.name} />
-        <Button asChild variant="outline">
-          <Link href="/admin/dashboard/destination">
-            <Undo2 data-icon="inline-start" />
-            <span>Kembali</span>
-          </Link>
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-function HeaderSkeleton() {
-  return (
-    <div className="col-span-2 flex items-center justify-between">
-      <Skeleton className="h-9 w-36" />
-
-      <div className="inline-flex items-center gap-2">
-        <Button variant="destructive" disabled>
-          <Trash2 data-icon="inline-start" />
-          <span>Hapus</span>
-        </Button>
         <Button asChild variant="outline">
           <Link href="/admin/dashboard/destination">
             <Undo2 data-icon="inline-start" />
@@ -148,56 +128,5 @@ function DetailForm({ destinationId }: Props) {
         <DestinationForm mode="edit" form={form} isPending={isPending} error={error} />
       </CardContent>
     </Card>
-  )
-}
-
-function DetailFormSkeleton() {
-  return (
-    <div className="flex w-full flex-col gap-0 rounded-2xl border">
-      <div className="flex flex-col gap-1 border-b p-6">
-        <Skeleton className="h-6 w-40" />
-        <Skeleton className="h-4 w-56" />
-      </div>
-      <div className="flex flex-col gap-7 p-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex w-full flex-col gap-3">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-          <div className="flex w-full flex-col gap-3">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-3">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-32 w-full" />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex w-full flex-col gap-3">
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="aspect-video w-full" />
-          </div>
-          <div className="flex w-full flex-col gap-3">
-            <Skeleton className="h-4 w-20" />
-            <div className="flex flex-col gap-2">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-5 w-5" />
-          <div className="flex flex-col gap-1">
-            <Skeleton className="h-4 w-40" />
-            <Skeleton className="h-3 w-64" />
-          </div>
-        </div>
-        <div className="flex w-full flex-row items-center justify-end gap-3">
-          <Skeleton className="h-10 w-28" />
-        </div>
-      </div>
-    </div>
   )
 }

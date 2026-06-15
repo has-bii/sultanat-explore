@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
 import { EditArticlePage } from "@/features/article/pages/edit-article.page"
-import { EditArticlePageSkeleton } from "@/features/article/components/edit-article-page-skeleton"
+import { EditArticlePageSkeleton } from "@/features/article/components/edit-skeleton"
 
 const breadcrumb: HeaderBreadcrumbItem = [
   {

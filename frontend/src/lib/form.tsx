@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/input-group"
 import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { ImagePickerDialog } from "@/features/image/components/image-picker-dialog"
+import { ImagePickerDialog } from "@/features/image/components/picker-dialog"
 import { VariantProps } from "class-variance-authority"
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =

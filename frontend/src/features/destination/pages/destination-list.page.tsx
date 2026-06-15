@@ -6,9 +6,10 @@ import { Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-import { DestinationFilters } from "../components/destination-filters"
-import { DestinationTable } from "../components/destination-table"
-import { DestinationTableSkeleton } from "../components/destination-table-skeleton"
+import { TableSkeleton } from "@/components/table-skeleton"
+
+import { DestinationFilters } from "../components/filter"
+import { DestinationTable } from "../components/table"
 
 export function DestinationListPage() {
   return (
@@ -27,7 +28,7 @@ export function DestinationListPage() {
       </div>
 
       {/* Table */}
-      <Suspense fallback={<DestinationTableSkeleton />}>
+      <Suspense fallback={<TableSkeleton rowCount={5} columns={6} />}>
         <DestinationTable />
       </Suspense>
     </div>
