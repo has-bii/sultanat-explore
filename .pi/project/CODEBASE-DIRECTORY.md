@@ -230,7 +230,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   └── index.ts
     │   ├── destination/
     │   │   ├── components/
-    │   │   │   ├── destination-gallery/
     │   │   │   ├── dialog/
     │   │   │   │   ├── delete.tsx
     │   │   │   ├── edit-skeleton.tsx
