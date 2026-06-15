@@ -12,8 +12,7 @@
     "format": "prettier --write .",
     "db:generate": "turbo db:generate",
     "clean": "turbo clean && rm -rf node_modules/.cache/turbo",
-    "generate:dir": "node scripts/generate-codebase-dir.js",
-    "prepare": "husky"
+    "generate:dir": "node scripts/generate-codebase-dir.js"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
