@@ -232,7 +232,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── destination-table-row.tsx
     │   │   │   ├── destination-table-skeleton.tsx
     │   │   │   ├── destination-table.tsx
-    │   │   │   ├── edit-destination-page-skeleton.tsx
     │   │   ├── hooks/
     │   │   │   ├── use-destination-filters.ts
     │   │   │   ├── use-destination-form.ts

@@ -1,10 +1,7 @@
 "use client"
 
-import { Suspense } from "react"
-
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
-import { EditDestinationPageSkeleton } from "@/features/destination/components/edit-destination-page-skeleton"
 import { EditDestinationPage } from "@/features/destination/pages/edit-destination.page"
 import { useParams } from "next/navigation"
 
@@ -32,9 +29,7 @@ export default function Page() {
         </HeaderLeft>
       </Header>
       <MainPageContent>
-        <Suspense fallback={<EditDestinationPageSkeleton />}>
-          <EditDestinationPage destinationId={id} />
-        </Suspense>
+        <EditDestinationPage destinationId={id} />
       </MainPageContent>
     </MainPage>
   )
