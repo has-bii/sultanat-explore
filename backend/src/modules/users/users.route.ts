@@ -1,21 +1,21 @@
 import { Hono } from "hono"
 
-import { requireAuth } from "backend/middlewares/require-auth"
 import { requireAdmin } from "backend/middlewares/require-admin"
+import { requireAuth } from "backend/middlewares/require-auth"
 import { sValidator } from "backend/middlewares/validator-wrapper"
-import { paramIdSchema } from "backend/schemas/param.schema"
 import {
   createUserSchema,
   updateUserRoleSchema,
   userQuerySchema,
-} from "backend/modules/user/users.schema"
+} from "backend/modules/users/users.schema"
 import {
   createUser,
   deleteUser,
   getUser,
   listUsers,
   updateUserRole,
-} from "backend/modules/user/users.service"
+} from "backend/modules/users/users.service"
+import { paramIdSchema } from "backend/schemas/param.schema"
 import { successResponse } from "backend/utils/response"
 
 const usersRoute = new Hono()

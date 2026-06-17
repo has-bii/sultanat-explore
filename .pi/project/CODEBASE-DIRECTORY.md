@@ -479,6 +479,7 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── user.route.ts
         │   ├── user.schema.ts
         │   ├── user.service.ts
+        ├── users/
         │   ├── users.route.ts
         │   ├── users.schema.ts
         │   ├── users.service.ts

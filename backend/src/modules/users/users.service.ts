@@ -1,13 +1,13 @@
+import { hashPassword } from "better-auth/crypto"
 import { HTTPException } from "hono/http-exception"
 
-import { hashPassword } from "better-auth/crypto"
+import type { UserModel } from "backend/generated/prisma/models/User"
 import { db } from "backend/lib/db"
 import type {
   CreateUserInput,
   UpdateUserRoleInput,
   UserQueryOutput,
-} from "backend/modules/user/users.schema"
-import type { UserModel } from "backend/generated/prisma/models/User"
+} from "backend/modules/users/users.schema"
 
 function toUserDto(user: UserModel) {
   return {
