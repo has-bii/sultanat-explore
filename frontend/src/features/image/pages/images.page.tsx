@@ -1,5 +1,5 @@
-import { ImageGridWithFilters } from "@/features/image/components/grid/with-filters"
 import { ImageSheet } from "@/features/image/components/detail-sheet"
+import { ImageGridWithFilters } from "@/features/image/components/grid/with-filters"
 import { UploadImagesDialog } from "@/features/image/components/upload-dialog"
 
 import { ImageToolbar } from "../components/filters-toolbar"

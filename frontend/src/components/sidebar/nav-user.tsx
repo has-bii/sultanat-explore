@@ -2,7 +2,6 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { ChevronsUpDown, LogOut, Settings } from "lucide-react"
-import Link from "next/link"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -17,6 +16,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { useLogout } from "@/features/auth/mutations/logout.mutation"
 import { getAuthSessionQueryOptions } from "@/features/auth/query"
+import Link from "next/link"
 
 export function NavUser() {
   const { data } = useSuspenseQuery(getAuthSessionQueryOptions())

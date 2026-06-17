@@ -1,10 +1,10 @@
 "use client"
 
+import { Camera, Loader2 } from "lucide-react"
 import { useRef, useState } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Camera, Loader2 } from "lucide-react"
 
 import { useUploadAvatar } from "../mutations/upload-avatar.mutation"
 
@@ -52,7 +52,7 @@ export function AvatarUpload({ name, imageUrl }: Props) {
       <button
         type="button"
         onClick={handleClick}
-        className="group relative h-20 w-20 shrink-0 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="group focus-visible:ring-ring relative h-20 w-20 shrink-0 cursor-pointer rounded-full outline-none focus-visible:ring-2"
         disabled={isPending}
       >
         <Avatar className="h-20 w-20">
@@ -68,10 +68,16 @@ export function AvatarUpload({ name, imageUrl }: Props) {
         </div>
       </button>
       <div className="space-y-1.5">
-        <Button type="button" variant="outline" size="sm" onClick={handleClick} disabled={isPending}>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleClick}
+          disabled={isPending}
+        >
           {isPending ? "Mengunggah..." : "Ubah Foto"}
         </Button>
-        {error && <p className="text-sm text-destructive">{error}</p>}
+        {error && <p className="text-destructive text-sm">{error}</p>}
         <p className="text-muted-foreground text-xs">JPG, PNG, atau WebP. Maks 5MB.</p>
       </div>
       <input

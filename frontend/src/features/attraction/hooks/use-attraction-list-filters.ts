@@ -1,9 +1,8 @@
 "use client"
 
+import { createFilterMethods, filterParsers } from "@/hooks/use-list-filters"
 import { parseAsString, parseAsStringLiteral } from "nuqs"
 import { useQueryStates } from "nuqs"
-
-import { createFilterMethods, filterParsers } from "@/hooks/use-list-filters"
 
 export function useAttractionListFilters() {
   const [query, setQuery] = useQueryStates({
@@ -12,10 +11,7 @@ export function useAttractionListFilters() {
     destinationId: parseAsString.withDefault(""),
   })
 
-  const { onSearchChange, onSortOrderChange } = createFilterMethods(setQuery, [
-    "name",
-    "createdAt",
-  ])
+  const { onSearchChange, onSortOrderChange } = createFilterMethods(setQuery, ["name", "createdAt"])
 
   const onDestinationChange = (destinationId: string) => {
     setQuery((prev) => ({ ...prev, destinationId }))

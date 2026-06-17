@@ -5,12 +5,12 @@ import { db } from "backend/lib/db"
 import { cursorArgs, toPage } from "backend/lib/paginate"
 import { imageCardSelect } from "backend/lib/prisma-fragments"
 import { toSlug } from "backend/lib/slug"
-import { assertImageExists } from "backend/modules/image/image.service"
 import type {
   ArticleQueryOutput,
   CreateArticleInput,
   UpdateArticleInput,
 } from "backend/modules/article/article.schema"
+import { assertImageExists } from "backend/modules/image/image.service"
 
 const authorSelect = {
   id: true,

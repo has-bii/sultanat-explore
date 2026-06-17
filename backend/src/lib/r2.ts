@@ -1,8 +1,4 @@
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3"
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 
 function getEnv(key: string): string {
   const value = process.env[key]
@@ -30,11 +26,7 @@ export function r2KeyFromUrl(url: string): string {
   return u.pathname.replace(/^\//, "")
 }
 
-export async function r2Upload(
-  key: string,
-  body: Buffer,
-  contentType: string,
-): Promise<string> {
+export async function r2Upload(key: string, body: Buffer, contentType: string): Promise<string> {
   await client.send(
     new PutObjectCommand({
       Bucket: BUCKET,

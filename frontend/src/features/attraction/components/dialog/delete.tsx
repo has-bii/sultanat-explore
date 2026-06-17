@@ -39,8 +39,7 @@ export function DeleteAttractionDialog() {
         <DialogHeader>
           <DialogTitle>Hapus Atraksi</DialogTitle>
           <DialogDescription>
-            Hapus atraksi &ldquo;{meta?.name ?? ""}&rdquo;? Tindakan ini tidak dapat
-            dibatalkan.
+            Hapus atraksi &ldquo;{meta?.name ?? ""}&rdquo;? Tindakan ini tidak dapat dibatalkan.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

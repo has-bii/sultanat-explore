@@ -2,8 +2,10 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Plus } from "lucide-react"
+import { Undo2 } from "lucide-react"
 import { Suspense } from "react"
 
+import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -13,12 +15,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { TableSkeleton } from "@/components/table-skeleton"
 import { AttractionDialog } from "@/features/attraction/components/dialog"
-import { AttractionTable } from "@/features/attraction/components/table"
 import { DeleteAttractionDialog } from "@/features/attraction/components/dialog/delete"
+import { AttractionTable } from "@/features/attraction/components/table"
 import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
-import { Undo2 } from "lucide-react"
 import Link from "next/link"
 
 import { DeleteDestinationDialog } from "../components/dialog/delete"

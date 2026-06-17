@@ -17,10 +17,7 @@ export const resetPasswordSchema = v.pipe(
     confirmPassword: v.pipe(v.string(), v.minLength(1, "Konfirmasi password wajib diisi")),
   }),
   v.forward(
-    v.check(
-      (data) => data.password === data.confirmPassword,
-      "Password tidak cocok",
-    ),
+    v.check((data) => data.password === data.confirmPassword, "Password tidak cocok"),
     ["confirmPassword"],
   ),
 )

@@ -1,10 +1,6 @@
 "use client"
 
-import { useAppForm } from "@/lib/form"
-import { useCreateCategory } from "../../mutations/create-category.mutation"
-import { useUpdateCategory } from "../../mutations/update-category.mutation"
-import { useCategoryDialogStore } from "../../stores/category-dialog.store"
-import * as v from "valibot"
+import { Plus, Save } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Save, Plus } from "lucide-react"
+import { useAppForm } from "@/lib/form"
+import * as v from "valibot"
+
+import { useCreateCategory } from "../../mutations/create-category.mutation"
+import { useUpdateCategory } from "../../mutations/update-category.mutation"
+import { useCategoryDialogStore } from "../../stores/category-dialog.store"
 
 const categorySchema = v.object({
   name: v.pipe(
@@ -43,10 +44,7 @@ export function CategoryDialog() {
     },
     onSubmit: async ({ value }) => {
       if (isEdit) {
-        updateMutation.mutate(
-          { id: meta.id, input: value },
-          { onSuccess: () => onClose() },
-        )
+        updateMutation.mutate({ id: meta.id, input: value }, { onSuccess: () => onClose() })
       } else {
         createMutation.mutate(value, {
           onSuccess: () => onClose(),

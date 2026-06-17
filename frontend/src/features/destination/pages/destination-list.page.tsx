@@ -3,10 +3,9 @@
 import { Plus } from "lucide-react"
 import { Suspense } from "react"
 
+import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-
-import { TableSkeleton } from "@/components/table-skeleton"
 
 import { DestinationFilters } from "../components/filter"
 import { DestinationTable } from "../components/table"

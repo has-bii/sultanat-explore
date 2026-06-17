@@ -3,13 +3,13 @@
 import { Plus } from "lucide-react"
 import { Suspense } from "react"
 
+import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
 
 import { CategoryDialog } from "../components/dialog"
 import { DeleteCategoryDialog } from "../components/dialog/delete"
-import { useCategoryDialogStore } from "../stores/category-dialog.store"
 import { CategoryTable } from "../components/table"
-import { TableSkeleton } from "@/components/table-skeleton"
+import { useCategoryDialogStore } from "../stores/category-dialog.store"
 
 export function CategoryListPage() {
   const open = useCategoryDialogStore((s) => s.onOpen)

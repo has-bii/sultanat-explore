@@ -70,7 +70,13 @@ export function ImagePickerDialog({ value, onChange }: Props) {
             onChange={(e) => setSearchLocal(e.target.value)}
           />
         </InputGroup>
-        <Suspense fallback={<div className="@container/main"><ImageGridSkeleton /></div>}>
+        <Suspense
+          fallback={
+            <div className="@container/main">
+              <ImageGridSkeleton />
+            </div>
+          }
+        >
           <ImageGrid
             className="@container/main min-h-0 flex-1"
             query={{ limit: "10", sort: "createdAt", order: "desc", search }}

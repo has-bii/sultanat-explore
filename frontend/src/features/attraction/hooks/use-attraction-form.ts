@@ -13,7 +13,11 @@ interface Props {
   onSubmit: (value: CreateAttractionInput) => Promise<void> | void
 }
 
-export function useAttractionForm({ destinationId, defaultValues: _defaultValues, onSubmit }: Props) {
+export function useAttractionForm({
+  destinationId,
+  defaultValues: _defaultValues,
+  onSubmit,
+}: Props) {
   const defaultValues: CreateAttractionInput = {
     destinationId: _defaultValues?.destinationId ?? destinationId ?? "",
     name: _defaultValues?.name ?? "",

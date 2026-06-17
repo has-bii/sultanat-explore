@@ -1,9 +1,8 @@
 "use client"
 
+import { createFilterMethods, featuredParser, filterParsers } from "@/hooks/use-list-filters"
 import { parseAsStringLiteral } from "nuqs"
 import { useQueryStates } from "nuqs"
-
-import { createFilterMethods, featuredParser, filterParsers } from "@/hooks/use-list-filters"
 
 export function useDestinationFilters() {
   const [query, setQuery] = useQueryStates({

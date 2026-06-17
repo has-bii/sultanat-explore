@@ -1,5 +1,5 @@
-import sharp from "sharp"
 import { encode } from "blurhash"
+import sharp from "sharp"
 
 export async function processImage(input: Buffer): Promise<{
   buffer: Buffer
@@ -17,13 +17,7 @@ export async function processImage(input: Buffer): Promise<{
       .toBuffer({ resolveWithObject: true }),
   ])
 
-  const blurHash = encode(
-    new Uint8ClampedArray(data),
-    info.width,
-    info.height,
-    4,
-    4,
-  )
+  const blurHash = encode(new Uint8ClampedArray(data), info.width, info.height, 4, 4)
 
   return { buffer: processed, blurHash }
 }

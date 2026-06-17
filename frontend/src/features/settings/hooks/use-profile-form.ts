@@ -2,7 +2,7 @@
 
 import { useAppForm } from "@/lib/form"
 
-import { profileSchema, type ProfileInput } from "../types"
+import { type ProfileInput, profileSchema } from "../types"
 
 interface Props {
   defaultValues?: ProfileInput

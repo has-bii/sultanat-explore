@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 
 import { authClient } from "@/lib/auth-client"
+import { toast } from "sonner"
 
 export const UPDATE_PROFILE_MUTATION_KEY = ["update-profile"] as const
 

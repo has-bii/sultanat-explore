@@ -2,7 +2,7 @@
 
 import { useAppForm } from "@/lib/form"
 
-import { passwordSchema, type PasswordInput } from "../types"
+import { type PasswordInput, passwordSchema } from "../types"
 
 interface Props {
   onSubmit: (value: PasswordInput) => Promise<void> | void

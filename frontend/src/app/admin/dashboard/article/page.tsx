@@ -2,8 +2,8 @@ import { Suspense } from "react"
 
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
-import { ArticleListPage } from "@/features/article/pages/article-list.page"
 import { TableSkeleton } from "@/components/table-skeleton"
+import { ArticleListPage } from "@/features/article/pages/article-list.page"
 
 const breadcrumb: HeaderBreadcrumbItem = [
   {

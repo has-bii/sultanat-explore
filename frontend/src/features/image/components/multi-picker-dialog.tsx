@@ -109,13 +109,21 @@ export function MultiImagePickerDialog({ selectedImages, onChange, max = DEFAULT
           />
         </InputGroup>
 
-        <Suspense fallback={<div className="@container/main"><ImageGridSkeleton /></div>}>
+        <Suspense
+          fallback={
+            <div className="@container/main">
+              <ImageGridSkeleton />
+            </div>
+          }
+        >
           <ImageGrid
             className="@container/main min-h-0 flex-1"
             query={{ limit: "10", sort: "createdAt", order: "desc", search }}
             onClearSearch={() => setSearch("")}
             selectedIds={selectedIds}
-            onImageCheckedChange={({ id, url, blurHash }) => handleToggleImage({ id, url, blurHash })}
+            onImageCheckedChange={({ id, url, blurHash }) =>
+              handleToggleImage({ id, url, blurHash })
+            }
           />
         </Suspense>
 

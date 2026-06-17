@@ -1,15 +1,16 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useRouter } from "next/navigation"
 import { useSuspenseQuery } from "@tanstack/react-query"
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getCategoriesQueryOptions } from "@/features/category/queries"
+import { useRouter } from "next/navigation"
+
+import type { CreateArticleInput } from "backend/modules/article/article.schema"
 
 import { ArticleForm } from "../components/form"
 import { useArticleForm } from "../hooks/use-article-form"
 import { useCreateArticle } from "../mutations/create-article.mutation"
-import type { CreateArticleInput } from "backend/modules/article/article.schema"
 
 export function CreateArticlePage() {
   const router = useRouter()

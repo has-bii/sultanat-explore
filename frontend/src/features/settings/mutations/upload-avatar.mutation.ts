@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 
 import { apiClient } from "@/lib/api-client"
 import { authClient } from "@/lib/auth-client"
+import { toast } from "sonner"
 
 const $uploadAvatar = apiClient.api.me.avatar.$post
 
