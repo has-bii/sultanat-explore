@@ -156,6 +156,7 @@ function SelectField(props: {
   label?: string
   description?: string
   placeholder?: string
+  trailing?: ReactNode
   children: ReactNode
 }) {
   const field = useFieldContext<string>()
@@ -171,9 +172,18 @@ function SelectField(props: {
           if (!open) field.handleBlur()
         }}
       >
-        <SelectTrigger id={field.name} aria-invalid={isInvalid}>
-          <SelectValue placeholder={props.placeholder} />
-        </SelectTrigger>
+        {props.trailing ? (
+          <div className="flex items-end gap-2">
+            <SelectTrigger id={field.name} aria-invalid={isInvalid} className="flex-1">
+              <SelectValue placeholder={props.placeholder} />
+            </SelectTrigger>
+            {props.trailing}
+          </div>
+        ) : (
+          <SelectTrigger id={field.name} aria-invalid={isInvalid}>
+            <SelectValue placeholder={props.placeholder} />
+          </SelectTrigger>
+        )}
         <SelectContent>{props.children}</SelectContent>
       </Select>
       {props.description && <FieldDescription>{props.description}</FieldDescription>}

@@ -15,7 +15,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { SelectItem } from "@/components/ui/select"
+import { CategoryDialog } from "@/features/category/components/dialog"
 import type { GetCategoriesResponse } from "@/features/category/queries"
+import { useCategoryDialogStore } from "@/features/category/stores/category-dialog.store"
 import Link from "next/link"
 
 import { useArticleForm } from "../../hooks/use-article-form"
@@ -30,6 +32,7 @@ interface ArticleFormProps {
 
 export function ArticleForm(props: ArticleFormProps) {
   const { form, mode, error, isPending, categories } = props
+  const onOpenCategoryDialog = useCategoryDialogStore((s) => s.onOpen)
 
   return (
     <form
@@ -98,7 +101,21 @@ export function ArticleForm(props: ArticleFormProps) {
           <form.AppField
             name="categoryId"
             children={(field) => (
-              <field.SelectField label="Kategori" placeholder="Pilih kategori">
+              <field.SelectField
+                label="Kategori"
+                placeholder="Pilih kategori"
+                trailing={
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    className="shrink-0"
+                    onClick={() => onOpenCategoryDialog(null)}
+                  >
+                    <Plus />
+                  </Button>
+                }
+              >
                 <SelectItem value="_none">Tanpa Kategori</SelectItem>
                 {categories.map((cat) => (
                   <SelectItem key={cat.id} value={cat.id}>
@@ -135,6 +152,8 @@ export function ArticleForm(props: ArticleFormProps) {
             )
           }}
         />
+
+        <CategoryDialog />
 
         {/* Actions */}
         <Field orientation="horizontal" className="justify-end">
