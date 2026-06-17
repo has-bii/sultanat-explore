@@ -2,7 +2,6 @@
   "name": "sultanat-explore",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.7.0",
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
