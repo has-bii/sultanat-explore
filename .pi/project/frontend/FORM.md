@@ -59,7 +59,7 @@ const defaultValues: CreateArticleInput = {
 
 ### Validators
 
-Always validate on change:
+Default: validate on change for immediate feedback.
 
 ```ts
 const form = useAppForm({
@@ -72,6 +72,8 @@ const form = useAppForm({
   },
 })
 ```
+
+Auth and settings forms may use `validators: { onSubmit: schema }` when fields should only validate at submit.
 
 ### Cleanup
 
@@ -144,6 +146,8 @@ Rules:
 
 Use `pendingLabel="Menyimpan..."` on submit buttons.
 
+Dialog-only forms may use "Simpan" for edit when the dialog title already says "Edit".
+
 ### Error display
 
 All forms use `useMutation` for async submission. Pass the mutation `error` to the form component and render `<ErrorComponent>` at the top of `<FieldGroup>` (or at the top of the form layout for simple/auth forms).
@@ -163,6 +167,10 @@ On dedicated pages:
 - **Create page** → include a "Batal" button inside the form actions.
 - **Edit page** → put a "Kembali" button in the page header, not inside the form.
 
+### Dialog forms
+
+Simple create/edit dialogs may define `useAppForm` inline and call mutations directly, as long as the dialog is the only consumer. For dialogs reused elsewhere or with complex cleanup, extract `features/<name>/hooks/use-<name>-form.ts` and pass `onSubmit`.
+
 ## Custom / Unregistered Fields
 
 For fields not registered in `useAppForm` (checkbox, TipTap editor, array fields), use `<form.Field>` directly.
@@ -174,6 +182,8 @@ const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 ```
 
 Wire `value`, `onChange`, and `onBlur` manually. Render `<FieldError errors={field.state.meta.errors} />` when invalid.
+
+Boolean/checkbox fields must also render `<FieldError errors={field.state.meta.errors} />` when invalid.
 
 Array fields use `mode="array"` and expose `pushValue`, `removeValue`, etc.
 
@@ -192,7 +202,7 @@ When adding a new form:
 - [ ] `validators: { onChange: schema }`.
 - [ ] Builds full `defaultValues` with `??` fallbacks.
 - [ ] Cleans/normalizes values in hook `onSubmit`.
-- [ ] Component accepts `mode`, `error`, `isPending`.
+- [ ] Component accepts `mode`, `error`, `isPending` (page forms) or dialog handles its own mutation state.
 - [ ] Submit wiring uses `e.preventDefault()` + `e.stopPropagation()`.
 - [ ] Submit button wrapped in `<form.AppForm>`.
 - [ ] Error display matches the mutation/error pattern.

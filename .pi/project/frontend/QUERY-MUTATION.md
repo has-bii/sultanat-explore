@@ -201,7 +201,7 @@ Entity-scoped mutations (update/delete) support two signatures. Choose based on 
 
 | Option | Use case | Hook signature | `mutate(...)` call |
 |---|---|---|---|
-| **Option 1** | List page | `useUpdateX = ()` | `mutate({ id, ...input })` |
+| **Option 1** | List page | `useUpdateX = ()` | `mutate({ id, input })` |
 | **Option 1** | List page | `useDeleteX = ()` | `mutate(id)` |
 | **Option 2** | Detail page | `useUpdateX = (id: string)` | `mutate(input)` |
 | **Option 2** | Detail page | `useDeleteX = (id: string)` | `mutate()` |
@@ -224,10 +224,11 @@ export const useUpdateCategory = () => {
     mutationKey: UPDATE_CATEGORY_MUTATION_KEY,
     mutationFn: async ({
       id,
-      ...input
+      input,
     }: {
       id: string
-    } & InferRequestType<typeof $updateCategory>["json"]) => {
+      input: InferRequestType<typeof $updateCategory>["json"]
+    }) => {
       const res = await $updateCategory({ param: { id }, json: input })
       const json = await res.json()
       if (!json.success) throw new Error(json.message)

@@ -176,6 +176,7 @@ export function DestinationForm(props: DestinationFormProps) {
                     Destinasi yang ditandai sebagai unggulan akan muncul paling utama.
                   </FieldDescription>
                 </FieldContent>
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             )
           }}

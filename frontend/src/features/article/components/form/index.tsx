@@ -10,6 +10,7 @@ import {
   Field,
   FieldContent,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
@@ -75,7 +76,7 @@ export function ArticleForm(props: ArticleFormProps) {
                   content={field.state.value as Record<string, unknown> | null}
                   onChange={(json) => field.handleChange(json)}
                 />
-                {isInvalid && <p className="text-destructive text-sm">Konten harus diisi</p>}
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             )
           }}
@@ -129,6 +130,7 @@ export function ArticleForm(props: ArticleFormProps) {
                     Hanya akan menampilkan published artikel ke pengunjung.
                   </FieldDescription>
                 </FieldContent>
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             )
           }}

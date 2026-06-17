@@ -238,7 +238,7 @@ Rules:
 
 ### Button Loading Convention
 
-Use the `ButtonLoading` component from `@/components/button-loading` for any submit or async action button:
+Use the `ButtonLoading` component from `@/components/button-loading` for async CTAs **outside forms**:
 
 ```tsx
 import { ButtonLoading } from "@/components/button-loading"
@@ -252,9 +252,10 @@ Rules:
 - `isLoading: boolean` — required; shows spinner and swaps label while true.
 - `loadingLabel?: string` — label during loading. Default: `"Memuat..."`.
 - `icon?: LucideIcon` — optional left icon shown when not loading.
-- Always use `ButtonLoading` for form submit buttons and async CTAs.
 - Keep `loadingLabel` in Bahasa Indonesia, descriptive of the action.
 - Button is automatically disabled while `isLoading` is true.
+
+**Form submit buttons:** use `<form.SubmitButton>` from `useAppForm`, not `ButtonLoading`.
 
 ### No console.log
 
