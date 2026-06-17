@@ -6,6 +6,7 @@ import { Suspense } from "react"
 import { Button } from "@/components/ui/button"
 
 import { CategoryDialog } from "../components/dialog"
+import { DeleteCategoryDialog } from "../components/dialog/delete"
 import { useCategoryDialogStore } from "../stores/category-dialog.store"
 import { CategoryTable } from "../components/table"
 import { TableSkeleton } from "@/components/table-skeleton"
@@ -27,6 +28,7 @@ export function CategoryListPage() {
       </Suspense>
 
       <CategoryDialog />
+      <DeleteCategoryDialog />
     </>
   )
 }

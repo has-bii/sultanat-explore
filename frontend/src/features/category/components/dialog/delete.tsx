@@ -1,7 +1,6 @@
 "use client"
 
 import { Trash2 } from "lucide-react"
-import { useState } from "react"
 
 import { ButtonLoading } from "@/components/button-loading"
 import {
@@ -12,41 +11,35 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 
 import { useDeleteCategory } from "../../mutations/delete-category.mutation"
+import { useDeleteCategoryDialogStore } from "../../stores/delete-category-dialog.store"
 
-interface Props {
-  categoryId: string
-  categoryName: string
-}
-
-export function DeleteCategoryDialog({ categoryId, categoryName }: Props) {
-  const [open, setOpen] = useState(false)
+export function DeleteCategoryDialog() {
+  const { open, onClose, meta } = useDeleteCategoryDialogStore()
   const deleteMutation = useDeleteCategory()
 
+  const handleOpenChange = () => {
+    if (deleteMutation.isPending) return
+    onClose()
+  }
+
   const handleDelete = () => {
-    deleteMutation.mutate(categoryId, {
-      onSuccess: () => setOpen(false),
+    if (!meta?.id) return
+    deleteMutation.mutate(meta.id, {
+      onSuccess: () => onClose(),
     })
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm">
-          <Trash2 data-icon="inline-start" />
-          <span>Hapus</span>
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={handleOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Hapus Kategori</AlertDialogTitle>
           <AlertDialogDescription>
-            Hapus kategori &ldquo;{categoryName}&rdquo;? Artikel yang menggunakan kategori ini tidak
-            akan terhapus.
+            Hapus kategori &ldquo;{meta?.name ?? ""}&rdquo;? Artikel yang menggunakan kategori ini
+            tidak akan terhapus.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

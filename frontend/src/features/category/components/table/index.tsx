@@ -1,7 +1,7 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Pencil } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react"
 import { FolderOpen } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -24,11 +24,12 @@ import {
 
 import { getCategoriesQueryOptions } from "../../queries"
 import { useCategoryDialogStore } from "../../stores/category-dialog.store"
-import { DeleteCategoryDialog } from "../dialog/delete"
+import { useDeleteCategoryDialogStore } from "../../stores/delete-category-dialog.store"
 
 export function CategoryTable() {
   const { data: categories } = useSuspenseQuery(getCategoriesQueryOptions())
   const openDialog = useCategoryDialogStore((s) => s.onOpen)
+  const openDelete = useDeleteCategoryDialogStore((s) => s.onOpen)
 
   if (categories.length === 0) {
     return (
@@ -74,7 +75,14 @@ export function CategoryTable() {
                     <Pencil data-icon="inline-start" />
                     <span>Edit</span>
                   </Button>
-                  <DeleteCategoryDialog categoryId={cat.id} categoryName={cat.name} />
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => openDelete({ id: cat.id, name: cat.name })}
+                  >
+                    <Trash2 data-icon="inline-start" />
+                    <span>Hapus</span>
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>

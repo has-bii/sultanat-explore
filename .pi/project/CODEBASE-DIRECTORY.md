@@ -222,6 +222,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── category-list.page.tsx
     │   │   ├── stores/
     │   │   │   ├── category-dialog.store.ts
+    │   │   │   ├── delete-category-dialog.store.ts
     │   ├── contact/
     │   │   ├── components/
     │   │   │   ├── contact-cards.tsx
