@@ -3,6 +3,7 @@
 import { FileText, Image, PinIcon } from "lucide-react"
 import { Suspense } from "react"
 
+import { NavAdmin } from "@/components/sidebar/nav-admin"
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavUserSkeleton } from "@/components/sidebar/nav-user-skeleton"
 import {
@@ -76,6 +77,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Suspense fallback={<NavSkeleton label="Platform" length={navMain.length} />}>
           <NavMain items={navMain} />
         </Suspense>
+        <ClientOnly>
+          <Suspense>
+            <NavAdmin />
+          </Suspense>
+        </ClientOnly>
       </SidebarContent>
       <SidebarFooter>
         <ClientOnly>

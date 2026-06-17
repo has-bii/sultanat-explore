@@ -20,8 +20,12 @@ export const useLogout = () => {
       router.push("/admin/login")
     },
     onError: (err) => toast.error(err.message),
-    onSettled: (_data, _err, _vars, result) => {
+    onSettled: (_data, _err, _vars, result, context) => {
       if (result?.toastId) toast.dismiss(result.toastId)
+      context.client.invalidateQueries({
+        queryKey: ["auth"],
+        exact: true,
+      })
     },
   })
 }

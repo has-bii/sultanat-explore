@@ -45,6 +45,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │       ├── destination/
     │   │       ├── image/
     │   │       ├── settings/
+    │   │       ├── user/
     │   │
     │   └── api/
     │       └── [[...route]]/
@@ -101,6 +102,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── testimonials-columns-1.tsx
     │   └── sidebar/               # Admin sidebar components
     │       ├── app-sidebar.tsx
+    │       ├── nav-admin.tsx
     │       ├── nav-dashboard.tsx
     │       ├── nav-main.tsx
     │       ├── nav-skeleton.tsx
@@ -394,6 +396,27 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts
+    │   ├── user/
+    │   │   ├── components/
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-user-filters.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-user.mutation.ts
+    │   │   │   ├── delete-user.mutation.ts
+    │   │   │   ├── update-user-role.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── user-list.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── delete-user-dialog.store.ts
+    │   │   │   ├── user-dialog.store.ts
     │
     ├── providers/                 # React provider wrappers
     │   ├── query-provider.tsx  # React Query provider (TanStack Query)
