@@ -24,7 +24,11 @@ export const useDeleteUser = () => {
     onError: (err) => {
       toast.error(err.message)
     },
-    onSettled: (_res, _err, _var, _result, context) => {
+    onSettled: (_res, _err, id, _result, context) => {
+      context.client.invalidateQueries({
+        queryKey: userQueryKeys.detail(id),
+        exact: true,
+      })
       context.client.invalidateQueries({
         queryKey: userQueryKeys.all(),
         exact: false,

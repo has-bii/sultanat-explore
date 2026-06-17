@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 
 import { apiClient } from "@/lib/api-client"
 import type { InferRequestType } from "hono"
+import { toast } from "sonner"
 
 import { articleQueryKeys } from "../queries"
 
@@ -28,6 +28,7 @@ export const useUpdateArticle = (id: string) => {
     onSettled: (_res, _err, _var, _result, context) => {
       context.client.invalidateQueries({
         queryKey: articleQueryKeys.detail(id),
+        exact: true,
       })
       context.client.invalidateQueries({
         queryKey: articleQueryKeys.all(),

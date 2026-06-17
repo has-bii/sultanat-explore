@@ -16,7 +16,7 @@ export type GetDestinationGalleryResponse = InferResponseType<typeof $getDestina
 export const destinationQueryKeys = {
   all: () => ["destinations"] as const,
   list: (query: GetDestinationsQuery) => [...destinationQueryKeys.all(), query] as const,
-  detail: (id: string) => ["destination", id] as const,
+  detail: (id: string) => [...destinationQueryKeys.all(), "detail", id] as const,
   gallery: (id: string) => [...destinationQueryKeys.detail(id), "gallery"] as const,
 }
 
@@ -33,7 +33,6 @@ export const getDestinationsQueryOptions = (query: GetDestinationsQuery) => {
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined as string | undefined,
-    staleTime: 30_000,
   })
 }
 

@@ -30,6 +30,10 @@ export const useUpdateAttraction = (id: string) => {
     },
     onSettled: (_res, _err, _var, _result, context) => {
       context.client.invalidateQueries({
+        queryKey: attractionQueryKeys.detail(id),
+        exact: true,
+      })
+      context.client.invalidateQueries({
         queryKey: attractionQueryKeys.all(),
         exact: false,
       })

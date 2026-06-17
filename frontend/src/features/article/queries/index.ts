@@ -29,7 +29,6 @@ export const getArticlesQueryOptions = (query: GetArticlesQuery) => {
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined as string | undefined,
-    staleTime: 30_000,
   })
 }
 
@@ -42,6 +41,5 @@ export const getArticleQueryOptions = (id: string) => {
       if (!json.success) throw new Error(json.message)
       return json.data
     },
-    staleTime: 30_000,
   })
 }

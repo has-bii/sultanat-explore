@@ -11,7 +11,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 
-import { updateImageMutationKey } from "../../mutations/update-image.mutation"
+import { UPDATE_IMAGE_MUTATION_KEY } from "../../mutations/update-image.mutation"
 import { useImageDetailSheetStore } from "../../stores/image-detail-sheet.store"
 import { ImageUpdateForm } from "./update-form"
 import { ImageUpdateFormSkeleton } from "./update-form-skeleton"
@@ -21,7 +21,7 @@ export function ImageSheet() {
 
   const mutation = useMutationState({
     filters: {
-      mutationKey: updateImageMutationKey(selectedImageId!),
+      mutationKey: [...UPDATE_IMAGE_MUTATION_KEY, selectedImageId!],
       exact: true,
     },
   })

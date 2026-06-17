@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 
 import { apiClient } from "@/lib/api-client"
 import type { InferRequestType } from "hono"
+import { toast } from "sonner"
 
 import { categoryQueryKeys } from "../queries"
 
@@ -31,7 +31,11 @@ export const useUpdateCategory = () => {
     onError: (err) => {
       toast.error(err.message)
     },
-    onSettled: (_res, _err, _var, _result, context) => {
+    onSettled: (_res, _err, vars, _result, context) => {
+      context.client.invalidateQueries({
+        queryKey: categoryQueryKeys.detail(vars.id),
+        exact: true,
+      })
       context.client.invalidateQueries({
         queryKey: categoryQueryKeys.all(),
         exact: false,

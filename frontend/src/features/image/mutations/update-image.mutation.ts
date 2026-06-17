@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 
 import { apiClient } from "@/lib/api-client"
-import { InferRequestType } from "hono"
+import type { InferRequestType } from "hono"
 import { toast } from "sonner"
 
 import { imageQueryKeys } from "../queries"
@@ -9,11 +9,11 @@ import { imageQueryKeys } from "../queries"
 const $updateImage = apiClient.api.images[":id"].$patch
 type UpdateImageInputType = InferRequestType<typeof $updateImage>["json"]
 
-export const updateImageMutationKey = (id: string) => ["update-image", id] as const
+export const UPDATE_IMAGE_MUTATION_KEY = ["update-image"] as const
 
 export const useUpdateImage = (id: string) => {
   return useMutation({
-    mutationKey: updateImageMutationKey(id),
+    mutationKey: [...UPDATE_IMAGE_MUTATION_KEY, id],
     mutationFn: async (input: UpdateImageInputType) => {
       const res = await $updateImage({
         param: { id },

@@ -31,7 +31,11 @@ export const useUpdateUserRole = () => {
     onError: (err) => {
       toast.error(err.message)
     },
-    onSettled: (_res, _err, _var, _result, context) => {
+    onSettled: (_res, _err, vars, _result, context) => {
+      context.client.invalidateQueries({
+        queryKey: userQueryKeys.detail(vars.id),
+        exact: true,
+      })
       context.client.invalidateQueries({
         queryKey: userQueryKeys.all(),
         exact: false,

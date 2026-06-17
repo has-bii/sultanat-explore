@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query"
 
 import { apiClient } from "@/lib/api-client"
-import { InferRequestType, InferResponseType } from "hono"
+import type { InferRequestType, InferResponseType } from "hono"
 
 const $getImageDetail = apiClient.api.images[":id"].$get
 export type GetImageDetailResponse = InferResponseType<typeof $getImageDetail, 200>
@@ -13,7 +13,7 @@ export type GetImagesResponse = InferResponseType<typeof $getImages, 200>
 export const imageQueryKeys = {
   all: () => ["images"] as const,
   list: (query: GetImagesQuery) => [...imageQueryKeys.all(), query] as const,
-  detail: (id: string) => ["image", id],
+  detail: (id: string) => [...imageQueryKeys.all(), "detail", id] as const,
 }
 
 export const getImagesQueryOptions = (query: GetImagesQuery) => {
@@ -27,8 +27,8 @@ export const getImagesQueryOptions = (query: GetImagesQuery) => {
       if (!json.success) throw new Error(json.message)
       return json.data
     },
-    initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    initialPageParam: undefined as string | undefined,
   })
 }
 

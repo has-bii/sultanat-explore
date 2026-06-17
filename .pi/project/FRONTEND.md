@@ -192,45 +192,11 @@ export function useXFilters() {
 
 ### Query Convention
 
-- Always use `queryOptions` for single-item fetches and `infiniteQueryOptions` for cursor-paginated lists.
-- Always place factories in `features/<name>/queries/`. Keep a single `index.ts` when the module is small (2–3 queries + keys). Split into separate files only when a query's logic becomes complex.
-- `queryOptions` → use with `useQuery(...)`. `infiniteQueryOptions` → use with `useInfiniteQuery(...)`. Never mix.
-- Always create `infiniteQueryOptions` for cursor-based pagination response data.
-- Always check `json.success` from the unified response.
-- Export query key as a const for cross-file reference (mutations need it for invalidation).
+See [frontend/QUERY-MUTATION.md](frontend/QUERY-MUTATION.md) for full query conventions.
 
 ### Mutation Convention
 
-Every mutation is a custom hook file in `features/<name>/mutations/<name>.mutation.ts`:
-
-```ts
-// Pattern
-export const useUpdateImage = (id: string) => {
-  return useMutation({
-    mutationFn: async (input) => {
-      const res = await $api({ param: { id }, json: input })
-      const json = await res.json()
-      if (!json.success) throw new Error(json.message)
-      return json
-    },
-    onSuccess: (res) => {
-      toast.success(res.message)
-    },
-    onError: (err) => {
-      toast.error(err.message)
-    },
-    onSettled: (_res, _error, _vars, _result, context) => {
-      context.client.invalidateQueries({ queryKey: [...] })
-    },
-  })
-}
-```
-
-Rules:
-- Always destructure `res.json()`, check `json.success`, throw on failure.
-- Show toast in `onSuccess` (message from API) and `onError` (error message).
-- Invalidate related queries in `onSettled` via `context.client.invalidateQueries`.
-- Export a const **mutation key** for `useMutation` deduplication (e.g. `export const UPLOAD_MUTATION_KEY = ["upload-images"] as const`). Mutations also need the related **query key** from `queries/` for invalidation in `onSettled`.
+See [frontend/QUERY-MUTATION.md](frontend/QUERY-MUTATION.md) for full mutation conventions.
 
 ### Form Convention
 

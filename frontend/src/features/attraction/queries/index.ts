@@ -3,26 +3,21 @@ import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query"
 import { apiClient } from "@/lib/api-client"
 import type { InferRequestType, InferResponseType } from "hono"
 
-// ─── List attractions ───────────────────────────────────────────
 const $getAttractions = apiClient.api.attractions.$get
 
 export type GetAttractionsQuery = InferRequestType<typeof $getAttractions>["query"]
 export type GetAttractionsResponse = InferResponseType<typeof $getAttractions, 200>
 
-// ─── Get single attraction ──────────────────────────────────────
 const $getAttraction = apiClient.api.attractions[":id"].$get
 
 export type GetAttractionResponse = InferResponseType<typeof $getAttraction, 200>
 
-// ─── Query keys ─────────────────────────────────────────────────
 export const attractionQueryKeys = {
   all: () => ["attractions"] as const,
-  list: (query: GetAttractionsQuery) =>
-    [...attractionQueryKeys.all(), query] as const,
-  detail: (id: string) => ["attraction", id] as const,
+  list: (query: GetAttractionsQuery) => [...attractionQueryKeys.all(), query] as const,
+  detail: (id: string) => [...attractionQueryKeys.all(), "detail", id] as const,
 }
 
-// ─── Query factories ────────────────────────────────────────────
 export const getAttractionsQueryOptions = (query: GetAttractionsQuery) => {
   return infiniteQueryOptions({
     queryKey: attractionQueryKeys.list(query),
@@ -36,7 +31,6 @@ export const getAttractionsQueryOptions = (query: GetAttractionsQuery) => {
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined as string | undefined,
-    staleTime: 30_000,
   })
 }
 

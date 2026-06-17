@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 
 import { apiClient } from "@/lib/api-client"
-import { InferRequestType } from "hono"
+import type { InferRequestType } from "hono"
 import { toast } from "sonner"
 
 import { imageQueryKeys } from "../queries"
@@ -23,8 +23,8 @@ export const useUploadImages = () => {
     onSuccess: (res) => {
       toast.success(res.message)
     },
-    onError: (e) => {
-      toast.error(e.message)
+    onError: (err) => {
+      toast.error(err.message)
     },
     onSettled: (_res, _err, _var, _result, context) => {
       context.client.invalidateQueries({
