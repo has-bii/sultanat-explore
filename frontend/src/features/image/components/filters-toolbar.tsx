@@ -56,33 +56,12 @@ export function ImageToolbar() {
         </InputGroup>
       </div>
       <div className="inline-flex items-center gap-2">
-        {/* Featured filter */}
-        <Select
-          value={query.featured ? query.featured : "all"}
-          onValueChange={(value) => {
-            if (value === "all") {
-              methods.onFeaturedChange(null)
-              return
-            }
-            methods.onFeaturedChange(value as "true" | "false")
-          }}
-        >
-          <SelectTrigger className="w-32">
-            <SelectValue placeholder="Filter" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Semua</SelectItem>
-            <SelectItem value="true">Featured</SelectItem>
-            <SelectItem value="false">Non Featured</SelectItem>
-          </SelectContent>
-        </Select>
-
         {/* Sort */}
         <Select
           value={`${query.sort}-${query.order}`}
           onValueChange={(value) => methods.onSortOrderChange(value)}
         >
-          <SelectTrigger className="w-32">
+          <SelectTrigger className="w-36">
             <SelectValue placeholder="Urutan" />
           </SelectTrigger>
           <SelectContent>

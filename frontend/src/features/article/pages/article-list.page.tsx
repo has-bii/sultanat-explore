@@ -3,17 +3,16 @@
 import { Plus } from "lucide-react"
 import { Suspense } from "react"
 
+import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-
-import { TableSkeleton } from "@/components/table-skeleton"
 
 import { ArticleFilters } from "../components/filter"
 import { ArticleTable } from "../components/table"
 
 export function ArticleListPage() {
   return (
-    <div className="flex flex-1 flex-col gap-4">
+    <>
       <div className="flex items-center gap-2">
         <ArticleFilters />
         <Button asChild>
@@ -27,6 +26,6 @@ export function ArticleListPage() {
       <Suspense fallback={<TableSkeleton rowCount={5} columns={5} />}>
         <ArticleTable />
       </Suspense>
-    </div>
+    </>
   )
 }

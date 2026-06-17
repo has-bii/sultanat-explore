@@ -34,7 +34,7 @@ export function ArticleFilters() {
   }, [methods, searchLocal])
 
   return (
-    <div className="flex flex-1 flex-wrap items-center gap-2">
+    <div className="flex flex-1 items-center gap-2">
       {/* Search */}
       <InputGroup className="flex-1">
         <InputGroupAddon>

@@ -1,14 +1,12 @@
 "use client"
 
+import { createFilterMethods, filterParsers } from "@/hooks/use-list-filters"
 import { parseAsStringLiteral } from "nuqs"
 import { useQueryStates } from "nuqs"
-
-import { createFilterMethods, featuredParser, filterParsers } from "@/hooks/use-list-filters"
 
 export function useImageFilters() {
   const [query, setQuery] = useQueryStates({
     ...filterParsers,
-    ...featuredParser,
     sort: parseAsStringLiteral(["createdAt"] as const).withDefault("createdAt"),
   })
 

@@ -5,9 +5,9 @@ import { Suspense } from "react"
 import { useImageFilters } from "../../hooks/use-image-filters"
 import { useImageDetailSheetStore } from "../../stores/image-detail-sheet.store"
 import { useImageSelectionStore } from "../../stores/image-selection.store"
+import { SelectionBar } from "../selection-bar"
 import { ImageGrid } from "./index"
 import { ImageGridSkeleton } from "./skeleton"
-import { SelectionBar } from "../selection-bar"
 
 interface Props {
   // Style
@@ -29,7 +29,6 @@ export function ImageGridWithFilters(props: Props) {
   // Build query for API
   const apiQuery = {
     limit: "10",
-    featured: query.featured || undefined,
     order: query.order,
     search: query.search || undefined,
     sort: query.sort || undefined,
