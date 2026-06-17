@@ -200,11 +200,15 @@ See [frontend/QUERY-MUTATION.md](frontend/QUERY-MUTATION.md) for full mutation c
 
 ### Form Convention
 
+See [frontend/FORM.md](frontend/FORM.md) for full form conventions.
+
+Quick rules:
 - Use `useAppForm()` from `@/lib/form` — never raw `useForm` from TanStack.
-- `useAppForm()` exposes `form.AppField`, `form.AppForm`, `field.TextField`, `form.SubmitButton`.
-- Valibot validators passed via `validators: { onSubmit: <ValibotSchema> }` — TanStack Form supports Standard Schema natively.
-- Do NOT use `@tanstack/valibot-form-adapter` — deprecated. Pass Valibot schema directly.
-- Form error display via local `formError` state (set in `onSubmit` handler).
+- `useAppForm()` exposes `form.AppField`, `form.AppForm`, `field.<RegisteredField>`, `form.SubmitButton`.
+- Pass Valibot schema via `validators: { onChange: <ValibotSchema> }` for immediate feedback.
+- Build full `defaultValues` inside the custom hook; clean/normalize values in the hook's `onSubmit`.
+- Form-level errors: pass the `error` from `useMutation`; never use local `formError` state.
+- Submit wiring: `e.preventDefault(); e.stopPropagation(); form.handleSubmit()`; wrap `<form.SubmitButton>` with `<form.AppForm>`.
 
 ### Button Icon Convention
 

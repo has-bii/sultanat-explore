@@ -2,32 +2,30 @@
 
 import { useState } from "react"
 
+import { ErrorComponent } from "@/components/error-component"
 import { forgotPasswordSchema } from "@/features/auth/dto/auth.schema"
-import { authClient } from "@/lib/auth-client"
 import { useAppForm } from "@/lib/form"
+import Link from "next/link"
+
+import { useForgotPassword } from "../mutations/forgot-password.mutation"
 
 export function ForgotPasswordForm() {
   const [sent, setSent] = useState(false)
-  const [formError, setFormError] = useState<string | null>(null)
+  const { mutate, isPending, error } = useForgotPassword()
 
   const form = useAppForm({
     defaultValues: {
       email: "",
     },
     validators: {
-      onSubmit: forgotPasswordSchema,
+      onChange: forgotPasswordSchema,
     },
     onSubmit: async ({ value }) => {
-      setFormError(null)
-      const { error } = await authClient.requestPasswordReset({
-        email: value.email,
-        redirectTo: "/admin/reset-password",
+      mutate(value.email, {
+        onSuccess: () => {
+          setSent(true)
+        },
       })
-      if (error) {
-        setFormError(error.message ?? "Gagal mengirim email reset.")
-        return
-      }
-      setSent(true)
     },
   })
 
@@ -37,12 +35,12 @@ export function ForgotPasswordForm() {
         <p className="text-muted-foreground text-sm">
           Link reset password telah dikirim ke email Anda. Cek inbox dan folder spam.
         </p>
-        <a
+        <Link
           href="/admin/login"
           className="text-foreground text-sm underline underline-offset-4 transition-opacity hover:opacity-70"
         >
           Kembali ke login
-        </a>
+        </Link>
       </div>
     )
   }
@@ -51,10 +49,13 @@ export function ForgotPasswordForm() {
     <form
       onSubmit={(e) => {
         e.preventDefault()
+        e.stopPropagation()
         form.handleSubmit()
       }}
       className="flex flex-col gap-6"
     >
+      {error && <ErrorComponent title="Gagal mengirim link" message={error.message} />}
+
       <form.AppField
         name="email"
         children={(field) => (
@@ -62,14 +63,12 @@ export function ForgotPasswordForm() {
         )}
       />
 
-      {formError && (
-        <div role="alert" className="text-destructive text-sm">
-          {formError}
-        </div>
-      )}
-
       <form.AppForm>
-        <form.SubmitButton label="Kirim Link Reset" pendingLabel="Mengirim..." />
+        <form.SubmitButton
+          label="Kirim Link Reset"
+          pendingLabel="Mengirim..."
+          isDisabled={isPending}
+        />
       </form.AppForm>
     </form>
   )

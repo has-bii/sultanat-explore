@@ -1,15 +1,15 @@
 "use client"
 
-import { useState } from "react"
-
+import { ErrorComponent } from "@/components/error-component"
 import { loginSchema } from "@/features/auth/dto/auth.schema"
-import { authClient } from "@/lib/auth-client"
 import { useAppForm } from "@/lib/form"
 import { useRouter } from "next/navigation"
 
+import { useLogin } from "../mutations/login.mutation"
+
 export function LoginForm() {
   const router = useRouter()
-  const [formError, setFormError] = useState<string | null>(null)
+  const { mutate, isPending, error } = useLogin()
 
   const form = useAppForm({
     defaultValues: {
@@ -17,20 +17,14 @@ export function LoginForm() {
       password: "",
     },
     validators: {
-      onSubmit: loginSchema,
+      onChange: loginSchema,
     },
-    onSubmit: async ({ value, formApi }) => {
-      setFormError(null)
-      const { error } = await authClient.signIn.email({
-        email: value.email,
-        password: value.password,
+    onSubmit: async ({ value }) => {
+      mutate(value, {
+        onSuccess: () => {
+          router.push("/admin/dashboard")
+        },
       })
-      formApi.reset()
-      if (error) {
-        setFormError(error.message ?? "Login gagal. Periksa email dan password.")
-        return
-      }
-      router.push("/admin/dashboard")
     },
   })
 
@@ -38,10 +32,13 @@ export function LoginForm() {
     <form
       onSubmit={(e) => {
         e.preventDefault()
+        e.stopPropagation()
         form.handleSubmit()
       }}
       className="flex flex-col gap-6"
     >
+      {error && <ErrorComponent title="Login gagal" message={error.message} />}
+
       <form.AppField
         name="email"
         children={(field) => (
@@ -56,14 +53,8 @@ export function LoginForm() {
         )}
       />
 
-      {formError && (
-        <div role="alert" className="text-destructive text-sm">
-          {formError}
-        </div>
-      )}
-
       <form.AppForm>
-        <form.SubmitButton label="Masuk" pendingLabel="Memproses..." />
+        <form.SubmitButton label="Masuk" pendingLabel="Memproses..." isDisabled={isPending} />
       </form.AppForm>
 
       <a

@@ -201,7 +201,10 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── dto/
     │   │   │   ├── auth.schema.ts
     │   │   ├── mutations/
+    │   │   │   ├── forgot-password.mutation.ts
+    │   │   │   ├── login.mutation.ts
     │   │   │   ├── logout.mutation.ts
+    │   │   │   ├── reset-password.mutation.ts
     │   │   ├── query/
     │   │   │   ├── index.ts
     │   │   └── index.ts

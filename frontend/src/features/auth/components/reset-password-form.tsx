@@ -1,18 +1,20 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense } from "react"
 
+import { ErrorComponent } from "@/components/error-component"
 import { resetPasswordSchema } from "@/features/auth/dto/auth.schema"
-import { authClient } from "@/lib/auth-client"
 import { useAppForm } from "@/lib/form"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
+
+import { useResetPassword } from "../mutations/reset-password.mutation"
 
 function ResetPasswordFormInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
-  const [formError, setFormError] = useState<string | null>(null)
+  const { mutate, isPending, error } = useResetPassword()
 
   const form = useAppForm({
     defaultValues: {
@@ -20,23 +22,19 @@ function ResetPasswordFormInner() {
       confirmPassword: "",
     },
     validators: {
-      onSubmit: resetPasswordSchema,
+      onChange: resetPasswordSchema,
     },
     onSubmit: async ({ value }) => {
-      setFormError(null)
-      if (!token) {
-        setFormError("Token reset tidak ditemukan. Request ulang dari link forgot password.")
-        return
-      }
-      const { error } = await authClient.resetPassword({
-        newPassword: value.password,
-        token,
-      })
-      if (error) {
-        setFormError(error.message ?? "Gagal reset password.")
-        return
-      }
-      router.push("/admin/login")
+      if (!token) return
+
+      mutate(
+        { token, password: value.password },
+        {
+          onSuccess: () => {
+            router.push("/admin/login")
+          },
+        },
+      )
     },
   })
 
@@ -55,10 +53,13 @@ function ResetPasswordFormInner() {
     <form
       onSubmit={(e) => {
         e.preventDefault()
+        e.stopPropagation()
         form.handleSubmit()
       }}
       className="flex flex-col gap-6"
     >
+      {error && <ErrorComponent title="Gagal reset password" message={error.message} />}
+
       <form.AppField
         name="password"
         children={(field) => (
@@ -77,14 +78,12 @@ function ResetPasswordFormInner() {
         )}
       />
 
-      {formError && (
-        <div role="alert" className="text-destructive text-sm">
-          {formError}
-        </div>
-      )}
-
       <form.AppForm>
-        <form.SubmitButton label="Reset Password" pendingLabel="Memproses..." />
+        <form.SubmitButton
+          label="Reset Password"
+          pendingLabel="Memproses..."
+          isDisabled={isPending}
+        />
       </form.AppForm>
     </form>
   )
