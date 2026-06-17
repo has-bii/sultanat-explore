@@ -14,7 +14,10 @@ export const useUpdateDestination = (id: string) => {
   return useMutation({
     mutationKey: [...UPDATE_DESTINATION_MUTATION_KEY, id],
     mutationFn: async (input: InferRequestType<typeof $updateDestination>["json"]) => {
-      const res = await $updateDestination({ param: { id }, json: input })
+      const res = await $updateDestination({
+        param: { id },
+        json: input,
+      })
       const json = await res.json()
       if (!json.success) throw new Error(json.message)
       return json

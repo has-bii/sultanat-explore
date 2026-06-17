@@ -1,22 +1,32 @@
 "use client"
 
-import { Eye } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
-import { Switch } from "@/components/ui/switch"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { blurhashToDataUrl } from "@/features/image/lib/blurhash"
 import Image from "next/image"
-import Link from "next/link"
 
-import { useUpdateDestination } from "../../mutations/update-destination.mutation"
 import type { GetDestinationsResponse } from "../../queries"
+import { useDestinationDialogStore } from "../../stores/destination-dialog.store"
+import { useDeleteDestinationDialogStore } from "../../stores/delete-destination-dialog.store"
 
-type Destination = NonNullable<GetDestinationsResponse["data"]["data"][number]>
+type DestinationItem = NonNullable<GetDestinationsResponse["data"]["data"][number]>
 
-export function DestinationTableRow({ dest }: { dest: Destination }) {
-  const { mutate, isPending } = useUpdateDestination(dest.id)
+interface DestinationTableRowProps {
+  destination: DestinationItem
+}
+
+export function DestinationTableRow({ destination }: DestinationTableRowProps) {
+  const { onOpen: openEdit } = useDestinationDialogStore()
+  const { onOpen: openDelete } = useDeleteDestinationDialogStore()
 
   return (
     <TableRow>
@@ -24,37 +34,42 @@ export function DestinationTableRow({ dest }: { dest: Destination }) {
         <Item className="p-0">
           <ItemMedia variant="image">
             <Image
-              src={dest.image.url}
-              alt={dest.name}
+              src={destination.image.url}
+              alt={destination.name}
               width={40}
               height={40}
               placeholder="blur"
-              blurDataURL={blurhashToDataUrl(dest.image.blurHash)}
+              blurDataURL={blurhashToDataUrl(destination.image.blurHash)}
             />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>{dest.name}</ItemTitle>
-            <ItemDescription>{dest.tagline}</ItemDescription>
+            <ItemTitle>{destination.name}</ItemTitle>
+            <ItemDescription className="max-w-xl truncate">
+              {destination.description}
+            </ItemDescription>
           </ItemContent>
         </Item>
       </TableCell>
-      <TableCell className="text-muted-foreground">{dest.tagline}</TableCell>
-      <TableCell className="text-center">
-        <Switch
-          checked={dest.featured}
-          disabled={isPending}
-          onCheckedChange={(checked) => mutate({ featured: checked })}
-        />
-      </TableCell>
-      <TableCell className="text-center">{dest._count.attractions}</TableCell>
-      <TableCell className="text-center">{dest._count.images}</TableCell>
       <TableCell className="w-[120px] text-center">
-        <Button size="sm" asChild>
-          <Link href={`/admin/dashboard/destination/${dest.id}/edit`}>
-            <Eye data-icon="inline-start" />
-            <span>Open</span>
-          </Link>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" variant="ghost">
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => openEdit(destination.id)}>
+              <Pencil />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => openDelete({ id: destination.id, name: destination.name })}
+            >
+              <Trash2 />
+              Hapus
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   )

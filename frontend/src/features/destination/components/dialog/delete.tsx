@@ -1,59 +1,51 @@
 "use client"
 
 import { Trash2 } from "lucide-react"
-import { useState } from "react"
 
 import { ButtonLoading } from "@/components/button-loading"
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 import { useDeleteDestination } from "../../mutations/delete-destination.mutation"
+import { useDeleteDestinationDialogStore } from "../../stores/delete-destination-dialog.store"
 
-interface Props {
-  destinationId: string
-  destinationName: string
-}
-
-export function DeleteDestinationDialog({ destinationId, destinationName }: Props) {
-  const [open, setOpen] = useState(false)
-  const router = useRouter()
+export function DeleteDestinationDialog() {
+  const { open, onClose, meta } = useDeleteDestinationDialogStore()
 
   const deleteMutation = useDeleteDestination()
 
+  const handleOpenChange = () => {
+    if (deleteMutation.isPending) return
+    onClose()
+  }
+
   const handleDelete = () => {
-    deleteMutation.mutate(destinationId, {
-      onSuccess: () => router.push("/admin/dashboard/destination"),
+    if (!meta?.id) return
+    deleteMutation.mutate(meta.id, {
+      onSuccess: () => onClose(),
     })
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">
-          <Trash2 data-icon="inline-start" />
-          <span>Hapus</span>
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Destinasi</AlertDialogTitle>
-          <AlertDialogDescription>
-            Hapus destinasi &ldquo;{destinationName}&rdquo;? Semua atraksi dan galeri akan ikut
-            terhapus.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel disabled={deleteMutation.isPending}>Batal</AlertDialogCancel>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Hapus Destinasi</DialogTitle>
+          <DialogDescription>
+            Hapus destinasi &ldquo;{meta?.name ?? ""}&rdquo;? Tindakan ini tidak dapat dibatalkan.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} disabled={deleteMutation.isPending}>
+            Batal
+          </Button>
           <ButtonLoading
             variant="destructive"
             onClick={handleDelete}
@@ -63,8 +55,8 @@ export function DeleteDestinationDialog({ destinationId, destinationName }: Prop
           >
             Hapus
           </ButtonLoading>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

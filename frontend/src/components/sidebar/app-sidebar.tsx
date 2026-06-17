@@ -22,17 +22,17 @@ import { SidebarHeaderItem } from "./sidebar-header-item"
 
 const navMain = [
   {
-    title: "Destinasi",
-    url: "/admin/dashboard/destination",
+    title: "Kota",
+    url: "/admin/dashboard/city",
     icon: PinIcon,
     items: [
       {
         title: "Overview",
-        url: "/admin/dashboard/destination",
+        url: "/admin/dashboard/city",
       },
       {
-        title: "Atraksi",
-        url: "/admin/dashboard/destination/attraction",
+        title: "Destinasi",
+        url: "/admin/dashboard/city/destination",
       },
     ],
   },

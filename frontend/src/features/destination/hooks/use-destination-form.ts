@@ -8,18 +8,21 @@ import {
 } from "backend/modules/destination/destination.schema"
 
 interface Props {
+  cityId?: string
   defaultValues?: CreateDestinationInput
   onSubmit: (value: CreateDestinationInput) => Promise<void> | void
 }
 
-export function useDestinationForm({ defaultValues: _defaultValues, onSubmit }: Props) {
+export function useDestinationForm({
+  cityId,
+  defaultValues: _defaultValues,
+  onSubmit,
+}: Props) {
   const defaultValues: CreateDestinationInput = {
+    cityId: _defaultValues?.cityId ?? cityId ?? "",
     name: _defaultValues?.name ?? "",
-    tagline: _defaultValues?.tagline ?? "",
     description: _defaultValues?.description ?? "",
-    featured: _defaultValues?.featured ?? false,
     imageId: _defaultValues?.imageId ?? "",
-    highlights: _defaultValues?.highlights ?? [""],
   }
 
   const form = useAppForm({

@@ -18,19 +18,20 @@ export function DestinationTable({ query }: DestinationTableProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
     getDestinationsQueryOptions({ ...query, limit: query.limit ?? "10" }),
   )
+
   const destinations = data.pages.flatMap((p) => p.data)
 
   if (destinations.length === 0) {
-    const hasFilters = query.search || query.featured
+    const hasSearchFilter = Boolean(query.search)
 
     return (
       <TableEmpty
-        icon={hasFilters ? MapPinOff : MapPin}
-        title={hasFilters ? "Tidak ada hasil" : "Belum ada destinasi"}
+        icon={hasSearchFilter ? MapPinOff : MapPin}
+        title={hasSearchFilter ? "Tidak ada hasil" : "Belum ada destinasi"}
         description={
-          hasFilters
-            ? "Tidak ada destinasi yang cocok."
-            : "Buat destinasi pertama untuk mulai membangun konten."
+          hasSearchFilter
+            ? "Tidak ditemukan destinasi yang cocok dengan pencarian."
+            : "Tambahkan destinasi pertama untuk kota ini."
         }
       />
     )
@@ -42,17 +43,13 @@ export function DestinationTable({ query }: DestinationTableProps) {
         <Table>
           <TableHeader className="bg-accent">
             <TableRow>
-              <TableHead className="pl-4">Destinasi</TableHead>
-              <TableHead>Tagline</TableHead>
-              <TableHead className="text-center">Unggulan</TableHead>
-              <TableHead className="text-center">Atraksi</TableHead>
-              <TableHead className="text-center">Galeri</TableHead>
-              <TableHead className="sr-only">Aksi</TableHead>
+              <TableHead className="pl-4">Nama</TableHead>
+              <TableHead className="w-[120px] text-center">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {destinations.map((dest) => (
-              <DestinationTableRow key={dest.id} dest={dest} />
+            {destinations.map((destination) => (
+              <DestinationTableRow key={destination.id} destination={destination} />
             ))}
           </TableBody>
         </Table>

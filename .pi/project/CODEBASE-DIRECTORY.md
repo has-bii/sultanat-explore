@@ -42,7 +42,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │       ├── layout.tsx     # Admin dashboard layout (SidebarProvider + AppSidebar)
     │   │       ├── page.tsx       # Dashboard home
     │   │       ├── article/
-    │   │       ├── destination/
+    │   │       ├── city/
     │   │       ├── image/
     │   │       ├── settings/
     │   │       ├── user/
@@ -162,33 +162,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts
-    │   ├── attraction/
-    │   │   ├── components/
-    │   │   │   ├── dialog/
-    │   │   │   │   ├── delete.tsx
-    │   │   │   │   ├── index.tsx
-    │   │   │   ├── form/
-    │   │   │   │   ├── index.tsx
-    │   │   │   │   ├── skeleton.tsx
-    │   │   │   ├── list-filter/
-    │   │   │   │   ├── index.tsx
-    │   │   │   ├── table/
-    │   │   │   │   ├── index.tsx
-    │   │   │   │   ├── row.tsx
-    │   │   ├── hooks/
-    │   │   │   ├── use-attraction-form.ts
-    │   │   │   ├── use-attraction-list-filters.ts
-    │   │   ├── mutations/
-    │   │   │   ├── create-attraction.mutation.ts
-    │   │   │   ├── delete-attraction.mutation.ts
-    │   │   │   ├── update-attraction.mutation.ts
-    │   │   ├── queries/
-    │   │   │   ├── index.ts
-    │   │   ├── pages/
-    │   │   │   ├── attraction-list.page.tsx
-    │   │   ├── stores/
-    │   │   │   ├── attraction-dialog.store.ts
-    │   │   │   ├── delete-attraction-dialog.store.ts
     │   ├── auth/
     │   │   ├── components/
     │   │   │   ├── forgot-password-form.tsx
@@ -227,15 +200,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── stores/
     │   │   │   ├── category-dialog.store.ts
     │   │   │   ├── delete-category-dialog.store.ts
-    │   ├── contact/
-    │   │   ├── components/
-    │   │   │   ├── contact-cards.tsx
-    │   │   │   ├── contact-hero.tsx
-    │   │   │   ├── faq-mini.tsx
-    │   │   │   ├── inquiry-form.tsx
-    │   │   │   ├── operating-hours.tsx
-    │   │   └── index.ts
-    │   ├── destination/
+    │   ├── city/
     │   │   ├── components/
     │   │   │   ├── dialog/
     │   │   │   │   ├── delete.tsx
@@ -254,19 +219,54 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── row.tsx
     │   │   ├── hooks/
-    │   │   │   ├── use-destination-filters.ts
-    │   │   │   ├── use-destination-form.ts
+    │   │   │   ├── use-city-filters.ts
+    │   │   │   ├── use-city-form.ts
     │   │   ├── mutations/
-    │   │   │   ├── create-destination.mutation.ts
-    │   │   │   ├── delete-destination.mutation.ts
-    │   │   │   ├── update-destination.mutation.ts
+    │   │   │   ├── create-city.mutation.ts
+    │   │   │   ├── delete-city.mutation.ts
+    │   │   │   ├── update-city.mutation.ts
     │   │   │   ├── update-gallery.mutation.ts
     │   │   ├── queries/
     │   │   │   ├── index.ts
     │   │   ├── pages/
-    │   │   │   ├── create-destination.page.tsx
+    │   │   │   ├── city-list.page.tsx
+    │   │   │   ├── create-city.page.tsx
+    │   │   │   ├── edit-city.page.tsx
+    │   ├── contact/
+    │   │   ├── components/
+    │   │   │   ├── contact-cards.tsx
+    │   │   │   ├── contact-hero.tsx
+    │   │   │   ├── faq-mini.tsx
+    │   │   │   ├── inquiry-form.tsx
+    │   │   │   ├── operating-hours.tsx
+    │   │   └── index.ts
+    │   ├── destination/
+    │   │   ├── components/
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── skeleton.tsx
+    │   │   │   ├── list-filter/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-destination-form.ts
+    │   │   │   ├── use-destination-list-filters.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-destination.mutation.ts
+    │   │   │   ├── delete-destination.mutation.ts
+    │   │   │   ├── update-destination.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
     │   │   │   ├── destination-list.page.tsx
-    │   │   │   ├── edit-destination.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── delete-destination-dialog.store.ts
+    │   │   │   ├── destination-dialog.store.ts
     │   ├── destinations/
     │   │   ├── components/
     │   │   │   ├── about-section.tsx
@@ -487,14 +487,14 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── article.route.ts
         │   ├── article.schema.ts
         │   ├── article.service.ts
-        ├── attraction/
-        │   ├── attraction.route.ts
-        │   ├── attraction.schema.ts
-        │   ├── attraction.service.ts
         ├── category/
         │   ├── category.route.ts
         │   ├── category.schema.ts
         │   ├── category.service.ts
+        ├── city/
+        │   ├── city.route.ts
+        │   ├── city.schema.ts
+        │   ├── city.service.ts
         ├── destination/
         │   ├── destination.route.ts
         │   ├── destination.schema.ts

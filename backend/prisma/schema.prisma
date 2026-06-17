@@ -94,17 +94,17 @@ model Image {
   blurHash  String
   createdAt DateTime   @default(now())
 
-  destinations         Destination[]
-  attractions          Attraction[]
-  destinationGalleries DestinationImage[]
-  articles             Article[]
+  cities         City[]
+  destinations   Destination[]
+  cityGalleries  CityImage[]
+  articles       Article[]
 
   @@map("image")
 }
 
 // ─── Destination ───────────────────────────────────────────────
 
-model Destination {
+model City {
   id          String   @id @db.Uuid @default(uuid(7))
   slug        String   @unique
   name        String
@@ -116,45 +116,45 @@ model Destination {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  image       Image        @relation(fields: [imageId], references: [id])
-  attractions Attraction[]
-  images      DestinationImage[]
+  image        Image        @relation(fields: [imageId], references: [id])
+  destinations Destination[]
+  images       CityImage[]
 
   @@index([imageId])
-  @@map("destination")
+  @@map("city")
 }
 
-model DestinationImage {
-  destinationId String @db.Uuid
-  imageId       String @db.Uuid
-  order         Int    @default(0)
+model CityImage {
+  cityId  String @db.Uuid @map("city_id")
+  imageId String @db.Uuid
+  order   Int    @default(0)
 
-  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  image       Image       @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  city  City  @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
 
-  @@id([destinationId, imageId])
-  @@index([destinationId])
+  @@id([cityId, imageId])
+  @@index([cityId])
   @@index([imageId])
-  @@map("destination_image")
+  @@map("city_image")
 }
 
 // ─── Attraction ────────────────────────────────────────────────
 
-model Attraction {
-  id            String   @id @db.Uuid @default(uuid(7))
-  name          String
-  description   String
-  imageId       String   @db.Uuid
-  destinationId String   @db.Uuid
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+model Destination {
+  id          String   @id @db.Uuid @default(uuid(7))
+  name        String
+  description String
+  imageId     String   @db.Uuid
+  cityId      String   @db.Uuid @map("city_id")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  image       Image             @relation(fields: [imageId], references: [id])
-  destination Destination        @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  image Image @relation(fields: [imageId], references: [id])
+  city  City  @relation(fields: [cityId], references: [id], onDelete: Cascade)
 
   @@index([imageId])
-  @@index([destinationId])
-  @@map("attraction")
+  @@index([cityId])
+  @@map("destination")
 }
 
 // ─── Category ───────────────────────────────────────────────

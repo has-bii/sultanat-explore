@@ -5,41 +5,43 @@ import { Suspense } from "react"
 
 import { TableSkeleton } from "@/components/table-skeleton"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 
-import { DestinationFilters } from "../components/filter"
+import { DestinationDialog } from "../components/dialog"
+import { DeleteDestinationDialog } from "../components/dialog/delete"
+import { DestinationListFilters } from "../components/list-filter"
 import { DestinationTable } from "../components/table"
-import { useDestinationFilters } from "../hooks/use-destination-filters"
+import { useDestinationListFilters } from "../hooks/use-destination-list-filters"
 import { type GetDestinationsQuery } from "../queries"
+import { useDestinationDialogStore } from "../stores/destination-dialog.store"
 
 export function DestinationListPage() {
-  const { query } = useDestinationFilters()
+  const openDialog = useDestinationDialogStore((s) => s.onOpen)
+  const { query } = useDestinationListFilters()
 
   const tableQuery: GetDestinationsQuery = {
     limit: "10",
-    featured: query.featured || undefined,
     order: query.order,
     search: query.search || undefined,
     sort: query.sort || undefined,
+    cityId: query.cityId || undefined,
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <Suspense>
-          <DestinationFilters />
-        </Suspense>
-        <Button asChild>
-          <Link href="/admin/dashboard/destination/create">
-            <Plus data-icon="inline-start" />
-            <span>Tambah</span>
-          </Link>
+    <>
+      <div className="flex items-center justify-between gap-2">
+        <DestinationListFilters />
+        <Button onClick={() => openDialog(null)}>
+          <Plus data-icon="inline-start" />
+          <span>Tambah</span>
         </Button>
       </div>
 
-      <Suspense fallback={<TableSkeleton rowCount={5} columns={6} />}>
+      <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
         <DestinationTable query={tableQuery} />
       </Suspense>
-    </div>
+
+      <DestinationDialog />
+      <DeleteDestinationDialog />
+    </>
   )
 }

@@ -8,31 +8,31 @@ import { cursorArgs, toPage } from "backend/lib/paginate"
 import { r2Delete, r2KeyFromUrl, r2Upload } from "backend/lib/r2"
 import type { ImageQueryOutput, UpdateImageInput } from "backend/modules/image/image.schema"
 
-// ── Shared helpers (exported for destination / attraction) ──────────
+// ── Shared helpers (exported for city / destination) ──────────────
 
-/** Throws 400 if image not found. Use in destination + attraction create/update. */
+/** Throws 400 if image not found. Use in city + destination create/update. */
 export async function assertImageExists(id: string) {
   const img = await db.image.findUnique({ where: { id }, select: { id: true } })
   if (!img) throw new HTTPException(400, { message: "Gambar tidak ditemukan" })
 }
 
-/** Returns the set of imageIds still referenced by destination / attraction / gallery. */
+/** Returns the set of imageIds still referenced by city / destination / gallery. */
 export async function findReferencedImageIds(ids: string[]): Promise<Set<string>> {
-  const [dest, attr, gallery] = await Promise.all([
+  const [cities, destinations, gallery] = await Promise.all([
+    db.city.findMany({
+      where: { imageId: { in: ids } },
+      select: { imageId: true },
+    }),
     db.destination.findMany({
       where: { imageId: { in: ids } },
       select: { imageId: true },
     }),
-    db.attraction.findMany({
-      where: { imageId: { in: ids } },
-      select: { imageId: true },
-    }),
-    db.destinationImage.findMany({
+    db.cityImage.findMany({
       where: { imageId: { in: ids } },
       select: { imageId: true },
     }),
   ])
-  return new Set([...dest, ...attr, ...gallery].map((r) => r.imageId))
+  return new Set([...cities, ...destinations, ...gallery].map((r) => r.imageId))
 }
 
 // ── Private helpers ────────────────────────────────────────────────

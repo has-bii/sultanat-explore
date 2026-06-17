@@ -34,3 +34,7 @@ Travel agency website. Turkey-based, serving Indonesian travelers. Open trips, p
 | Frontend (UI, components, pages) | `ARCHITECTURE` + `FRONTEND` + `DESIGN` | `BACKEND` |
 | Backend (API, DB, services) | `ARCHITECTURE` + `BACKEND` | `FRONTEND`, `DESIGN` |
 | Full stack / cross-cutting | All docs | — |
+
+**Codebase Exploration Rule:**
+
+NEVER explore the codebase blindly, always use CODEBASE-DIRECTORY.md for the reference.

@@ -6,7 +6,7 @@ import { HTTPException } from "hono/http-exception"
 import type { AppContext } from "backend/app.type"
 import { auth } from "backend/lib/auth"
 import articleRoute from "backend/modules/article/article.route"
-import attractionRoute from "backend/modules/attraction/attraction.route"
+import cityRoute from "backend/modules/city/city.route"
 import categoryRoute from "backend/modules/category/category.route"
 import destinationRoute from "backend/modules/destination/destination.route"
 import imageRoute from "backend/modules/image/image.route"
@@ -59,8 +59,8 @@ app.use("*", async (c, next) => {
 
 const routes = app
   .route("/images", imageRoute)
+  .route("/cities", cityRoute)
   .route("/destinations", destinationRoute)
-  .route("/attractions", attractionRoute)
   .route("/articles", articleRoute)
   .route("/categories", categoryRoute)
   .route("/me", userRoute)

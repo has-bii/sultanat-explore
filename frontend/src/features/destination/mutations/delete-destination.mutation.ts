@@ -13,7 +13,9 @@ export const useDeleteDestination = () => {
   return useMutation({
     mutationKey: DELETE_DESTINATION_MUTATION_KEY,
     mutationFn: async (id: string) => {
-      const res = await $deleteDestination({ param: { id } })
+      const res = await $deleteDestination({
+        param: { id },
+      })
       const json = await res.json()
       if (!json.success) throw new Error(json.message)
       return json
