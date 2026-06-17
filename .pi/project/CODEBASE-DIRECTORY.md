@@ -209,9 +209,13 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── dialog/
     │   │   │   │   ├── delete.tsx
     │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
     │   │   │   ├── table/
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── row.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-category-form.ts
     │   │   ├── mutations/
     │   │   │   ├── create-category.mutation.ts
     │   │   │   ├── delete-category.mutation.ts

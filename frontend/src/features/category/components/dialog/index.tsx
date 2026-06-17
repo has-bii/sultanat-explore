@@ -1,30 +1,18 @@
 "use client"
 
-import { Plus, Save } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useAppForm } from "@/lib/form"
-import * as v from "valibot"
 
+import { CategoryForm } from "../../components/form"
+import { useCategoryForm } from "../../hooks/use-category-form"
 import { useCreateCategory } from "../../mutations/create-category.mutation"
 import { useUpdateCategory } from "../../mutations/update-category.mutation"
 import { useCategoryDialogStore } from "../../stores/category-dialog.store"
-
-const categorySchema = v.object({
-  name: v.pipe(
-    v.string(),
-    v.minLength(1, "Nama harus diisi"),
-    v.maxLength(100, "Nama maksimal 100 karakter"),
-  ),
-})
 
 export function CategoryDialog() {
   const { open, meta, onClose } = useCategoryDialogStore()
@@ -35,20 +23,15 @@ export function CategoryDialog() {
   const isEdit = meta !== null
   const isPending = createMutation.isPending || updateMutation.isPending
 
-  const form = useAppForm({
+  const form = useCategoryForm({
     defaultValues: {
       name: meta?.name ?? "",
     },
-    validators: {
-      onChange: categorySchema,
-    },
-    onSubmit: async ({ value }) => {
+    onSubmit: async (value) => {
       if (isEdit) {
         updateMutation.mutate({ id: meta.id, input: value }, { onSuccess: () => onClose() })
       } else {
-        createMutation.mutate(value, {
-          onSuccess: () => onClose(),
-        })
+        createMutation.mutate(value, { onSuccess: () => onClose() })
       }
     },
   })
@@ -62,34 +45,12 @@ export function CategoryDialog() {
             {isEdit ? "Ubah nama kategori" : "Buat kategori baru untuk artikel"}
           </DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            form.handleSubmit()
-          }}
-          className="space-y-4"
-        >
-          <form.AppField
-            name="name"
-            children={(field) => (
-              <field.TextField label="Nama Kategori" placeholder="Travel Tips" />
-            )}
-          />
-          <DialogFooter>
-            <Button type="button" variant="outline" disabled={isPending} onClick={onClose}>
-              Batal
-            </Button>
-            <form.AppForm>
-              <form.SubmitButton
-                label={isEdit ? "Simpan" : "Tambah"}
-                pendingLabel="Menyimpan..."
-                isDisabled={isPending}
-                icon={isEdit ? Save : Plus}
-              />
-            </form.AppForm>
-          </DialogFooter>
-        </form>
+        <CategoryForm
+          form={form}
+          mode={isEdit ? "edit" : "create"}
+          isPending={isPending}
+          onCancel={onClose}
+        />
       </DialogContent>
     </Dialog>
   )

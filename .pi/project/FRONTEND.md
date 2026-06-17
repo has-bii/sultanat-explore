@@ -192,19 +192,19 @@ export function useXFilters() {
 
 ### Query Convention
 
-See [frontend/QUERY-MUTATION.md](frontend/QUERY-MUTATION.md) for full query conventions.
+See [QUERY-MUTATION.md](.pi/project/frontend/QUERY-MUTATION.md) for full query conventions.
 
 ### Mutation Convention
 
-See [frontend/QUERY-MUTATION.md](frontend/QUERY-MUTATION.md) for full mutation conventions.
+See [QUERY-MUTATION.md](.pi/project/frontend/QUERY-MUTATION.md) for full mutation conventions.
 
 ### Form Convention
 
-See [frontend/FORM.md](frontend/FORM.md) for full form conventions.
+See [FORM.md](.pi/project/frontend/FORM.md) for full form conventions.
 
 ### Table Convention
 
-See [frontend/TABLE.md](frontend/TABLE.md) for full table conventions.
+See [TABLE.md](.pi/project/frontend/TABLE.md) for full table conventions.
 
 ### Button Icon Convention
 
