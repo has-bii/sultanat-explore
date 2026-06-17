@@ -35,6 +35,7 @@ export async function main() {
         name,
         email,
         emailVerified: true,
+        role: "admin",
       },
       select: { id: true },
     })

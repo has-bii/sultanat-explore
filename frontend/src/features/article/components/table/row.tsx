@@ -26,7 +26,7 @@ export function ArticleTableRow({ article }: { article: Article }) {
         </Item>
       </TableCell>
       <TableCell className="text-muted-foreground">{article.category?.name ?? "—"}</TableCell>
-      <TableCell className="text-muted-foreground">{article.author.name}</TableCell>
+      <TableCell className="text-muted-foreground">{article.author?.name ?? "—"}</TableCell>
       <TableCell className="text-center">
         <Badge variant={article.published ? "default" : "secondary"}>
           {article.published ? "Diterbitkan" : "Draf"}

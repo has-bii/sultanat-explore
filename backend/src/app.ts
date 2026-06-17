@@ -11,6 +11,7 @@ import categoryRoute from "backend/modules/category/category.route"
 import destinationRoute from "backend/modules/destination/destination.route"
 import imageRoute from "backend/modules/image/image.route"
 import userRoute from "backend/modules/user/user.route"
+import usersRoute from "backend/modules/user/users.route"
 import { errorResponse } from "backend/utils/response"
 
 const app = new Hono<AppContext>().basePath("/api")
@@ -63,6 +64,7 @@ const routes = app
   .route("/articles", articleRoute)
   .route("/categories", categoryRoute)
   .route("/me", userRoute)
+  .route("/users", usersRoute)
 
 export default routes
 export type AppType = ApplyGlobalResponse<

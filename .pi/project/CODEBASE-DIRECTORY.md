@@ -436,6 +436,7 @@ backend/                           # Workspace package: API + DB + Auth
     ├── app.ts                     # Hono app (CORS, auth, route registration)
     ├── app.type.ts                # AppContext (nullable) + AppAuthContext (guaranteed)
     ├── middlewares/
+    │   ├── require-admin.ts
     │   ├── require-auth.ts
     │   ├── validator-wrapper.ts
     ├── schemas/
@@ -478,6 +479,9 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── user.route.ts
         │   ├── user.schema.ts
         │   ├── user.service.ts
+        │   ├── users.route.ts
+        │   ├── users.schema.ts
+        │   ├── users.service.ts
 ```
 
 ## Monorepo Structure
