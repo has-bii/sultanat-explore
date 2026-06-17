@@ -9,11 +9,22 @@ import Link from "next/link"
 
 import { DestinationFilters } from "../components/filter"
 import { DestinationTable } from "../components/table"
+import { useDestinationFilters } from "../hooks/use-destination-filters"
+import { type GetDestinationsQuery } from "../queries"
 
 export function DestinationListPage() {
+  const { query } = useDestinationFilters()
+
+  const tableQuery: GetDestinationsQuery = {
+    limit: "10",
+    featured: query.featured || undefined,
+    order: query.order,
+    search: query.search || undefined,
+    sort: query.sort || undefined,
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-4">
-      {/* Toolbar: filters + create button */}
       <div className="flex items-center gap-2">
         <Suspense>
           <DestinationFilters />
@@ -26,9 +37,8 @@ export function DestinationListPage() {
         </Button>
       </div>
 
-      {/* Table */}
       <Suspense fallback={<TableSkeleton rowCount={5} columns={6} />}>
-        <DestinationTable />
+        <DestinationTable query={tableQuery} />
       </Suspense>
     </div>
   )

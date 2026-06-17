@@ -9,8 +9,21 @@ import Link from "next/link"
 
 import { ArticleFilters } from "../components/filter"
 import { ArticleTable } from "../components/table"
+import { useArticleFilters } from "../hooks/use-article-filters"
+import { type GetArticlesQuery } from "../queries"
 
 export function ArticleListPage() {
+  const { query } = useArticleFilters()
+
+  const tableQuery: GetArticlesQuery = {
+    limit: "10",
+    search: query.search || undefined,
+    sort: query.sort || undefined,
+    order: query.order,
+    published: query.published || undefined,
+    category: query.category || undefined,
+  }
+
   return (
     <>
       <div className="flex items-center gap-2">
@@ -23,8 +36,8 @@ export function ArticleListPage() {
         </Button>
       </div>
 
-      <Suspense fallback={<TableSkeleton rowCount={5} columns={5} />}>
-        <ArticleTable />
+      <Suspense fallback={<TableSkeleton rowCount={5} columns={6} />}>
+        <ArticleTable query={tableQuery} />
       </Suspense>
     </>
   )

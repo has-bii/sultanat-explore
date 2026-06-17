@@ -4,83 +4,36 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { MapPin, MapPinOff } from "lucide-react"
 
 import { ButtonLoading } from "@/components/button-loading"
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty"
+import { TableEmpty } from "@/components/table-empty"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-import { useAttractionFilters } from "../../hooks/use-attraction-filters"
 import { type GetAttractionsQuery, getAttractionsQueryOptions } from "../../queries"
-import { useAttractionDialogStore } from "../../stores/attraction-dialog.store"
-import { useDeleteAttractionDialogStore } from "../../stores/delete-attraction-dialog.store"
 import { AttractionTableRow } from "./row"
 
-interface Props {
-  destinationId: string
+interface AttractionTableProps {
+  query: GetAttractionsQuery
 }
 
-export function AttractionTable({ destinationId }: Props) {
-  const openDialog = useAttractionDialogStore((s) => s.onOpen)
-  const openDeleteDialog = useDeleteAttractionDialogStore((s) => s.onOpen)
-  const { query, methods } = useAttractionFilters()
-
-  const parsedQuery: GetAttractionsQuery = {
-    limit: "10",
-    order: query.order,
-    search: query.search || undefined,
-    sort: query.sort || undefined,
-    destinationId,
-  }
-
+export function AttractionTable({ query }: AttractionTableProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    getAttractionsQueryOptions(parsedQuery),
+    getAttractionsQueryOptions({ ...query, limit: query.limit ?? "10" }),
   )
 
   const attractions = data.pages.flatMap((p) => p.data)
 
-  // Empty state — search no results
-  if (attractions.length === 0 && query.search) {
-    return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <MapPinOff />
-          </EmptyMedia>
-          <EmptyTitle>Tidak ada hasil</EmptyTitle>
-          <EmptyDescription>
-            Tidak ditemukan atraksi yang cocok dengan pencarian Anda.
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <ButtonLoading
-            variant="outline"
-            onClick={() => methods.onSearchChange("")}
-            isLoading={false}
-          >
-            Hapus Pencarian
-          </ButtonLoading>
-        </EmptyContent>
-      </Empty>
-    )
-  }
-
-  // Empty state — no attractions at all
   if (attractions.length === 0) {
+    const hasSearchFilter = Boolean(query.search)
+
     return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <MapPin />
-          </EmptyMedia>
-          <EmptyTitle>Belum ada atraksi</EmptyTitle>
-          <EmptyDescription>Tambahkan atraksi pertama untuk destinasi ini.</EmptyDescription>
-        </EmptyHeader>
-      </Empty>
+      <TableEmpty
+        icon={hasSearchFilter ? MapPinOff : MapPin}
+        title={hasSearchFilter ? "Tidak ada hasil" : "Belum ada atraksi"}
+        description={
+          hasSearchFilter
+            ? "Tidak ditemukan atraksi yang cocok dengan pencarian."
+            : "Tambahkan atraksi pertama untuk destinasi ini."
+        }
+      />
     )
   }
 
@@ -96,12 +49,7 @@ export function AttractionTable({ destinationId }: Props) {
           </TableHeader>
           <TableBody>
             {attractions.map((attraction) => (
-              <AttractionTableRow
-                key={attraction.id}
-                attraction={attraction}
-                onUpdate={(id) => openDialog(id)}
-                onDelete={(id, name) => openDeleteDialog({ id, name })}
-              />
+              <AttractionTableRow key={attraction.id} attraction={attraction} />
             ))}
           </TableBody>
         </Table>
@@ -113,7 +61,7 @@ export function AttractionTable({ destinationId }: Props) {
           onClick={() => fetchNextPage()}
           isLoading={isFetchingNextPage}
         >
-          Tampilkan lebih banyak
+          Muat lebih banyak
         </ButtonLoading>
       )}
     </div>

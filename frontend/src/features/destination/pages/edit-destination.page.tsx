@@ -18,6 +18,7 @@ import {
 import { AttractionDialog } from "@/features/attraction/components/dialog"
 import { DeleteAttractionDialog } from "@/features/attraction/components/dialog/delete"
 import { AttractionTable } from "@/features/attraction/components/table"
+import { type GetAttractionsQuery } from "@/features/attraction/queries"
 import { useAttractionDialogStore } from "@/features/attraction/stores/attraction-dialog.store"
 import Link from "next/link"
 
@@ -32,6 +33,13 @@ import { getDestinationQueryOptions } from "../queries"
 
 interface Props {
   destinationId: string
+}
+
+function attractionQuery(destinationId: string): GetAttractionsQuery {
+  return {
+    destinationId,
+    limit: "10",
+  }
 }
 
 export function EditDestinationPage({ destinationId }: Props) {
@@ -68,7 +76,7 @@ export function EditDestinationPage({ destinationId }: Props) {
         </CardHeader>
         <CardContent>
           <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
-            <AttractionTable destinationId={destinationId} />
+            <AttractionTable query={attractionQuery(destinationId)} />
           </Suspense>
         </CardContent>
       </Card>

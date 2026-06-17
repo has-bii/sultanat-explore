@@ -1,79 +1,38 @@
 "use client"
 
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
-import { FileText, Plus } from "lucide-react"
+import { FileText } from "lucide-react"
 
 import { ButtonLoading } from "@/components/button-loading"
-import { Button } from "@/components/ui/button"
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty"
+import { TableEmpty } from "@/components/table-empty"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import Link from "next/link"
 
-import { useArticleFilters } from "../../hooks/use-article-filters"
 import { type GetArticlesQuery, getArticlesQueryOptions } from "../../queries"
 import { ArticleTableRow } from "./row"
 
-const ARTICLE_PAGE_SIZE = "10"
+interface ArticleTableProps {
+  query: GetArticlesQuery
+}
 
-export function ArticleTable() {
-  const { query } = useArticleFilters()
-
-  const parsedQuery: GetArticlesQuery = {
-    limit: ARTICLE_PAGE_SIZE,
-    search: query.search || undefined,
-    sort: query.sort || undefined,
-    order: query.order,
-    published: query.published || undefined,
-    category: query.category || undefined,
-  }
-
+export function ArticleTable({ query }: ArticleTableProps) {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
-    getArticlesQueryOptions(parsedQuery),
+    getArticlesQueryOptions({ ...query, limit: query.limit ?? "10" }),
   )
   const articles = data.pages.flatMap((p) => p.data)
 
-  // Empty state — no results with filters
-  if (articles.length === 0 && (query.search || query.published || query.category)) {
-    return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <FileText />
-          </EmptyMedia>
-          <EmptyTitle>Tidak ada hasil</EmptyTitle>
-          <EmptyDescription>Coba ubah filter atau kata kunci pencarian</EmptyDescription>
-        </EmptyHeader>
-      </Empty>
-    )
-  }
-
-  // Empty state — no articles at all
   if (articles.length === 0) {
+    const hasFilters = query.search || query.published || query.category
+
     return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <FileText />
-          </EmptyMedia>
-          <EmptyTitle>Belum ada artikel</EmptyTitle>
-          <EmptyDescription>Buat artikel pertama untuk mulai berbagi cerita</EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button asChild>
-            <Link href="/admin/dashboard/article/create">
-              <Plus data-icon="inline-start" />
-              <span>Tambah</span>
-            </Link>
-          </Button>
-        </EmptyContent>
-      </Empty>
+      <TableEmpty
+        icon={FileText}
+        title={hasFilters ? "Tidak ada hasil" : "Belum ada artikel"}
+        description={
+          hasFilters
+            ? "Coba ubah filter atau kata kunci pencarian."
+            : "Buat artikel pertama untuk mulai berbagi cerita."
+        }
+      />
     )
   }
 
@@ -105,7 +64,7 @@ export function ArticleTable() {
           onClick={() => fetchNextPage()}
           isLoading={isFetchingNextPage}
         >
-          Muat lagi
+          Muat lebih banyak
         </ButtonLoading>
       )}
     </div>

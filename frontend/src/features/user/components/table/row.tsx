@@ -1,5 +1,6 @@
 "use client"
 
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { Loader, Trash2 } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -12,24 +13,27 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { TableCell, TableRow } from "@/components/ui/table"
+import { getAuthSessionQueryOptions } from "@/features/auth/query"
 import { format } from "date-fns"
 import { id } from "date-fns/locale"
 
 import { useUpdateUserRole } from "../../mutations/update-user-role.mutation"
 import type { User } from "../../queries"
+import { useDeleteUserDialogStore } from "../../stores/delete-user-dialog.store"
 
-interface Props {
+interface UserTableRowProps {
   user: User
-  currentUserId: string
-  onDeleteClick: (user: User) => void
 }
 
 function getRoleLabel(role: string) {
   return role === "admin" ? "Admin" : "Author"
 }
 
-export function UserTableRow({ user, currentUserId, onDeleteClick }: Props) {
-  const isCurrent = user.id === currentUserId
+export function UserTableRow({ user }: UserTableRowProps) {
+  const { data: session } = useSuspenseQuery(getAuthSessionQueryOptions())
+  const { onOpen: openDelete } = useDeleteUserDialogStore()
+
+  const isCurrent = user.id === session.user.id
 
   const updateUserRole = useUpdateUserRole()
   const isRolePending = updateUserRole.isPending && updateUserRole.variables?.id === user.id
@@ -75,7 +79,7 @@ export function UserTableRow({ user, currentUserId, onDeleteClick }: Props) {
           variant="destructive"
           size="sm"
           disabled={isCurrent}
-          onClick={() => onDeleteClick(user)}
+          onClick={() => openDelete({ id: user.id, name: user.name })}
         >
           <Trash2 data-icon="inline-start" />
           <span>Hapus</span>

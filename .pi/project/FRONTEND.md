@@ -202,13 +202,9 @@ See [frontend/QUERY-MUTATION.md](frontend/QUERY-MUTATION.md) for full mutation c
 
 See [frontend/FORM.md](frontend/FORM.md) for full form conventions.
 
-Quick rules:
-- Use `useAppForm()` from `@/lib/form` — never raw `useForm` from TanStack.
-- `useAppForm()` exposes `form.AppField`, `form.AppForm`, `field.<RegisteredField>`, `form.SubmitButton`.
-- Pass Valibot schema via `validators: { onChange: <ValibotSchema> }` for immediate feedback.
-- Build full `defaultValues` inside the custom hook; clean/normalize values in the hook's `onSubmit`.
-- Form-level errors: pass the `error` from `useMutation`; never use local `formError` state.
-- Submit wiring: `e.preventDefault(); e.stopPropagation(); form.handleSubmit()`; wrap `<form.SubmitButton>` with `<form.AppForm>`.
+### Table Convention
+
+See [frontend/TABLE.md](frontend/TABLE.md) for full table conventions.
 
 ### Button Icon Convention
 

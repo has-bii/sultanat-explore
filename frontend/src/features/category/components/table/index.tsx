@@ -1,50 +1,24 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Pencil, Trash2 } from "lucide-react"
 import { FolderOpen } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { TableEmpty } from "@/components/table-empty"
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 import { getCategoriesQueryOptions } from "../../queries"
-import { useCategoryDialogStore } from "../../stores/category-dialog.store"
-import { useDeleteCategoryDialogStore } from "../../stores/delete-category-dialog.store"
+import { CategoryTableRow } from "./row"
 
 export function CategoryTable() {
   const { data: categories } = useSuspenseQuery(getCategoriesQueryOptions())
-  const openDialog = useCategoryDialogStore((s) => s.onOpen)
-  const openDelete = useDeleteCategoryDialogStore((s) => s.onOpen)
 
   if (categories.length === 0) {
     return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <FolderOpen />
-          </EmptyMedia>
-          <EmptyTitle>Belum ada kategori</EmptyTitle>
-          <EmptyDescription>Buat kategori pertama untuk mengelompokkan artikel</EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button onClick={() => openDialog(null)}>Tambah Kategori</Button>
-        </EmptyContent>
-      </Empty>
+      <TableEmpty
+        icon={FolderOpen}
+        title="Belum ada kategori"
+        description="Buat kategori pertama untuk mengelompokkan artikel."
+      />
     )
   }
 
@@ -61,31 +35,7 @@ export function CategoryTable() {
         </TableHeader>
         <TableBody>
           {categories.map((cat) => (
-            <TableRow key={cat.id}>
-              <TableCell className="pl-4 font-medium">{cat.name}</TableCell>
-              <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
-              <TableCell className="text-center">{cat._count.articles}</TableCell>
-              <TableCell className="w-[100px]">
-                <div className="flex items-center justify-center gap-1">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => openDialog({ id: cat.id, name: cat.name })}
-                  >
-                    <Pencil data-icon="inline-start" />
-                    <span>Edit</span>
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => openDelete({ id: cat.id, name: cat.name })}
-                  >
-                    <Trash2 data-icon="inline-start" />
-                    <span>Hapus</span>
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
+            <CategoryTableRow key={cat.id} category={cat} />
           ))}
         </TableBody>
       </Table>

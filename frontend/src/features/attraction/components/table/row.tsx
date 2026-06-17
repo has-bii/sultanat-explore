@@ -1,24 +1,33 @@
 "use client"
 
-import { Pencil, Trash2 } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { blurhashToDataUrl } from "@/features/image/lib/blurhash"
 import Image from "next/image"
 
 import type { GetAttractionsResponse } from "../../queries"
+import { useAttractionDialogStore } from "../../stores/attraction-dialog.store"
+import { useDeleteAttractionDialogStore } from "../../stores/delete-attraction-dialog.store"
 
 type Attraction = NonNullable<GetAttractionsResponse["data"]["data"][number]>
 
-interface Props {
+interface AttractionTableRowProps {
   attraction: Attraction
-  onUpdate: (id: string) => void
-  onDelete: (id: string, name: string) => void
 }
 
-export function AttractionTableRow({ attraction, onUpdate, onDelete }: Props) {
+export function AttractionTableRow({ attraction }: AttractionTableRowProps) {
+  const { onOpen: openEdit } = useAttractionDialogStore()
+  const { onOpen: openDelete } = useDeleteAttractionDialogStore()
+
   return (
     <TableRow>
       <TableCell className="pl-4">
@@ -42,20 +51,25 @@ export function AttractionTableRow({ attraction, onUpdate, onDelete }: Props) {
         </Item>
       </TableCell>
       <TableCell className="w-[120px] text-center">
-        <div className="inline-flex items-center gap-1">
-          <Button size="sm" variant="secondary" onClick={() => onUpdate(attraction.id)}>
-            <Pencil data-icon="inline-start" />
-            <span>Edit</span>
-          </Button>
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => onDelete(attraction.id, attraction.name)}
-          >
-            <Trash2 data-icon="inline-start" />
-            <span>Hapus</span>
-          </Button>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" variant="ghost">
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => openEdit(attraction.id)}>
+              <Pencil />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => openDelete({ id: attraction.id, name: attraction.name })}
+            >
+              <Trash2 />
+              Hapus
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   )

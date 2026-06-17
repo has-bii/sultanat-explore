@@ -9,15 +9,25 @@ import { Button } from "@/components/ui/button"
 import { AttractionDialog } from "../components/dialog"
 import { DeleteAttractionDialog } from "../components/dialog/delete"
 import { AttractionListFilters } from "../components/list-filter"
-import { AttractionListTable } from "../components/list-table"
+import { AttractionTable } from "../components/table"
+import { useAttractionListFilters } from "../hooks/use-attraction-list-filters"
+import { type GetAttractionsQuery } from "../queries"
 import { useAttractionDialogStore } from "../stores/attraction-dialog.store"
 
 export function AttractionListPage() {
   const openDialog = useAttractionDialogStore((s) => s.onOpen)
+  const { query } = useAttractionListFilters()
+
+  const tableQuery: GetAttractionsQuery = {
+    limit: "10",
+    order: query.order,
+    search: query.search || undefined,
+    sort: query.sort || undefined,
+    destinationId: query.destinationId || undefined,
+  }
 
   return (
     <>
-      {/* Toolbar: filters + create button */}
       <div className="flex items-center justify-between gap-2">
         <AttractionListFilters />
         <Button onClick={() => openDialog(null)}>
@@ -26,12 +36,10 @@ export function AttractionListPage() {
         </Button>
       </div>
 
-      {/* Table */}
       <Suspense fallback={<TableSkeleton rowCount={5} columns={2} />}>
-        <AttractionListTable />
+        <AttractionTable query={tableQuery} />
       </Suspense>
 
-      {/* Dialog (no destinationId — shows destination selector) */}
       <AttractionDialog />
       <DeleteAttractionDialog />
     </>

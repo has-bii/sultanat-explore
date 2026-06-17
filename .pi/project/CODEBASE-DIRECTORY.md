@@ -98,6 +98,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── main-page.tsx
     │   ├── navbar.tsx
     │   ├── query-boundary.tsx
+    │   ├── table-empty.tsx
     │   ├── table-skeleton.tsx
     │   ├── testimonials-columns-1.tsx
     │   └── sidebar/               # Admin sidebar components
@@ -166,20 +167,15 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── dialog/
     │   │   │   │   ├── delete.tsx
     │   │   │   │   ├── index.tsx
-    │   │   │   ├── filter/
-    │   │   │   │   ├── index.tsx
     │   │   │   ├── form/
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── skeleton.tsx
     │   │   │   ├── list-filter/
     │   │   │   │   ├── index.tsx
-    │   │   │   ├── list-table/
-    │   │   │   │   ├── index.tsx
     │   │   │   ├── table/
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── row.tsx
     │   │   ├── hooks/
-    │   │   │   ├── use-attraction-filters.ts
     │   │   │   ├── use-attraction-form.ts
     │   │   │   ├── use-attraction-list-filters.ts
     │   │   ├── mutations/
@@ -215,6 +211,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   │   ├── index.tsx
     │   │   │   ├── table/
     │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
     │   │   ├── mutations/
     │   │   │   ├── create-category.mutation.ts
     │   │   │   ├── delete-category.mutation.ts
