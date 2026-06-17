@@ -6,6 +6,7 @@ Reverse chronological index. Each entry links to its own file.
 
 | Date | Title | File |
 |------|-------|------|
+| 2026-06-17 | OpenTrip Backend Module | [opentrip-backend.md](log/opentrip-backend.md) |
 | 2026-06-17 | Category Form + FRONTEND.md Path Fix | [category-form-extraction.md](log/category-form-extraction.md) |
 | 2026-06-17 | SelectField Trailing Prop | [select-field-trailing-prop.md](log/select-field-trailing-prop.md) |
 | 2026-06-17 | Table Conventions | [table-conventions.md](log/table-conventions.md) |

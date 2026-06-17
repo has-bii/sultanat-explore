@@ -503,6 +503,14 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── image.route.ts
         │   ├── image.schema.ts
         │   ├── image.service.ts
+        ├── inclusion-item/
+        │   ├── inclusion-item.route.ts
+        │   ├── inclusion-item.schema.ts
+        │   ├── inclusion-item.service.ts
+        ├── open-trip/
+        │   ├── open-trip.route.ts
+        │   ├── open-trip.schema.ts
+        │   ├── open-trip.service.ts
         ├── user/
         │   ├── user.route.ts
         │   ├── user.schema.ts

@@ -19,8 +19,23 @@ enum UserRole {
   @@map("user_role")
 }
 
+enum OpenTripStatus {
+  draft
+  published
+  archived
+
+  @@map("open_trip_status")
+}
+
+enum InclusionType {
+  include
+  exclude
+
+  @@map("inclusion_type")
+}
+
 model User {
-  id            String    @id @db.Uuid @default(uuid(7))
+  id            String    @id @default(uuid(7)) @db.Uuid
   name          String
   email         String
   emailVerified Boolean   @default(false)
@@ -37,7 +52,7 @@ model User {
 }
 
 model Session {
-  id        String   @id @db.Uuid @default(uuid(7))
+  id        String   @id @default(uuid(7)) @db.Uuid
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
@@ -53,7 +68,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id @db.Uuid @default(uuid(7))
+  id                    String    @id @default(uuid(7)) @db.Uuid
   accountId             String
   providerId            String
   userId                String    @db.Uuid
@@ -73,7 +88,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id @db.Uuid @default(uuid(7))
+  id         String   @id @default(uuid(7)) @db.Uuid
   identifier String
   value      String
   expiresAt  DateTime
@@ -87,17 +102,18 @@ model Verification {
 // ─── Image ────────────────────────────────────────────────────
 
 model Image {
-  id        String     @id @db.Uuid @default(uuid(7))
+  id        String   @id @default(uuid(7)) @db.Uuid
   url       String
   alt       String?
   fileSize  Int
   blurHash  String
-  createdAt DateTime   @default(now())
+  createdAt DateTime @default(now())
 
-  cities         City[]
-  destinations   Destination[]
-  cityGalleries  CityImage[]
-  articles       Article[]
+  cities        City[]
+  destinations  Destination[]
+  cityGalleries CityImage[]
+  articles      Article[]
+  openTrips     OpenTrip[]
 
   @@map("image")
 }
@@ -105,7 +121,7 @@ model Image {
 // ─── Destination ───────────────────────────────────────────────
 
 model City {
-  id          String   @id @db.Uuid @default(uuid(7))
+  id          String   @id @default(uuid(7)) @db.Uuid
   slug        String   @unique
   name        String
   tagline     String
@@ -116,16 +132,17 @@ model City {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  image        Image        @relation(fields: [imageId], references: [id])
-  destinations Destination[]
-  images       CityImage[]
+  image          Image          @relation(fields: [imageId], references: [id])
+  destinations   Destination[]
+  images         CityImage[]
+  openTripCities OpenTripCity[]
 
   @@index([imageId])
   @@map("city")
 }
 
 model CityImage {
-  cityId  String @db.Uuid @map("city_id")
+  cityId  String @map("city_id") @db.Uuid
   imageId String @db.Uuid
   order   Int    @default(0)
 
@@ -141,16 +158,17 @@ model CityImage {
 // ─── Attraction ────────────────────────────────────────────────
 
 model Destination {
-  id          String   @id @db.Uuid @default(uuid(7))
+  id          String   @id @default(uuid(7)) @db.Uuid
   name        String
   description String
   imageId     String   @db.Uuid
-  cityId      String   @db.Uuid @map("city_id")
+  cityId      String   @map("city_id") @db.Uuid
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  image Image @relation(fields: [imageId], references: [id])
-  city  City  @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  image                Image                 @relation(fields: [imageId], references: [id])
+  city                 City                  @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  openTripDestinations OpenTripDestination[]
 
   @@index([imageId])
   @@index([cityId])
@@ -160,7 +178,7 @@ model Destination {
 // ─── Category ───────────────────────────────────────────────
 
 model Category {
-  id        String   @id @db.Uuid @default(uuid(7))
+  id        String   @id @default(uuid(7)) @db.Uuid
   slug      String   @unique
   name      String
   createdAt DateTime @default(now())
@@ -173,8 +191,100 @@ model Category {
 
 // ─── Article ────────────────────────────────────────────────
 
+model OpenTrip {
+  id           String         @id @default(uuid(7)) @db.Uuid
+  slug         String         @unique
+  title        String
+  excerpt      String
+  description  Json
+  price        Int
+  coverImageId String         @db.Uuid
+  startAt      DateTime
+  endAt        DateTime
+  status       OpenTripStatus @default(draft)
+  publishedAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  coverImage Image               @relation(fields: [coverImageId], references: [id])
+  cities     OpenTripCity[]
+  inclusions OpenTripInclusion[]
+
+  @@index([coverImageId])
+  @@index([status, publishedAt])
+  @@index([startAt])
+  @@map("open_trip")
+}
+
+model OpenTripCity {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  openTripId String    @db.Uuid
+  cityId     String    @db.Uuid
+  arriveAt   DateTime
+  departAt   DateTime?
+  order      Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  openTrip     OpenTrip              @relation(fields: [openTripId], references: [id], onDelete: Cascade)
+  city         City                  @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  destinations OpenTripDestination[]
+
+  @@unique([openTripId, order])
+  @@index([openTripId])
+  @@index([cityId])
+  @@map("open_trip_city")
+}
+
+model OpenTripDestination {
+  id             String   @id @default(uuid(7)) @db.Uuid
+  openTripCityId String   @db.Uuid
+  destinationId  String   @db.Uuid
+  visitAt        DateTime
+  order          Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  openTripCity OpenTripCity @relation(fields: [openTripCityId], references: [id], onDelete: Cascade)
+  destination  Destination  @relation(fields: [destinationId], references: [id], onDelete: Restrict)
+
+  @@unique([openTripCityId, order])
+  @@index([openTripCityId])
+  @@index([destinationId])
+  @@map("open_trip_destination")
+}
+
+model InclusionItem {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  slug      String   @unique
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  openTripInclusions OpenTripInclusion[]
+
+  @@map("inclusion_item")
+}
+
+model OpenTripInclusion {
+  id              String        @id @default(uuid(7)) @db.Uuid
+  openTripId      String        @db.Uuid
+  inclusionItemId String        @db.Uuid
+  type            InclusionType
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  openTrip      OpenTrip      @relation(fields: [openTripId], references: [id], onDelete: Cascade)
+  inclusionItem InclusionItem @relation(fields: [inclusionItemId], references: [id], onDelete: Restrict)
+
+  @@unique([openTripId, inclusionItemId])
+  @@index([openTripId])
+  @@index([inclusionItemId])
+  @@map("open_trip_inclusion")
+}
+
 model Article {
-  id          String    @id @db.Uuid @default(uuid(7))
+  id          String    @id @default(uuid(7)) @db.Uuid
   slug        String    @unique
   title       String
   excerpt     String

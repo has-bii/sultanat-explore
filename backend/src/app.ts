@@ -10,6 +10,8 @@ import cityRoute from "backend/modules/city/city.route"
 import categoryRoute from "backend/modules/category/category.route"
 import destinationRoute from "backend/modules/destination/destination.route"
 import imageRoute from "backend/modules/image/image.route"
+import inclusionItemRoute from "backend/modules/inclusion-item/inclusion-item.route"
+import openTripRoute from "backend/modules/open-trip/open-trip.route"
 import userRoute from "backend/modules/user/user.route"
 import usersRoute from "backend/modules/users/users.route"
 import { errorResponse } from "backend/utils/response"
@@ -63,6 +65,8 @@ const routes = app
   .route("/destinations", destinationRoute)
   .route("/articles", articleRoute)
   .route("/categories", categoryRoute)
+  .route("/open-trips", openTripRoute)
+  .route("/inclusion-items", inclusionItemRoute)
   .route("/me", userRoute)
   .route("/users", usersRoute)
 
