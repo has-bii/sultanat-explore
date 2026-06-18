@@ -28,7 +28,7 @@ interface Props {
   description?: string
 }
 
-function TextField({ label, type = "text", placeholder }: Props) {
+export function TextField({ label, type = "text", placeholder }: Props) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
@@ -51,7 +51,7 @@ function TextField({ label, type = "text", placeholder }: Props) {
   )
 }
 
-function TextareaField({ label, placeholder, rows = 4 }: Props & { rows?: number }) {
+export function TextareaField({ label, placeholder, rows = 4 }: Props & { rows?: number }) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
@@ -73,7 +73,7 @@ function TextareaField({ label, placeholder, rows = 4 }: Props & { rows?: number
   )
 }
 
-function PasswordField({ label, placeholder }: Props) {
+export function PasswordField({ label, placeholder }: Props) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
   const [visible, setVisible] = useState(false)
@@ -104,7 +104,7 @@ function PasswordField({ label, placeholder }: Props) {
   )
 }
 
-function ImagePickerField({ label, description }: Props) {
+export function ImagePickerField({ label, description }: Props) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
@@ -118,7 +118,7 @@ function ImagePickerField({ label, description }: Props) {
   )
 }
 
-function SubmitButton(props: {
+export function SubmitButton(props: {
   label: string
   icon?: LucideIcon
   pendingLabel?: string
@@ -152,19 +152,25 @@ function SubmitButton(props: {
   )
 }
 
-function SelectField(props: {
+export function SelectField(props: {
   label?: string
   description?: string
   placeholder?: string
   trailing?: ReactNode
+  className?: string
+  labelClassName?: string
   children: ReactNode
 }) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
   return (
-    <Field data-invalid={isInvalid}>
-      {props.label && <FieldLabel htmlFor={field.name}>{props.label}</FieldLabel>}
+    <Field data-invalid={isInvalid} className={props.className}>
+      {props.label && (
+        <FieldLabel htmlFor={field.name} className={props.labelClassName}>
+          {props.label}
+        </FieldLabel>
+      )}
       <Select
         value={field.state.value}
         onValueChange={(v) => field.handleChange(v)}
@@ -192,9 +198,21 @@ function SelectField(props: {
   )
 }
 
+export const baseFieldComponents = {
+  TextField,
+  TextareaField,
+  PasswordField,
+  ImagePickerField,
+  SelectField,
+}
+
+export const baseFormComponents = {
+  SubmitButton,
+}
+
 const { useAppForm } = createFormHook({
-  fieldComponents: { TextField, TextareaField, PasswordField, ImagePickerField, SelectField },
-  formComponents: { SubmitButton },
+  fieldComponents: baseFieldComponents,
+  formComponents: baseFormComponents,
   fieldContext,
   formContext,
 })

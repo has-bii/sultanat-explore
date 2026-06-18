@@ -45,6 +45,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │       ├── city/
     │   │       ├── image/
     │   │       ├── inclusion-item/
+    │   │       ├── open-trip/
     │   │       ├── settings/
     │   │       ├── user/
     │   │
@@ -366,15 +367,42 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── inclusion-item-dialog.store.ts
     │   ├── open-trip/
     │   │   ├── components/
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   ├── edit-skeleton.tsx
+    │   │   │   ├── filter/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── select-fields.tsx
+    │   │   │   │   ├── use-app-form.ts
     │   │   │   ├── how-it-works.tsx
     │   │   │   ├── inclusion-section.tsx
     │   │   │   ├── itinerary-section.tsx
     │   │   │   ├── open-trip-explanation.tsx
     │   │   │   ├── past-trip-gallery.tsx
     │   │   │   ├── social-proof-bar.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
     │   │   │   ├── trip-card.tsx
     │   │   │   ├── trip-list.tsx
     │   │   │   ├── why-us.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-open-trip-filters.ts
+    │   │   │   ├── use-open-trip-form.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-open-trip.mutation.ts
+    │   │   │   ├── delete-open-trip.mutation.ts
+    │   │   │   ├── update-open-trip.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── create-open-trip.page.tsx
+    │   │   │   ├── edit-open-trip.page.tsx
+    │   │   │   ├── open-trip-list.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── delete-open-trip-dialog.store.ts
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts
