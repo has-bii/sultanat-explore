@@ -1,12 +1,16 @@
 import { HTTPException } from "hono/http-exception"
-import { randomUUID } from "node:crypto"
 
 import { db } from "backend/lib/db"
-import { processImage } from "backend/lib/image-processing"
 import { logger } from "backend/lib/logger"
 import { cursorArgs, toPage } from "backend/lib/paginate"
-import { r2Delete, r2KeyFromUrl, r2Upload } from "backend/lib/r2"
-import type { ImageQueryOutput, UpdateImageInput } from "backend/modules/image/image.schema"
+import { r2Delete, r2KeyFromUrl, r2PresignPut, extByContentType, imageKey } from "backend/lib/r2"
+import type {
+  ConfirmImageInput,
+  ImageQueryOutput,
+  PresignImageInput,
+  UpdateImageInput,
+} from "backend/modules/image/image.schema"
+import type { Image } from "backend/generated/prisma/client"
 
 // ── Shared helpers (exported for city / destination) ──────────────
 
@@ -35,48 +39,37 @@ export async function findReferencedImageIds(ids: string[]): Promise<Set<string>
   return new Set([...cities, ...destinations, ...gallery].map((r) => r.imageId))
 }
 
-// ── Private helpers ────────────────────────────────────────────────
+// ── Presigned upload ──────────────────────────────────────────────
 
-function r2Key(): string {
-  const now = new Date()
-  const year = String(now.getFullYear())
-  const month = String(now.getMonth() + 1).padStart(2, "0")
-  return `images/${year}/${month}/${randomUUID()}.webp`
+export async function presignImages(files: PresignImageInput["files"]) {
+  return Promise.all(
+    files.map(async (f) => {
+      const ext = extByContentType(f.contentType)
+      const key = imageKey(ext)
+      const { url } = await r2PresignPut(key, f.contentType)
+      return { key, url }
+    }),
+  )
 }
 
-async function processAndUpload(file: File) {
-  const buffer = Buffer.from(await file.arrayBuffer())
-
-  let processed: Awaited<ReturnType<typeof processImage>>
-  try {
-    processed = await processImage(buffer)
-  } catch (err) {
-    throw new HTTPException(500, { message: "Gagal memproses foto", cause: err })
+export async function confirmImages(items: ConfirmImageInput["items"]): Promise<Image[]> {
+  const out: Image[] = []
+  for (const item of items) {
+    const url = `https://${process.env.R2_PUBLIC_DOMAIN}/${item.key}`
+    const existing = await db.image.findFirst({ where: { url } })
+    if (existing) {
+      out.push(existing)
+      continue
+    }
+    const created = await db.image.create({
+      data: { url, alt: item.alt, fileSize: item.fileSize },
+    })
+    out.push(created)
   }
-
-  const key = r2Key()
-  let url: string
-  try {
-    url = await r2Upload(key, processed.buffer, "image/webp")
-  } catch {
-    throw new HTTPException(500, { message: "Gagal mengunggah foto" })
-  }
-
-  return db.image.create({
-    data: {
-      url,
-      fileSize: processed.buffer.length,
-      blurHash: processed.blurHash,
-    },
-  })
+  return out
 }
 
 // ── CRUD ───────────────────────────────────────────────────────────
-
-export async function uploadImages(files: File[] | File) {
-  const arr = Array.isArray(files) ? files : [files]
-  return Promise.all(arr.map(processAndUpload))
-}
 
 export async function listImages(params: ImageQueryOutput) {
   const { cursor, limit, sort, order, search } = params
@@ -84,7 +77,7 @@ export async function listImages(params: ImageQueryOutput) {
   const images = await db.image.findMany({
     ...cursorArgs({ cursor, limit }),
     orderBy: { [sort]: order },
-    ...(search ? { where: { alt: { startsWith: search, mode: "insensitive" } } } : {}),
+    ...(search ? { where: { alt: { contains: search, mode: "insensitive" } } } : {}),
   })
 
   return toPage(images, limit)
@@ -118,11 +111,21 @@ export async function deleteImage(id: string) {
   }
 
   const key = r2KeyFromUrl(image.url)
-  await r2Delete(key).catch(() => {
-    throw new HTTPException(500, { message: "Gagal menghapus foto dari storage" })
+  await r2Delete(key).catch((err: unknown) => {
+    logger.error(`R2 delete failed for ${image.id}:`, err)
   })
 
-  await db.image.delete({ where: { id } })
+  try {
+    await db.image.delete({ where: { id } })
+  } catch (err) {
+    const refs = await findReferencedImageIds([id])
+    if (refs.size) {
+      throw new HTTPException(400, {
+        message: "Gagal menghapus foto. Foto masih digunakan.",
+      })
+    }
+    throw new HTTPException(500, { message: "Gagal menghapus foto", cause: err })
+  }
 }
 
 export async function bulkDeleteImages(ids: string[]) {
@@ -134,7 +137,6 @@ export async function bulkDeleteImages(ids: string[]) {
   const deletable = images.filter((img) => !referencedIds.has(img.id))
   const skipped = images.length - deletable.length
 
-  // Delete from R2 — best-effort, log failures, don't block DB cleanup
   await Promise.all(
     deletable.map((img) =>
       r2Delete(r2KeyFromUrl(img.url)).catch((err: unknown) => {

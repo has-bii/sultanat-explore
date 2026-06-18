@@ -73,6 +73,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── input.tsx
     │   │   ├── item.tsx
     │   │   ├── label.tsx
+    │   │   ├── progress.tsx
     │   │   ├── scroll-area.tsx
     │   │   ├── select.tsx
     │   │   ├── separator.tsx
@@ -326,11 +327,13 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── hooks/
     │   │   │   ├── use-image-filters.ts
     │   │   │   ├── use-update-image-form.ts
+    │   │   │   ├── use-upload-queue.ts
     │   │   ├── mutations/
     │   │   │   ├── bulk-delete-images.mutation.ts
+    │   │   │   ├── confirm-images.mutation.ts
     │   │   │   ├── delete-image.mutation.ts
+    │   │   │   ├── presign-images.mutation.ts
     │   │   │   ├── update-image.mutation.ts
-    │   │   │   ├── upload-images.mutation.ts
     │   │   ├── queries/
     │   │   │   ├── index.ts
     │   │   ├── pages/
@@ -341,6 +344,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── upload-images-dialog.store.ts
     │   │   ├── lib/
     │   │   │   ├── blurhash.ts
+    │   │   │   ├── placeholder-blurhash.ts
+    │   │   │   ├── upload-to-r2.ts
     │   │   ├── types.ts
     │   ├── inclusion-item/
     │   │   ├── components/
@@ -527,7 +532,6 @@ backend/                           # Workspace package: API + DB + Auth
     ├── lib/
     │   ├── auth.ts  # Better Auth config (email+password, resend)
     │   ├── db.ts  # PrismaClient with Neon adapter
-    │   ├── image-processing.ts  # Sharp resize + blurHash pipeline
     │   ├── logger.ts  # Server logger
     │   ├── paginate.ts  # Cursor pagination helper
     │   ├── prisma-fragments.ts  # Prisma select fragments

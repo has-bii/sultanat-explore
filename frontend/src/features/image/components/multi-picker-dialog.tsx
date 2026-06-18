@@ -18,7 +18,7 @@ import { ImageGridSkeleton } from "./grid/skeleton"
 
 const DEFAULT_MAX = 10
 
-export type PickedImage = { id: string; url: string; blurHash: string }
+export type PickedImage = { id: string; url: string }
 
 type Props = {
   selectedImages: PickedImage[]
@@ -121,8 +121,8 @@ export function MultiImagePickerDialog({ selectedImages, onChange, max = DEFAULT
             query={{ limit: "10", sort: "createdAt", order: "desc", search }}
             onClearSearch={() => setSearch("")}
             selectedIds={selectedIds}
-            onImageCheckedChange={({ id, url, blurHash }) =>
-              handleToggleImage({ id, url, blurHash })
+            onImageCheckedChange={({ id, url }) =>
+              handleToggleImage({ id, url })
             }
           />
         </Suspense>

@@ -16,6 +16,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import Image from "next/image"
 
 import { blurhashToDataUrl } from "../lib/blurhash"
+import { PLACEHOLDER_BLURHASH } from "../lib/placeholder-blurhash"
 import { getImageDetailQueryOptions } from "../queries"
 import { ImageGrid } from "./grid"
 import { ImageGridSkeleton } from "./grid/skeleton"
@@ -141,7 +142,7 @@ function SelectedImage({ id, onOpenImagePicker }: SelectedImageProps) {
           fill
           sizes="(max-width: 640px) 100vw, 384px"
           placeholder="blur"
-          blurDataURL={blurhashToDataUrl(data.blurHash)}
+          blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
           className="object-cover"
         />
         <Button

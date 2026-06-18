@@ -12,6 +12,7 @@ import {
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { blurhashToDataUrl } from "@/features/image/lib/blurhash"
+import { PLACEHOLDER_BLURHASH } from "@/features/image/lib/placeholder-blurhash"
 import Image from "next/image"
 
 import type { GetDestinationsResponse } from "../../queries"
@@ -39,7 +40,7 @@ export function DestinationTableRow({ destination }: DestinationTableRowProps) {
               width={40}
               height={40}
               placeholder="blur"
-              blurDataURL={blurhashToDataUrl(destination.image.blurHash)}
+              blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
             />
           </ItemMedia>
           <ItemContent>

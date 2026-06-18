@@ -2,13 +2,14 @@ import { Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { blurhashToDataUrl } from "@/features/image/lib/blurhash"
+import { PLACEHOLDER_BLURHASH } from "@/features/image/lib/placeholder-blurhash"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 
 import type { Image as TImage } from "backend/generated/prisma/client"
 
 interface ImageCardProp {
-  data: Pick<TImage, "id" | "url" | "blurHash">
+  data: Pick<TImage, "id" | "url">
   onDelete: (id: string) => void
   isDragging?: boolean
 }
@@ -29,7 +30,7 @@ export function ImageCard({ data, onDelete, isDragging }: ImageCardProp) {
         draggable={false}
         className="pointer-events-none size-full object-cover object-center"
         placeholder="blur"
-        blurDataURL={blurhashToDataUrl(data.blurHash)}
+        blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
       />
       <div className="pointer-events-auto absolute top-2 right-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <Button size="icon" variant="destructive" onClick={() => onDelete(data.id)}>

@@ -10,6 +10,7 @@ import Image from "next/image"
 
 import { useUpdateImageForm } from "../../hooks/use-update-image-form"
 import { blurhashToDataUrl } from "../../lib/blurhash"
+import { PLACEHOLDER_BLURHASH } from "../../lib/placeholder-blurhash"
 import { useUpdateImage } from "../../mutations/update-image.mutation"
 import { getImageDetailQueryOptions } from "../../queries"
 import { ImageDeleteDialog } from "../delete-dialog"
@@ -39,7 +40,7 @@ export function ImageUpdateForm({ imageId, onSuccess, onDeleteSuccess }: Props) 
             fill
             sizes="(max-width: 640px) 100vw, 384px"
             placeholder="blur"
-            blurDataURL={blurhashToDataUrl(data.blurHash)}
+            blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
             className="object-contain"
           />
         </figure>

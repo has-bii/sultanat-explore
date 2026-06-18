@@ -7,6 +7,7 @@ import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/comp
 import { Switch } from "@/components/ui/switch"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { blurhashToDataUrl } from "@/features/image/lib/blurhash"
+import { PLACEHOLDER_BLURHASH } from "@/features/image/lib/placeholder-blurhash"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -29,7 +30,7 @@ export function CityTableRow({ dest }: { dest: CityRow }) {
               width={40}
               height={40}
               placeholder="blur"
-              blurDataURL={blurhashToDataUrl(dest.image.blurHash)}
+              blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
             />
           </ItemMedia>
           <ItemContent>

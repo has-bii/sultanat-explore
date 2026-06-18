@@ -1,10 +1,9 @@
 "use client"
 
 import { UploadIcon } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 import { ButtonLoading } from "@/components/button-loading"
-import { ErrorComponent } from "@/components/error-component"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -15,44 +14,33 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-import { useUploadImages } from "../../mutations/upload-images.mutation"
+import { useUploadQueue } from "../../hooks/use-upload-queue"
 import { useUploadImagesDialogStore } from "../../stores/upload-images-dialog.store"
 import { DndImages } from "./dnd-images"
 import { FileList } from "./file-list"
 
 export function UploadImagesDialog() {
   const { open, onOpenChange } = useUploadImagesDialogStore()
-  const { mutate, isPending, error } = useUploadImages()
-  const [files, setFiles] = useState<Map<string, File>>(new Map())
+  const { items, addFiles, removeItem, startUpload, retryItem, reset, isUploading, summary } = useUploadQueue()
   const wasOpenRef = useRef(false)
 
   // Reset on close
   useEffect(() => {
     if (wasOpenRef.current && !open) {
-      setFiles(new Map())
+      reset()
     }
     wasOpenRef.current = open
-  }, [open])
+  }, [open, reset])
 
   const handleClose = () => {
-    if (!isPending) onOpenChange(false)
-  }
-
-  const handleRemove = (fileName: string) => {
-    setFiles((prev) => {
-      const next = new Map(prev)
-      next.delete(fileName)
-      return next
-    })
+    if (!isUploading) onOpenChange(false)
   }
 
   const handleSubmit = () => {
-    if (files.size <= 0) return
-    const mutateInput = Array.from(files.values())
-    mutate({ files: mutateInput }, { onSuccess: () => onOpenChange(false) })
+    startUpload()
   }
 
-  const canSubmit = files.size > 0 && files.size <= 10
+  const canSubmit = items.length > 0 && items.length <= 10 && !isUploading
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -65,22 +53,19 @@ export function UploadImagesDialog() {
         </DialogHeader>
         {/* Main */}
         <div className="flex flex-col gap-4 overflow-hidden">
-          {/* Error */}
-          {error && <ErrorComponent title="Gagal Upload Foto" message={error.message} />}
-
           {/* Dnd component */}
-          <DndImages onChange={setFiles} />
+          <DndImages onChange={addFiles} />
 
-          <FileList files={files} onRemove={handleRemove} />
+          <FileList items={items} onRemove={removeItem} onRetry={retryItem} summary={summary} />
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose} disabled={isPending}>
+          <Button variant="outline" onClick={handleClose} disabled={isUploading}>
             Batal
           </Button>
           <ButtonLoading
             onClick={handleSubmit}
             disabled={!canSubmit}
-            isLoading={isPending}
+            isLoading={isUploading}
             icon={UploadIcon}
           >
             Upload

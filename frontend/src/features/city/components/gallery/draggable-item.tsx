@@ -8,7 +8,7 @@ import type { Image as TImage } from "backend/generated/prisma/client"
 
 import { ImageCard } from "./image-card"
 
-type GalleryImage = Pick<TImage, "id" | "url" | "blurHash">
+type GalleryImage = Pick<TImage, "id" | "url">
 
 interface DraggableItemProps {
   image: GalleryImage

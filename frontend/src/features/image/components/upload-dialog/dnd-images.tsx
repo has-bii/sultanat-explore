@@ -8,7 +8,7 @@ const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"]
 const MAX_SIZE = 5 * 1024 * 1024
 
 type Props = {
-  onChange: (value: React.SetStateAction<Map<string, File>>) => void
+  onChange: (files: File[]) => void
 }
 
 export function DndImages({ onChange }: Props) {
@@ -16,23 +16,19 @@ export function DndImages({ onChange }: Props) {
   const [isDragging, setisDragging] = React.useState(false)
 
   const addFiles = (files: FileList | File[]) => {
-    onChange((prev) => {
-      const next = new Map(prev)
-      for (const file of Array.from(files)) {
-        if (!ACCEPTED_TYPES.includes(file.type)) {
-          toast.error(`Tipe file tidak didukung: ${file.name.split(".").pop()}`)
-          continue
-        }
-        if (file.size > MAX_SIZE) {
-          toast.error(`File terlalu besar (max 5MB): ${file.name}`)
-          continue
-        }
-        if (!next.has(file.name)) {
-          next.set(file.name, file)
-        }
+    const valid: File[] = []
+    for (const file of Array.from(files)) {
+      if (!ACCEPTED_TYPES.includes(file.type)) {
+        toast.error(`Tipe file tidak didukung: ${file.name.split(".").pop()}`)
+        continue
       }
-      return next
-    })
+      if (file.size > MAX_SIZE) {
+        toast.error(`File terlalu besar (max 5MB): ${file.name}`)
+        continue
+      }
+      valid.push(file)
+    }
+    if (valid.length > 0) onChange(valid)
   }
 
   const handleDrop = (e: React.DragEvent) => {

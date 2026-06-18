@@ -8,28 +8,35 @@ const MAX_SIZE = 5 * 1024 * 1024 // 5MB
 export const imageQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
   order: orderDirectionSchema,
-  sort: v.optional(v.picklist(["createdAt"]), "createdAt"),
+  sort: v.optional(v.picklist(["createdAt", "fileSize"]), "createdAt"),
   search: v.optional(v.pipe(v.string(), v.trim())),
 })
 
-const imageFileSchema = v.pipe(
-  v.instance(File),
-  v.check(
-    (f) => ACCEPTED_TYPES.includes(f.type as (typeof ACCEPTED_TYPES)[number]),
-    "Unsupported file type",
-  ),
-  v.check((f) => f.size <= MAX_SIZE, "File too large"),
-)
-
-export const uploadImageSchema = v.object({
-  files: v.union([
-    imageFileSchema,
-    v.pipe(
-      v.array(imageFileSchema),
-      v.minLength(1, "At least one file is required"),
-      v.maxLength(10, "Maximum 10 files allowed"),
+export const presignImageSchema = v.object({
+  files: v.pipe(
+    v.array(
+      v.object({
+        contentType: v.picklist(ACCEPTED_TYPES),
+        fileSize: v.pipe(v.number(), v.integer(), v.maxValue(MAX_SIZE)),
+      }),
     ),
-  ]),
+    v.minLength(1, "At least one file is required"),
+    v.maxLength(10, "Maximum 10 files allowed"),
+  ),
+})
+
+export const confirmImageSchema = v.object({
+  items: v.pipe(
+    v.array(
+      v.object({
+        key: v.pipe(v.string(), v.startsWith("images/")),
+        fileSize: v.pipe(v.number(), v.integer(), v.maxValue(MAX_SIZE)),
+        alt: v.optional(v.pipe(v.string(), v.trim())),
+      }),
+    ),
+    v.minLength(1, "At least one item is required"),
+    v.maxLength(10, "Maximum 10 items allowed"),
+  ),
 })
 
 export const updateImageSchema = v.object({
@@ -46,8 +53,10 @@ export const bulkDeleteImageSchema = v.object({
 
 export type ImageQueryInput = v.InferInput<typeof imageQuerySchema>
 export type ImageQueryOutput = v.InferOutput<typeof imageQuerySchema>
-export type UploadImageInput = v.InferInput<typeof uploadImageSchema>
-export type UploadImageOutput = v.InferOutput<typeof uploadImageSchema>
+export type PresignImageInput = v.InferInput<typeof presignImageSchema>
+export type PresignImageOutput = v.InferOutput<typeof presignImageSchema>
+export type ConfirmImageInput = v.InferInput<typeof confirmImageSchema>
+export type ConfirmImageOutput = v.InferOutput<typeof confirmImageSchema>
 export type UpdateImageInput = v.InferInput<typeof updateImageSchema>
 export type UpdateImageOutput = v.InferOutput<typeof updateImageSchema>
 export type BulkDeleteImageInput = v.InferInput<typeof bulkDeleteImageSchema>

@@ -25,7 +25,7 @@ import { useUpdateGallery } from "../../mutations/update-gallery.mutation"
 import { getCityGalleryQueryOptions } from "../../queries"
 import { GalleryView } from "./gallery-view"
 
-type GalleryImage = Pick<TImage, "id" | "url" | "blurHash">
+type GalleryImage = Pick<TImage, "id" | "url">
 
 interface Props {
   cityId: string
@@ -38,7 +38,7 @@ export function CityGallery({ cityId }: Props) {
   const [localImages, setLocalImages] = useState<GalleryImage[]>(initialImages)
 
   const handlePickerChange = (picked: PickedImage[]) => {
-    setLocalImages(picked.map((img) => ({ id: img.id, url: img.url, blurHash: img.blurHash })))
+    setLocalImages(picked.map((img) => ({ id: img.id, url: img.url })))
   }
 
   const handleSave = () => {

@@ -5,7 +5,7 @@ import { Image as TImage } from "backend/generated/prisma/client"
 
 import { DraggableItem } from "./draggable-item"
 
-type GalleryImage = Pick<TImage, "id" | "url" | "blurHash">
+type GalleryImage = Pick<TImage, "id" | "url">
 
 const COLS = 4
 

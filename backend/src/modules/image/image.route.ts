@@ -4,17 +4,19 @@ import { requireAuth } from "backend/middlewares/require-auth"
 import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
   bulkDeleteImageSchema,
+  confirmImageSchema,
   imageQuerySchema,
+  presignImageSchema,
   updateImageSchema,
-  uploadImageSchema,
 } from "backend/modules/image/image.schema"
 import {
   bulkDeleteImages,
+  confirmImages,
   deleteImage,
   getImage,
   listImages,
+  presignImages,
   updateImage,
-  uploadImages,
 } from "backend/modules/image/image.service"
 import { paramIdSchema } from "backend/schemas/param.schema"
 import { successResponse } from "backend/utils/response"
@@ -36,11 +38,15 @@ const imageRoute = new Hono()
     const result = await bulkDeleteImages(json.ids)
     return c.json(successResponse(result, "Foto berhasil dihapus"))
   })
-  .post("/", sValidator("form", uploadImageSchema), async (c) => {
-    const valid = c.req.valid("form")
-    const images = await uploadImages(valid.files)
-    const msg = "Foto berhasil diunggah"
-    return c.json(successResponse(images, msg), 201)
+  .post("/presign", sValidator("json", presignImageSchema), async (c) => {
+    const valid = c.req.valid("json")
+    const result = await presignImages(valid.files)
+    return c.json(successResponse(result, "ok"))
+  })
+  .post("/confirm", sValidator("json", confirmImageSchema), async (c) => {
+    const valid = c.req.valid("json")
+    const images = await confirmImages(valid.items)
+    return c.json(successResponse(images, "Foto berhasil disimpan"), 201)
   })
   .patch(
     "/:id",

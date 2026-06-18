@@ -8,6 +8,7 @@ import { intlFormatDistance } from "date-fns"
 import Image from "next/image"
 
 import { blurhashToDataUrl } from "../lib/blurhash"
+import { PLACEHOLDER_BLURHASH } from "../lib/placeholder-blurhash"
 import type { Image as TImage } from "../types"
 
 interface ImageCardProps {
@@ -37,7 +38,7 @@ export function ImageCard(props: ImageCardProps) {
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
           placeholder="blur"
-          blurDataURL={blurhashToDataUrl(image.blurHash)}
+          blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
           className="object-cover"
         />
       </figure>
