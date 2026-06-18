@@ -51,6 +51,33 @@ export function TextField({ label, type = "text", placeholder }: Props) {
   )
 }
 
+export function TextNumberField({ label, placeholder, description }: Props) {
+  const field = useFieldContext<number>()
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
+  return (
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+      <Input
+        id={field.name}
+        name={field.name}
+        type="number"
+        placeholder={placeholder}
+        value={field.state.value ?? ''}
+        onBlur={field.handleBlur}
+        onChange={(e) => {
+          const v = e.target.value
+          field.handleChange(v === '' ? 0 : Number(v))
+        }}
+        aria-invalid={isInvalid}
+        autoComplete="off"
+      />
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
+  )
+}
+
 export function TextareaField({ label, placeholder, rows = 4 }: Props & { rows?: number }) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -200,6 +227,7 @@ export function SelectField(props: {
 
 export const baseFieldComponents = {
   TextField,
+  TextNumberField,
   TextareaField,
   PasswordField,
   ImagePickerField,

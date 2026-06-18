@@ -115,7 +115,7 @@ export function OpenTripForm(props: OpenTripFormProps) {
               <form.AppField
                 name="price"
                 children={(field) => (
-                  <field.TextField
+                  <field.TextNumberField
                     label="Harga (IDR)"
                     placeholder="5000000"
                     description="Harga per orang"
