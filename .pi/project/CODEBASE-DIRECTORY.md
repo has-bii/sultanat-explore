@@ -44,6 +44,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │       ├── article/
     │   │       ├── city/
     │   │       ├── image/
+    │   │       ├── inclusion-item/
     │   │       ├── settings/
     │   │       ├── user/
     │   │
@@ -340,6 +341,29 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── lib/
     │   │   │   ├── blurhash.ts
     │   │   ├── types.ts
+    │   ├── inclusion-item/
+    │   │   ├── components/
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-inclusion-item-form.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-inclusion-item.mutation.ts
+    │   │   │   ├── delete-inclusion-item.mutation.ts
+    │   │   │   ├── update-inclusion-item.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── inclusion-item-list.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── delete-inclusion-item-dialog.store.ts
+    │   │   │   ├── inclusion-item-dialog.store.ts
     │   ├── open-trip/
     │   │   ├── components/
     │   │   │   ├── how-it-works.tsx

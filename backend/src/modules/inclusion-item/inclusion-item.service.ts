@@ -2,39 +2,16 @@ import { HTTPException } from "hono/http-exception"
 
 import { Prisma } from "backend/generated/prisma/client"
 import { db } from "backend/lib/db"
-import { cursorArgs, toPage } from "backend/lib/paginate"
 import { toSlug } from "backend/lib/slug"
 import type {
   CreateInclusionItemInput,
-  InclusionItemQueryOutput,
   UpdateInclusionItemInput,
 } from "backend/modules/inclusion-item/inclusion-item.schema"
 
-export async function listInclusionItems(query: InclusionItemQueryOutput) {
-  const { cursor, limit, search } = query
-
-  const where: Prisma.InclusionItemWhereInput = search
-    ? {
-        OR: [
-          { label: { contains: search, mode: "insensitive" as const } },
-          { slug: { contains: search, mode: "insensitive" as const } },
-        ],
-      }
-    : {}
-
-  const items = await db.inclusionItem.findMany({
-    ...cursorArgs({ cursor, limit }),
-    where,
+export async function listInclusionItems() {
+  return db.inclusionItem.findMany({
     orderBy: { createdAt: "desc" },
   })
-
-  return toPage(items, limit)
-}
-
-export async function getInclusionItem(id: string) {
-  const item = await db.inclusionItem.findUnique({ where: { id } })
-  if (!item) throw new HTTPException(404, { message: "Inclusion item tidak ditemukan" })
-  return item
 }
 
 export async function createInclusionItem(input: CreateInclusionItemInput) {

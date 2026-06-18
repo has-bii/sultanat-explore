@@ -5,13 +5,11 @@ import { requireAuth } from "backend/middlewares/require-auth"
 import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
   createInclusionItemSchema,
-  inclusionItemQuerySchema,
   updateInclusionItemSchema,
 } from "backend/modules/inclusion-item/inclusion-item.schema"
 import {
   createInclusionItem,
   deleteInclusionItem,
-  getInclusionItem,
   listInclusionItems,
   updateInclusionItem,
 } from "backend/modules/inclusion-item/inclusion-item.service"
@@ -22,15 +20,9 @@ const inclusionItemRoute = new Hono()
   // ── All routes require admin ────────────────────────────
   .use(requireAuth)
   .use(requireAdmin)
-  .get("/", sValidator("query", inclusionItemQuerySchema), async (c) => {
-    const query = c.req.valid("query")
-    const result = await listInclusionItems(query)
-    return c.json(successResponse(result, "ok"))
-  })
-  .get("/:id", sValidator("param", paramIdSchema), async (c) => {
-    const { id } = c.req.valid("param")
-    const item = await getInclusionItem(id)
-    return c.json(successResponse(item, "ok"))
+  .get("/", async (c) => {
+    const items = await listInclusionItems()
+    return c.json(successResponse(items, "ok"))
   })
   .post("/", sValidator("json", createInclusionItemSchema), async (c) => {
     const json = c.req.valid("json")

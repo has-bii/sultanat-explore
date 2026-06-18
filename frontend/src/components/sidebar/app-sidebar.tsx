@@ -1,6 +1,6 @@
 "use client"
 
-import { FileText, Image, PinIcon } from "lucide-react"
+import { FileText, Image, MapPin, PinIcon } from "lucide-react"
 import { Suspense } from "react"
 
 import { NavAdmin } from "@/components/sidebar/nav-admin"
@@ -59,6 +59,21 @@ const navMain = [
       {
         title: "Overview",
         url: "/admin/dashboard/image",
+      },
+    ],
+  },
+  {
+    title: "Open Trip",
+    url: "/admin/dashboard/open-trip",
+    icon: MapPin,
+    items: [
+      {
+        title: "Overview",
+        url: "/admin/dashboard/open-trip",
+      },
+      {
+        title: "Inclusion Item",
+        url: "/admin/dashboard/inclusion-item",
       },
     ],
   },
