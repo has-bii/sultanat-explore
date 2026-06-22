@@ -1,38 +1,47 @@
-import { ArticleBody, ArticleHero, AuthorCard, RelatedArticles } from "@/features/articles"
-import { articles, getArticleBySlug } from "@/features/articles/data"
+import {
+  ArticleBody,
+  ArticleHero,
+  RelatedArticles,
+} from "@/features/article/public/components/article-detail"
+import { fetchArticleBySlug, fetchRelatedArticles } from "@/features/article/public/lib/fetch"
+import type { JSONContent } from "@tiptap/core"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
 
-export async function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }))
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const article = getArticleBySlug(slug)
+  const article = await fetchArticleBySlug(slug)
   if (!article) return {}
 
+  const title = article.title
+  const description = article.excerpt
+  const url = `/artikel/${slug}`
+
   return {
-    title: article.metaTitle,
-    description: article.metaDescription,
+    title,
+    description,
+    alternates: { canonical: url },
     openGraph: {
-      title: article.metaTitle,
-      description: article.metaDescription,
-      images: [{ url: article.thumbnail, width: 1200, height: 630 }],
+      title,
+      description,
+      url,
       type: "article",
-      publishedTime: article.date,
-      authors: [article.author.name],
+      images: [{ url: article.image.url, width: 1200, height: 630 }],
+      publishedTime: article.publishedAt ?? undefined,
+      authors: article.author ? [article.author.name] : undefined,
     },
   }
 }
 
 export default async function ArtikelDetailPage({ params }: Props) {
   const { slug } = await params
-  const article = getArticleBySlug(slug)
+  const article = await fetchArticleBySlug(slug)
 
   if (!article) notFound()
+
+  const related = await fetchRelatedArticles(slug, 3)
 
   return (
     <main>
@@ -40,17 +49,12 @@ export default async function ArtikelDetailPage({ params }: Props) {
 
       {/* Article content */}
       <section className="py-12 lg:py-16">
-        <div className="mx-auto max-w-3xl px-6 lg:px-8">
-          <ArticleBody content={article.content} />
-
-          {/* Author */}
-          <div className="mt-12 border-t pt-8">
-            <AuthorCard author={article.author} />
-          </div>
+        <div className="mx-auto max-w-4xl px-6 lg:px-8">
+          <ArticleBody content={article.content as JSONContent} />
         </div>
       </section>
 
-      <RelatedArticles currentSlug={slug} />
+      <RelatedArticles articles={related} />
     </main>
   )
 }

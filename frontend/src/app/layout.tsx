@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import RootProviders from "@/providers/root"
 import type { Metadata } from "next"
 import { DM_Sans, Geist, Geist_Mono, Inter } from "next/font/google"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 
 import "./globals.css"
 
@@ -40,9 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       )}
     >
       <body className="flex min-h-full flex-col">
-        <main className="flex-1">
-          <RootProviders>{children}</RootProviders>
-        </main>
+        <NuqsAdapter>
+          <main className="flex-1">
+            <RootProviders>{children}</RootProviders>
+          </main>
+        </NuqsAdapter>
       </body>
     </html>
   )
