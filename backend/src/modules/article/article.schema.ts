@@ -16,6 +16,7 @@ export const createArticleSchema = v.object({
   content: v.any(), // opaque JSON — frontend owns block shapes
   imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
   categoryId: v.optional(v.pipe(v.string(), v.uuid("ID kategori tidak valid"))),
+  featured: v.boolean(),
   published: v.boolean(),
 })
 
@@ -26,6 +27,7 @@ export const articleQuerySchema = v.object({
   search: v.optional(v.string()),
   category: v.optional(v.string()), // category slug
   published: v.optional(v.pipe(v.picklist(["true", "false"]), v.toBoolean())),
+  featured: v.optional(v.pipe(v.picklist(["true", "false"]), v.toBoolean())),
   sort: v.optional(v.picklist(["createdAt", "publishedAt"]), "createdAt"),
   order: orderDirectionSchema,
 })

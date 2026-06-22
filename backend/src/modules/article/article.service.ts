@@ -62,7 +62,19 @@ export async function listArticles(params: ArticleQueryOutput) {
     ...cursorArgs({ cursor, limit }),
     where,
     orderBy: { [sort]: order },
-    include: includeList,
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      excerpt: true,
+      published: true,
+      featured: true,
+      publishedAt: true,
+      createdAt: true,
+      image: { select: { url: true, alt: true } },
+      category: { select: { name: true } },
+      author: { select: { name: true } },
+    },
   })
 
   return toPage(articles, limit)
@@ -148,6 +160,7 @@ export async function createArticle(input: CreateArticleInput, authorId: string)
       imageId: input.imageId,
       categoryId: input.categoryId ?? null,
       authorId,
+      featured: input.featured,
       published: input.published,
       publishedAt: input.published ? new Date() : null,
     },
@@ -188,6 +201,8 @@ export async function updateArticle(id: string, input: UpdateArticleInput) {
       data.category = { connect: { id: input.categoryId } }
     }
   }
+
+  if (input.featured !== undefined) data.featured = input.featured
 
   // Publish transition: false→true sets publishedAt to now
   if (input.published !== undefined && input.published !== existing.published) {
