@@ -33,6 +33,7 @@ export function EditArticlePage({ articleId }: Props) {
       imageId: article.imageId,
       categoryId: article.categoryId ?? undefined,
       published: article.published,
+      featured: article.featured,
     },
     onSubmit: (value: CreateArticleInput) => {
       mutate(value)

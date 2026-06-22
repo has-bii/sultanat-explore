@@ -153,6 +153,32 @@ export function ArticleForm(props: ArticleFormProps) {
           }}
         />
 
+        {/* Featured toggle */}
+        <form.AppField
+          name="featured"
+          children={(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <Field orientation="horizontal" data-invalid={isInvalid}>
+                <Checkbox
+                  id={field.name}
+                  checked={field.state.value}
+                  onCheckedChange={(checked) => field.handleChange(!!checked)}
+                />
+                <FieldContent>
+                  <FieldLabel htmlFor={field.name} className="cursor-pointer">
+                    Tandai sebagai unggulan
+                  </FieldLabel>
+                  <FieldDescription>
+                    Artikel unggulan akan muncul di bagian utama homepage.
+                  </FieldDescription>
+                </FieldContent>
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
+          }}
+        />
+
         <CategoryDialog />
 
         {/* Actions */}

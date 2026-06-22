@@ -46,6 +46,7 @@ export function ArticleTable({ query }: ArticleTableProps) {
               <TableHead>Kategori</TableHead>
               <TableHead>Penulis</TableHead>
               <TableHead className="text-center">Status</TableHead>
+              <TableHead className="text-center">Unggulan</TableHead>
               <TableHead className="text-right">Diterbitkan</TableHead>
               <TableHead className="sr-only">Aksi</TableHead>
             </TableRow>

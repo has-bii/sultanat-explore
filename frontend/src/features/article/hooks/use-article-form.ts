@@ -20,6 +20,7 @@ export function useArticleForm({ defaultValues, onSubmit }: Props) {
     imageId: defaultValues?.imageId ?? "",
     categoryId: defaultValues?.categoryId ?? "_none",
     published: defaultValues?.published ?? false,
+    featured: defaultValues?.featured ?? false,
   }
 
   const form = useAppForm({

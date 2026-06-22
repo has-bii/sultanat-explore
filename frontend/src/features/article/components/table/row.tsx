@@ -5,16 +5,20 @@ import { Eye } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
+import { Switch } from "@/components/ui/switch"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { format } from "date-fns"
 import { id } from "date-fns/locale"
 import Link from "next/link"
 
+import { useUpdateArticle } from "../../mutations/update-article.mutation"
 import type { GetArticlesResponse } from "../../queries"
 
 type Article = NonNullable<GetArticlesResponse["data"]["data"][number]>
 
 export function ArticleTableRow({ article }: { article: Article }) {
+  const { mutate, isPending } = useUpdateArticle(article.id)
+
   return (
     <TableRow>
       <TableCell className="pl-4">
@@ -31,6 +35,13 @@ export function ArticleTableRow({ article }: { article: Article }) {
         <Badge variant={article.published ? "default" : "secondary"}>
           {article.published ? "Diterbitkan" : "Draf"}
         </Badge>
+      </TableCell>
+      <TableCell className="text-center">
+        <Switch
+          checked={article.featured}
+          disabled={isPending}
+          onCheckedChange={(checked) => mutate({ featured: checked })}
+        />
       </TableCell>
       <TableCell className="text-muted-foreground text-right text-sm">
         {article.publishedAt ? format(article.publishedAt, "pp, PP", { locale: id }) : "-"}
