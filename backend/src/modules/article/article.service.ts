@@ -71,6 +71,7 @@ export async function listArticles(params: ArticleQueryOutput) {
       featured: true,
       publishedAt: true,
       createdAt: true,
+      updatedAt: true,
       image: { select: { url: true, alt: true } },
       category: { select: { name: true } },
       author: { select: { name: true } },
@@ -115,7 +116,20 @@ export async function getRelatedArticles(slug: string, limit: number) {
         },
         orderBy: { publishedAt: "desc" },
         take: limit,
-        include: includeList,
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          excerpt: true,
+          published: true,
+          featured: true,
+          publishedAt: true,
+          createdAt: true,
+          updatedAt: true,
+          image: { select: { url: true, alt: true } },
+          category: { select: { name: true } },
+          author: { select: { name: true } },
+        },
       })
     : []
 
@@ -132,7 +146,20 @@ export async function getRelatedArticles(slug: string, limit: number) {
     },
     orderBy: { publishedAt: "desc" },
     take: remaining,
-    include: includeList,
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      excerpt: true,
+      published: true,
+      featured: true,
+      publishedAt: true,
+      createdAt: true,
+      updatedAt: true,
+      image: { select: { url: true, alt: true } },
+      category: { select: { name: true } },
+      author: { select: { name: true } },
+    },
   })
 
   return [...sameCategory, ...others]
