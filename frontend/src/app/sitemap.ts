@@ -1,4 +1,5 @@
 import { fetchAllPublishedArticles } from "@/features/article/public/lib/fetch"
+import { parseISO } from "date-fns"
 import type { MetadataRoute } from "next"
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
@@ -8,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const articleEntries: MetadataRoute.Sitemap = articles.map((a) => ({
     url: `${siteUrl}/artikel/${a.slug}`,
-    lastModified: new Date(),
+    lastModified: parseISO(a.updatedAt),
     priority: 0.7,
   }))
 
