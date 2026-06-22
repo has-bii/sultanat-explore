@@ -7,7 +7,7 @@ type ArticleBySlugResponse = InferResponseType<
   200
 >
 
-type ArticleBySlugData = Extract<ArticleBySlugResponse, { success: true }>["data"]
+type ArticleBySlugData = ArticleBySlugResponse["data"]
 
 // Related articles — array of list-included articles.
 type RelatedResponse = InferResponseType<
@@ -15,34 +15,56 @@ type RelatedResponse = InferResponseType<
   200
 >
 
-type RelatedData = Extract<RelatedResponse, { success: true }>["data"]
-
 export type ArticleDetail = ArticleBySlugData
-export type RelatedArticle = RelatedData[number]
+export type RelatedArticle = RelatedResponse["data"][number]
 
-export async function fetchArticleBySlug(slug: string): Promise<ArticleDetail | null> {
+export async function fetchArticleBySlug(slug: string) {
   try {
     const res = await apiClient.api.articles.slug[":slug"].$get({ param: { slug } })
-    if (!res.ok) return null
-    const json = (await res.json()) as ArticleBySlugResponse
-    if (!json.success) return null
-    return json.data
+
+    const resData = await res.json()
+
+    if (!resData.success) throw new Error(resData.message)
+
+    return resData.data
   } catch {
     return null
   }
 }
 
+/**
+ * Fetch the first 100 published articles (single request, no cursor walk).
+ * Server-only (sitemap/ISR) — never call from client. Returns [] on failure.
+ * If article count grows past 100, reintroduce cursor pagination here.
+ */
+export async function fetchAllPublishedArticles() {
+  try {
+    const res = await apiClient.api.articles.$get({
+      query: { published: "true", limit: "100" },
+    })
+
+    const resData = await res.json()
+
+    if (!resData.success) throw new Error(resData.message)
+
+    return resData.data.data
+  } catch {
+    return []
+  }
+}
+
 /** Fetch related articles for a given slug. Returns [] on failure. */
-export async function fetchRelatedArticles(slug: string, limit = 3): Promise<RelatedArticle[]> {
+export async function fetchRelatedArticles(slug: string, limit = 3) {
   try {
     const res = await apiClient.api.articles.slug[":slug"].related.$get({
       param: { slug },
       query: { limit: String(limit) },
     })
-    if (!res.ok) return []
-    const json = (await res.json()) as RelatedResponse
-    if (!json.success) return []
-    return json.data
+    const resData = await res.json()
+
+    if (!resData.success) throw new Error(resData.message)
+
+    return resData.data
   } catch {
     return []
   }
