@@ -20,7 +20,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
+
+if (process.env.NODE_ENV !== "production" && !process.env.NEXT_PUBLIC_SITE_URL) {
+  console.warn(
+    "NEXT_PUBLIC_SITE_URL is not set; falling back to https://sultanatexplore.com. " +
+      "Set it in your environment so OG/canonical URLs resolve absolute.",
+  )
+}
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "SultanatExplore — Jelajahi Turki & Umrah",
   description:
     "Agen wisata Turki terpercaya untuk traveler Indonesia. Open trip, private trip, dan paket Umrah.",
