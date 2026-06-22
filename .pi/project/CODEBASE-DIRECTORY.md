@@ -151,20 +151,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── article-list.page.tsx
     │   │   │   ├── create-article.page.tsx
     │   │   │   ├── edit-article.page.tsx
-    │   ├── articles/
-    │   │   ├── components/
-    │   │   │   ├── article-body.tsx
-    │   │   │   ├── article-card.tsx
-    │   │   │   ├── article-grid.tsx
-    │   │   │   ├── article-hero.tsx
-    │   │   │   ├── author-card.tsx
-    │   │   │   ├── category-filter.tsx
-    │   │   │   ├── featured-article.tsx
-    │   │   │   ├── hero-section.tsx
-    │   │   │   ├── related-articles.tsx
-    │   │   ├── data.ts
-    │   │   ├── types.ts
-    │   │   └── index.ts
     │   ├── auth/
     │   │   ├── components/
     │   │   │   ├── forgot-password-form.tsx
@@ -493,9 +479,9 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     ├── lib/                       # Utilities
     │   ├── api-client.ts  # Hono RPC client
     │   ├── auth-client.ts  # Better Auth browser client
+    │   ├── date.ts
     │   ├── form.tsx  # useAppForm (TanStack Form factory)
     │   ├── query-client.ts  # React Query client instance
-    │   ├── query-schema-parser.ts  # URL query schema parser
     │   ├── utils.ts  # cn() helper (clsx + tailwind-merge)
     │
     ├── utils/                     # Shared utility functions

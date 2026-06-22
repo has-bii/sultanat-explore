@@ -13,7 +13,7 @@
     "clean": "turbo clean && rm -rf node_modules/.cache/turbo",
     "generate:dir": "node scripts/generate-codebase-dir.js"
   },
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.8.0",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "husky": "^9.1.7",
