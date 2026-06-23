@@ -1,9 +1,11 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
+import { Undo2 } from "lucide-react"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { getCategoriesQueryOptions } from "@/features/category/queries"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import type { CreateArticleInput } from "backend/modules/article/article.schema"
@@ -30,22 +32,24 @@ export function CreateArticlePage() {
   })
 
   return (
-    <div className="mx-auto mt-10 w-full max-w-3xl">
-      <Card className="w-full">
-        <CardHeader className="border-b">
-          <CardTitle>Tambah Artikel</CardTitle>
-          <CardDescription>Buat artikel baru untuk blog</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ArticleForm
-            form={form}
-            mode="create"
-            isPending={isPending}
-            error={error}
-            categories={categories}
-          />
-        </CardContent>
-      </Card>
+    <div className="mt-10 w-full">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Tambah Artikel</h1>
+        <Button asChild variant="secondary">
+          <Link href="/admin/dashboard/article">
+            <Undo2 data-icon="inline-start" />
+            <span>Kembali</span>
+          </Link>
+        </Button>
+      </div>
+
+      <ArticleForm
+        form={form}
+        mode="create"
+        isPending={isPending}
+        error={error}
+        categories={categories}
+      />
     </div>
   )
 }

@@ -4,7 +4,6 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { Undo2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getCategoriesQueryOptions } from "@/features/category/queries"
 import Link from "next/link"
 
@@ -41,7 +40,7 @@ export function EditArticlePage({ articleId }: Props) {
   })
 
   return (
-    <div className="mx-auto mt-10 w-full max-w-3xl">
+    <div className="mt-10 w-full">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="line-clamp-1 text-2xl font-semibold">{article.title}</h1>
         <div className="inline-flex items-center gap-2">
@@ -55,21 +54,13 @@ export function EditArticlePage({ articleId }: Props) {
         </div>
       </div>
 
-      <Card className="w-full">
-        <CardHeader className="border-b">
-          <CardTitle>Edit Artikel</CardTitle>
-          <CardDescription>Ubah detail artikel</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ArticleForm
-            form={form}
-            mode="edit"
-            isPending={isPending}
-            error={error}
-            categories={categories}
-          />
-        </CardContent>
-      </Card>
+      <ArticleForm
+        form={form}
+        mode="edit"
+        isPending={isPending}
+        error={error}
+        categories={categories}
+      />
     </div>
   )
 }
