@@ -12,7 +12,7 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-6xl px-6 text-center lg:px-8">
         <div className="bg-background/80 mx-auto inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm backdrop-blur-sm">
           <Compass className="text-primary h-4 w-4" />
-          <span className="font-medium">11 Destinasi</span>
+          <span className="font-medium">Destinasi</span>
         </div>
 
         <h1 className="font-heading mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
@@ -25,16 +25,6 @@ export function HeroSection() {
           Dari Istanbul yang bersejarah hingga pantai Antalya yang memikat — jelajahi destinasi
           terbaik Turki dan temukan perjalanan impian Anda.
         </p>
-
-        <div className="text-muted-foreground mt-8 flex flex-wrap items-center justify-center gap-6 text-sm">
-          <span className="flex items-center gap-1.5">
-            <MapPin className="text-primary h-4 w-4" />
-            11 Destinasi
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Compass className="text-primary h-4 w-4" />3 Kategori
-          </span>
-        </div>
       </div>
     </section>
   )

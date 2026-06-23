@@ -1,9 +1,9 @@
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { FeaturedCities } from "@/features/destination/public/components/featured-cities"
 import {
   DestinationsGrid,
   FeaturedAttractions,
-  FeaturedDestinations,
   HeroSection,
   WhyTurkey,
 } from "@/features/destinations"
@@ -22,8 +22,8 @@ export default function DestinasiPage() {
       {/* 1. Hero */}
       <HeroSection />
 
-      {/* 2. Featured Destinations */}
-      <FeaturedDestinations />
+      {/* 2. Featured Cities */}
+      <FeaturedCities />
 
       {/* 3. All Destinations Grid (by category) */}
       <DestinationsGrid />

@@ -262,7 +262,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── destinations-grid.tsx
     │   │   │   ├── detail-hero.tsx
     │   │   │   ├── featured-attractions.tsx
-    │   │   │   ├── featured-destinations.tsx
     │   │   │   ├── gallery-section.tsx
     │   │   │   ├── hero-section.tsx
     │   │   │   ├── other-destinations.tsx
