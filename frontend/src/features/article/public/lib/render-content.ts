@@ -1,6 +1,6 @@
 import type { JSONContent } from "@tiptap/core"
-import { generateHTML } from "@tiptap/html"
 import ImageExtension from "@tiptap/extension-image"
+import { generateHTML } from "@tiptap/html"
 import StarterKit from "@tiptap/starter-kit"
 
 // Must match the editor's extension set (components/tiptap/tiptap-editor.tsx)

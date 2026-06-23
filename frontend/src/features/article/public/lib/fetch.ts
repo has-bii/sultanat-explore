@@ -1,3 +1,5 @@
+import { cache } from "react"
+
 import { apiClient } from "@/lib/api-client"
 import type { InferResponseType } from "hono"
 
@@ -18,7 +20,8 @@ type RelatedResponse = InferResponseType<
 export type ArticleDetail = ArticleBySlugData
 export type RelatedArticle = RelatedResponse["data"][number]
 
-export async function fetchArticleBySlug(slug: string) {
+// React cache() dedupes per-request (metadata + render calls share one fetch).
+export const fetchArticleBySlug = cache(async (slug: string) => {
   try {
     const res = await apiClient.api.articles.slug[":slug"].$get({ param: { slug } })
 
@@ -30,7 +33,7 @@ export async function fetchArticleBySlug(slug: string) {
   } catch {
     return null
   }
-}
+})
 
 /**
  * Fetch the first 100 published articles (single request, no cursor walk).
@@ -54,7 +57,7 @@ export async function fetchAllPublishedArticles() {
 }
 
 /** Fetch related articles for a given slug. Returns [] on failure. */
-export async function fetchRelatedArticles(slug: string, limit = 3) {
+export const fetchRelatedArticles = cache(async (slug: string, limit = 3) => {
   try {
     const res = await apiClient.api.articles.slug[":slug"].related.$get({
       param: { slug },
@@ -68,4 +71,4 @@ export async function fetchRelatedArticles(slug: string, limit = 3) {
   } catch {
     return []
   }
-}
+})

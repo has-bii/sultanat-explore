@@ -66,9 +66,9 @@ export function RelatedArticles({ articles }: Props) {
                     })}
                   </span>
                 </div>
-                <h4 className="font-heading group-hover:text-primary mt-2 line-clamp-2 text-base leading-snug font-bold transition-colors">
+                <h3 className="font-heading group-hover:text-primary mt-2 line-clamp-2 text-base leading-snug font-bold transition-colors">
                   {article.title}
-                </h4>
+                </h3>
               </div>
             </Link>
           ))}

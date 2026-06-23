@@ -31,8 +31,8 @@ export function ArticleGrid() {
     <>
       {articles.length > 0 && (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article) => (
-            <ArticleCard key={article.id} data={article} />
+          {articles.map((article, index) => (
+            <ArticleCard key={article.id} data={article} priority={index === 0} />
           ))}
         </div>
       )}
