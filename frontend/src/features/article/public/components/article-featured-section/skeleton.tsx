@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function FeaturedSkeleton() {
   return (
-    <div className="bg-card shadow-uber-md mt-6 block overflow-hidden rounded-2xl">
+    <div className="bg-card mt-6 block overflow-hidden rounded-2xl border">
       <div className="grid lg:grid-cols-2">
         {/* Image */}
         <div className="relative aspect-16/10 overflow-hidden lg:aspect-auto">
