@@ -25,8 +25,8 @@ export function TiptapEditor({ content, onChange, className, placeholder }: Tipt
 
   const debouncedOnChange = useDebouncedCallback(onChange ?? (() => {}), 300)
 
-  const insertImage = (url: string) => {
-    editor?.chain().focus().setImage({ src: url }).run()
+  const insertImage = ({ url, alt }: { url: string; alt?: string }) => {
+    editor?.chain().focus().setImage({ src: url, alt }).run()
   }
 
   const editor = useEditor({

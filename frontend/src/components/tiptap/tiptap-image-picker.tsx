@@ -22,7 +22,7 @@ import { useDebouncedValue } from "@/hooks/use-debounced-value"
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onSelect: (imageUrl: string) => void
+  onSelect: (value: { url: string; alt?: string }) => void
 }
 
 export function TiptapImagePicker({ open, onOpenChange, onSelect }: Props) {
@@ -83,7 +83,10 @@ export function TiptapImagePicker({ open, onOpenChange, onSelect }: Props) {
               type="button"
               variant="default"
               disabled={!selectedImage}
-              onClick={() => selectedImage && onSelect(selectedImage.url)}
+              onClick={() =>
+                selectedImage &&
+                onSelect({ url: selectedImage.url, alt: selectedImage.alt || undefined })
+              }
             >
               Pilih
             </Button>
