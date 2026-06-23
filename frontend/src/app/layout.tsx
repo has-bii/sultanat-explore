@@ -32,7 +32,10 @@ if (process.env.NODE_ENV !== "production" && !process.env.NEXT_PUBLIC_SITE_URL) 
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "SultanatExplore — Jelajahi Turki & Umrah",
+  title: {
+    default: "SultanatExplore — Jelajahi Turki & Umrah",
+    template: "%s | SultanatExplore",
+  },
   description:
     "Agen wisata Turki terpercaya untuk traveler Indonesia. Open trip, private trip, dan paket Umrah.",
 }

@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { category, search } = await articleSearchParamsCache.parse(searchParams)
   const isFiltered = Boolean(category || search)
 
-  const title = "Artikel & Tips Perjalanan Turki & Umrah | SultanatExplore"
+  const title = "Artikel & Tips Perjalanan Turki & Umrah"
   const description =
     "Panduan perjalanan, tips praktis, dan inspirasi untuk petualangan Anda ke Turki dan Tanah Suci. Temukan artikel terbaru dari Tim SultanatExplore."
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     alternates: { canonical: "/artikel" },
     robots: isFiltered ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
-      title,
+      title: "Artikel & Tips Perjalanan Turki & Umrah | SultanatExplore",
       description,
       url: "/artikel",
       type: "website",
