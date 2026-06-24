@@ -31,6 +31,12 @@ export const createCitySchema = v.object({
     v.minLength(1, "Minimal 1 highlights"),
     v.maxLength(20, "Maksimal 20 highlights"),
   ),
+  categoryIds: v.optional(
+    v.pipe(
+      v.array(v.pipe(v.string(), v.uuid("ID kategori tidak valid"))),
+      v.maxLength(10, "Maksimal 10 kategori"),
+    ),
+  ),
 })
 
 export const updateCitySchema = v.partial(createCitySchema)

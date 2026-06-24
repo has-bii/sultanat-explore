@@ -135,9 +135,21 @@ model City {
   destinations   Destination[]
   images         CityImage[]
   openTripCities OpenTripCity[]
+  categories     CityCategory[]
 
   @@index([imageId])
   @@map("city")
+}
+
+model CityCategory {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  slug      String   @unique
+  name      String
+  cities    City[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("city_category")
 }
 
 model CityImage {

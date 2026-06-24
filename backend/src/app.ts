@@ -7,6 +7,7 @@ import type { AppContext } from "backend/app.type"
 import { auth } from "backend/lib/auth"
 import articleRoute from "backend/modules/article/article.route"
 import cityRoute from "backend/modules/city/city.route"
+import cityCategoryRoute from "backend/modules/city-category/city-category.route"
 import categoryRoute from "backend/modules/category/category.route"
 import destinationRoute from "backend/modules/destination/destination.route"
 import imageRoute from "backend/modules/image/image.route"
@@ -65,6 +66,7 @@ const routes = app
   .route("/destinations", destinationRoute)
   .route("/articles", articleRoute)
   .route("/categories", categoryRoute)
+  .route("/city-categories", cityCategoryRoute)
   .route("/open-trips", openTripRoute)
   .route("/inclusion-items", inclusionItemRoute)
   .route("/me", userRoute)

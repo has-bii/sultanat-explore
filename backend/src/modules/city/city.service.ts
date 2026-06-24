@@ -15,6 +15,7 @@ import { assertImageExists } from "backend/modules/image/image.service"
 
 const includeDetail = {
   image: { select: imageCardSelect },
+  categories: { select: { id: true, name: true, slug: true } },
   destinations: {
     select: {
       id: true,
@@ -27,6 +28,7 @@ const includeDetail = {
 
 const includeList = {
   image: { select: imageCardSelect },
+  categories: { select: { id: true, name: true, slug: true } },
   _count: { select: { destinations: true, images: true } },
 } as const
 
@@ -84,6 +86,16 @@ export async function createCity(input: CreateCityInput) {
 
   await assertImageExists(input.imageId)
 
+  if (input.categoryIds && input.categoryIds.length > 0) {
+    const categories = await db.cityCategory.findMany({
+      where: { id: { in: input.categoryIds } },
+      select: { id: true },
+    })
+    if (categories.length !== input.categoryIds.length) {
+      throw new HTTPException(400, { message: "Beberapa kategori tidak ditemukan" })
+    }
+  }
+
   return db.city.create({
     data: {
       name: input.name,
@@ -93,6 +105,9 @@ export async function createCity(input: CreateCityInput) {
       imageId: input.imageId,
       featured: input.featured,
       highlights: input.highlights,
+      ...(input.categoryIds && input.categoryIds.length > 0
+        ? { categories: { connect: input.categoryIds.map((id) => ({ id })) } }
+        : {}),
     },
     include: includeList,
   })
@@ -121,6 +136,18 @@ export async function updateCity(id: string, input: UpdateCityInput) {
   }
   if (input.featured !== undefined) data.featured = input.featured
   if (input.highlights !== undefined) data.highlights = input.highlights
+  if (input.categoryIds !== undefined) {
+    if (input.categoryIds.length > 0) {
+      const categories = await db.cityCategory.findMany({
+        where: { id: { in: input.categoryIds } },
+        select: { id: true },
+      })
+      if (categories.length !== input.categoryIds.length) {
+        throw new HTTPException(400, { message: "Beberapa kategori tidak ditemukan" })
+      }
+    }
+    data.categories = { set: input.categoryIds.map((id) => ({ id })) }
+  }
 
   return db.city.update({
     where: { id },

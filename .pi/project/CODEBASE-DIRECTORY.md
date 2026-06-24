@@ -536,6 +536,10 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── city.route.ts
         │   ├── city.schema.ts
         │   ├── city.service.ts
+        ├── city-category/
+        │   ├── city-category.route.ts
+        │   ├── city-category.schema.ts
+        │   ├── city-category.service.ts
         ├── destination/
         │   ├── destination.route.ts
         │   ├── destination.schema.ts
