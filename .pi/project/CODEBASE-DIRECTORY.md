@@ -290,6 +290,8 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── other-destinations.tsx
     │   │   │   ├── related-trips.tsx
     │   │   │   ├── why-turkey.tsx
+    │   │   ├── lib/
+    │   │   │   ├── structured-data.ts
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts
