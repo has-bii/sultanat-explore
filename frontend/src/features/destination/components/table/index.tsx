@@ -22,15 +22,15 @@ export function DestinationTable({ query }: DestinationTableProps) {
   const destinations = data.pages.flatMap((p) => p.data)
 
   if (destinations.length === 0) {
-    const hasSearchFilter = Boolean(query.search)
+    const hasFilters = query.search || query.featured || query.cityId
 
     return (
       <TableEmpty
-        icon={hasSearchFilter ? MapPinOff : MapPin}
-        title={hasSearchFilter ? "Tidak ada hasil" : "Belum ada destinasi"}
+        icon={hasFilters ? MapPinOff : MapPin}
+        title={hasFilters ? "Tidak ada hasil" : "Belum ada destinasi"}
         description={
-          hasSearchFilter
-            ? "Tidak ditemukan destinasi yang cocok dengan pencarian."
+          hasFilters
+            ? "Tidak ditemukan destinasi yang cocok dengan filter."
             : "Tambahkan destinasi pertama untuk kota ini."
         }
       />
@@ -44,6 +44,7 @@ export function DestinationTable({ query }: DestinationTableProps) {
           <TableHeader className="bg-accent">
             <TableRow>
               <TableHead className="pl-4">Nama</TableHead>
+              <TableHead className="text-center">Unggulan</TableHead>
               <TableHead className="w-[120px] text-center">Aksi</TableHead>
             </TableRow>
           </TableHeader>

@@ -15,10 +15,11 @@ const include = {
 } as const
 
 export async function listDestinations(params: DestinationQueryOutput) {
-  const { cursor, limit, search, sort, order, cityId } = params
+  const { cursor, limit, search, sort, order, cityId, featured } = params
 
   const where = {
     ...(cityId ? { cityId } : {}),
+    ...(featured !== undefined ? { featured } : {}),
     ...(search ? { name: { startsWith: search, mode: "insensitive" as const } } : {}),
   }
 
@@ -55,6 +56,7 @@ export async function createDestination(input: CreateDestinationInput) {
       description: input.description,
       imageId: input.imageId,
       cityId: input.cityId,
+      featured: input.featured,
     },
     include,
   })
@@ -76,6 +78,7 @@ export async function updateDestination(id: string, input: UpdateDestinationInpu
       name: input.name,
       description: input.description,
       ...(input.imageId && { imageId: input.imageId }),
+      ...(input.featured !== undefined && { featured: input.featured }),
     },
     include,
   })

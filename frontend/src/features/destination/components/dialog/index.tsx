@@ -120,6 +120,7 @@ function UpdateForm({ cityId, destinationId, onSuccess }: UpdateFormProps) {
       description: data.description,
       cityId: data.cityId,
       imageId: data.imageId,
+      featured: data.featured,
     },
     onSubmit: (value) => {
       mutate(value, { onSuccess })

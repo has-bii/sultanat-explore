@@ -15,6 +15,7 @@ export const createDestinationSchema = v.object({
     v.maxLength(5000, "Deskripsi maksimal 5000 karakter"),
   ),
   imageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
+  featured: v.optional(v.boolean(), false),
 })
 
 export const updateDestinationSchema = v.object({
@@ -33,6 +34,7 @@ export const updateDestinationSchema = v.object({
     ),
   ),
   imageId: v.optional(v.pipe(v.string(), v.uuid("ID gambar tidak valid"))),
+  featured: v.optional(v.boolean()),
 })
 
 export const destinationQuerySchema = v.object({
@@ -41,6 +43,12 @@ export const destinationQuerySchema = v.object({
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
   order: orderDirectionSchema,
   cityId: v.optional(v.pipe(v.string(), v.uuid("ID kota tidak valid"))),
+  featured: v.optional(
+    v.pipe(
+      v.picklist(["true", "false"]),
+      v.transform((val) => val === "true"),
+    ),
+  ),
 })
 
 export const destinationIdParamSchema = v.object({

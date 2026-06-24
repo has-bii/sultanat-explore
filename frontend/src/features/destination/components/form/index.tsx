@@ -3,7 +3,15 @@
 import { Plus, Save } from "lucide-react"
 
 import { ErrorComponent } from "@/components/error-component"
-import { Field, FieldGroup } from "@/components/ui/field"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { SelectItem } from "@/components/ui/select"
 
 import { useDestinationForm } from "../../hooks/use-destination-form"
@@ -75,6 +83,32 @@ export function DestinationForm(props: DestinationFormProps) {
               description="Pilih foto yang berbentuk landscape"
             />
           )}
+        />
+
+        {/* Featured */}
+        <form.AppField
+          name="featured"
+          children={(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <Field orientation="horizontal" data-invalid={isInvalid}>
+                <Checkbox
+                  id={field.name}
+                  checked={field.state.value}
+                  onCheckedChange={(checked) => field.handleChange(!!checked)}
+                />
+                <FieldContent>
+                  <FieldLabel htmlFor={field.name} className="cursor-pointer">
+                    Tandai sebagai unggulan
+                  </FieldLabel>
+                  <FieldDescription>
+                    Destinasi yang ditandai sebagai unggulan akan muncul paling utama.
+                  </FieldDescription>
+                </FieldContent>
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
+          }}
         />
 
         {/* Actions */}

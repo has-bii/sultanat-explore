@@ -24,6 +24,7 @@ export function DestinationListPage() {
     search: query.search || undefined,
     sort: query.sort || undefined,
     cityId: query.cityId || undefined,
+    featured: query.featured || undefined,
   }
 
   return (

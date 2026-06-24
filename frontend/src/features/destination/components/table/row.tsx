@@ -10,11 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
+import { Switch } from "@/components/ui/switch"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { blurhashToDataUrl } from "@/features/image/lib/blurhash"
 import { PLACEHOLDER_BLURHASH } from "@/features/image/lib/placeholder-blurhash"
 import Image from "next/image"
 
+import { useUpdateDestination } from "../../mutations/update-destination.mutation"
 import type { GetDestinationsResponse } from "../../queries"
 import { useDestinationDialogStore } from "../../stores/destination-dialog.store"
 import { useDeleteDestinationDialogStore } from "../../stores/delete-destination-dialog.store"
@@ -28,6 +30,7 @@ interface DestinationTableRowProps {
 export function DestinationTableRow({ destination }: DestinationTableRowProps) {
   const { onOpen: openEdit } = useDestinationDialogStore()
   const { onOpen: openDelete } = useDeleteDestinationDialogStore()
+  const { mutate, isPending } = useUpdateDestination(destination.id)
 
   return (
     <TableRow>
@@ -50,6 +53,13 @@ export function DestinationTableRow({ destination }: DestinationTableRowProps) {
             </ItemDescription>
           </ItemContent>
         </Item>
+      </TableCell>
+      <TableCell className="text-center">
+        <Switch
+          checked={destination.featured}
+          disabled={isPending}
+          onCheckedChange={(checked) => mutate({ featured: checked })}
+        />
       </TableCell>
       <TableCell className="w-[120px] text-center">
         <DropdownMenu>

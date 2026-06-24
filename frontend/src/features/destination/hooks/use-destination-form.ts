@@ -23,6 +23,7 @@ export function useDestinationForm({
     name: _defaultValues?.name ?? "",
     description: _defaultValues?.description ?? "",
     imageId: _defaultValues?.imageId ?? "",
+    featured: _defaultValues?.featured ?? false,
   }
 
   const form = useAppForm({
