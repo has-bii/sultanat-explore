@@ -10,22 +10,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-import { CategoryForm } from "../../components/form"
-import { useCategoryForm } from "../../hooks/use-category-form"
-import { useCreateCategory } from "../../mutations/create-category.mutation"
-import { useUpdateCategory } from "../../mutations/update-category.mutation"
-import { useCategoryDialogStore } from "../../stores/category-dialog.store"
+import { CityCategoryForm } from "../../components/form"
+import { useCityCategoryForm } from "../../hooks/use-city-category-form"
+import { useCreateCityCategory } from "../../mutations/create-city-category.mutation"
+import { useUpdateCityCategory } from "../../mutations/update-city-category.mutation"
+import { useCityCategoryDialogStore } from "../../stores/city-category-dialog.store"
 
-export function CategoryDialog() {
-  const { open, meta, onClose } = useCategoryDialogStore()
+export function CityCategoryDialog() {
+  const { open, meta, onClose } = useCityCategoryDialogStore()
 
-  const createMutation = useCreateCategory()
-  const updateMutation = useUpdateCategory()
+  const createMutation = useCreateCityCategory()
+  const updateMutation = useUpdateCityCategory()
 
   const isEdit = meta !== null
   const isPending = createMutation.isPending || updateMutation.isPending
 
-  const form = useCategoryForm({
+  const form = useCityCategoryForm({
     defaultValues: {
       name: meta?.name ?? "",
     },
@@ -49,12 +49,12 @@ export function CategoryDialog() {
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Kategori" : "Tambah Kategori"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit Kategori Kota" : "Tambah Kategori Kota"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "Ubah nama kategori" : "Buat kategori baru untuk artikel"}
+            {isEdit ? "Ubah nama kategori kota" : "Buat kategori baru untuk mengelompokkan kota"}
           </DialogDescription>
         </DialogHeader>
-        <CategoryForm
+        <CityCategoryForm
           form={form}
           mode={isEdit ? "edit" : "create"}
           isPending={isPending}

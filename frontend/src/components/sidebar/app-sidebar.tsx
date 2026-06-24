@@ -34,6 +34,10 @@ const navMain = [
         title: "Destinasi",
         url: "/admin/dashboard/city/destination",
       },
+      {
+        title: "Kategori",
+        url: "/admin/dashboard/city/category",
+      },
     ],
   },
   {

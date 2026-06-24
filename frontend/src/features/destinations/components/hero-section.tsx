@@ -1,4 +1,4 @@
-import { Compass, MapPin } from "lucide-react"
+import { Compass } from "lucide-react"
 
 export function HeroSection() {
   return (

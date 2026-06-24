@@ -20,6 +20,7 @@ export function useCityForm({ defaultValues: _defaultValues, onSubmit }: Props) 
     featured: _defaultValues?.featured ?? false,
     imageId: _defaultValues?.imageId ?? "",
     highlights: _defaultValues?.highlights ?? [""],
+    categoryIds: _defaultValues?.categoryIds ?? [],
   }
 
   const form = useAppForm({

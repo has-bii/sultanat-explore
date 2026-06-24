@@ -197,6 +197,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── filter/
     │   │   │   │   ├── index.tsx
     │   │   │   ├── form/
+    │   │   │   │   ├── category-field.tsx
     │   │   │   │   ├── index.tsx
     │   │   │   ├── gallery/
     │   │   │   │   ├── draggable-item.tsx
@@ -221,6 +222,29 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── city-list.page.tsx
     │   │   │   ├── create-city.page.tsx
     │   │   │   ├── edit-city.page.tsx
+    │   ├── city-category/
+    │   │   ├── components/
+    │   │   │   ├── dialog/
+    │   │   │   │   ├── delete.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── form/
+    │   │   │   │   ├── index.tsx
+    │   │   │   ├── table/
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── row.tsx
+    │   │   ├── hooks/
+    │   │   │   ├── use-city-category-form.ts
+    │   │   ├── mutations/
+    │   │   │   ├── create-city-category.mutation.ts
+    │   │   │   ├── delete-city-category.mutation.ts
+    │   │   │   ├── update-city-category.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
+    │   │   ├── pages/
+    │   │   │   ├── city-category-list.page.tsx
+    │   │   ├── stores/
+    │   │   │   ├── city-category-dialog.store.ts
+    │   │   │   ├── delete-city-category-dialog.store.ts
     │   ├── contact/
     │   │   ├── components/
     │   │   │   ├── contact-cards.tsx

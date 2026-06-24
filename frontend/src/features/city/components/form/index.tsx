@@ -23,6 +23,7 @@ import {
 import Link from "next/link"
 
 import { useCityForm } from "../../hooks/use-city-form"
+import { CityCategoryField } from "./category-field"
 
 interface CityFormProps {
   form: ReturnType<typeof useCityForm>
@@ -155,6 +156,21 @@ export function CityForm(props: CityFormProps) {
             }}
           </form.Field>
         </div>
+
+        {/* Categories */}
+        <form.Field name="categoryIds">
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <CityCategoryField
+                value={field.state.value ?? []}
+                onChange={field.handleChange}
+                isInvalid={isInvalid}
+                errors={field.state.meta.errors}
+              />
+            )
+          }}
+        </form.Field>
 
         {/* Featured */}
         <form.AppField

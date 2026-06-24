@@ -118,6 +118,7 @@ function DetailForm({ cityId }: Props) {
       highlights: data.highlights,
       imageId: data.imageId,
       featured: data.featured,
+      categoryIds: data.categories.map((c) => c.id),
     },
     onSubmit: (value) => {
       mutate(value)
