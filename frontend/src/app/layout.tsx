@@ -38,6 +38,24 @@ export const metadata: Metadata = {
   },
   description:
     "Agen wisata Turki terpercaya untuk traveler Indonesia. Open trip, private trip, dan paket Umrah.",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: siteUrl,
+    siteName: "SultanatExplore",
+    images: [
+      {
+        url: "/og/default.svg",
+        width: 1200,
+        height: 630,
+        alt: "SultanatExplore — Jelajahi Turki & Umrah",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@sultanatexplore",
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
