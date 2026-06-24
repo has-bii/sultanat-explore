@@ -43,11 +43,19 @@ async function findGallery(cityId: string) {
 }
 
 export async function listCities(params: CityQueryOutput) {
-  const { cursor, limit, search, featured, sort, order } = params
+  const { cursor, limit, search, featured, category, sort, order } = params
+
+  let categoryId: string | undefined
+  if (category) {
+    const cat = await db.cityCategory.findUnique({ where: { slug: category } })
+    if (!cat) return toPage([], limit)
+    categoryId = cat.id
+  }
 
   const where = {
     ...(search ? { name: { startsWith: search, mode: "insensitive" as const } } : {}),
     ...(featured !== undefined ? { featured } : {}),
+    ...(categoryId ? { categories: { some: { id: categoryId } } } : {}),
   }
 
   const cities = await db.city.findMany({

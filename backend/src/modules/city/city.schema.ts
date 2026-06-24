@@ -50,6 +50,7 @@ export const cityQuerySchema = v.object({
       v.transform((val) => val === "true"),
     ),
   ),
+  category: v.optional(v.string()),
   sort: v.optional(v.picklist(["name", "createdAt"]), "createdAt"),
   order: orderDirectionSchema,
 })
