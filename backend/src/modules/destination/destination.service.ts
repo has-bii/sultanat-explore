@@ -12,6 +12,7 @@ import { assertImageExists } from "backend/modules/image/image.service"
 
 const include = {
   image: { select: imageCardSelect },
+  city: { select: { id: true, name: true, slug: true } },
 } as const
 
 export async function listDestinations(params: DestinationQueryOutput) {

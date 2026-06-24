@@ -1,7 +1,6 @@
 export { AboutSection } from "./components/about-section"
 export { DestinationsGrid } from "./components/destinations-grid"
 export { DetailHero } from "./components/detail-hero"
-export { FeaturedAttractions } from "./components/featured-attractions"
 export { GallerySection } from "./components/gallery-section"
 export { HeroSection } from "./components/hero-section"
 export { OtherDestinations } from "./components/other-destinations"
