@@ -1,14 +1,19 @@
 "use client"
 
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { use } from "react"
 
 import { Button } from "@/components/ui/button"
-import { getCityCategoriesQueryOptions } from "@/features/city-category/queries"
 import { useQueryState } from "nuqs"
 
-export function CategoryFilter() {
+import { fetchCityCategories } from "../../lib/fetch"
+
+interface Props {
+  dataPromise: ReturnType<typeof fetchCityCategories>
+}
+
+export function CategoryFilter({ dataPromise }: Props) {
+  const data = use(dataPromise)
   const [category, setCategory] = useQueryState("category")
-  const { data } = useSuspenseQuery(getCityCategoriesQueryOptions())
 
   const onCategoryChange = (slug: string | null) => {
     setCategory((prev) => (slug === prev ? null : slug))

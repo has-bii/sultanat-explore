@@ -11,7 +11,10 @@ import { CityCard } from "./card"
 
 export function CitiesGrid() {
   const [category] = useQueryState("category")
-  const [search] = useQueryState("search", parseAsString.withDefault("").withOptions({ shallow: true }))
+  const [search] = useQueryState(
+    "search",
+    parseAsString.withDefault("").withOptions({ shallow: true }),
+  )
 
   const { data } = useSuspenseInfiniteQuery(
     getCitiesQueryOptions({
@@ -45,7 +48,7 @@ export function CitiesGrid() {
   }
 
   return (
-    <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {cities.map((city, index) => (
         <CityCard key={city.id} data={city} priority={index === 0} />
       ))}

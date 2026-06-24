@@ -13,9 +13,9 @@ export function CityCard({ data, priority }: Props) {
   return (
     <Link
       href={`/destinations/${data.slug}`}
-      className="bg-card shadow-uber-sm hover:shadow-uber-md group overflow-hidden rounded-xl transition-shadow"
+      className="bg-card group overflow-hidden rounded-xl border transition-shadow"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-4/3 overflow-hidden">
         <Image
           fill
           src={data.image.url}
@@ -25,7 +25,7 @@ export function CityCard({ data, priority }: Props) {
           loading={priority ? "eager" : "lazy"}
           priority={priority}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
         <div className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
           {data.categories.map((cat) => (
             <span
@@ -42,7 +42,7 @@ export function CityCard({ data, priority }: Props) {
         <h4 className="font-heading group-hover:text-primary text-base font-bold transition-colors">
           {data.name}
         </h4>
-        <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">{data.tagline}</p>
+        <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">{data.description}</p>
         <span className="text-primary mt-3 inline-flex items-center text-xs font-medium">
           Lihat detail
           <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />

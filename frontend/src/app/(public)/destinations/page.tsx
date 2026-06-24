@@ -1,12 +1,8 @@
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
-import { CitiesGridSection } from "@/features/destination/public/components/cities-grid"
-import { FeaturedCities } from "@/features/destination/public/components/featured-cities"
-import {
-  FeaturedAttractions,
-  HeroSection,
-  WhyTurkey,
-} from "@/features/destinations"
+import { CitiesGridSection } from "@/features/city/public/components/cities-grid"
+import { FeaturedCities } from "@/features/city/public/components/featured-cities"
+import { FeaturedAttractions, HeroSection, WhyTurkey } from "@/features/destinations"
 import { SocialProofBar } from "@/features/open-trip/components/social-proof-bar"
 import type { Metadata } from "next"
 import type { SearchParams } from "nuqs/server"

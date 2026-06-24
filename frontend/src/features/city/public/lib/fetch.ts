@@ -18,3 +18,10 @@ export const fetchFeaturedCities = cache(async () => {
 
   return resData.data.data
 })
+
+export const fetchCityCategories = cache(async () => {
+  const res = await apiClient.api["city-categories"].$get()
+  const resData = await res.json()
+  if (!resData.success) throw new Error(resData.message)
+  return resData.data
+})

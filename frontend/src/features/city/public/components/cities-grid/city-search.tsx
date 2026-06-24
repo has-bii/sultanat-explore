@@ -24,7 +24,7 @@ export function CitySearch() {
   }, [local, search, setSearch])
 
   return (
-    <InputGroup className="max-w-md">
+    <InputGroup className="flex-1 sm:max-w-sm">
       <InputGroupAddon>
         <SearchIcon />
       </InputGroupAddon>
