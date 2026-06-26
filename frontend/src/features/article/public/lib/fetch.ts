@@ -1,9 +1,11 @@
 import { apiClient } from "@/lib/api-client"
+import { cacheLife } from "next/cache"
 
 import { GetArticlesQuery } from "../../queries"
 
 export const fetchArticleBySlug = async (slug: string) => {
   "use cache"
+  cacheLife("hours")
 
   try {
     const res = await apiClient.api.articles.slug[":slug"].$get({ param: { slug } })
@@ -25,6 +27,7 @@ export const fetchPublishedArticles = async ({
   limit,
 }: Pick<GetArticlesQuery, "category" | "search" | "cursor" | "limit">) => {
   "use cache"
+  cacheLife("hours")
 
   try {
     const res = await apiClient.api.articles.$get({
@@ -51,6 +54,7 @@ export const fetchPublishedArticles = async ({
 
 export const fetchRelatedArticles = async (slug: string) => {
   "use cache"
+  cacheLife("hours")
 
   try {
     const res = await apiClient.api.articles.slug[":slug"].related.$get({
@@ -67,6 +71,7 @@ export const fetchRelatedArticles = async (slug: string) => {
 
 export const fetchFeaturedArticles = async () => {
   "use cache"
+  cacheLife("hours")
 
   try {
     const res = await apiClient.api.articles.$get({
@@ -88,6 +93,7 @@ export const fetchFeaturedArticles = async () => {
 
 export const fetchCategory = async () => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api.categories.$get()
     const resData = await res.json()

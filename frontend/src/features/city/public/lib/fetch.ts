@@ -1,7 +1,9 @@
 import { apiClient } from "@/lib/api-client"
+import { cacheLife } from "next/cache"
 
 export const fetchFeaturedCities = async () => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api.cities.$get({
       query: {
@@ -23,6 +25,7 @@ export const fetchFeaturedCities = async () => {
 
 export const fetchCityCategories = async () => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api["city-categories"].$get()
     const resData = await res.json()
@@ -35,6 +38,7 @@ export const fetchCityCategories = async () => {
 
 export const fetchAllCitySlugs = async () => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api.cities.$get({
       query: { limit: "100", sort: "createdAt", order: "desc" },
@@ -54,6 +58,7 @@ export const fetchAllCitySlugs = async () => {
 
 export const fetchCityBySlug = async (slug: string) => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api.cities.slug[":slug"].$get({ param: { slug } })
     const resData = await res.json()
@@ -66,6 +71,7 @@ export const fetchCityBySlug = async (slug: string) => {
 
 export const fetchCityGallery = async (cityId: string) => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api.cities[":id"].gallery.$get({ param: { id: cityId } })
     const resData = await res.json()
@@ -78,6 +84,7 @@ export const fetchCityGallery = async (cityId: string) => {
 
 export const fetchAllCities = async (category: string | undefined) => {
   "use cache"
+  cacheLife("hours")
   try {
     const res = await apiClient.api.cities.$get({
       query: { limit: "100", sort: "name", order: "asc", category },
@@ -90,5 +97,19 @@ export const fetchAllCities = async (category: string | undefined) => {
       data: [],
       nextCursor: null,
     }
+  }
+}
+
+export const fetchRelatedCities = async (slug: string) => {
+  "use cache"
+  cacheLife("hours")
+
+  try {
+    const res = await apiClient.api.cities.slug[":slug"].related.$get({ param: { slug } })
+    const resData = await res.json()
+    if (!resData.success) return []
+    return resData.data
+  } catch {
+    return []
   }
 }

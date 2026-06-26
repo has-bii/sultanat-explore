@@ -280,21 +280,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── stores/
     │   │   │   ├── delete-destination-dialog.store.ts
     │   │   │   ├── destination-dialog.store.ts
-    │   ├── destinations/
-    │   │   ├── components/
-    │   │   │   ├── about-section.tsx
-    │   │   │   ├── destinations-grid.tsx
-    │   │   │   ├── detail-hero.tsx
-    │   │   │   ├── gallery-section.tsx
-    │   │   │   ├── hero-section.tsx
-    │   │   │   ├── other-destinations.tsx
-    │   │   │   ├── related-trips.tsx
-    │   │   │   ├── why-turkey.tsx
-    │   │   ├── lib/
-    │   │   │   ├── structured-data.ts
-    │   │   ├── data.ts
-    │   │   ├── types.ts
-    │   │   └── index.ts
     │   ├── faq/
     │   │   ├── components/
     │   │   │   ├── faq-page-content.tsx
