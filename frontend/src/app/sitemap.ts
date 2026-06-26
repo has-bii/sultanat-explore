@@ -1,4 +1,4 @@
-import { fetchAllPublishedArticles } from "@/features/article/public/lib/fetch"
+import { fetchPublishedArticles } from "@/features/article/public/lib/fetch"
 import { fetchAllCitySlugs } from "@/features/city/public/lib/fetch"
 import { parseISO } from "date-fns"
 import type { MetadataRoute } from "next"
@@ -6,12 +6,12 @@ import type { MetadataRoute } from "next"
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let articles: Awaited<ReturnType<typeof fetchAllPublishedArticles>> = []
+  let articles: Awaited<ReturnType<typeof fetchPublishedArticles>>["data"] = []
   let cities: Awaited<ReturnType<typeof fetchAllCitySlugs>> = []
 
   try {
     ;[articles, cities] = await Promise.all([
-      fetchAllPublishedArticles(),
+      fetchPublishedArticles({ limit: "100" }).then((res) => res.data),
       fetchAllCitySlugs(),
     ])
   } catch {

@@ -1,24 +1,15 @@
-"use client"
+import { use } from "react"
 
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
-
-import { getArticlesQueryOptions } from "@/features/article/queries"
-
+import { fetchFeaturedArticles } from "../../lib/fetch"
 import { FeaturedCarousel } from "./carousel"
 import { FeaturedEmpty } from "./empty"
 
-export function Featured() {
-  const { data } = useSuspenseInfiniteQuery(
-    getArticlesQueryOptions({
-      limit: "10",
-      featured: "true",
-      published: "true",
-      sort: "publishedAt",
-      order: "desc",
-    }),
-  )
+interface Props {
+  dataPromise: ReturnType<typeof fetchFeaturedArticles>
+}
 
-  const articles = data.pages.flatMap((p) => p.data)
+export function Featured({ dataPromise }: Props) {
+  const articles = use(dataPromise)
 
   if (articles.length === 0) {
     return <FeaturedEmpty />

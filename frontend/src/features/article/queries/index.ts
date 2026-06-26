@@ -25,7 +25,7 @@ export const getArticlesQueryOptions = (query: GetArticlesQuery) => {
       })
       const json = await res.json()
       if (!json.success) throw new Error(json.message)
-      return json.data as unknown as GetArticlesResponse["data"]
+      return json.data
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined as string | undefined,

@@ -2,36 +2,24 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { Suspense } from "react"
 
 import { getArticlesQueryOptions } from "@/features/article/queries"
-import { getCategoriesQueryOptions } from "@/features/category/queries"
 import { getQueryClient } from "@/lib/query-client"
-import type { SearchParams } from "nuqs/server"
+import { SearchParams } from "nuqs/server"
 
+import { fetchCategory, fetchPublishedArticles } from "../../lib/fetch"
 import { articleSearchParamsCache } from "../../search-params"
 import { ArticleSearch } from "./article-search"
+import { ArticleSearchSkeleton } from "./article-search-skeleton"
 import { CategoryFilter } from "./category-filter"
 import { CategoryFilterSkeleton } from "./category-filter-skeleton"
 import { ArticleGrid } from "./grid"
 import { ArticleGridSkeleton } from "./grid-skeleton"
 
-type Props = {
+interface Props {
   searchParams: Promise<SearchParams>
 }
 
-export async function ArticleListSection({ searchParams }: Props) {
-  const { category, search } = await articleSearchParamsCache.parse(searchParams)
-  const queryClient = getQueryClient()
-
-  queryClient.prefetchQuery(getCategoriesQueryOptions())
-  queryClient.prefetchInfiniteQuery(
-    getArticlesQueryOptions({
-      limit: "10",
-      published: "true",
-      order: "desc",
-      sort: "publishedAt",
-      category: category || undefined,
-      search: search || undefined,
-    }),
-  )
+export function ArticleListSection({ searchParams }: Props) {
+  const categoryPromise = fetchCategory()
 
   return (
     <section className="pb-16 lg:pb-20">
@@ -47,26 +35,52 @@ export async function ArticleListSection({ searchParams }: Props) {
             </h2>
           </div>
 
-          {/* Search — client-only nuqs state, non-suspending */}
-          <ArticleSearch />
-        </div>
-
-        {/* Category filter — per-component Suspense */}
-        <div className="mt-6">
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <Suspense fallback={<CategoryFilterSkeleton />}>
-              <CategoryFilter />
-            </Suspense>
-          </HydrationBoundary>
-        </div>
-
-        {/* Grid — per-component Suspense, streams in from server prefetch */}
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense fallback={<ArticleGridSkeleton />}>
-            <ArticleGrid />
+          <Suspense fallback={<ArticleSearchSkeleton />}>
+            <ArticleSearch />
           </Suspense>
-        </HydrationBoundary>
+        </div>
+
+        <div className="mt-6">
+          <Suspense fallback={<CategoryFilterSkeleton />}>
+            <CategoryFilter dataPromise={categoryPromise} />
+          </Suspense>
+        </div>
+
+        <Suspense fallback={<ArticleGridSkeleton />}>
+          <ArticleGridServer searchParams={searchParams} />
+        </Suspense>
       </div>
     </section>
+  )
+}
+
+async function ArticleGridServer({ searchParams }: Props) {
+  const { search, category } = await articleSearchParamsCache.parse(searchParams)
+  const queryClient = getQueryClient()
+
+  const limit = "12"
+
+  queryClient.prefetchInfiniteQuery({
+    ...getArticlesQueryOptions({
+      limit,
+      published: "true",
+      category: category || undefined,
+      search: search || undefined,
+      order: "desc",
+      sort: "publishedAt",
+    }),
+    queryFn: ({ pageParam }) =>
+      fetchPublishedArticles({
+        limit,
+        category: category || undefined,
+        search: search || undefined,
+        cursor: pageParam,
+      }),
+  })
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ArticleGrid />
+    </HydrationBoundary>
   )
 }

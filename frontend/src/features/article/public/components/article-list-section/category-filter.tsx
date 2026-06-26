@@ -1,17 +1,22 @@
 "use client"
 
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { use } from "react"
 
 import { Button } from "@/components/ui/button"
-import { getCategoriesQueryOptions } from "@/features/category/queries"
 import { useQueryState } from "nuqs"
 
-export function CategoryFilter() {
-  const [category, setCategory] = useQueryState("category")
-  const { data } = useSuspenseQuery(getCategoriesQueryOptions())
+import { fetchCategory } from "../../lib/fetch"
 
-  const categoryIdOnChange = (slug: string | null) => {
-    setCategory((prev) => (slug === prev ? null : slug))
+type Props = {
+  dataPromise: ReturnType<typeof fetchCategory>
+}
+
+export function CategoryFilter({ dataPromise }: Props) {
+  const data = use(dataPromise)
+  const [category, setCategory] = useQueryState("category")
+
+  const onChange = (categorySlug: string) => {
+    setCategory((prev) => (prev === categorySlug ? null : categorySlug))
   }
 
   return (
@@ -21,7 +26,7 @@ export function CategoryFilter() {
           key={data.id}
           size="sm"
           variant={data.slug === category ? "default" : "outline"}
-          onClick={() => categoryIdOnChange(data.slug)}
+          onClick={() => onChange(data.slug)}
         >
           {data.name}
         </Button>

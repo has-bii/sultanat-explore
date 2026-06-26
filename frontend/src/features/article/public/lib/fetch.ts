@@ -1,74 +1,79 @@
-import { cache } from "react"
-
 import { apiClient } from "@/lib/api-client"
-import type { InferResponseType } from "hono"
 
-// Public article by slug — full row incl. content (Tiptap JSON), image, author, category.
-type ArticleBySlugResponse = InferResponseType<
-  (typeof apiClient.api.articles.slug)[":slug"]["$get"],
-  200
->
+import { GetArticlesQuery } from "../../queries"
 
-type ArticleBySlugData = ArticleBySlugResponse["data"]
+export const fetchArticleBySlug = async (slug: string) => {
+  "use cache"
 
-// Related articles — array of list-included articles.
-type RelatedResponse = InferResponseType<
-  (typeof apiClient.api.articles.slug)[":slug"]["related"]["$get"],
-  200
->
+  const res = await apiClient.api.articles.slug[":slug"].$get({ param: { slug } })
 
-export type ArticleDetail = ArticleBySlugData
-export type RelatedArticle = RelatedResponse["data"][number]
+  const resData = await res.json()
 
-// React cache() dedupes per-request (metadata + render calls share one fetch).
-export const fetchArticleBySlug = cache(async (slug: string) => {
-  try {
-    const res = await apiClient.api.articles.slug[":slug"].$get({ param: { slug } })
+  if (!resData.success) return null
 
-    const resData = await res.json()
-
-    if (!resData.success) throw new Error(resData.message)
-
-    return resData.data
-  } catch {
-    return null
-  }
-})
-
-/**
- * Fetch the first 100 published articles (single request, no cursor walk).
- * Server-only (sitemap/ISR) — never call from client. Returns [] on failure.
- * If article count grows past 100, reintroduce cursor pagination here.
- */
-export async function fetchAllPublishedArticles() {
-  try {
-    const res = await apiClient.api.articles.$get({
-      query: { published: "true", limit: "100" },
-    })
-
-    const resData = await res.json()
-
-    if (!resData.success) throw new Error(resData.message)
-
-    return resData.data.data
-  } catch {
-    return []
-  }
+  return resData.data
 }
 
-/** Fetch related articles for a given slug. Returns [] on failure. */
-export const fetchRelatedArticles = cache(async (slug: string, limit = 3) => {
-  try {
-    const res = await apiClient.api.articles.slug[":slug"].related.$get({
-      param: { slug },
-      query: { limit: String(limit) },
-    })
-    const resData = await res.json()
+export const fetchPublishedArticles = async ({
+  category,
+  search,
+  cursor,
+  limit,
+}: Pick<GetArticlesQuery, "category" | "search" | "cursor" | "limit">) => {
+  "use cache"
 
-    if (!resData.success) throw new Error(resData.message)
+  const res = await apiClient.api.articles.$get({
+    query: {
+      published: "true",
+      order: "desc",
+      sort: "publishedAt",
+      limit,
+      category,
+      search,
+      cursor,
+    },
+  })
 
-    return resData.data
-  } catch {
-    return []
-  }
-})
+  const resData = await res.json()
+
+  if (!resData.success) return { data: [], nextCursor: null }
+
+  return resData.data
+}
+
+export const fetchRelatedArticles = async (slug: string) => {
+  "use cache"
+
+  const res = await apiClient.api.articles.slug[":slug"].related.$get({
+    param: { slug },
+    query: { limit: "3" },
+  })
+  const resData = await res.json()
+  if (!resData.success) return []
+  return resData.data
+}
+
+export const fetchFeaturedArticles = async () => {
+  "use cache"
+
+  const res = await apiClient.api.articles.$get({
+    query: {
+      limit: "5",
+      featured: "true",
+      published: "true",
+      sort: "publishedAt",
+      order: "desc",
+    },
+  })
+  const resData = await res.json()
+  if (!resData.success) return []
+  return resData.data.data
+}
+
+export const fetchCategory = async () => {
+  "use cache"
+  const res = await apiClient.api.categories.$get()
+  const resData = await res.json()
+  if (!resData.success) return []
+  return resData.data
+}

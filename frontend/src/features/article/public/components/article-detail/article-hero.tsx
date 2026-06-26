@@ -4,9 +4,11 @@ import { formatDateId } from "@/lib/date"
 import Image from "next/image"
 import Link from "next/link"
 
-import type { ArticleDetail } from "../../lib/fetch"
+import { fetchArticleBySlug } from "../../lib/fetch"
 
-type Props = { article: ArticleDetail }
+type GetArticleBySlugResponse = NonNullable<Awaited<ReturnType<typeof fetchArticleBySlug>>>
+
+type Props = { article: GetArticleBySlugResponse }
 
 export function ArticleHero({ article }: Props) {
   return (

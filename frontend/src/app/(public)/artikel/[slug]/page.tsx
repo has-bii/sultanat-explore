@@ -43,7 +43,7 @@ export default async function ArtikelDetailPage({ params }: Props) {
 
   if (!article) notFound()
 
-  const related = await fetchRelatedArticles(slug, 3)
+  const related = await fetchRelatedArticles(slug)
 
   const canonical = `${siteUrl}/artikel/${slug}`
   const imageUrl = article.image.url.startsWith("http")

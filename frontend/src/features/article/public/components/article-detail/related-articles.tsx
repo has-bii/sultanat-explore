@@ -5,9 +5,11 @@ import { id } from "date-fns/locale"
 import Image from "next/image"
 import Link from "next/link"
 
-import type { RelatedArticle } from "../../lib/fetch"
+import { fetchRelatedArticles } from "../../lib/fetch"
 
-type Props = { articles: RelatedArticle[] }
+type GetRelatedArticlesResponse = Awaited<ReturnType<typeof fetchRelatedArticles>>
+
+type Props = { articles: GetRelatedArticlesResponse }
 
 export function RelatedArticles({ articles }: Props) {
   if (articles.length === 0) return null
