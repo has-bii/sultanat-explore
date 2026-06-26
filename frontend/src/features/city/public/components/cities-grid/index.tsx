@@ -1,11 +1,11 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { Suspense } from "react"
 
-import { getCitiesQueryOptions } from "@/features/city/queries"
+import { GetCitiesQuery, getCitiesQueryOptions } from "@/features/city/queries"
 import { getQueryClient } from "@/lib/query-client"
 import type { SearchParams } from "nuqs/server"
 
-import { fetchCityCategories } from "../../lib/fetch"
+import { fetchAllCities, fetchCityCategories } from "../../lib/fetch"
 import { destinationSearchParamsCache } from "../../search-params"
 import { CategoryFilter } from "./category-filter"
 import { CategoryFilterSkeleton } from "./category-filter-skeleton"
@@ -19,6 +19,8 @@ type Props = {
 }
 
 export function CitiesGridSection({ searchParams }: Props) {
+  const cityCategoriesPromise = fetchCityCategories()
+
   return (
     <section className="border-y py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
@@ -39,7 +41,7 @@ export function CitiesGridSection({ searchParams }: Props) {
         {/* Category filter — per-component Suspense */}
         <div className="mt-6">
           <Suspense fallback={<CategoryFilterSkeleton />}>
-            <CategoryFilterContent searchParams={searchParams} />
+            <CategoryFilter dataPromise={cityCategoriesPromise} />
           </Suspense>
         </div>
 
@@ -52,29 +54,25 @@ export function CitiesGridSection({ searchParams }: Props) {
   )
 }
 
-async function CategoryFilterContent({ searchParams }: Props) {
-  const { category } = await destinationSearchParamsCache.parse(searchParams)
-  const cityCategoriesPromise = fetchCityCategories()
-
-  return <CategoryFilter dataPromise={cityCategoriesPromise} category={category} />
-}
-
 async function CitiesGridContent({ searchParams }: Props) {
   const { category } = await destinationSearchParamsCache.parse(searchParams)
   const queryClient = getQueryClient()
 
-  queryClient.prefetchInfiniteQuery(
-    getCitiesQueryOptions({
-      limit: "100",
-      sort: "name",
-      order: "asc",
-      category: category || undefined,
-    }),
-  )
+  const query: GetCitiesQuery = {
+    limit: "100",
+    sort: "name",
+    order: "asc",
+    category: category || undefined,
+  }
+
+  queryClient.prefetchInfiniteQuery({
+    ...getCitiesQueryOptions(query),
+    queryFn: () => fetchAllCities(category || undefined),
+  })
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CitiesGrid category={category} />
+      <CitiesGrid />
     </HydrationBoundary>
   )
 }

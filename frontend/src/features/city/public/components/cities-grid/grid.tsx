@@ -5,14 +5,13 @@ import { MapPin } from "lucide-react"
 
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { getCitiesQueryOptions } from "@/features/city/queries"
+import { useQueryState } from "nuqs"
 
 import { CityCard } from "./card"
 
-interface Props {
-  category: string | null
-}
+export function CitiesGrid() {
+  const [category] = useQueryState("category")
 
-export function CitiesGrid({ category }: Props) {
   const { data } = useSuspenseInfiniteQuery(
     getCitiesQueryOptions({
       limit: "100",

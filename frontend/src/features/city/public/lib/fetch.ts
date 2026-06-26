@@ -75,3 +75,20 @@ export const fetchCityGallery = async (cityId: string) => {
     return []
   }
 }
+
+export const fetchAllCities = async (category: string | undefined) => {
+  "use cache"
+  try {
+    const res = await apiClient.api.cities.$get({
+      query: { limit: "100", sort: "name", order: "asc", category },
+    })
+    const resData = await res.json()
+    if (!resData.success) throw new Error(resData.message)
+    return resData.data
+  } catch {
+    return {
+      data: [],
+      nextCursor: null,
+    }
+  }
+}
