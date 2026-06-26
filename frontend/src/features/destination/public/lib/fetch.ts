@@ -1,8 +1,8 @@
-import { cache } from "react"
-
 import { apiClient } from "@/lib/api-client"
 
-export const fetchFeaturedDestinations = cache(async () => {
+export const fetchFeaturedDestinations = async () => {
+  "use cache"
+
   try {
     const res = await apiClient.api.destinations.$get({
       query: {
@@ -14,11 +14,10 @@ export const fetchFeaturedDestinations = cache(async () => {
     })
 
     const resData = await res.json()
-
     if (!resData.success) return []
 
     return resData.data.data
   } catch {
     return []
   }
-})
+}

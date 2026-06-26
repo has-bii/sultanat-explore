@@ -4,7 +4,7 @@ import { fetchFeaturedDestinations } from "../../lib/fetch"
 import { FeaturedDestinationsGrid } from "./grid"
 import FeaturedDestinationsGridSkeleton from "./skeleton"
 
-export async function FeaturedDestinations() {
+export function FeaturedDestinations() {
   const featuredDestinationsPromise = fetchFeaturedDestinations()
 
   return (
