@@ -1,3 +1,5 @@
+import { CTASection } from "@/components/cta-section"
+import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import { ArticleFeaturedSection } from "@/features/article/public/components/article-featured-section"
 import { ArticleListSection } from "@/features/article/public/components/article-list-section"
 import { HeroSection } from "@/features/article/public/components/hero-section"
@@ -33,10 +35,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 export default function ArtikelPage({ searchParams }: Props) {
   return (
-    <main>
+    <>
       <HeroSection />
       <ArticleFeaturedSection />
       <ArticleListSection searchParams={searchParams} />
-    </main>
+      <CTASection />
+      <FloatingWhatsApp />
+    </>
   )
 }
