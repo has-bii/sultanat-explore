@@ -2,27 +2,35 @@ import { apiClient } from "@/lib/api-client"
 
 export const fetchFeaturedCities = async () => {
   "use cache"
-  const res = await apiClient.api.cities.$get({
-    query: {
-      limit: "4",
-      featured: "true",
-      sort: "createdAt",
-      order: "desc",
-    },
-  })
+  try {
+    const res = await apiClient.api.cities.$get({
+      query: {
+        limit: "4",
+        featured: "true",
+        sort: "createdAt",
+        order: "desc",
+      },
+    })
 
-  const resData = await res.json()
-  if (!resData.success) return []
+    const resData = await res.json()
+    if (!resData.success) return []
 
-  return resData.data.data
+    return resData.data.data
+  } catch {
+    return []
+  }
 }
 
 export const fetchCityCategories = async () => {
   "use cache"
-  const res = await apiClient.api["city-categories"].$get()
-  const resData = await res.json()
-  if (!resData.success) return []
-  return resData.data
+  try {
+    const res = await apiClient.api["city-categories"].$get()
+    const resData = await res.json()
+    if (!resData.success) return []
+    return resData.data
+  } catch {
+    return []
+  }
 }
 
 export const fetchAllCitySlugs = async () => {
@@ -46,16 +54,24 @@ export const fetchAllCitySlugs = async () => {
 
 export const fetchCityBySlug = async (slug: string) => {
   "use cache"
-  const res = await apiClient.api.cities.slug[":slug"].$get({ param: { slug } })
-  const resData = await res.json()
-  if (!resData.success) return null
-  return resData.data
+  try {
+    const res = await apiClient.api.cities.slug[":slug"].$get({ param: { slug } })
+    const resData = await res.json()
+    if (!resData.success) return null
+    return resData.data
+  } catch {
+    return null
+  }
 }
 
 export const fetchCityGallery = async (cityId: string) => {
   "use cache"
-  const res = await apiClient.api.cities[":id"].gallery.$get({ param: { id: cityId } })
-  const resData = await res.json()
-  if (!resData.success) return []
-  return resData.data
+  try {
+    const res = await apiClient.api.cities[":id"].gallery.$get({ param: { id: cityId } })
+    const resData = await res.json()
+    if (!resData.success) return []
+    return resData.data
+  } catch {
+    return []
+  }
 }
