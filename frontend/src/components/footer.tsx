@@ -1,6 +1,7 @@
 "use client"
 
 import { MessageCircle } from "lucide-react"
+import { Suspense } from "react"
 
 import Link from "next/link"
 
@@ -119,13 +120,21 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-5 sm:flex-row">
-          <p className="text-xs text-white/30">
-            © {new Date().getFullYear()} SultanatExplore. All rights reserved.
-          </p>
-          <p className="text-xs text-white/30">Made with ❤️ for Indonesian travelers</p>
-        </div>
+        <Suspense>
+          <BottomBar />
+        </Suspense>
       </div>
     </footer>
+  )
+}
+
+function BottomBar() {
+  return (
+    <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-5 sm:flex-row">
+      <p className="text-xs text-white/30">
+        © {new Date().getFullYear()} SultanatExplore. All rights reserved.
+      </p>
+      <p className="text-xs text-white/30">Made with ❤️ for Indonesian travelers</p>
+    </div>
   )
 }

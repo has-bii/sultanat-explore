@@ -20,8 +20,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
 
 if (process.env.NODE_ENV !== "production" && !process.env.NEXT_PUBLIC_SITE_URL) {
   console.warn(
@@ -73,11 +72,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       )}
     >
       <body className="flex min-h-full flex-col">
-        <NuqsAdapter>
-          <main className="flex-1">
+        <main className="flex-1">
+          <NuqsAdapter>
             <RootProviders>{children}</RootProviders>
-          </main>
-        </NuqsAdapter>
+          </NuqsAdapter>
+        </main>
       </body>
     </html>
   )
