@@ -1,42 +1,34 @@
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
-import { fetchAllCitySlugs } from "@/features/city/public/lib/fetch"
 import { CitiesGridSection } from "@/features/city/public/components/cities-grid"
 import { FeaturedCities } from "@/features/city/public/components/featured-cities"
+import { fetchAllCitySlugs } from "@/features/city/public/lib/fetch"
+import { destinationSearchParamsCache } from "@/features/city/public/search-params"
 import { FeaturedDestinations } from "@/features/destination/public/components/featured-destinations"
 import { HeroSection, WhyTurkey } from "@/features/destinations"
 import {
   citiesItemListJsonLd,
   destinationsBreadcrumbJsonLd,
 } from "@/features/destinations/lib/structured-data"
-import type { Metadata, ResolvingMetadata } from "next"
+import type { Metadata } from "next"
 import type { SearchParams } from "nuqs/server"
-import { destinationSearchParamsCache } from "@/features/city/public/search-params"
 
-export const dynamic = "force-dynamic"
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sultanatexplore.com"
 
 type Props = {
   searchParams: Promise<SearchParams>
 }
 
-export async function generateMetadata(
-  { searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
-  const { category, search } = await destinationSearchParamsCache.parse(searchParams)
-  const hasFilters = Boolean(category) || Boolean(search)
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { category } = await destinationSearchParamsCache.parse(searchParams)
+  const hasFilters = Boolean(category)
 
   return {
     title: "Destinasi Wisata Turki",
     description:
       "Jelajahi destinasi wisata Turki terbaik: Istanbul, Cappadocia, Pamukkale, Antalya, Trabzon, dan lainnya. Temukan perjalanan impian Anda.",
     alternates: { canonical: "/destinations" },
-    robots: hasFilters
-      ? { index: false, follow: true }
-      : { index: true, follow: true },
+    robots: hasFilters ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
       title: "Destinasi Wisata Turki | SultanatExplore",
       description:

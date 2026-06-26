@@ -1,24 +1,27 @@
 import { ArrowLeft, MapPin } from "lucide-react"
 
+import { GetCityResponse } from "@/features/city/queries"
 import Image from "next/image"
 import Link from "next/link"
 
-import { categoryLabels } from "../data"
-import type { Destination } from "../types"
+interface Props {
+  data: GetCityResponse["data"]
+}
 
-export function DetailHero({ destination }: { destination: Destination }) {
+export function DetailHero({ data }: Props) {
   return (
     <section className="relative">
       <div className="relative h-[45vh] min-h-[360px] overflow-hidden lg:h-[55vh]">
         <Image
           fill
-          src={destination.image}
-          alt={destination.name}
+          src={data.image.url}
+          alt={data.image.alt || data.name}
           className="object-cover"
           sizes="100vw"
           priority
+          loading="eager"
         />
-        <div className="from-background via-background/50 absolute inset-0 bg-gradient-to-t to-transparent" />
+        <div className="from-background via-background/50 absolute inset-0 bg-linear-to-t to-transparent" />
       </div>
 
       <div className="absolute right-0 bottom-0 left-0">
@@ -32,23 +35,23 @@ export function DetailHero({ destination }: { destination: Destination }) {
           </Link>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            {destination.categories.map((cat) => (
+            {data.categories.map((cat) => (
               <span
-                key={cat}
+                key={cat.id}
                 className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium"
               >
-                {categoryLabels[cat]}
+                {cat.name}
               </span>
             ))}
           </div>
 
           <h1 className="font-heading mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-            {destination.name}
+            {data.name}
           </h1>
 
           <p className="text-muted-foreground mt-2 flex items-center gap-1.5 text-base">
             <MapPin className="text-primary h-4 w-4" />
-            {destination.tagline}
+            {data.tagline}
           </p>
         </div>
       </div>

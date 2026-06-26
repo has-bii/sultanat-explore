@@ -1,22 +1,21 @@
-"use client"
-
 import { use } from "react"
 
 import { Button } from "@/components/ui/button"
-import { useQueryState } from "nuqs"
+import Link from "next/link"
 
 import { fetchCityCategories } from "../../lib/fetch"
 
 interface Props {
   dataPromise: ReturnType<typeof fetchCityCategories>
+  category: string | null
 }
 
-export function CategoryFilter({ dataPromise }: Props) {
+export function CategoryFilter({ dataPromise, category }: Props) {
   const data = use(dataPromise)
-  const [category, setCategory] = useQueryState("category")
 
-  const onCategoryChange = (slug: string | null) => {
-    setCategory((prev) => (slug === prev ? null : slug))
+  const generateHref = (slug: string) => {
+    if (category === slug) return ""
+    return `?category=${slug}`
   }
 
   return (
@@ -26,9 +25,11 @@ export function CategoryFilter({ dataPromise }: Props) {
           key={cat.id}
           size="sm"
           variant={cat.slug === category ? "default" : "outline"}
-          onClick={() => onCategoryChange(cat.slug)}
+          asChild
         >
-          {cat.name}
+          <Link href={`/destinations${generateHref(cat.slug)}`} scroll={false}>
+            {cat.name}
+          </Link>
         </Button>
       ))}
     </div>

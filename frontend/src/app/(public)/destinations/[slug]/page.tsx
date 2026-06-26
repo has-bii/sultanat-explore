@@ -1,61 +1,37 @@
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { fetchCityBySlug, fetchCityGallery } from "@/features/city/public/lib/fetch"
 import {
   AboutSection,
   DetailHero,
   GallerySection,
   OtherDestinations,
-  RelatedTrips,
 } from "@/features/destinations"
-import { destinations, getDestinationBySlug } from "@/features/destinations/data"
-import { openTrips } from "@/features/open-trip/data"
-import type { Metadata } from "next"
+import { destinations } from "@/features/destinations/data"
 import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
 
-export async function generateStaticParams() {
-  return destinations.map((d) => ({ slug: d.slug }))
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const dest = getDestinationBySlug(slug)
-  if (!dest) return {}
-  return {
-    title: `${dest.name} — Destinasi SultanatExplore`,
-    description: `Jelajahi ${dest.name}: ${dest.tagline}. ${dest.highlights.join(", ")}.`,
-    openGraph: {
-      title: `${dest.name} — Destinasi SultanatExplore`,
-      description: dest.tagline,
-      images: [dest.image],
-    },
-  }
-}
-
 export default async function DestinationDetailPage({ params }: Props) {
   const { slug } = await params
-  const dest = getDestinationBySlug(slug)
-  if (!dest) notFound()
+  const city = await fetchCityBySlug(slug)
+  if (!city) notFound()
 
-  // Related trips: match open trips whose destination includes this city name
-  const relatedTrips = openTrips.filter((t) =>
-    t.destination.toLowerCase().includes(dest.name.toLowerCase()),
-  )
+  const gallery = await fetchCityGallery(city.id)
 
   return (
     <>
       {/* 1. Hero with cover image */}
-      <DetailHero destination={dest} />
+      <DetailHero data={city} />
 
       {/* 2. About + Highlights */}
-      <AboutSection destination={dest} />
+      <AboutSection data={city} />
 
       {/* 3. Gallery */}
-      <GallerySection destination={dest} />
+      <GallerySection cityName={city.name} data={gallery} />
 
       {/* 4. Related Open Trips */}
-      <RelatedTrips trips={relatedTrips} />
+      {/* <RelatedTrips trips={relatedTrips} /> */}
 
       {/* 5. Other Destinations */}
       <OtherDestinations destinations={destinations} currentSlug={slug} />

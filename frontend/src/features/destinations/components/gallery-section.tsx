@@ -2,33 +2,42 @@
 
 import { useState } from "react"
 
+import { GetCityGalleryResponse } from "@/features/city/queries"
 import Image from "next/image"
 
-import type { Destination } from "../types"
+interface Props {
+  cityName: string
+  data: GetCityGalleryResponse["data"]
+}
 
-export function GallerySection({ destination }: { destination: Destination }) {
+export function GallerySection({ cityName, data }: Props) {
   const [activeIndex, setActiveIndex] = useState(0)
-  const allImages = [destination.image, ...destination.gallery]
+  const allImages = [...data.map((i) => i.image)]
+
+  const activeImage = allImages[activeIndex]
 
   return (
     <section className="bg-muted py-16 lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <span className="text-primary text-sm font-medium tracking-wider uppercase">Galeri</span>
         <h2 className="font-heading text-subheading md:text-heading mt-2 font-bold tracking-tight">
-          Foto {destination.name}
+          Foto {cityName}
         </h2>
 
         <div className="mt-8">
           {/* Main image */}
-          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
-            <Image
-              fill
-              src={allImages[activeIndex]}
-              alt={`${destination.name} photo ${activeIndex + 1}`}
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
+          <div className="relative aspect-16/10 overflow-hidden rounded-2xl">
+            {activeImage && (
+              <Image
+                fill
+                src={activeImage.url}
+                alt={activeImage.alt || cityName}
+                className="object-cover"
+                sizes="100vw"
+                priority
+                loading="eager"
+              />
+            )}
           </div>
 
           {/* Thumbnails */}
@@ -38,7 +47,7 @@ export function GallerySection({ destination }: { destination: Destination }) {
                 <button
                   key={i}
                   onClick={() => setActiveIndex(i)}
-                  className={`relative aspect-[4/3] w-24 flex-shrink-0 overflow-hidden rounded-xl transition-all ${
+                  className={`relative aspect-4/3 w-24 shrink-0 overflow-hidden rounded-xl transition-all ${
                     i === activeIndex
                       ? "border-primary border-2 opacity-100"
                       : "border-2 border-transparent opacity-60 hover:opacity-100"
@@ -46,10 +55,11 @@ export function GallerySection({ destination }: { destination: Destination }) {
                 >
                   <Image
                     fill
-                    src={img}
-                    alt={`${destination.name} thumbnail ${i + 1}`}
+                    src={img.url}
+                    alt={img.alt || cityName}
                     className="object-cover"
                     sizes="96px"
+                    loading="eager"
                   />
                 </button>
               ))}

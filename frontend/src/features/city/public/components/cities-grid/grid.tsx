@@ -5,29 +5,25 @@ import { MapPin } from "lucide-react"
 
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { getCitiesQueryOptions } from "@/features/city/queries"
-import { parseAsString, useQueryState } from "nuqs"
 
 import { CityCard } from "./card"
 
-export function CitiesGrid() {
-  const [category] = useQueryState("category")
-  const [search] = useQueryState(
-    "search",
-    parseAsString.withDefault("").withOptions({ shallow: true }),
-  )
+interface Props {
+  category: string | null
+}
 
+export function CitiesGrid({ category }: Props) {
   const { data } = useSuspenseInfiniteQuery(
     getCitiesQueryOptions({
       limit: "100",
       sort: "name",
       order: "asc",
       category: category || undefined,
-      search: search || undefined,
     }),
   )
 
   const cities = data.pages.flatMap((p) => p.data)
-  const isFiltered = Boolean(category || search)
+  const isFiltered = Boolean(category)
 
   if (cities.length === 0) {
     return (
