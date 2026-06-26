@@ -86,6 +86,26 @@ export async function getCityBySlug(slug: string) {
   return city
 }
 
+export async function getRelatedCities(slug: string, limit = 6) {
+  const city = await db.city.findUnique({
+    where: { slug },
+    select: { id: true, categories: { select: { id: true } } },
+  })
+  if (!city) throw new HTTPException(404, { message: "Kota tidak ditemukan" })
+
+  const categoryIds = city.categories.map((c) => c.id)
+  if (categoryIds.length === 0) return []
+
+  return db.city.findMany({
+    where: {
+      id: { not: city.id },
+      categories: { some: { id: { in: categoryIds } } },
+    },
+    take: limit,
+    include: includeList,
+  })
+}
+
 export async function createCity(input: CreateCityInput) {
   const slug = toSlug(input.name)
 

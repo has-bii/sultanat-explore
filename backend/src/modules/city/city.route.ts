@@ -14,6 +14,7 @@ import {
   getCity,
   getCityBySlug,
   getCityGallery,
+  getRelatedCities,
   listCities,
   syncGallery,
   updateCity,
@@ -32,6 +33,11 @@ const cityRoute = new Hono()
     const slug = c.req.param("slug")
     const city = await getCityBySlug(slug)
     return c.json(successResponse(city, "ok"))
+  })
+  .get("/slug/:slug/related", async (c) => {
+    const slug = c.req.param("slug")
+    const cities = await getRelatedCities(slug)
+    return c.json(successResponse(cities, "ok"))
   })
   .get("/:id", sValidator("param", paramIdSchema), async (c) => {
     const param = c.req.valid("param")
