@@ -2,17 +2,19 @@
 
 import { useState } from "react"
 
+import { fetchCityBySlug } from "@/features/city/public/lib/fetch"
 import { GetCityGalleryResponse } from "@/features/city/queries"
 import Image from "next/image"
 
 interface Props {
   cityName: string
   data: GetCityGalleryResponse["data"]
+  cityImage: NonNullable<Awaited<ReturnType<typeof fetchCityBySlug>>>["image"]
 }
 
-export function GallerySection({ cityName, data }: Props) {
+export function GallerySection({ cityName, data, cityImage }: Props) {
   const [activeIndex, setActiveIndex] = useState(0)
-  const allImages = [...data.map((i) => i.image)]
+  const allImages = [cityImage, ...data.map((i) => i.image)]
 
   const activeImage = allImages[activeIndex]
 

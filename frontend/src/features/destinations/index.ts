@@ -1,8 +1,0 @@
-export { AboutSection } from "./components/about-section"
-export { DestinationsGrid } from "./components/destinations-grid"
-export { DetailHero } from "./components/detail-hero"
-export { GallerySection } from "./components/gallery-section"
-export { HeroSection } from "./components/hero-section"
-export { OtherDestinations } from "./components/other-destinations"
-export { RelatedTrips } from "./components/related-trips"
-export { WhyTurkey } from "./components/why-turkey"

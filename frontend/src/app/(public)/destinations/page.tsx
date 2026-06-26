@@ -3,13 +3,12 @@ import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import { CitiesGridSection } from "@/features/city/public/components/cities-grid"
 import { FeaturedCities } from "@/features/city/public/components/featured-cities"
 import { fetchAllCitySlugs } from "@/features/city/public/lib/fetch"
+import { citiesItemListJsonLd } from "@/features/city/public/lib/structured-data"
 import { destinationSearchParamsCache } from "@/features/city/public/search-params"
 import { FeaturedDestinations } from "@/features/destination/public/components/featured-destinations"
-import { HeroSection, WhyTurkey } from "@/features/destinations"
-import {
-  citiesItemListJsonLd,
-  destinationsBreadcrumbJsonLd,
-} from "@/features/destinations/lib/structured-data"
+import { HeroSection } from "@/features/destination/public/components/hero-section"
+import { WhyTurkey } from "@/features/destination/public/components/why-turkey"
+import { destinationsBreadcrumbJsonLd } from "@/features/destination/public/lib/structured-data"
 import type { Metadata } from "next"
 import type { SearchParams } from "nuqs/server"
 

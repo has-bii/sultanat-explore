@@ -1,20 +1,15 @@
 import { ArrowRight } from "lucide-react"
 
+import { fetchRelatedCities } from "@/features/city/public/lib/fetch"
 import Image from "next/image"
 import Link from "next/link"
 
-import type { Destination } from "../types"
+interface Props {
+  data: Awaited<ReturnType<typeof fetchRelatedCities>>
+}
 
-export function OtherDestinations({
-  destinations,
-  currentSlug,
-}: {
-  destinations: Destination[]
-  currentSlug: string
-}) {
-  const others = destinations.filter((d) => d.slug !== currentSlug).slice(0, 4)
-
-  if (others.length === 0) return null
+export function OtherCities({ data }: Props) {
+  if (data.length === 0) return null
 
   return (
     <section className="bg-muted py-16 lg:py-20">
@@ -38,28 +33,28 @@ export function OtherDestinations({
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {others.map((dest) => (
+          {data.map((city) => (
             <Link
-              key={dest.id}
-              href={`/destinations/${dest.slug}`}
+              key={city.id}
+              href={`/destinations/${city.slug}`}
               className="group bg-card shadow-uber-sm hover:shadow-uber-md overflow-hidden rounded-xl transition-shadow"
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-4/3 overflow-hidden">
                 <Image
                   fill
-                  src={dest.image}
-                  alt={dest.name}
+                  src={city.image.url}
+                  alt={city.image.alt || city.name}
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
               </div>
               <div className="p-4">
                 <h4 className="font-heading group-hover:text-primary text-base font-bold transition-colors">
-                  {dest.name}
+                  {city.name}
                 </h4>
-                <p className="text-muted-foreground mt-1 line-clamp-1 text-sm">{dest.tagline}</p>
+                <p className="text-muted-foreground mt-1 line-clamp-1 text-sm">{city.tagline}</p>
               </div>
             </Link>
           ))}

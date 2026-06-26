@@ -1,13 +1,16 @@
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
-import { fetchCityBySlug, fetchCityGallery } from "@/features/city/public/lib/fetch"
+import { AboutSection } from "@/features/city/public/components/about-section"
+import { DetailHero } from "@/features/city/public/components/detail-hero"
+import { GallerySection } from "@/features/city/public/components/gallery-section"
+import { OtherCities } from "@/features/city/public/components/other-cities"
 import {
-  AboutSection,
-  DetailHero,
-  GallerySection,
-  OtherDestinations,
-} from "@/features/destinations"
-import { destinations } from "@/features/destinations/data"
+  fetchCityBySlug,
+  fetchCityGallery,
+  fetchRelatedCities,
+} from "@/features/city/public/lib/fetch"
+import { CityDestinations } from "@/features/destination/public/components/city-destinations"
+import { fetchCityDestinations } from "@/features/destination/public/lib/fetch"
 import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
@@ -17,7 +20,11 @@ export default async function DestinationDetailPage({ params }: Props) {
   const city = await fetchCityBySlug(slug)
   if (!city) notFound()
 
-  const gallery = await fetchCityGallery(city.id)
+  const [gallery, relatedCities, destinations] = await Promise.all([
+    fetchCityGallery(city.id),
+    fetchRelatedCities(slug),
+    fetchCityDestinations(city.id),
+  ])
 
   return (
     <>
@@ -28,13 +35,15 @@ export default async function DestinationDetailPage({ params }: Props) {
       <AboutSection data={city} />
 
       {/* 3. Gallery */}
-      <GallerySection cityName={city.name} data={gallery} />
+      <GallerySection cityName={city.name} cityImage={city.image} data={gallery} />
+
+      <CityDestinations data={destinations} />
 
       {/* 4. Related Open Trips */}
       {/* <RelatedTrips trips={relatedTrips} /> */}
 
       {/* 5. Other Destinations */}
-      <OtherDestinations destinations={destinations} currentSlug={slug} />
+      <OtherCities data={relatedCities} />
 
       {/* 6. CTA */}
       <CTASection />

@@ -1,4 +1,40 @@
-import { whyTurkeyItems } from "../data"
+const whyTurkeyItems = [
+  {
+    icon: "🕌",
+    title: "Muslim-Friendly",
+    description:
+      "Turki adalah negara Muslim dengan infrastruktur wisata lengkap. Masjid mudah ditemukan, makanan halal di mana-mana.",
+  },
+  {
+    icon: "🍽️",
+    title: "Kuliner Halal Terjamin",
+    description:
+      "Dari kebab legendaris hingga Turkish delight — semua halal. Zero compromise dalam makanan.",
+  },
+  {
+    icon: "💰",
+    title: "Harga Terjangkau",
+    description:
+      "Nilai tukar menguntungkan wisatawan Indonesia. Eropa-quality experience dengan harga Asia.",
+  },
+  {
+    icon: "🏛️",
+    title: "Sejarah Ribuan Tahun",
+    description:
+      "Peradaban Ottoman, Byzantine, Roman — Turki adalah museum hidup terbesar di dunia.",
+  },
+  {
+    icon: "🏔️",
+    title: "Alam yang Beragam",
+    description:
+      "Dari pegunungan hingga pantai, dari gua bawah tanah hingga teras mineral. Semua dalam satu negara.",
+  },
+  {
+    icon: "🇮🇩",
+    title: "Guide Berbahasa Indonesia",
+    description: "Tim SultanatExplore siap menemani perjalanan Anda tanpa barrier bahasa.",
+  },
+]
 
 export function WhyTurkey() {
   return (
