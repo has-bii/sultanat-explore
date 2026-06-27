@@ -12,6 +12,11 @@ interface Props {
   onSubmit: (value: CreateOpenTripInput) => Promise<void> | void
 }
 
+// ponytail: slice to YYYY-MM-DD — schema uses v.isoDate and DateField writes <input type="date"> values,
+// so any incoming ISO datetime (…T00:00:00.000Z) from the backend must be normalized or onChange validation fails on load.
+const toDate = (value: string | undefined): string =>
+  typeof value === "string" && value.length >= 10 ? value.slice(0, 10) : ""
+
 export function useOpenTripForm({ defaultValues: _defaultValues, onSubmit }: Props) {
   const defaultValues: CreateOpenTripInput = {
     slug: _defaultValues?.slug ?? "",
@@ -20,12 +25,12 @@ export function useOpenTripForm({ defaultValues: _defaultValues, onSubmit }: Pro
     description: _defaultValues?.description ?? null,
     price: _defaultValues?.price ?? 0,
     coverImageId: _defaultValues?.coverImageId ?? "",
-    startAt: _defaultValues?.startAt ?? "",
-    endAt: _defaultValues?.endAt ?? "",
+    startAt: toDate(_defaultValues?.startAt),
+    endAt: toDate(_defaultValues?.endAt),
     status: _defaultValues?.status ?? "draft",
     cities: (_defaultValues?.cities ?? []).map((city) => ({
       cityId: city.cityId,
-      arriveAt: city.arriveAt,
+      arriveAt: toDate(city.arriveAt),
       destinations: (city.destinations ?? []).map((dest) => ({
         destinationId: dest.destinationId,
       })),

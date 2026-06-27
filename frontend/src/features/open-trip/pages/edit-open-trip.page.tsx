@@ -30,12 +30,12 @@ export function EditOpenTripPage({ openTripId }: Props) {
       description: openTrip.description as Record<string, unknown>,
       price: openTrip.price,
       coverImageId: openTrip.coverImageId,
-      startAt: openTrip.startAt ? new Date(openTrip.startAt).toISOString() : undefined,
-      endAt: openTrip.endAt ? new Date(openTrip.endAt).toISOString() : undefined,
+      startAt: openTrip.startAt ?? undefined,
+      endAt: openTrip.endAt ?? undefined,
       status: openTrip.status as "draft" | "published" | "archived",
       cities: openTrip.cities.map((city) => ({
         cityId: city.cityId,
-        arriveAt: new Date(city.arriveAt).toISOString(),
+        arriveAt: city.arriveAt,
         destinations: city.destinations.map((dest) => ({
           destinationId: dest.destinationId,
         })),
