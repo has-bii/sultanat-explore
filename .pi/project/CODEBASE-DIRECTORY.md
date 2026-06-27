@@ -288,7 +288,10 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── homepage/
     │   │   ├── components/
     │   │   │   ├── about-section.tsx
-    │   │   │   ├── destinations-section.tsx
+    │   │   │   ├── cities-section/
+    │   │   │   │   ├── carousel.tsx
+    │   │   │   │   ├── index.tsx
+    │   │   │   │   ├── skeleton.tsx
     │   │   │   ├── hero-section.tsx
     │   │   │   ├── open-trip-section.tsx
     │   │   │   ├── private-trip-section.tsx

@@ -3,7 +3,7 @@ import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 // import { FAQSection } from "@/components/faq-section"
 import {
   AboutSection,
-  DestinationsSection,
+  CitiesSection,
   HeroSection,
   ServicesSection,
   TestimonialsSection,
@@ -15,7 +15,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
-      <DestinationsSection />
+      <CitiesSection />
       <TestimonialsSection />
       {/* <FAQSection /> */}
       <CTASection />
