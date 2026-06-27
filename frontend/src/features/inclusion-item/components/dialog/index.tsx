@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect } from "react"
+
 import {
   Dialog,
   DialogContent,
@@ -8,11 +10,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-import { InclusionItemForm } from "../form"
 import { useInclusionItemForm } from "../../hooks/use-inclusion-item-form"
 import { useCreateInclusionItem } from "../../mutations/create-inclusion-item.mutation"
 import { useUpdateInclusionItem } from "../../mutations/update-inclusion-item.mutation"
 import { useInclusionItemDialogStore } from "../../stores/inclusion-item-dialog.store"
+import { InclusionItemForm } from "../form"
 
 export function InclusionItemDialog() {
   const { open, meta, onClose } = useInclusionItemDialogStore()
@@ -35,6 +37,16 @@ export function InclusionItemDialog() {
       }
     },
   })
+
+  useEffect(() => {
+    if (open) {
+      if (meta?.label) {
+        form.reset({ label: meta.label })
+      } else {
+        form.reset()
+      }
+    }
+  }, [open, meta, isEdit, form])
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
