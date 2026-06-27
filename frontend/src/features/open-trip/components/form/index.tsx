@@ -1,6 +1,6 @@
 "use client"
 
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react"
 
 import { ErrorComponent } from "@/components/error-component"
