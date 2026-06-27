@@ -392,6 +392,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── use-open-trip-filters.ts
     │   │   │   ├── use-open-trip-form.ts
     │   │   ├── mutations/
+    │   │   │   ├── archive-open-trip.mutation.ts
     │   │   │   ├── create-open-trip.mutation.ts
     │   │   │   ├── delete-open-trip.mutation.ts
     │   │   │   ├── update-open-trip.mutation.ts
@@ -402,7 +403,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── edit-open-trip.page.tsx
     │   │   │   ├── open-trip-list.page.tsx
     │   │   ├── stores/
-    │   │   │   ├── delete-open-trip-dialog.store.ts
+    │   │   │   ├── action-dialog.store.ts
     │   │   ├── data.ts
     │   │   ├── types.ts
     │   │   └── index.ts

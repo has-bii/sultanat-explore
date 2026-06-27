@@ -9,10 +9,11 @@ import {
   openTripSlugParamSchema,
 } from "backend/modules/open-trip/open-trip.schema"
 import {
+  archiveOpenTrip,
   createOpenTrip,
-  deleteOpenTrip,
   getOpenTripById,
   getOpenTripBySlug,
+  hardDeleteOpenTrip,
   listOpenTrips,
   updateOpenTrip,
 } from "backend/modules/open-trip/open-trip.service"
@@ -59,10 +60,15 @@ const openTripRoute = new Hono()
     const openTrip = await updateOpenTrip(id, json)
     return c.json(successResponse(openTrip, "Open Trip berhasil diperbarui"))
   })
+  .patch("/:id/archive", sValidator("param", paramIdSchema), async (c) => {
+    const { id } = c.req.valid("param")
+    await archiveOpenTrip(id)
+    return c.json(successResponse(null, "Open Trip berhasil diarsipkan"))
+  })
   .delete("/:id", sValidator("param", paramIdSchema), async (c) => {
     const { id } = c.req.valid("param")
-    await deleteOpenTrip(id)
-    return c.json(successResponse(null, "Open Trip berhasil diarsipkan"))
+    await hardDeleteOpenTrip(id)
+    return c.json(successResponse(null, "Open Trip berhasil dihapus"))
   })
 
 export default openTripRoute

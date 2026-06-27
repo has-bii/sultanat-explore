@@ -272,9 +272,9 @@ export async function updateOpenTrip(id: string, input: CreateOpenTripInput) {
   })
 }
 
-// ── Soft delete ─────────────────────────────────────────────
+// ── Archive (soft delete) ───────────────────────────────────
 
-export async function deleteOpenTrip(id: string) {
+export async function archiveOpenTrip(id: string) {
   const existing = await db.openTrip.findUnique({ where: { id } })
   if (!existing) throw new HTTPException(404, { message: "Open Trip tidak ditemukan" })
 
@@ -282,5 +282,17 @@ export async function deleteOpenTrip(id: string) {
     where: { id },
     data: { status: "archived" },
     select: { id: true, status: true },
+  })
+}
+
+// ── Hard delete ─────────────────────────────────────────────
+
+export async function hardDeleteOpenTrip(id: string) {
+  const existing = await db.openTrip.findUnique({ where: { id } })
+  if (!existing) throw new HTTPException(404, { message: "Open Trip tidak ditemukan" })
+
+  return db.openTrip.delete({
+    where: { id },
+    select: { id: true },
   })
 }
