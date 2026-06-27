@@ -11,10 +11,6 @@ import type {
 
 // ── Prisma includes ─────────────────────────────────────────
 
-const includeList = {
-  coverImage: { select: imageCardSelect },
-} as const
-
 const includeDetail = {
   coverImage: { select: imageCardSelect },
   cities: {
@@ -114,7 +110,28 @@ export async function listOpenTrips(query: OpenTripQueryOutput, isAdmin: boolean
     ...cursorArgs({ cursor, limit }),
     where,
     orderBy,
-    include: includeList,
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      status: true,
+      excerpt: true,
+      price: true,
+      startAt: true,
+      endAt: true,
+      inclusions: {
+        select: {
+          inclusionItem: {
+            select: {
+              label: true,
+            },
+          },
+        },
+      },
+      coverImage: {
+        select: { id: true, url: true, alt: true },
+      },
+    },
   })
 
   return toPage(openTrips, limit)

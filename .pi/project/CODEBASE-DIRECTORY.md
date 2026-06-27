@@ -487,6 +487,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     ├── utils/                     # Shared utility functions
     │   ├── date-to-string.type.ts  # Date-to-string type helper
     │   ├── format-file-size.ts  # File size formatter
+    │   ├── format-price.ts
     │
     ├── data/                      # Static data (testimonials only)
     ├── types/                     # Shared TypeScript types (empty — types in features)
