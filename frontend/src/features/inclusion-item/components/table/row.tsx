@@ -12,8 +12,8 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table"
 
 import type { GetInclusionItemsResponse } from "../../queries"
-import { useInclusionItemDialogStore } from "../../stores/inclusion-item-dialog.store"
 import { useDeleteInclusionItemDialogStore } from "../../stores/delete-inclusion-item-dialog.store"
+import { useInclusionItemDialogStore } from "../../stores/inclusion-item-dialog.store"
 
 type InclusionItem = NonNullable<GetInclusionItemsResponse["data"]>[number]
 
@@ -51,6 +51,7 @@ export function InclusionItemTableRow({ item }: InclusionItemTableRowProps) {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => openDelete({ id: item.id, label: item.label })}
+                variant="destructive"
               >
                 <Trash2 />
                 Hapus
