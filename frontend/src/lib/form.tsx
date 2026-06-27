@@ -63,11 +63,11 @@ export function TextNumberField({ label, placeholder, description }: Props) {
         name={field.name}
         type="number"
         placeholder={placeholder}
-        value={field.state.value ?? ''}
+        value={field.state.value ?? ""}
         onBlur={field.handleBlur}
         onChange={(e) => {
           const v = e.target.value
-          field.handleChange(v === '' ? 0 : Number(v))
+          field.handleChange(v === "" ? 0 : Number(v))
         }}
         aria-invalid={isInvalid}
         autoComplete="off"
@@ -143,7 +143,11 @@ export function DateField({ label, description }: Props) {
         name={field.name}
         type="date"
         // ponytail: tolerate both ISO date (YYYY-MM-DD) and ISO datetime (…THH:…) — slice the date part
-        value={typeof field.state.value === "string" && field.state.value.length >= 10 ? field.state.value.slice(0, 10) : ""}
+        value={
+          typeof field.state.value === "string" && field.state.value.length >= 10
+            ? field.state.value.slice(0, 10)
+            : ""
+        }
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
         aria-invalid={isInvalid}

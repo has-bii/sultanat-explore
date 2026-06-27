@@ -1,8 +1,8 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { Suspense } from "react"
 import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react"
+import { Suspense } from "react"
 
 import { ErrorComponent } from "@/components/error-component"
 import { TiptapEditor } from "@/components/tiptap"
@@ -18,13 +18,13 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { SelectItem } from "@/components/ui/select"
-import { Skeleton } from "@/components/ui/skeleton"
-import { CityOptions } from "./select-fields"
 import { Separator } from "@/components/ui/separator"
+import { Skeleton } from "@/components/ui/skeleton"
 import { getInclusionItemsQueryOptions } from "@/features/inclusion-item/queries"
 import Link from "next/link"
 
-import { useOpenTripForm, type OpenTripInclusionRow } from "../../hooks/use-open-trip-form"
+import { type OpenTripInclusionRow, useOpenTripForm } from "../../hooks/use-open-trip-form"
+import { CityOptions } from "./select-fields"
 
 interface OpenTripFormProps {
   form: ReturnType<typeof useOpenTripForm>
@@ -61,33 +61,73 @@ export function OpenTripForm(props: OpenTripFormProps) {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <form.AppField
-                name="title"
+                name="coverImageId"
                 children={(field) => (
-                  <field.TextField label="Judul" placeholder="Open Trip Istanbul & Cappadocia" />
-                )}
-              />
-              <form.AppField
-                name="slug"
-                children={(field) => (
-                  <field.TextField
-                    label="Slug"
-                    placeholder="istanbul-cappadocia"
-                    description="URL-friendly, huruf kecil dan dash"
+                  <field.ImagePickerField
+                    label="Gambar Sampul"
+                    description="Pilih gambar landscape"
                   />
                 )}
               />
-            </div>
 
-            <form.AppField
-              name="excerpt"
-              children={(field) => (
-                <field.TextareaField
-                  label="Ringkasan"
-                  placeholder="Ringkasan singkat open trip..."
-                  rows={3}
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <form.AppField
+                    name="title"
+                    children={(field) => (
+                      <field.TextField
+                        label="Judul"
+                        placeholder="Open Trip Istanbul & Cappadocia"
+                      />
+                    )}
+                  />
+                  <form.AppField
+                    name="slug"
+                    children={(field) => (
+                      <field.TextField
+                        label="Slug"
+                        placeholder="istanbul-cappadocia"
+                        description="URL-friendly, huruf kecil dan dash"
+                      />
+                    )}
+                  />
+                </div>
+
+                <form.AppField
+                  name="excerpt"
+                  children={(field) => (
+                    <field.TextareaField
+                      label="Ringkasan"
+                      placeholder="Ringkasan singkat open trip..."
+                      rows={3}
+                    />
+                  )}
                 />
-              )}
-            />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <form.AppField
+                    name="price"
+                    children={(field) => (
+                      <field.TextNumberField
+                        label="Harga (IDR)"
+                        placeholder="5000000"
+                        description="Harga per orang"
+                      />
+                    )}
+                  />
+                  <form.AppField
+                    name="status"
+                    children={(field) => (
+                      <field.SelectField label="Status" placeholder="Pilih status">
+                        <SelectItem value="draft">Draft</SelectItem>
+                        <SelectItem value="published">Published</SelectItem>
+                        <SelectItem value="archived">Archived</SelectItem>
+                      </field.SelectField>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* Description — TipTap editor */}
             <form.Field name="description">
@@ -108,38 +148,6 @@ export function OpenTripForm(props: OpenTripFormProps) {
                 )
               }}
             </form.Field>
-
-            <div className="grid grid-cols-3 gap-4">
-              <form.AppField
-                name="price"
-                children={(field) => (
-                  <field.TextNumberField
-                    label="Harga (IDR)"
-                    placeholder="5000000"
-                    description="Harga per orang"
-                  />
-                )}
-              />
-              <form.AppField
-                name="status"
-                children={(field) => (
-                  <field.SelectField label="Status" placeholder="Pilih status">
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="published">Published</SelectItem>
-                    <SelectItem value="archived">Archived</SelectItem>
-                  </field.SelectField>
-                )}
-              />
-              <form.AppField
-                name="coverImageId"
-                children={(field) => (
-                  <field.ImagePickerField
-                    label="Gambar Sampul"
-                    description="Pilih gambar landscape"
-                  />
-                )}
-              />
-            </div>
           </CardContent>
         </Card>
 
@@ -511,10 +519,12 @@ function InclusionColumn({
             key={inc._key}
             form={form}
             incIndex={inc._idx}
-            items={[itemById.get(inc.inclusionItemId), ...available].filter(Boolean) as {
-              id: string
-              label: string
-            }[]}
+            items={
+              [itemById.get(inc.inclusionItemId), ...available].filter(Boolean) as {
+                id: string
+                label: string
+              }[]
+            }
             onRemove={() => onRemove(inc._idx)}
           />
         ))}

@@ -2,12 +2,12 @@
 
 import * as v from "valibot"
 
-import { useAppForm } from "../components/form/use-app-form"
-
 import {
   type CreateOpenTripInput,
   createOpenTripSchema,
 } from "backend/modules/open-trip/open-trip.schema"
+
+import { useAppForm } from "../components/form/use-app-form"
 
 // ponytail: each array row carries a runtime `_key` for stable React keys across remove/reorder.
 // Valibot's default `v.object()` strips unknown keys, so it never leaks to the server; the onSubmit
