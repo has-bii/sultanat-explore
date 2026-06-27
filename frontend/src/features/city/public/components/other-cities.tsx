@@ -32,12 +32,12 @@ export function OtherCities({ data }: Props) {
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {data.map((city) => (
             <Link
               key={city.id}
               href={`/destinations/${city.slug}`}
-              className="group bg-card shadow-uber-sm hover:shadow-uber-md overflow-hidden rounded-xl transition-shadow"
+              className="group bg-card overflow-hidden rounded-2xl border"
             >
               <div className="relative aspect-4/3 overflow-hidden">
                 <Image
