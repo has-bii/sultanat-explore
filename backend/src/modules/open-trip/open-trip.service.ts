@@ -97,7 +97,9 @@ export async function listOpenTrips(query: OpenTripQueryOutput, isAdmin: boolean
   const where: Prisma.OpenTripWhereInput = {
     // Public: hard-filter published + publishedAt <= now
     ...(isAdmin
-      ? status ? { status } : {}
+      ? status
+        ? { status }
+        : {}
       : { status: "published", publishedAt: { not: null, lte: new Date() } }),
     ...(startAtFrom || startAtTo
       ? {
@@ -118,7 +120,11 @@ export async function listOpenTrips(query: OpenTripQueryOutput, isAdmin: boolean
   }
 
   const orderBy: Prisma.OpenTripOrderByWithRelationInput =
-    sort === "price" ? { price: order } : sort === "publishedAt" ? { publishedAt: order } : { startAt: order }
+    sort === "price"
+      ? { price: order }
+      : sort === "publishedAt"
+        ? { publishedAt: order }
+        : { startAt: order }
 
   const openTrips = await db.openTrip.findMany({
     ...cursorArgs({ cursor, limit }),
@@ -138,8 +144,40 @@ export async function getOpenTripBySlug(slug: string) {
     include: includeDetail,
   })
   if (!openTrip) throw new HTTPException(404, { message: "Open Trip tidak ditemukan" })
-  if (openTrip.status !== "published") throw new HTTPException(404, { message: "Open Trip tidak ditemukan" })
+  if (openTrip.status !== "published")
+    throw new HTTPException(404, { message: "Open Trip tidak ditemukan" })
   return openTrip
+}
+
+export async function getOpenTripsByCitySlug(citySlug: string) {
+  return db.openTrip.findMany({
+    where: {
+      status: "published",
+      publishedAt: { not: null, lte: new Date() },
+      cities: { some: { city: { slug: citySlug } } },
+    },
+    orderBy: { startAt: "asc" },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      price: true,
+      startAt: true,
+      excerpt: true,
+      inclusions: {
+        select: {
+          inclusionItem: {
+            select: {
+              label: true,
+            },
+          },
+        },
+      },
+      coverImage: {
+        select: { id: true, url: true, alt: true },
+      },
+    },
+  })
 }
 
 // ── Get by id (admin) ───────────────────────────────────────

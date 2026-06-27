@@ -5,6 +5,7 @@ import { requireAuth } from "backend/middlewares/require-auth"
 import { sValidator } from "backend/middlewares/validator-wrapper"
 import {
   createOpenTripSchema,
+  openTripCitySlugParamSchema,
   openTripQuerySchema,
   openTripSlugParamSchema,
 } from "backend/modules/open-trip/open-trip.schema"
@@ -13,6 +14,7 @@ import {
   createOpenTrip,
   getOpenTripById,
   getOpenTripBySlug,
+  getOpenTripsByCitySlug,
   hardDeleteOpenTrip,
   listOpenTrips,
   updateOpenTrip,
@@ -32,6 +34,11 @@ const openTripRoute = new Hono()
     const { slug } = c.req.valid("param")
     const openTrip = await getOpenTripBySlug(slug)
     return c.json(successResponse(openTrip, "ok"))
+  })
+  .get("/city/:citySlug", sValidator("param", openTripCitySlugParamSchema), async (c) => {
+    const { citySlug } = c.req.valid("param")
+    const openTrips = await getOpenTripsByCitySlug(citySlug)
+    return c.json(successResponse(openTrips, "ok"))
   })
 
   // ── Admin (requireAuth + requireAdmin) ──────────────────

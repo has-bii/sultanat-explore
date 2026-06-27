@@ -61,6 +61,10 @@ export const openTripSlugParamSchema = v.object({
   slug: v.pipe(v.string(), v.minLength(1, "Slug harus diisi")),
 })
 
+export const openTripCitySlugParamSchema = v.object({
+  citySlug: v.pipe(v.string(), v.minLength(1, "Slug kota harus diisi")),
+})
+
 // ── Inferred types ──────────────────────────────────────────
 
 export type CreateOpenTripInput = v.InferInput<typeof createOpenTripSchema>
