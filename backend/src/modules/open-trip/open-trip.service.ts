@@ -147,7 +147,7 @@ export async function getOpenTripsByCitySlug(citySlug: string) {
       title: true,
       price: true,
       startAt: true,
-      excerpt: true,
+      endAt: true,
       inclusions: {
         select: {
           inclusionItem: {

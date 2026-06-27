@@ -376,18 +376,9 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── select-fields.tsx
     │   │   │   │   ├── use-app-form.ts
-    │   │   │   ├── how-it-works.tsx
-    │   │   │   ├── inclusion-section.tsx
-    │   │   │   ├── itinerary-section.tsx
-    │   │   │   ├── open-trip-explanation.tsx
-    │   │   │   ├── past-trip-gallery.tsx
-    │   │   │   ├── social-proof-bar.tsx
     │   │   │   ├── table/
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── row.tsx
-    │   │   │   ├── trip-card.tsx
-    │   │   │   ├── trip-list.tsx
-    │   │   │   ├── why-us.tsx
     │   │   ├── hooks/
     │   │   │   ├── use-open-trip-filters.ts
     │   │   │   ├── use-open-trip-form.ts
@@ -406,7 +397,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── action-dialog.store.ts
     │   │   ├── data.ts
     │   │   ├── types.ts
-    │   │   └── index.ts
     │   ├── private-trip/
     │   │   ├── components/
     │   │   │   ├── benefits-section.tsx
