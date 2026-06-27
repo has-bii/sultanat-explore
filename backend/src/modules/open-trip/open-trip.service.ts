@@ -92,7 +92,7 @@ function buildNestedCreate(
 // ── List (shared admin/public, visibility filtered by caller) ─
 
 export async function listOpenTrips(query: OpenTripQueryOutput, isAdmin: boolean) {
-  const { cursor, limit, status, startAtFrom, startAtTo, priceMin, priceMax, sort, order } = query
+  const { cursor, limit, status, sort, order } = query
 
   const where: Prisma.OpenTripWhereInput = {
     // Public: hard-filter published + publishedAt <= now
@@ -101,22 +101,6 @@ export async function listOpenTrips(query: OpenTripQueryOutput, isAdmin: boolean
         ? { status }
         : {}
       : { status: "published", publishedAt: { not: null, lte: new Date() } }),
-    ...(startAtFrom || startAtTo
-      ? {
-          startAt: {
-            ...(startAtFrom ? { gte: new Date(startAtFrom) } : {}),
-            ...(startAtTo ? { lte: new Date(startAtTo) } : {}),
-          },
-        }
-      : {}),
-    ...(priceMin !== undefined || priceMax !== undefined
-      ? {
-          price: {
-            ...(priceMin !== undefined ? { gte: priceMin } : {}),
-            ...(priceMax !== undefined ? { lte: priceMax } : {}),
-          },
-        }
-      : {}),
   }
 
   const orderBy: Prisma.OpenTripOrderByWithRelationInput =

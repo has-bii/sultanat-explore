@@ -49,10 +49,6 @@ export const createOpenTripSchema = v.object({
 export const openTripQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
   status: v.optional(v.picklist(["draft", "published", "archived"])),
-  startAtFrom: v.optional(v.pipe(v.string(), v.isoDate("startAtFrom harus tanggal (YYYY-MM-DD)"))),
-  startAtTo: v.optional(v.pipe(v.string(), v.isoDate("startAtTo harus tanggal (YYYY-MM-DD)"))),
-  priceMin: v.optional(v.pipe(v.string(), v.toNumber(), v.minValue(0))),
-  priceMax: v.optional(v.pipe(v.string(), v.toNumber(), v.minValue(0))),
   sort: v.optional(v.picklist(["startAt", "price", "publishedAt"]), "startAt"),
   order: v.optional(v.picklist(["asc", "desc"]), "asc"),
 })
