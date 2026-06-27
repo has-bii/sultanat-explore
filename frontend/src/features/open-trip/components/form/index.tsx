@@ -1,5 +1,6 @@
 "use client"
 
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react"
 
 import { ErrorComponent } from "@/components/error-component"
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/field"
 import { SelectItem } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
+import { getInclusionItemsQueryOptions } from "@/features/inclusion-item/queries"
 import Link from "next/link"
 
 import { useOpenTripForm } from "../../hooks/use-open-trip-form"
@@ -188,37 +190,8 @@ export function OpenTripForm(props: OpenTripFormProps) {
             <CardTitle>Inclusion & Exclusion</CardTitle>
             <CardDescription>Item yang termasuk dan tidak termasuk dalam trip</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <form.Field name="inclusions" mode="array">
-              {(inclusionsField) => (
-                <FieldSet>
-                  <FieldContent className="gap-4">
-                    {(inclusionsField.state.value ?? []).map((inc, incIndex) => (
-                      <InclusionEntry
-                        key={inc._key}
-                        form={form}
-                        incIndex={incIndex}
-                        onRemove={() => inclusionsField.removeValue(incIndex)}
-                      />
-                    ))}
-                  </FieldContent>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() =>
-                      inclusionsField.pushValue({
-                        inclusionItemId: "",
-                        type: "include" as const,
-                        _key: crypto.randomUUID(),
-                      })
-                    }
-                  >
-                    <Plus data-icon="inline-start" />
-                    <span>Tambah Inclusion</span>
-                  </Button>
-                </FieldSet>
-              )}
-            </form.Field>
+          <CardContent>
+            <InclusionSection form={form} />
           </CardContent>
         </Card>
 
@@ -398,51 +371,136 @@ function DestinationEntry({
   )
 }
 
+// ── Inclusion Section ──────────────────────────────────────
+
+function InclusionSection({ form }: { form: ReturnType<typeof useOpenTripForm> }) {
+  const { data: allItems } = useQuery(getInclusionItemsQueryOptions())
+  const items = allItems ?? []
+
+  return (
+    <form.Subscribe selector={(state) => state.values.inclusions}>
+      {(inclusions) => {
+        const allInclusions = inclusions
+        const usedIds = allInclusions.map((inc) => inc.inclusionItemId).filter(Boolean)
+        const available = items.filter((item) => !usedIds.includes(item.id))
+        const allUsed = available.length === 0
+
+        return (
+          <form.Field name="inclusions" mode="array">
+            {(inclusionsField) => (
+              <div className="grid grid-cols-2 gap-6">
+                {/* Left: Inclusions */}
+                <FieldSet>
+                  <FieldLabel className="text-base font-semibold">Include</FieldLabel>
+                  <FieldContent className="gap-3">
+                    {allInclusions
+                      .map((inc, idx) => ({ ...inc, _idx: idx }))
+                      .filter((inc) => inc.type === "include")
+                      .map((inc) => (
+                        <InclusionEntry
+                          key={inc._key}
+                          form={form}
+                          incIndex={inc._idx}
+                          items={[
+                            ...items.filter((i) => i.id === inc.inclusionItemId),
+                            ...available,
+                          ]}
+                          onRemove={() => inclusionsField.removeValue(inc._idx)}
+                        />
+                      ))}
+                  </FieldContent>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={allUsed}
+                    onClick={() =>
+                      inclusionsField.pushValue({
+                        inclusionItemId: "",
+                        type: "include" as const,
+                        _key: crypto.randomUUID(),
+                      })
+                    }
+                  >
+                    <Plus data-icon="inline-start" />
+                    <span>Tambah Include</span>
+                  </Button>
+                </FieldSet>
+
+                {/* Right: Exclusions */}
+                <FieldSet>
+                  <FieldLabel className="text-base font-semibold">Exclude</FieldLabel>
+                  <FieldContent className="gap-3">
+                    {allInclusions
+                      .map((inc, idx) => ({ ...inc, _idx: idx }))
+                      .filter((inc) => inc.type === "exclude")
+                      .map((inc) => (
+                        <InclusionEntry
+                          key={inc._key}
+                          form={form}
+                          incIndex={inc._idx}
+                          items={[
+                            ...items.filter((i) => i.id === inc.inclusionItemId),
+                            ...available,
+                          ]}
+                          onRemove={() => inclusionsField.removeValue(inc._idx)}
+                        />
+                      ))}
+                  </FieldContent>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={allUsed}
+                    onClick={() =>
+                      inclusionsField.pushValue({
+                        inclusionItemId: "",
+                        type: "exclude" as const,
+                        _key: crypto.randomUUID(),
+                      })
+                    }
+                  >
+                    <Plus data-icon="inline-start" />
+                    <span>Tambah Exclude</span>
+                  </Button>
+                </FieldSet>
+              </div>
+            )}
+          </form.Field>
+        )
+      }}
+    </form.Subscribe>
+  )
+}
+
 // ── Inclusion Entry ────────────────────────────────────────
 
 function InclusionEntry({
   form,
   incIndex,
+  items,
   onRemove,
 }: {
   form: ReturnType<typeof useOpenTripForm>
   incIndex: number
+  items: { id: string; label: string }[]
   onRemove: () => void
 }) {
   return (
-    <div className="bg-muted/50 flex items-end gap-3 rounded-lg p-3">
+    <div className="flex items-center gap-2">
       <form.AppField
         name={`inclusions[${incIndex}].inclusionItemId`}
         children={(field) => (
           <field.InclusionItemSelectField
-            label="Item"
             placeholder="Pilih item"
-            labelClassName="text-xs"
             className="flex-1"
+            items={items}
           />
         )}
       />
-
-      <form.AppField
-        name={`inclusions[${incIndex}].type`}
-        children={(field) => (
-          <field.SelectField
-            label="Tipe"
-            placeholder="Pilih tipe"
-            labelClassName="text-xs"
-            className="w-40"
-          >
-            <SelectItem value="include">Include</SelectItem>
-            <SelectItem value="exclude">Exclude</SelectItem>
-          </field.SelectField>
-        )}
-      />
-
       <Button type="button" variant="ghost" size="icon-sm" onClick={onRemove}>
         <Trash2 className="text-destructive" />
       </Button>
     </div>
   )
 }
-
-

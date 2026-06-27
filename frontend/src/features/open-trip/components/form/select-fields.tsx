@@ -1,6 +1,6 @@
 "use client"
 
-import { useSuspenseInfiniteQuery, useSuspenseQuery } from "@tanstack/react-query"
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { Suspense } from "react"
 
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
@@ -14,7 +14,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { getCitiesQueryOptions } from "@/features/city/queries"
 import { getDestinationsQueryOptions } from "@/features/destination/queries"
-import { getInclusionItemsQueryOptions } from "@/features/inclusion-item/queries"
 import { useFieldContext } from "@/lib/form"
 
 interface SelectFieldProps {
@@ -166,15 +165,19 @@ function DestinationOptions(props: OptionsProps) {
 
 // ── Inclusion Item Select Field ─────────────────────────────
 
+type InclusionItem = { id: string; label: string }
+
 export function InclusionItemSelectField({
   label,
   placeholder,
   description,
   className,
   labelClassName,
-}: SelectFieldProps) {
+  items,
+}: SelectFieldProps & { items: InclusionItem[] }) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+  const disabled = items.length === 0
 
   return (
     <Field data-invalid={isInvalid} className={className}>
@@ -183,45 +186,27 @@ export function InclusionItemSelectField({
           {label}
         </FieldLabel>
       )}
-      <Suspense fallback={<SelectTriggerSkeleton />}>
-        <InclusionItemOptions
-          id={field.name}
-          value={field.state.value}
-          placeholder={placeholder}
-          ariaInvalid={isInvalid}
-          onValueChange={field.handleChange}
-          onBlur={field.handleBlur}
-        />
-      </Suspense>
+      <Select
+        value={field.state.value}
+        onValueChange={field.handleChange}
+        onOpenChange={(open) => {
+          if (!open) field.handleBlur()
+        }}
+        disabled={disabled}
+      >
+        <SelectTrigger id={field.name} aria-invalid={isInvalid} className="w-full" disabled={disabled}>
+          <SelectValue placeholder={disabled ? "Semua item sudah dipilih" : placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {items.map((item) => (
+            <SelectItem key={item.id} value={item.id}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       {description && <FieldDescription>{description}</FieldDescription>}
       {isInvalid && <FieldError errors={field.state.meta.errors} />}
     </Field>
-  )
-}
-
-function InclusionItemOptions(props: OptionsProps) {
-  const { id, value, placeholder, ariaInvalid, onValueChange, onBlur } = props
-  const { data } = useSuspenseQuery(getInclusionItemsQueryOptions())
-  const items = data ?? []
-
-  return (
-    <Select
-      value={value}
-      onValueChange={onValueChange}
-      onOpenChange={(open) => {
-        if (!open) onBlur()
-      }}
-    >
-      <SelectTrigger id={id} aria-invalid={ariaInvalid} className="w-full">
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>
-        {items.map((item) => (
-          <SelectItem key={item.id} value={item.id}>
-            {item.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
   )
 }
