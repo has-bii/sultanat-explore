@@ -238,19 +238,14 @@ export function OpenTripForm(props: OpenTripFormProps) {
                     <Field data-invalid={isInvalid}>
                       <FieldLabel>Mulai</FieldLabel>
                       <Input
-                        type="datetime-local"
+                        type="date"
                         value={formatDateForInput(field.state.value)}
                         onChange={(e) =>
-                          field.handleChange(
-                            e.target.value ? new Date(e.target.value).toISOString() : "",
-                          )
+                          field.handleChange(e.target.value)
                         }
                         onBlur={field.handleBlur}
                         aria-invalid={isInvalid}
                       />
-                      <FieldDescription>
-                        Kosongkan untuk otomatis dari kota pertama
-                      </FieldDescription>
                       {isInvalid && <FieldError errors={field.state.meta.errors} />}
                     </Field>
                   )
@@ -263,19 +258,14 @@ export function OpenTripForm(props: OpenTripFormProps) {
                     <Field data-invalid={isInvalid}>
                       <FieldLabel>Selesai</FieldLabel>
                       <Input
-                        type="datetime-local"
+                        type="date"
                         value={formatDateForInput(field.state.value)}
                         onChange={(e) =>
-                          field.handleChange(
-                            e.target.value ? new Date(e.target.value).toISOString() : "",
-                          )
+                          field.handleChange(e.target.value)
                         }
                         onBlur={field.handleBlur}
                         aria-invalid={isInvalid}
                       />
-                      <FieldDescription>
-                        Kosongkan untuk otomatis dari kota terakhir
-                      </FieldDescription>
                       {isInvalid && <FieldError errors={field.state.meta.errors} />}
                     </Field>
                   )
@@ -341,12 +331,10 @@ function CityEntry({
                 <Field data-invalid={isInvalid}>
                   <FieldLabel>Tanggal Tiba</FieldLabel>
                   <Input
-                    type="datetime-local"
+                    type="date"
                     value={formatDateForInput(field.state.value)}
                     onChange={(e) =>
-                      field.handleChange(
-                        e.target.value ? new Date(e.target.value).toISOString() : "",
-                      )
+                      field.handleChange(e.target.value)
                     }
                     onBlur={field.handleBlur}
                     aria-invalid={isInvalid}
@@ -507,12 +495,6 @@ function InclusionEntry({
 
 function formatDateForInput(value: unknown): string {
   if (!value || typeof value !== "string") return ""
-  try {
-    const d = new Date(value)
-    if (isNaN(d.getTime())) return ""
-    const pad = (n: number) => String(n).padStart(2, "0")
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
-  } catch {
-    return ""
-  }
+  // ponytail: accept both ISO date (YYYY-MM-DD) and ISO datetime (YYYY-MM-DDTHH:MM:SS...) — extract date part
+  return value.length >= 10 ? value.slice(0, 10) : value
 }

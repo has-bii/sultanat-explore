@@ -211,8 +211,8 @@ model OpenTrip {
   description  Json
   price        Int
   coverImageId String         @db.Uuid
-  startAt      DateTime
-  endAt        DateTime
+  startAt      DateTime       @db.Date
+  endAt        DateTime       @db.Date
   status       OpenTripStatus @default(draft)
   publishedAt  DateTime?
   createdAt    DateTime       @default(now())
@@ -232,7 +232,7 @@ model OpenTripCity {
   id         String    @id @default(uuid(7)) @db.Uuid
   openTripId String    @db.Uuid
   cityId     String    @db.Uuid
-  arriveAt   DateTime
+  arriveAt   DateTime  @db.Date
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 

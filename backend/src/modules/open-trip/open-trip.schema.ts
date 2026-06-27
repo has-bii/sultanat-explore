@@ -11,7 +11,7 @@ const openTripDestinationInputSchema = v.object({
 
 const openTripCityInputSchema = v.object({
   cityId: v.pipe(v.string(), v.uuid("ID kota tidak valid")),
-  arriveAt: v.pipe(v.string(), v.isoTimestamp("arriveAt harus ISO timestamp")),
+  arriveAt: v.pipe(v.string(), v.isoDate("arriveAt harus tanggal (YYYY-MM-DD)")),
   destinations: v.optional(v.array(openTripDestinationInputSchema), []),
 })
 
@@ -34,8 +34,8 @@ export const createOpenTripSchema = v.object({
   description: v.any(), // opaque JSON — frontend owns block shapes
   price: v.pipe(v.number(), v.minValue(1, "Harga harus lebih dari 0")),
   coverImageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
-  startAt: v.pipe(v.string(), v.isoTimestamp("startAt harus ISO timestamp")),
-  endAt: v.pipe(v.string(), v.isoTimestamp("endAt harus ISO timestamp")),
+  startAt: v.pipe(v.string(), v.isoDate("startAt harus tanggal (YYYY-MM-DD)")),
+  endAt: v.pipe(v.string(), v.isoDate("endAt harus tanggal (YYYY-MM-DD)")),
   status: v.optional(v.picklist(["draft", "published", "archived"]), "draft"),
   cities: v.optional(v.array(openTripCityInputSchema), []),
   inclusions: v.optional(v.array(openTripInclusionInputSchema), []),
@@ -55,8 +55,8 @@ export const updateOpenTripSchema = v.object({
   description: v.optional(v.any()),
   price: v.optional(v.pipe(v.number(), v.minValue(1, "Harga harus lebih dari 0"))),
   coverImageId: v.optional(v.pipe(v.string(), v.uuid("ID gambar tidak valid"))),
-  startAt: v.optional(v.pipe(v.string(), v.isoTimestamp("startAt harus ISO timestamp"))),
-  endAt: v.optional(v.pipe(v.string(), v.isoTimestamp("endAt harus ISO timestamp"))),
+  startAt: v.optional(v.pipe(v.string(), v.isoDate("startAt harus tanggal (YYYY-MM-DD)"))),
+  endAt: v.optional(v.pipe(v.string(), v.isoDate("endAt harus tanggal (YYYY-MM-DD)"))),
   status: v.optional(v.picklist(["draft", "published", "archived"])),
   cities: v.optional(v.array(openTripCityInputSchema)),
   inclusions: v.optional(v.array(openTripInclusionInputSchema)),
@@ -67,8 +67,8 @@ export const updateOpenTripSchema = v.object({
 export const openTripQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
   status: v.optional(v.picklist(["draft", "published", "archived"])),
-  startAtFrom: v.optional(v.pipe(v.string(), v.isoTimestamp("startAtFrom harus ISO timestamp"))),
-  startAtTo: v.optional(v.pipe(v.string(), v.isoTimestamp("startAtTo harus ISO timestamp"))),
+  startAtFrom: v.optional(v.pipe(v.string(), v.isoDate("startAtFrom harus tanggal (YYYY-MM-DD)"))),
+  startAtTo: v.optional(v.pipe(v.string(), v.isoDate("startAtTo harus tanggal (YYYY-MM-DD)"))),
   priceMin: v.optional(v.pipe(v.string(), v.toNumber(), v.minValue(0))),
   priceMax: v.optional(v.pipe(v.string(), v.toNumber(), v.minValue(0))),
   sort: v.optional(v.picklist(["startAt", "price", "publishedAt"]), "startAt"),
