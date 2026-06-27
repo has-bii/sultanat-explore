@@ -16,8 +16,8 @@ import { format } from "date-fns"
 import { id } from "date-fns/locale"
 import Link from "next/link"
 
-import { useDeleteOpenTripDialogStore } from "../../stores/delete-open-trip-dialog.store"
 import type { GetOpenTripsResponse } from "../../queries"
+import { useDeleteOpenTripDialogStore } from "../../stores/delete-open-trip-dialog.store"
 
 type OpenTrip = NonNullable<GetOpenTripsResponse["data"]["data"][number]>
 
@@ -42,7 +42,11 @@ export function OpenTripTableRow({ openTrip }: { openTrip: OpenTrip }) {
         </Item>
       </TableCell>
       <TableCell className="text-muted-foreground">
-        {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(openTrip.price)}
+        {new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(openTrip.price)}
       </TableCell>
       <TableCell className="text-center">
         <Badge variant={statusVariant}>
@@ -54,13 +58,9 @@ export function OpenTripTableRow({ openTrip }: { openTrip: OpenTrip }) {
         </Badge>
       </TableCell>
       <TableCell className="text-muted-foreground text-sm">
-        {openTrip.startAt
-          ? format(new Date(openTrip.startAt), "PP", { locale: id })
-          : "—"}
+        {openTrip.startAt ? format(new Date(openTrip.startAt), "PP", { locale: id }) : "—"}
         {" → "}
-        {openTrip.endAt
-          ? format(new Date(openTrip.endAt), "PP", { locale: id })
-          : "—"}
+        {openTrip.endAt ? format(new Date(openTrip.endAt), "PP", { locale: id }) : "—"}
       </TableCell>
       <TableCell className="w-[120px] text-center">
         <DropdownMenu>
@@ -76,7 +76,7 @@ export function OpenTripTableRow({ openTrip }: { openTrip: OpenTrip }) {
                 Edit
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => openDelete(openTrip.id)}>
+            <DropdownMenuItem onClick={() => openDelete(openTrip.id)} variant="destructive">
               <Trash2 />
               Hapus
             </DropdownMenuItem>
