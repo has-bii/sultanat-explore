@@ -1,61 +1,9 @@
-export type Inclusion = {
-  icon: string
-  label: string
-}
-
-export type Trip = {
-  slug: string
-  name: string
-  destination: string
-  price: number
-  duration: string
-  image: string
-  inclusions: Inclusion[]
-}
-
 export type Facility = {
   icon: string
   title: string
   description: string
   image?: string
 }
-
-// --- Open Trip ---
-
-const openTripTrips: Trip[] = [
-  {
-    slug: "istanbul-cappadocia-7h",
-    name: "Istanbul & Cappadocia",
-    destination: "Istanbul, Cappadocia",
-    price: 18_500_000,
-    duration: "7 Hari",
-    image:
-      "https://images.unsplash.com/photo-1695415683093-ae5f213ea898?q=80&w=800&auto=format&fit=crop",
-    inclusions: [
-      { icon: "✈️", label: "Tiket pesawat PP" },
-      { icon: "🏨", label: "Hotel bintang 4" },
-      { icon: "🚌", label: "Transport privat" },
-      { icon: "🍽️", label: "Makan halal" },
-      { icon: "🎤", label: "Tour guide Indonesia" },
-    ],
-  },
-  {
-    slug: "istanbul-pamukkale-5h",
-    name: "Istanbul & Pamukkale",
-    destination: "Istanbul, Pamukkale",
-    price: 15_900_000,
-    duration: "5 Hari",
-    image:
-      "https://images.unsplash.com/photo-1720974613776-566971057c17?q=80&w=800&auto=format&fit=crop",
-    inclusions: [
-      { icon: "✈️", label: "Tiket pesawat PP" },
-      { icon: "🏨", label: "Hotel bintang 3" },
-      { icon: "🚌", label: "Transport privat" },
-      { icon: "🍽️", label: "Makan halal" },
-      { icon: "🎤", label: "Tour guide Indonesia" },
-    ],
-  },
-]
 
 // --- Destinations ---
 
@@ -152,15 +100,6 @@ export const destinationItems = [
       "https://images.unsplash.com/photo-1770291252190-147c1f86bdd6?q=80&w=1080&auto=format&fit=crop",
   },
 ]
-
-export const openTripService = {
-  title: "Open Trip",
-  heading: "Trip Hemat Healing Bareng Bestie",
-  description: "Solusi healing anti ribet. Jadwal dan akomodasi tinggal dinikmati.",
-  href: "/open-trip",
-  ctaText: "Lihat Semua Open Trip",
-  trips: openTripTrips,
-}
 
 // --- Private Trip ---
 
