@@ -20,8 +20,8 @@ export function useOpenTripForm({ defaultValues: _defaultValues, onSubmit }: Pro
     description: _defaultValues?.description ?? null,
     price: _defaultValues?.price ?? 0,
     coverImageId: _defaultValues?.coverImageId ?? "",
-    startAt: _defaultValues?.startAt ?? undefined,
-    endAt: _defaultValues?.endAt ?? undefined,
+    startAt: _defaultValues?.startAt ?? "",
+    endAt: _defaultValues?.endAt ?? "",
     status: _defaultValues?.status ?? "draft",
     cities: _defaultValues?.cities ?? [],
     inclusions: _defaultValues?.inclusions ?? [],
@@ -35,13 +35,16 @@ export function useOpenTripForm({ defaultValues: _defaultValues, onSubmit }: Pro
     onSubmit: async ({ value }) => {
       const cleaned: CreateOpenTripInput = {
         ...value,
+        // ponytail: order is derived from array index, reindex here so duplicate/gap orders can never be submitted
         cities: (value.cities ?? []).map((city) => ({
           ...city,
-          departAt: city.departAt || undefined,
-          destinations: city.destinations ?? [],
+          destinations: (city.destinations ?? []).map((dest, j) => ({
+            destinationId: dest.destinationId,
+            order: j,
+          })),
         })),
-        startAt: value.startAt || undefined,
-        endAt: value.endAt || undefined,
+        startAt: value.startAt,
+        endAt: value.endAt,
       }
       await onSubmit(cleaned)
     },

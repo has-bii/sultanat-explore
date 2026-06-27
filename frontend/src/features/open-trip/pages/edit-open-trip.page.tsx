@@ -36,10 +36,9 @@ export function EditOpenTripPage({ openTripId }: Props) {
       cities: openTrip.cities.map((city) => ({
         cityId: city.cityId,
         arriveAt: new Date(city.arriveAt).toISOString(),
-        departAt: city.departAt ? new Date(city.departAt).toISOString() : undefined,
-        destinations: city.destinations.map((dest) => ({
+        destinations: city.destinations.map((dest, i) => ({
           destinationId: dest.destinationId,
-          visitAt: new Date(dest.visitAt).toISOString(),
+          order: i,
         })),
       })),
       inclusions: openTrip.inclusions.map((inc) => ({

@@ -1,17 +1,11 @@
 "use client"
 
-import { Plus, Save, Trash2 } from "lucide-react"
+import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react"
 
 import { ErrorComponent } from "@/components/error-component"
 import { TiptapEditor } from "@/components/tiptap"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Field,
   FieldContent,
@@ -155,7 +149,7 @@ export function OpenTripForm(props: OpenTripFormProps) {
             <form.Field name="cities" mode="array">
               {(citiesField) => (
                 <FieldSet>
-                  <FieldContent>
+                  <FieldContent className="gap-4">
                     {(citiesField.state.value ?? []).map((_, cityIndex) => (
                       <CityEntry
                         key={cityIndex}
@@ -172,7 +166,6 @@ export function OpenTripForm(props: OpenTripFormProps) {
                       citiesField.pushValue({
                         cityId: "",
                         arriveAt: "",
-                        departAt: undefined,
                         destinations: [],
                       })
                     }
@@ -199,7 +192,7 @@ export function OpenTripForm(props: OpenTripFormProps) {
             <form.Field name="inclusions" mode="array">
               {(inclusionsField) => (
                 <FieldSet>
-                  <FieldContent>
+                  <FieldContent className="gap-4">
                     {(inclusionsField.state.value ?? []).map((_, incIndex) => (
                       <InclusionEntry
                         key={incIndex}
@@ -335,12 +328,10 @@ function CityEntry({
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <form.AppField
             name={`cities[${cityIndex}].cityId`}
-            children={(field) => (
-              <field.CitySelectField label="Kota" placeholder="Pilih kota" />
-            )}
+            children={(field) => <field.CitySelectField label="Kota" placeholder="Pilih kota" />}
           />
 
           <form.Field name={`cities[${cityIndex}].arriveAt`}>
@@ -365,30 +356,6 @@ function CityEntry({
               )
             }}
           </form.Field>
-
-          <form.Field name={`cities[${cityIndex}].departAt`}>
-            {(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-              return (
-                <Field data-invalid={isInvalid}>
-                  <FieldLabel>Tanggal Berangkat</FieldLabel>
-                  <Input
-                    type="datetime-local"
-                    value={formatDateForInput(field.state.value)}
-                    onChange={(e) =>
-                      field.handleChange(
-                        e.target.value ? new Date(e.target.value).toISOString() : "",
-                      )
-                    }
-                    onBlur={field.handleBlur}
-                    aria-invalid={isInvalid}
-                  />
-                  <FieldDescription>Opsional</FieldDescription>
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                </Field>
-              )
-            }}
-          </form.Field>
         </div>
 
         {/* Destinations within this city */}
@@ -396,28 +363,40 @@ function CityEntry({
         <div className="space-y-3">
           <FieldLabel className="text-sm font-medium">Destinasi</FieldLabel>
           <form.Field name={`cities[${cityIndex}].destinations`} mode="array">
-            {(destField) => (
-              <div className="space-y-3">
-                {(destField.state.value ?? []).map((_, destIndex) => (
-                  <DestinationEntry
-                    key={destIndex}
-                    form={form}
-                    cityIndex={cityIndex}
-                    destIndex={destIndex}
-                    onRemove={() => destField.removeValue(destIndex)}
-                  />
-                ))}
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => destField.pushValue({ destinationId: "", visitAt: "" })}
-                >
-                  <Plus data-icon="inline-start" />
-                  <span>Tambah Destinasi</span>
-                </Button>
-              </div>
-            )}
+            {(destField) => {
+              const destCount = (destField.state.value ?? []).length
+              return (
+                <div className="space-y-3">
+                  {(destField.state.value ?? []).map((_, destIndex) => (
+                    <DestinationEntry
+                      key={destIndex}
+                      form={form}
+                      cityIndex={cityIndex}
+                      destIndex={destIndex}
+                      isFirst={destIndex === 0}
+                      isLast={destIndex === destCount - 1}
+                      onMoveUp={() => destField.moveValue(destIndex, destIndex - 1)}
+                      onMoveDown={() => destField.moveValue(destIndex, destIndex + 1)}
+                      onRemove={() => destField.removeValue(destIndex)}
+                    />
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      destField.pushValue({
+                        destinationId: "",
+                        order: destCount,
+                      })
+                    }
+                  >
+                    <Plus data-icon="inline-start" />
+                    <span>Tambah Destinasi</span>
+                  </Button>
+                </div>
+              )
+            }}
           </form.Field>
         </div>
       </CardContent>
@@ -431,15 +410,24 @@ function DestinationEntry({
   form,
   cityIndex,
   destIndex,
+  isFirst,
+  isLast,
+  onMoveUp,
+  onMoveDown,
   onRemove,
 }: {
   form: ReturnType<typeof useOpenTripForm>
   cityIndex: number
   destIndex: number
+  isFirst: boolean
+  isLast: boolean
+  onMoveUp: () => void
+  onMoveDown: () => void
   onRemove: () => void
 }) {
   return (
-    <div className="bg-muted/50 flex items-end gap-3 rounded-lg p-3">
+    <div className="bg-muted/50 flex items-end gap-2 rounded-lg p-3">
+      {/* ponytail: order derived from array index, reorder via up/down; submit reindexes */}
       <form.AppField
         name={`cities[${cityIndex}].destinations[${destIndex}].destinationId`}
         children={(field) => (
@@ -452,28 +440,14 @@ function DestinationEntry({
         )}
       />
 
-      <form.Field name={`cities[${cityIndex}].destinations[${destIndex}].visitAt`}>
-        {(field) => {
-          const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-          return (
-            <Field data-invalid={isInvalid} className="flex-1">
-              <FieldLabel className="text-xs">Waktu Kunjungan</FieldLabel>
-              <Input
-                type="datetime-local"
-                value={formatDateForInput(field.state.value)}
-                onChange={(e) =>
-                  field.handleChange(
-                    e.target.value ? new Date(e.target.value).toISOString() : "",
-                  )
-                }
-                onBlur={field.handleBlur}
-                aria-invalid={isInvalid}
-              />
-              {isInvalid && <FieldError errors={field.state.meta.errors} />}
-            </Field>
-          )
-        }}
-      </form.Field>
+      <div className="flex flex-col gap-1">
+        <Button type="button" variant="ghost" size="icon-sm" disabled={isFirst} onClick={onMoveUp}>
+          <ChevronUp />
+        </Button>
+        <Button type="button" variant="ghost" size="icon-sm" disabled={isLast} onClick={onMoveDown}>
+          <ChevronDown />
+        </Button>
+      </div>
 
       <Button type="button" variant="ghost" size="icon-sm" onClick={onRemove}>
         <Trash2 className="text-destructive" />
