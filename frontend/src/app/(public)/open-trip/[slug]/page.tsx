@@ -1,19 +1,15 @@
 import { ArrowLeft, Calendar, Clock, MapPin, Users } from "lucide-react"
 
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { formatDate, formatPrice, getTripBySlug } from "@/features/open-trip/data"
 import { InclusionSection } from "@/features/open-trip/public/inclusion-section"
 import { ItinerarySection } from "@/features/open-trip/public/itinerary-section"
-import { formatDate, formatPrice, getTripBySlug, openTrips } from "@/features/open-trip/data"
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
-
-export async function generateStaticParams() {
-  return openTrips.map((t) => ({ slug: t.slug }))
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params

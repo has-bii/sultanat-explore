@@ -6,7 +6,7 @@ const iconMap = [Search, MessageCircle, PlaneTakeoff]
 
 export function HowItWorks() {
   return (
-    <section className="py-20 lg:py-24">
+    <section className="border-y py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">
           <span className="text-primary text-xs font-semibold tracking-widest uppercase">

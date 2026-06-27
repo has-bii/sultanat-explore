@@ -1,9 +1,11 @@
 import { ArrowRight, Calendar, Timer } from "lucide-react"
 
+import { formatPrice } from "@/utils/format-price"
+import { format } from "date-fns"
+import { id } from "date-fns/locale"
 import Image from "next/image"
 import Link from "next/link"
 
-import { formatDate, formatPrice } from "../../data"
 import type { fetchOpenTripsByCitySlug } from "../lib/fetch"
 
 type Trip = Awaited<ReturnType<typeof fetchOpenTripsByCitySlug>>[number]
@@ -72,7 +74,7 @@ export function RelatedOpenTrips({ data, cityName }: { data: Trip[]; cityName: s
                 <div className="text-muted-foreground flex items-center gap-4 text-sm">
                   <span className="flex items-center gap-1.5">
                     <Calendar className="text-primary h-3.5 w-3.5" />
-                    {formatDate(trip.startAt)}
+                    {format(trip.startAt, "PP", { locale: id })}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Timer className="text-primary h-3.5 w-3.5" />

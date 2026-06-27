@@ -7,6 +7,10 @@ const $getOpenTrips = apiClient.api["open-trips"].admin.$get
 export type GetOpenTripsQuery = InferRequestType<typeof $getOpenTrips>["query"]
 export type GetOpenTripsResponse = InferResponseType<typeof $getOpenTrips, 200>
 
+const $getPublicOpenTrips = apiClient.api["open-trips"].$get
+export type GetPublicOpenTripsQuery = InferRequestType<typeof $getPublicOpenTrips>["query"]
+export type GetPublicOpenTripsResponse = InferResponseType<typeof $getPublicOpenTrips, 200>
+
 const $getOpenTrip = apiClient.api["open-trips"].admin[":id"].$get
 export type GetOpenTripResponse = InferResponseType<typeof $getOpenTrip, 200>
 
@@ -26,6 +30,22 @@ export const getOpenTripsQueryOptions = (query: GetOpenTripsQuery) => {
       const json = await res.json()
       if (!json.success) throw new Error(json.message)
       return json.data as unknown as GetOpenTripsResponse["data"]
+    },
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    initialPageParam: undefined as string | undefined,
+  })
+}
+
+export const getPublicOpenTripsQueryOptions = (query: GetPublicOpenTripsQuery) => {
+  return infiniteQueryOptions({
+    queryKey: openTripQueryKeys.list(query),
+    queryFn: async ({ pageParam }) => {
+      const res = await $getPublicOpenTrips({
+        query: { ...query, cursor: pageParam },
+      })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      return json.data as unknown as GetPublicOpenTripsResponse["data"]
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     initialPageParam: undefined as string | undefined,

@@ -1,38 +1,23 @@
-import { ArrowRight, Calendar, Clock, MapPin, Users } from "lucide-react"
+import { ArrowRight, Calendar, Timer } from "lucide-react"
 
+import { formatPrice } from "@/utils/format-price"
+import { format } from "date-fns"
+import { id } from "date-fns/locale"
 import Image from "next/image"
 import Link from "next/link"
 
-import { formatDate, formatPrice } from "../data"
-import type { OpenTrip } from "../types"
+import { GetPublicOpenTripsResponse } from "../../queries"
 
-function SeatBadge({ available }: { available: number }) {
-  const isEmpty = available === 0
-  const isAlmostEmpty = available > 0 && available <= 3
+type Trip = NonNullable<GetPublicOpenTripsResponse["data"]["data"][number]>
 
-  const variant = isEmpty
-    ? "bg-destructive text-destructive-foreground"
-    : isAlmostEmpty
-      ? "bg-amber-500 text-white"
-      : "bg-primary text-primary-foreground"
-
-  const label = isEmpty
-    ? "Penuh!"
-    : isAlmostEmpty
-      ? `Hampir penuh! ${available} kursi`
-      : `${available} kursi tersisa`
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold shadow-md ${variant}`}
-    >
-      <Users className="h-3 w-3" />
-      {label}
-    </span>
+function getDuration(startAt: string, endAt: string): string {
+  const days = Math.ceil(
+    (new Date(endAt).getTime() - new Date(startAt).getTime()) / (1000 * 60 * 60 * 24),
   )
+  return `${days} Hari`
 }
 
-export function TripCard({ trip }: { trip: OpenTrip }) {
+export function TripCard({ trip }: { trip: Trip }) {
   return (
     <Link
       href={`/open-trip/${trip.slug}`}
@@ -42,26 +27,20 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
       <div className="relative aspect-4/3 overflow-hidden">
         <Image
           fill
-          src={trip.image}
-          alt={trip.name}
+          src={trip.coverImage.url}
+          alt={trip.coverImage.alt || trip.title}
           className="object-cover transition-transform duration-700 group-hover:scale-110"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
-        {/* Seat badge top-right */}
-        <div className="absolute top-3 right-3">
-          <SeatBadge available={trip.availableSeats} />
-        </div>
-
         {/* Bottom overlay */}
         <div className="absolute right-4 bottom-3 left-4">
-          <h3 className="font-heading text-lg leading-tight font-bold text-white">{trip.name}</h3>
-          <p className="mt-0.5 flex items-center gap-1 text-xs text-white/80">
-            <MapPin className="h-3 w-3" />
-            {trip.destination}
-          </p>
+          <h3 className="font-heading text-lg leading-tight font-bold text-white">{trip.title}</h3>
+          {trip.excerpt && (
+            <p className="mt-0.5 line-clamp-1 text-xs text-white/80">{trip.excerpt}</p>
+          )}
         </div>
       </div>
 
@@ -71,11 +50,11 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
         <div className="text-muted-foreground flex items-center gap-4 text-sm">
           <span className="flex items-center gap-1.5">
             <Calendar className="text-primary h-3.5 w-3.5" />
-            {formatDate(trip.departureDate)}
+            {format(trip.startAt, "PP", { locale: id })}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock className="text-primary h-3.5 w-3.5" />
-            {trip.duration}
+            <Timer className="text-primary h-3.5 w-3.5" />
+            {getDuration(trip.startAt, trip.endAt)}
           </span>
         </div>
 
@@ -83,11 +62,10 @@ export function TripCard({ trip }: { trip: OpenTrip }) {
         <div className="mt-3 flex flex-wrap gap-1.5">
           {trip.inclusions.slice(0, 3).map((inc) => (
             <span
-              key={inc.label}
-              className="bg-muted/60 text-muted-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px]"
+              key={inc.inclusionItem.label}
+              className="bg-muted/60 text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-[11px]"
             >
-              <span>{inc.icon}</span>
-              {inc.label}
+              {inc.inclusionItem.label}
             </span>
           ))}
           {trip.inclusions.length > 3 && (
