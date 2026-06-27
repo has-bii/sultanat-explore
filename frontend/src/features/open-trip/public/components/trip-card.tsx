@@ -38,9 +38,6 @@ export function TripCard({ trip }: { trip: Trip }) {
         {/* Bottom overlay */}
         <div className="absolute right-4 bottom-3 left-4">
           <h3 className="font-heading text-lg leading-tight font-bold text-white">{trip.title}</h3>
-          {trip.excerpt && (
-            <p className="mt-0.5 line-clamp-1 text-xs text-white/80">{trip.excerpt}</p>
-          )}
         </div>
       </div>
 
