@@ -2,23 +2,13 @@
 
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { ArrowRight } from "lucide-react"
+import { Suspense } from "react"
 
 import { TripCard } from "@/features/open-trip/public/components/trip-card"
 import { getPublicOpenTripsQueryOptions } from "@/features/open-trip/queries"
 import Link from "next/link"
 
 export function OpenTripSection() {
-  const { data } = useSuspenseInfiniteQuery(
-    getPublicOpenTripsQueryOptions({
-      limit: "6",
-      status: "published",
-      sort: "startAt",
-      order: "desc",
-    }),
-  )
-
-  const trips = data.pages.flatMap((p) => p.data)
-
   return (
     <section>
       <div className="mx-auto max-w-6xl px-6 py-20">
@@ -39,18 +29,43 @@ export function OpenTripSection() {
           <ArrowRight className="h-4 w-4" />
         </Link>
 
-        {trips.length > 0 && (
-          <div className="relative mt-10">
-            <div className="flex scrollbar-none gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              {trips.map((trip) => (
-                <TripCard key={trip.slug} trip={trip} />
-              ))}
-            </div>
-            {/* Fade edges */}
-            <div className="from-background pointer-events-none absolute top-0 right-0 h-full w-16 bg-linear-to-l to-transparent" />
-          </div>
-        )}
+        <Suspense fallback={<TripCardSkeleton />}>
+          <TripCardList />
+        </Suspense>
       </div>
     </section>
+  )
+}
+
+function TripCardList() {
+  const { data } = useSuspenseInfiniteQuery(
+    getPublicOpenTripsQueryOptions({
+      limit: "6",
+      status: "published",
+      sort: "startAt",
+      order: "desc",
+    }),
+  )
+
+  const trips = data.pages.flatMap((p) => p.data)
+
+  if (trips.length === 0) return null
+
+  return (
+    <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {trips.map((trip) => (
+        <TripCard key={trip.slug} trip={trip} />
+      ))}
+    </div>
+  )
+}
+
+function TripCardSkeleton() {
+  return (
+    <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="bg-muted h-[360px] animate-pulse rounded-2xl" />
+      ))}
+    </div>
   )
 }
