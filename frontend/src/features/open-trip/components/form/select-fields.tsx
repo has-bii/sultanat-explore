@@ -25,7 +25,7 @@ interface SelectFieldProps {
   cityId?: string
 }
 
-interface OptionsProps {
+export interface OptionsProps {
   id: string
   value: string
   placeholder?: string
@@ -75,7 +75,7 @@ export function CitySelectField({
   )
 }
 
-function CityOptions(props: OptionsProps) {
+export function CityOptions(props: OptionsProps) {
   const { id, value, placeholder, ariaInvalid, onValueChange, onBlur } = props
   const { data } = useSuspenseInfiniteQuery(getCitiesQueryOptions({ limit: "100" }))
   const cities = data.pages.flatMap((p) => p.data)

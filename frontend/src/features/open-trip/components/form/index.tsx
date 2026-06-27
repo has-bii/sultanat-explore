@@ -1,6 +1,7 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
+import { Suspense } from "react"
 import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react"
 
 import { ErrorComponent } from "@/components/error-component"
@@ -17,6 +18,8 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { SelectItem } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { CityOptions } from "./select-fields"
 import { Separator } from "@/components/ui/separator"
 import { getInclusionItemsQueryOptions } from "@/features/inclusion-item/queries"
 import Link from "next/link"
@@ -238,6 +241,39 @@ export function OpenTripForm(props: OpenTripFormProps) {
   )
 }
 
+// ── City Select with Reset ────────────────────────────────
+
+function CitySelectWithReset({
+  value,
+  onValueChange,
+  onBlur,
+  isInvalid,
+  errors,
+}: {
+  value: string
+  onValueChange: (v: string) => void
+  onBlur: () => void
+  isInvalid: boolean
+  errors: ({ message?: string } | undefined)[]
+}) {
+  return (
+    <Field data-invalid={isInvalid}>
+      <FieldLabel>Kota</FieldLabel>
+      <Suspense fallback={<Skeleton className="h-9 w-full rounded-md" />}>
+        <CityOptions
+          id="city"
+          value={value}
+          placeholder="Pilih kota"
+          ariaInvalid={isInvalid}
+          onValueChange={onValueChange}
+          onBlur={onBlur}
+        />
+      </Suspense>
+      {isInvalid && <FieldError errors={errors} />}
+    </Field>
+  )
+}
+
 // ── City Entry ─────────────────────────────────────────────
 
 function CityEntry({
@@ -261,10 +297,20 @@ function CityEntry({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          <form.AppField
-            name={`cities[${cityIndex}].cityId`}
-            children={(field) => <field.CitySelectField label="Kota" placeholder="Pilih kota" />}
-          />
+          <form.Field name={`cities[${cityIndex}].cityId`}>
+            {(field) => (
+              <CitySelectWithReset
+                value={field.state.value}
+                onValueChange={(newCityId) => {
+                  field.handleChange(newCityId)
+                  form.setFieldValue(`cities[${cityIndex}].destinations`, [])
+                }}
+                onBlur={field.handleBlur}
+                isInvalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                errors={field.state.meta.errors}
+              />
+            )}
+          </form.Field>
 
           <form.AppField
             name={`cities[${cityIndex}].arriveAt`}
@@ -294,6 +340,9 @@ function CityEntry({
                       onRemove={() => destField.removeValue(destIndex)}
                     />
                   ))}
+                  {destField.state.meta.isTouched && !destField.state.meta.isValid && (
+                    <FieldError errors={destField.state.meta.errors} />
+                  )}
                   <Button
                     type="button"
                     variant="outline"
