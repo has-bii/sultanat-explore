@@ -24,7 +24,7 @@ import { Separator } from "@/components/ui/separator"
 import { getInclusionItemsQueryOptions } from "@/features/inclusion-item/queries"
 import Link from "next/link"
 
-import { useOpenTripForm } from "../../hooks/use-open-trip-form"
+import { useOpenTripForm, type OpenTripInclusionRow } from "../../hooks/use-open-trip-form"
 
 interface OpenTripFormProps {
   form: ReturnType<typeof useOpenTripForm>
@@ -241,39 +241,6 @@ export function OpenTripForm(props: OpenTripFormProps) {
   )
 }
 
-// ── City Select with Reset ────────────────────────────────
-
-function CitySelectWithReset({
-  value,
-  onValueChange,
-  onBlur,
-  isInvalid,
-  errors,
-}: {
-  value: string
-  onValueChange: (v: string) => void
-  onBlur: () => void
-  isInvalid: boolean
-  errors: ({ message?: string } | undefined)[]
-}) {
-  return (
-    <Field data-invalid={isInvalid}>
-      <FieldLabel>Kota</FieldLabel>
-      <Suspense fallback={<Skeleton className="h-9 w-full rounded-md" />}>
-        <CityOptions
-          id="city"
-          value={value}
-          placeholder="Pilih kota"
-          ariaInvalid={isInvalid}
-          onValueChange={onValueChange}
-          onBlur={onBlur}
-        />
-      </Suspense>
-      {isInvalid && <FieldError errors={errors} />}
-    </Field>
-  )
-}
-
 // ── City Entry ─────────────────────────────────────────────
 
 function CityEntry({
@@ -298,18 +265,28 @@ function CityEntry({
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <form.Field name={`cities[${cityIndex}].cityId`}>
-            {(field) => (
-              <CitySelectWithReset
-                value={field.state.value}
-                onValueChange={(newCityId) => {
-                  field.handleChange(newCityId)
-                  form.setFieldValue(`cities[${cityIndex}].destinations`, [])
-                }}
-                onBlur={field.handleBlur}
-                isInvalid={field.state.meta.isTouched && !field.state.meta.isValid}
-                errors={field.state.meta.errors}
-              />
-            )}
+            {(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel>Kota</FieldLabel>
+                  <Suspense fallback={<Skeleton className="h-9 w-full rounded-md" />}>
+                    <CityOptions
+                      id="city"
+                      value={field.state.value}
+                      placeholder="Pilih kota"
+                      ariaInvalid={isInvalid}
+                      onValueChange={(newCityId) => {
+                        field.handleChange(newCityId)
+                        form.setFieldValue(`cities[${cityIndex}].destinations`, [])
+                      }}
+                      onBlur={field.handleBlur}
+                    />
+                  </Suspense>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              )
+            }}
           </form.Field>
 
           <form.AppField
@@ -444,8 +421,7 @@ function InclusionSection({ form }: { form: ReturnType<typeof useOpenTripForm> }
   return (
     <form.Subscribe selector={(state) => state.values.inclusions}>
       {(inclusions) => {
-        const allInclusions = inclusions
-        const usedIds = allInclusions.map((inc) => inc.inclusionItemId).filter(Boolean)
+        const usedIds = inclusions.map((inc) => inc.inclusionItemId).filter(Boolean)
         const available = items.filter((item) => !usedIds.includes(item.id))
         const allUsed = available.length === 0
 
@@ -453,87 +429,101 @@ function InclusionSection({ form }: { form: ReturnType<typeof useOpenTripForm> }
           <form.Field name="inclusions" mode="array">
             {(inclusionsField) => (
               <div className="grid grid-cols-2 gap-6">
-                {/* Left: Inclusions */}
-                <FieldSet>
-                  <FieldLabel className="text-base font-semibold">Include</FieldLabel>
-                  <FieldContent className="gap-3">
-                    {allInclusions
-                      .map((inc, idx) => ({ ...inc, _idx: idx }))
-                      .filter((inc) => inc.type === "include")
-                      .map((inc) => (
-                        <InclusionEntry
-                          key={inc._key}
-                          form={form}
-                          incIndex={inc._idx}
-                          items={[
-                            ...items.filter((i) => i.id === inc.inclusionItemId),
-                            ...available,
-                          ]}
-                          onRemove={() => inclusionsField.removeValue(inc._idx)}
-                        />
-                      ))}
-                  </FieldContent>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={allUsed}
-                    onClick={() =>
-                      inclusionsField.pushValue({
-                        inclusionItemId: "",
-                        type: "include" as const,
-                        _key: crypto.randomUUID(),
-                      })
-                    }
-                  >
-                    <Plus data-icon="inline-start" />
-                    <span>Tambah Include</span>
-                  </Button>
-                </FieldSet>
-
-                {/* Right: Exclusions */}
-                <FieldSet>
-                  <FieldLabel className="text-base font-semibold">Exclude</FieldLabel>
-                  <FieldContent className="gap-3">
-                    {allInclusions
-                      .map((inc, idx) => ({ ...inc, _idx: idx }))
-                      .filter((inc) => inc.type === "exclude")
-                      .map((inc) => (
-                        <InclusionEntry
-                          key={inc._key}
-                          form={form}
-                          incIndex={inc._idx}
-                          items={[
-                            ...items.filter((i) => i.id === inc.inclusionItemId),
-                            ...available,
-                          ]}
-                          onRemove={() => inclusionsField.removeValue(inc._idx)}
-                        />
-                      ))}
-                  </FieldContent>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={allUsed}
-                    onClick={() =>
-                      inclusionsField.pushValue({
-                        inclusionItemId: "",
-                        type: "exclude" as const,
-                        _key: crypto.randomUUID(),
-                      })
-                    }
-                  >
-                    <Plus data-icon="inline-start" />
-                    <span>Tambah Exclude</span>
-                  </Button>
-                </FieldSet>
+                <InclusionColumn
+                  form={form}
+                  label="Include"
+                  addLabel="Tambah Include"
+                  type="include"
+                  inclusions={inclusions}
+                  items={items}
+                  available={available}
+                  allUsed={allUsed}
+                  onAdd={() =>
+                    inclusionsField.pushValue({
+                      inclusionItemId: "",
+                      type: "include",
+                      _key: crypto.randomUUID(),
+                    })
+                  }
+                  onRemove={(idx) => inclusionsField.removeValue(idx)}
+                />
+                <InclusionColumn
+                  form={form}
+                  label="Exclude"
+                  addLabel="Tambah Exclude"
+                  type="exclude"
+                  inclusions={inclusions}
+                  items={items}
+                  available={available}
+                  allUsed={allUsed}
+                  onAdd={() =>
+                    inclusionsField.pushValue({
+                      inclusionItemId: "",
+                      type: "exclude",
+                      _key: crypto.randomUUID(),
+                    })
+                  }
+                  onRemove={(idx) => inclusionsField.removeValue(idx)}
+                />
               </div>
             )}
           </form.Field>
         )
       }}
     </form.Subscribe>
+  )
+}
+
+function InclusionColumn({
+  form,
+  label,
+  addLabel,
+  type,
+  inclusions,
+  items,
+  available,
+  allUsed,
+  onAdd,
+  onRemove,
+}: {
+  form: ReturnType<typeof useOpenTripForm>
+  label: string
+  addLabel: string
+  type: "include" | "exclude"
+  inclusions: OpenTripInclusionRow[]
+  items: { id: string; label: string }[]
+  available: { id: string; label: string }[]
+  allUsed: boolean
+  onAdd: () => void
+  onRemove: (idx: number) => void
+}) {
+  const itemById = new Map(items.map((i) => [i.id, i] as const))
+  const rows = inclusions
+    .map((inc, idx) => ({ ...inc, _idx: idx }))
+    .filter((inc) => inc.type === type)
+
+  return (
+    <FieldSet>
+      <FieldLabel className="text-base font-semibold">{label}</FieldLabel>
+      <FieldContent className="gap-3">
+        {rows.map((inc) => (
+          <InclusionEntry
+            key={inc._key}
+            form={form}
+            incIndex={inc._idx}
+            items={[itemById.get(inc.inclusionItemId), ...available].filter(Boolean) as {
+              id: string
+              label: string
+            }[]}
+            onRemove={() => onRemove(inc._idx)}
+          />
+        ))}
+      </FieldContent>
+      <Button type="button" variant="outline" size="sm" disabled={allUsed} onClick={onAdd}>
+        <Plus data-icon="inline-start" />
+        <span>{addLabel}</span>
+      </Button>
+    </FieldSet>
   )
 }
 
