@@ -341,33 +341,48 @@ function DestinationEntry({
   onRemove: () => void
 }) {
   return (
-    <div className="bg-muted/50 flex items-end gap-2 rounded-lg p-3">
-      {/* ponytail: order derived from array index, reorder via up/down; submit reindexes */}
-      <form.AppField
-        name={`cities[${cityIndex}].destinations[${destIndex}].destinationId`}
-        children={(field) => (
-          <field.DestinationSelectField
-            label="Destinasi"
-            placeholder="Pilih destinasi"
-            labelClassName="text-xs"
-            className="flex-1"
+    <form.Subscribe selector={(state) => state.values.cities?.[cityIndex]?.cityId}>
+      {(cityId) => (
+        <div className="bg-muted/50 flex items-end gap-2 rounded-lg p-3">
+          {/* ponytail: order derived from array index, reorder via up/down; submit reindexes */}
+          <form.AppField
+            name={`cities[${cityIndex}].destinations[${destIndex}].destinationId`}
+            children={(field) => (
+              <field.DestinationSelectField
+                placeholder={cityId ? "Pilih destinasi" : "Pilih kota terlebih dahulu"}
+                className="flex-1"
+                cityId={cityId}
+              />
+            )}
           />
-        )}
-      />
 
-      <div className="flex flex-col gap-1">
-        <Button type="button" variant="ghost" size="icon-sm" disabled={isFirst} onClick={onMoveUp}>
-          <ChevronUp />
-        </Button>
-        <Button type="button" variant="ghost" size="icon-sm" disabled={isLast} onClick={onMoveDown}>
-          <ChevronDown />
-        </Button>
-      </div>
+          <div className="flex flex-col gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              disabled={isFirst}
+              onClick={onMoveUp}
+            >
+              <ChevronUp />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              disabled={isLast}
+              onClick={onMoveDown}
+            >
+              <ChevronDown />
+            </Button>
+          </div>
 
-      <Button type="button" variant="ghost" size="icon-sm" onClick={onRemove}>
-        <Trash2 className="text-destructive" />
-      </Button>
-    </div>
+          <Button type="button" variant="ghost" size="icon-sm" onClick={onRemove}>
+            <Trash2 className="text-destructive" />
+          </Button>
+        </div>
+      )}
+    </form.Subscribe>
   )
 }
 

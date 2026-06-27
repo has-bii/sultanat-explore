@@ -22,6 +22,7 @@ interface SelectFieldProps {
   description?: string
   className?: string
   labelClassName?: string
+  cityId?: string
 }
 
 interface OptionsProps {
@@ -109,6 +110,7 @@ export function DestinationSelectField({
   description,
   className,
   labelClassName,
+  cityId,
 }: SelectFieldProps) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -128,6 +130,7 @@ export function DestinationSelectField({
           ariaInvalid={isInvalid}
           onValueChange={field.handleChange}
           onBlur={field.handleBlur}
+          cityId={cityId}
         />
       </Suspense>
       {description && <FieldDescription>{description}</FieldDescription>}
@@ -136,9 +139,11 @@ export function DestinationSelectField({
   )
 }
 
-function DestinationOptions(props: OptionsProps) {
-  const { id, value, placeholder, ariaInvalid, onValueChange, onBlur } = props
-  const { data } = useSuspenseInfiniteQuery(getDestinationsQueryOptions({ limit: "100" }))
+function DestinationOptions(props: OptionsProps & { cityId?: string }) {
+  const { id, value, placeholder, ariaInvalid, onValueChange, onBlur, cityId } = props
+  const { data } = useSuspenseInfiniteQuery(
+    getDestinationsQueryOptions({ limit: "100", ...(cityId ? { cityId } : {}) }),
+  )
   const destinations = data.pages.flatMap((p) => p.data)
 
   return (
@@ -194,7 +199,12 @@ export function InclusionItemSelectField({
         }}
         disabled={disabled}
       >
-        <SelectTrigger id={field.name} aria-invalid={isInvalid} className="w-full" disabled={disabled}>
+        <SelectTrigger
+          id={field.name}
+          aria-invalid={isInvalid}
+          className="w-full"
+          disabled={disabled}
+        >
           <SelectValue placeholder={disabled ? "Semua item sudah dipilih" : placeholder} />
         </SelectTrigger>
         <SelectContent>
