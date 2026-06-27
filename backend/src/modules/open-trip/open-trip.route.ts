@@ -7,7 +7,6 @@ import {
   createOpenTripSchema,
   openTripQuerySchema,
   openTripSlugParamSchema,
-  updateOpenTripSchema,
 } from "backend/modules/open-trip/open-trip.schema"
 import {
   createOpenTrip,
@@ -54,7 +53,7 @@ const openTripRoute = new Hono()
     const openTrip = await createOpenTrip(json)
     return c.json(successResponse(openTrip, "Open Trip berhasil dibuat"), 201)
   })
-  .put("/:id", sValidator("param", paramIdSchema), sValidator("json", updateOpenTripSchema), async (c) => {
+  .put("/:id", sValidator("param", paramIdSchema), sValidator("json", createOpenTripSchema), async (c) => {
     const { id } = c.req.valid("param")
     const json = c.req.valid("json")
     const openTrip = await updateOpenTrip(id, json)

@@ -23,7 +23,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { getInclusionItemsQueryOptions } from "@/features/inclusion-item/queries"
 import Link from "next/link"
 
-import { type OpenTripInclusionRow, useOpenTripForm } from "../../hooks/use-open-trip-form"
+import { type CreateOpenTripInput } from "backend/modules/open-trip/open-trip.schema"
+
+import { useOpenTripForm } from "../../hooks/use-open-trip-form"
 import { CityOptions } from "./select-fields"
 
 interface OpenTripFormProps {
@@ -158,13 +160,16 @@ export function OpenTripForm(props: OpenTripFormProps) {
             <CardDescription>Kota dan destinasi yang dikunjungi</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* ponytail: row components are path-driven controlled selects (no useState/free-text),
+                so index keys are safe across moveValue/removeValue — value correctness is decoupled
+                from DOM reuse. Revisit if a free-text field is added inside a reorderable row. */}
             <form.Field name="cities" mode="array">
               {(citiesField) => (
                 <FieldSet>
                   <FieldContent className="gap-4">
                     {(citiesField.state.value ?? []).map((city, cityIndex) => (
                       <CityEntry
-                        key={city._key}
+                        key={cityIndex}
                         form={form}
                         cityIndex={cityIndex}
                         onRemove={() => citiesField.removeValue(cityIndex)}
@@ -179,7 +184,6 @@ export function OpenTripForm(props: OpenTripFormProps) {
                         cityId: "",
                         arriveAt: "",
                         destinations: [],
-                        _key: crypto.randomUUID(),
                       })
                     }
                   >
@@ -314,7 +318,7 @@ function CityEntry({
                 <div className="space-y-3">
                   {(destField.state.value ?? []).map((dest, destIndex) => (
                     <DestinationEntry
-                      key={dest._key}
+                      key={destIndex}
                       form={form}
                       cityIndex={cityIndex}
                       destIndex={destIndex}
@@ -335,8 +339,6 @@ function CityEntry({
                     onClick={() =>
                       destField.pushValue({
                         destinationId: "",
-                        order: destCount,
-                        _key: crypto.randomUUID(),
                       })
                     }
                   >
@@ -450,7 +452,6 @@ function InclusionSection({ form }: { form: ReturnType<typeof useOpenTripForm> }
                     inclusionsField.pushValue({
                       inclusionItemId: "",
                       type: "include",
-                      _key: crypto.randomUUID(),
                     })
                   }
                   onRemove={(idx) => inclusionsField.removeValue(idx)}
@@ -468,7 +469,6 @@ function InclusionSection({ form }: { form: ReturnType<typeof useOpenTripForm> }
                     inclusionsField.pushValue({
                       inclusionItemId: "",
                       type: "exclude",
-                      _key: crypto.randomUUID(),
                     })
                   }
                   onRemove={(idx) => inclusionsField.removeValue(idx)}
@@ -498,7 +498,7 @@ function InclusionColumn({
   label: string
   addLabel: string
   type: "include" | "exclude"
-  inclusions: OpenTripInclusionRow[]
+  inclusions: CreateOpenTripInput["inclusions"]
   items: { id: string; label: string }[]
   available: { id: string; label: string }[]
   allUsed: boolean
@@ -516,7 +516,7 @@ function InclusionColumn({
       <FieldContent className="gap-3">
         {rows.map((inc) => (
           <InclusionEntry
-            key={inc._key}
+            key={inc._idx}
             form={form}
             incIndex={inc._idx}
             items={

@@ -7,7 +7,6 @@ import { imageCardSelect } from "backend/lib/prisma-fragments"
 import type {
   CreateOpenTripInput,
   OpenTripQueryOutput,
-  UpdateOpenTripInput,
 } from "backend/modules/open-trip/open-trip.schema"
 
 // ── Prisma includes ─────────────────────────────────────────
@@ -63,18 +62,8 @@ function validateDateRange(startAt?: string, endAt?: string) {
   }
 }
 
-function validateCities(cities: { arriveAt: string; destinations?: { order: number }[] }[]) {
-  // ponytail: per-city duplicate-order guard against P2002, friendly 400 instead of generic 500
-  for (const city of cities) {
-    const orders = (city.destinations ?? []).map((d) => d.order)
-    if (new Set(orders).size !== orders.length) {
-      throw new HTTPException(400, { message: "Order destinasi dalam satu kota tidak boleh duplikat" })
-    }
-  }
-}
-
 function buildNestedCreate(
-  cities: { cityId: string; arriveAt: string; destinations?: { destinationId: string; order: number }[] }[],
+  cities: { cityId: string; arriveAt: string; destinations?: { destinationId: string }[] }[],
   inclusions: { inclusionItemId: string; type: "include" | "exclude" }[],
 ) {
   return {
@@ -83,9 +72,10 @@ function buildNestedCreate(
         cityId: city.cityId,
         arriveAt: new Date(city.arriveAt),
         destinations: {
-          create: (city.destinations ?? []).map((dest) => ({
+          // ponytail: order derived from array index — client value never reaches the DB unique constraint
+          create: (city.destinations ?? []).map((dest, j) => ({
             destinationId: dest.destinationId,
-            order: dest.order,
+            order: j,
           })),
         },
       })),
@@ -171,8 +161,6 @@ export async function createOpenTrip(input: CreateOpenTripInput) {
   const cities = input.cities ?? []
   const inclusions = input.inclusions ?? []
 
-  validateCities(cities)
-
   // Check slug uniqueness
   const slugTaken = await db.openTrip.findUnique({ where: { slug: input.slug } })
   if (slugTaken) throw new HTTPException(400, { message: "Slug sudah digunakan" })
@@ -212,35 +200,28 @@ export async function createOpenTrip(input: CreateOpenTripInput) {
 
 // ── Update (full-replace) ───────────────────────────────────
 
-export async function updateOpenTrip(id: string, input: UpdateOpenTripInput) {
+export async function updateOpenTrip(id: string, input: CreateOpenTripInput) {
   const existing = await db.openTrip.findUnique({
     where: { id },
     include: { cities: true, inclusions: true },
   })
   if (!existing) throw new HTTPException(404, { message: "Open Trip tidak ditemukan" })
 
-  // Check slug collision
-  if (input.slug) {
-    const slugTaken = await db.openTrip.findFirst({ where: { slug: input.slug, id: { not: id } } })
-    if (slugTaken) throw new HTTPException(400, { message: "Slug sudah digunakan" })
-  }
+  // Slug collision (self-excluded → idempotent when slug unchanged)
+  const slugTaken = await db.openTrip.findFirst({ where: { slug: input.slug, id: { not: id } } })
+  if (slugTaken) throw new HTTPException(400, { message: "Slug sudah digunakan" })
 
-  // Check cover image exists
-  if (input.coverImageId) {
-    const image = await db.image.findUnique({ where: { id: input.coverImageId } })
-    if (!image) throw new HTTPException(400, { message: "Gambar sampul tidak ditemukan" })
-  }
+  // Cover image exists
+  const image = await db.image.findUnique({ where: { id: input.coverImageId } })
+  if (!image) throw new HTTPException(400, { message: "Gambar sampul tidak ditemukan" })
 
-  const cities = input.cities ?? []
-  const inclusions = input.inclusions ?? []
+  const cities = input.cities
+  const inclusions = input.inclusions
 
-  if (input.cities !== undefined) {
-    validateCities(cities)
-    // Check duplicate inclusions
-    const inclusionIds = inclusions.map((i) => i.inclusionItemId)
-    if (new Set(inclusionIds).size !== inclusionIds.length) {
-      throw new HTTPException(400, { message: "Inclusion item tidak boleh duplikat" })
-    }
+  // Duplicate inclusions
+  const inclusionIds = inclusions.map((i) => i.inclusionItemId)
+  if (new Set(inclusionIds).size !== inclusionIds.length) {
+    throw new HTTPException(400, { message: "Inclusion item tidak boleh duplikat" })
   }
 
   validateDateRange(input.startAt, input.endAt)
@@ -251,45 +232,37 @@ export async function updateOpenTrip(id: string, input: UpdateOpenTripInput) {
     publishedAt = new Date()
   }
 
-  // Build update data
-  const data: Prisma.OpenTripUpdateInput = {}
-
-  if (input.slug !== undefined) data.slug = input.slug
-  if (input.title !== undefined) data.title = input.title
-  if (input.excerpt !== undefined) data.excerpt = input.excerpt
-  if (input.description !== undefined) data.description = input.description as Prisma.InputJsonValue
-  if (input.price !== undefined) data.price = input.price
-  if (input.coverImageId !== undefined) data.coverImage = { connect: { id: input.coverImageId } }
-  if (input.startAt) data.startAt = new Date(input.startAt)
-  if (input.endAt) data.endAt = new Date(input.endAt)
-  if (input.status !== undefined) data.status = input.status
+  const data: Prisma.OpenTripUpdateInput = {
+    slug: input.slug,
+    title: input.title,
+    excerpt: input.excerpt,
+    description: input.description as Prisma.InputJsonValue,
+    price: input.price,
+    coverImage: { connect: { id: input.coverImageId } },
+    startAt: new Date(input.startAt),
+    endAt: new Date(input.endAt),
+    status: input.status,
+  }
   if (publishedAt !== existing.publishedAt) data.publishedAt = publishedAt
 
-  // Full-replace nested: delete old, create new
-  if (input.cities !== undefined) {
-    data.cities = {
-      deleteMany: {},
-      create: cities.map((city) => ({
-        cityId: city.cityId,
-        arriveAt: new Date(city.arriveAt),
-        destinations: {
-          create: (city.destinations ?? []).map((dest) => ({
-            destinationId: dest.destinationId,
-            order: dest.order,
-          })),
-        },
-      })),
-    }
+  // Full-replace nested (unconditional)
+  data.cities = {
+    deleteMany: {},
+    create: cities.map((city) => ({
+      cityId: city.cityId,
+      arriveAt: new Date(city.arriveAt),
+      destinations: {
+        // ponytail: order derived from array index — DB @@unique([openTripCityId, order]) satisfied
+        create: (city.destinations ?? []).map((dest, j) => ({
+          destinationId: dest.destinationId,
+          order: j,
+        })),
+      },
+    })),
   }
-
-  if (input.inclusions !== undefined) {
-    data.inclusions = {
-      deleteMany: {},
-      create: inclusions.map((inc) => ({
-        inclusionItemId: inc.inclusionItemId,
-        type: inc.type,
-      })),
-    }
+  data.inclusions = {
+    deleteMany: {},
+    create: inclusions.map((inc) => ({ inclusionItemId: inc.inclusionItemId, type: inc.type })),
   }
 
   return db.openTrip.update({
