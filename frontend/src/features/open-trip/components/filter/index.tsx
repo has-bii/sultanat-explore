@@ -38,7 +38,7 @@ export function OpenTripFilters() {
         value={`${query.sort}-${query.order}`}
         onValueChange={(value) => methods.onSortOrderChange(value)}
       >
-        <SelectTrigger className="w-44">
+        <SelectTrigger className="w-44 min-w-fit">
           <SelectValue placeholder="Urutkan" />
         </SelectTrigger>
         <SelectContent>
