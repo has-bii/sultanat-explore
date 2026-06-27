@@ -19,7 +19,7 @@ const includeList = {
 const includeDetail = {
   coverImage: { select: imageCardSelect },
   cities: {
-    orderBy: { order: "asc" as const },
+    orderBy: { arriveAt: "asc" as const },
     include: {
       city: {
         select: {
@@ -63,30 +63,29 @@ function validateDateRange(startAt?: string, endAt?: string) {
   }
 }
 
-function validateCityDateRanges(cities: { arriveAt: string; departAt?: string }[]) {
+function validateCities(cities: { arriveAt: string; destinations?: { order: number }[] }[]) {
+  // ponytail: per-city duplicate-order guard against P2002, friendly 400 instead of generic 500
   for (const city of cities) {
-    if (city.departAt && new Date(city.arriveAt) > new Date(city.departAt)) {
-      throw new HTTPException(400, { message: "arriveAt kota harus sebelum departAt" })
+    const orders = (city.destinations ?? []).map((d) => d.order)
+    if (new Set(orders).size !== orders.length) {
+      throw new HTTPException(400, { message: "Order destinasi dalam satu kota tidak boleh duplikat" })
     }
   }
 }
 
 function buildNestedCreate(
-  cities: { cityId: string; arriveAt: string; departAt?: string; destinations?: { destinationId: string; visitAt: string }[] }[],
+  cities: { cityId: string; arriveAt: string; destinations?: { destinationId: string; order: number }[] }[],
   inclusions: { inclusionItemId: string; type: "include" | "exclude" }[],
 ) {
   return {
     cities: {
-      create: cities.map((city, cityIndex) => ({
+      create: cities.map((city) => ({
         cityId: city.cityId,
         arriveAt: new Date(city.arriveAt),
-        departAt: city.departAt ? new Date(city.departAt) : null,
-        order: cityIndex,
         destinations: {
-          create: (city.destinations ?? []).map((dest, destIndex) => ({
+          create: (city.destinations ?? []).map((dest) => ({
             destinationId: dest.destinationId,
-            visitAt: new Date(dest.visitAt),
-            order: destIndex,
+            order: dest.order,
           })),
         },
       })),
@@ -97,33 +96,6 @@ function buildNestedCreate(
         type: inc.type,
       })),
     },
-  }
-}
-
-function deriveDateRange(
-  cities: { arriveAt: string; departAt?: string }[],
-  overrideStart?: string,
-  overrideEnd?: string,
-): { startAt: Date; endAt: Date } {
-  if (overrideStart && overrideEnd) {
-    return { startAt: new Date(overrideStart), endAt: new Date(overrideEnd) }
-  }
-
-  if (cities.length === 0) {
-    throw new HTTPException(400, { message: "Minimal satu kota harus diisi" })
-  }
-
-  const arriveAts = cities.map((c) => new Date(c.arriveAt))
-
-  const minStart = new Date(Math.min(...arriveAts.map((d) => d.getTime())))
-  const lastCity = cities[cities.length - 1]
-  const maxEnd = lastCity.departAt
-    ? new Date(lastCity.departAt)
-    : new Date(lastCity.arriveAt)
-
-  return {
-    startAt: overrideStart ? new Date(overrideStart) : minStart,
-    endAt: overrideEnd ? new Date(overrideEnd) : maxEnd,
   }
 }
 
@@ -199,7 +171,7 @@ export async function createOpenTrip(input: CreateOpenTripInput) {
   const cities = input.cities ?? []
   const inclusions = input.inclusions ?? []
 
-  validateCityDateRanges(cities)
+  validateCities(cities)
 
   // Check slug uniqueness
   const slugTaken = await db.openTrip.findUnique({ where: { slug: input.slug } })
@@ -215,18 +187,10 @@ export async function createOpenTrip(input: CreateOpenTripInput) {
     throw new HTTPException(400, { message: "Inclusion item tidak boleh duplikat" })
   }
 
-  // Derive date range
-  const { startAt, endAt } = deriveDateRange(cities, input.startAt, input.endAt)
-
-  // Sort cities by arriveAt for order
-  const sortedCities = [...cities].sort(
-    (a, b) => new Date(a.arriveAt).getTime() - new Date(b.arriveAt).getTime(),
-  )
-
   // Handle publishedAt
   const publishedAt = input.status === "published" ? new Date() : null
 
-  const nested = buildNestedCreate(sortedCities, inclusions)
+  const nested = buildNestedCreate(cities, inclusions)
 
   return db.openTrip.create({
     data: {
@@ -236,8 +200,8 @@ export async function createOpenTrip(input: CreateOpenTripInput) {
       description: input.description as Prisma.InputJsonValue,
       price: input.price,
       coverImageId: input.coverImageId,
-      startAt,
-      endAt,
+      startAt: new Date(input.startAt),
+      endAt: new Date(input.endAt),
       status: input.status,
       publishedAt,
       ...nested,
@@ -271,7 +235,7 @@ export async function updateOpenTrip(id: string, input: UpdateOpenTripInput) {
   const inclusions = input.inclusions ?? []
 
   if (input.cities !== undefined) {
-    validateCityDateRanges(cities)
+    validateCities(cities)
     // Check duplicate inclusions
     const inclusionIds = inclusions.map((i) => i.inclusionItemId)
     if (new Set(inclusionIds).size !== inclusionIds.length) {
@@ -280,19 +244,6 @@ export async function updateOpenTrip(id: string, input: UpdateOpenTripInput) {
   }
 
   validateDateRange(input.startAt, input.endAt)
-
-  // Determine date range
-  let startAt: Date | undefined
-  let endAt: Date | undefined
-  if (input.cities !== undefined && cities.length > 0) {
-    const derived = deriveDateRange(cities, input.startAt, input.endAt)
-    startAt = derived.startAt
-    endAt = derived.endAt
-  } else if (input.startAt) {
-    startAt = new Date(input.startAt)
-  } else if (input.endAt) {
-    endAt = new Date(input.endAt)
-  }
 
   // publishedAt logic: immutable after first set
   let publishedAt = existing.publishedAt
@@ -309,29 +260,22 @@ export async function updateOpenTrip(id: string, input: UpdateOpenTripInput) {
   if (input.description !== undefined) data.description = input.description as Prisma.InputJsonValue
   if (input.price !== undefined) data.price = input.price
   if (input.coverImageId !== undefined) data.coverImage = { connect: { id: input.coverImageId } }
-  if (startAt) data.startAt = startAt
-  if (endAt) data.endAt = endAt
+  if (input.startAt) data.startAt = new Date(input.startAt)
+  if (input.endAt) data.endAt = new Date(input.endAt)
   if (input.status !== undefined) data.status = input.status
   if (publishedAt !== existing.publishedAt) data.publishedAt = publishedAt
 
   // Full-replace nested: delete old, create new
   if (input.cities !== undefined) {
-    const sortedCities = [...cities].sort(
-      (a, b) => new Date(a.arriveAt).getTime() - new Date(b.arriveAt).getTime(),
-    )
-
     data.cities = {
       deleteMany: {},
-      create: sortedCities.map((city, cityIndex) => ({
+      create: cities.map((city) => ({
         cityId: city.cityId,
         arriveAt: new Date(city.arriveAt),
-        departAt: city.departAt ? new Date(city.departAt) : null,
-        order: cityIndex,
         destinations: {
-          create: (city.destinations ?? []).map((dest, destIndex) => ({
+          create: (city.destinations ?? []).map((dest) => ({
             destinationId: dest.destinationId,
-            visitAt: new Date(dest.visitAt),
-            order: destIndex,
+            order: dest.order,
           })),
         },
       })),

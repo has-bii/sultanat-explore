@@ -6,13 +6,12 @@ import { cursorPaginationSchema } from "backend/schemas/query.schema"
 
 const openTripDestinationInputSchema = v.object({
   destinationId: v.pipe(v.string(), v.uuid("ID destinasi tidak valid")),
-  visitAt: v.pipe(v.string(), v.isoTimestamp("visitAt harus ISO timestamp")),
+  order: v.pipe(v.number(), v.integer("Order harus bilangan bulat"), v.minValue(0, "Order minimal 0")),
 })
 
 const openTripCityInputSchema = v.object({
   cityId: v.pipe(v.string(), v.uuid("ID kota tidak valid")),
   arriveAt: v.pipe(v.string(), v.isoTimestamp("arriveAt harus ISO timestamp")),
-  departAt: v.optional(v.pipe(v.string(), v.isoTimestamp("departAt harus ISO timestamp"))),
   destinations: v.optional(v.array(openTripDestinationInputSchema), []),
 })
 
@@ -35,8 +34,8 @@ export const createOpenTripSchema = v.object({
   description: v.any(), // opaque JSON — frontend owns block shapes
   price: v.pipe(v.number(), v.minValue(1, "Harga harus lebih dari 0")),
   coverImageId: v.pipe(v.string(), v.uuid("ID gambar tidak valid")),
-  startAt: v.optional(v.pipe(v.string(), v.isoTimestamp("startAt harus ISO timestamp"))),
-  endAt: v.optional(v.pipe(v.string(), v.isoTimestamp("endAt harus ISO timestamp"))),
+  startAt: v.pipe(v.string(), v.isoTimestamp("startAt harus ISO timestamp")),
+  endAt: v.pipe(v.string(), v.isoTimestamp("endAt harus ISO timestamp")),
   status: v.optional(v.picklist(["draft", "published", "archived"]), "draft"),
   cities: v.optional(v.array(openTripCityInputSchema), []),
   inclusions: v.optional(v.array(openTripInclusionInputSchema), []),

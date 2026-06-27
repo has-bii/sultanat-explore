@@ -201,7 +201,7 @@ model Category {
   @@map("category")
 }
 
-// ─── Article ────────────────────────────────────────────────
+// ─── OpenTrip ────────────────────────────────────────────────
 
 model OpenTrip {
   id           String         @id @default(uuid(7)) @db.Uuid
@@ -233,8 +233,6 @@ model OpenTripCity {
   openTripId String    @db.Uuid
   cityId     String    @db.Uuid
   arriveAt   DateTime
-  departAt   DateTime?
-  order      Int
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
@@ -242,7 +240,6 @@ model OpenTripCity {
   city         City                  @relation(fields: [cityId], references: [id], onDelete: Restrict)
   destinations OpenTripDestination[]
 
-  @@unique([openTripId, order])
   @@index([openTripId])
   @@index([cityId])
   @@map("open_trip_city")
@@ -252,8 +249,7 @@ model OpenTripDestination {
   id             String   @id @default(uuid(7)) @db.Uuid
   openTripCityId String   @db.Uuid
   destinationId  String   @db.Uuid
-  visitAt        DateTime
-  order          Int
+  order Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -294,6 +290,8 @@ model OpenTripInclusion {
   @@index([inclusionItemId])
   @@map("open_trip_inclusion")
 }
+
+// ─── Article ────────────────────────────────────────────────
 
 model Article {
   id          String    @id @default(uuid(7)) @db.Uuid
