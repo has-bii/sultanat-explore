@@ -15,7 +15,6 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import { SelectItem } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
@@ -150,9 +149,9 @@ export function OpenTripForm(props: OpenTripFormProps) {
               {(citiesField) => (
                 <FieldSet>
                   <FieldContent className="gap-4">
-                    {(citiesField.state.value ?? []).map((_, cityIndex) => (
+                    {(citiesField.state.value ?? []).map((city, cityIndex) => (
                       <CityEntry
-                        key={cityIndex}
+                        key={city._key}
                         form={form}
                         cityIndex={cityIndex}
                         onRemove={() => citiesField.removeValue(cityIndex)}
@@ -167,6 +166,7 @@ export function OpenTripForm(props: OpenTripFormProps) {
                         cityId: "",
                         arriveAt: "",
                         destinations: [],
+                        _key: crypto.randomUUID(),
                       })
                     }
                   >
@@ -193,9 +193,9 @@ export function OpenTripForm(props: OpenTripFormProps) {
               {(inclusionsField) => (
                 <FieldSet>
                   <FieldContent className="gap-4">
-                    {(inclusionsField.state.value ?? []).map((_, incIndex) => (
+                    {(inclusionsField.state.value ?? []).map((inc, incIndex) => (
                       <InclusionEntry
-                        key={incIndex}
+                        key={inc._key}
                         form={form}
                         incIndex={incIndex}
                         onRemove={() => inclusionsField.removeValue(incIndex)}
@@ -209,6 +209,7 @@ export function OpenTripForm(props: OpenTripFormProps) {
                       inclusionsField.pushValue({
                         inclusionItemId: "",
                         type: "include" as const,
+                        _key: crypto.randomUUID(),
                       })
                     }
                   >
@@ -231,46 +232,14 @@ export function OpenTripForm(props: OpenTripFormProps) {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
-              <form.Field name="startAt">
-                {(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel>Mulai</FieldLabel>
-                      <Input
-                        type="date"
-                        value={formatDateForInput(field.state.value)}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
-                        onBlur={field.handleBlur}
-                        aria-invalid={isInvalid}
-                      />
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                    </Field>
-                  )
-                }}
-              </form.Field>
-              <form.Field name="endAt">
-                {(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel>Selesai</FieldLabel>
-                      <Input
-                        type="date"
-                        value={formatDateForInput(field.state.value)}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
-                        onBlur={field.handleBlur}
-                        aria-invalid={isInvalid}
-                      />
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                    </Field>
-                  )
-                }}
-              </form.Field>
+              <form.AppField
+                name="startAt"
+                children={(field) => <field.DateField label="Mulai" />}
+              />
+              <form.AppField
+                name="endAt"
+                children={(field) => <field.DateField label="Selesai" />}
+              />
             </div>
           </CardContent>
         </Card>
@@ -324,26 +293,10 @@ function CityEntry({
             children={(field) => <field.CitySelectField label="Kota" placeholder="Pilih kota" />}
           />
 
-          <form.Field name={`cities[${cityIndex}].arriveAt`}>
-            {(field) => {
-              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-              return (
-                <Field data-invalid={isInvalid}>
-                  <FieldLabel>Tanggal Tiba</FieldLabel>
-                  <Input
-                    type="date"
-                    value={formatDateForInput(field.state.value)}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
-                    onBlur={field.handleBlur}
-                    aria-invalid={isInvalid}
-                  />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                </Field>
-              )
-            }}
-          </form.Field>
+          <form.AppField
+            name={`cities[${cityIndex}].arriveAt`}
+            children={(field) => <field.DateField label="Tanggal Tiba" />}
+          />
         </div>
 
         {/* Destinations within this city */}
@@ -355,9 +308,9 @@ function CityEntry({
               const destCount = (destField.state.value ?? []).length
               return (
                 <div className="space-y-3">
-                  {(destField.state.value ?? []).map((_, destIndex) => (
+                  {(destField.state.value ?? []).map((dest, destIndex) => (
                     <DestinationEntry
-                      key={destIndex}
+                      key={dest._key}
                       form={form}
                       cityIndex={cityIndex}
                       destIndex={destIndex}
@@ -376,6 +329,7 @@ function CityEntry({
                       destField.pushValue({
                         destinationId: "",
                         order: destCount,
+                        _key: crypto.randomUUID(),
                       })
                     }
                   >
@@ -456,7 +410,7 @@ function InclusionEntry({
   onRemove: () => void
 }) {
   return (
-    <div className="flex items-end gap-3">
+    <div className="bg-muted/50 flex items-end gap-3 rounded-lg p-3">
       <form.AppField
         name={`inclusions[${incIndex}].inclusionItemId`}
         children={(field) => (
@@ -491,10 +445,4 @@ function InclusionEntry({
   )
 }
 
-// ── Helpers ────────────────────────────────────────────────
 
-function formatDateForInput(value: unknown): string {
-  if (!value || typeof value !== "string") return ""
-  // ponytail: accept both ISO date (YYYY-MM-DD) and ISO datetime (YYYY-MM-DDTHH:MM:SS...) — extract date part
-  return value.length >= 10 ? value.slice(0, 10) : value
-}

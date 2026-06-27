@@ -131,6 +131,29 @@ export function PasswordField({ label, placeholder }: Props) {
   )
 }
 
+export function DateField({ label, description }: Props) {
+  const field = useFieldContext<string>()
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
+  return (
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+      <Input
+        id={field.name}
+        name={field.name}
+        type="date"
+        // ponytail: tolerate both ISO date (YYYY-MM-DD) and ISO datetime (…THH:…) — slice the date part
+        value={typeof field.state.value === "string" && field.state.value.length >= 10 ? field.state.value.slice(0, 10) : ""}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
+        aria-invalid={isInvalid}
+      />
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
+  )
+}
+
 export function ImagePickerField({ label, description }: Props) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -229,6 +252,7 @@ export const baseFieldComponents = {
   TextField,
   TextNumberField,
   TextareaField,
+  DateField,
   PasswordField,
   ImagePickerField,
   SelectField,
