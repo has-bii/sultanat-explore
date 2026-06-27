@@ -11,6 +11,8 @@ import {
 } from "@/features/city/public/lib/fetch"
 import { CityDestinations } from "@/features/destination/public/components/city-destinations"
 import { fetchCityDestinations } from "@/features/destination/public/lib/fetch"
+import { RelatedOpenTrips } from "@/features/open-trip/public/components/related-open-trips"
+import { fetchOpenTripsByCitySlug } from "@/features/open-trip/public/lib/fetch"
 import { notFound } from "next/navigation"
 
 type Props = { params: Promise<{ slug: string }> }
@@ -20,10 +22,11 @@ export default async function DestinationDetailPage({ params }: Props) {
   const city = await fetchCityBySlug(slug)
   if (!city) notFound()
 
-  const [gallery, relatedCities, destinations] = await Promise.all([
+  const [gallery, relatedCities, destinations, openTrips] = await Promise.all([
     fetchCityGallery(city.id),
     fetchRelatedCities(slug),
     fetchCityDestinations(city.id),
+    fetchOpenTripsByCitySlug(slug),
   ])
 
   return (
@@ -40,7 +43,7 @@ export default async function DestinationDetailPage({ params }: Props) {
       <CityDestinations data={destinations} />
 
       {/* 4. Related Open Trips */}
-      {/* <RelatedTrips trips={relatedTrips} /> */}
+      <RelatedOpenTrips data={openTrips} cityName={city.name} />
 
       {/* 5. Other Destinations */}
       <OtherCities data={relatedCities} />

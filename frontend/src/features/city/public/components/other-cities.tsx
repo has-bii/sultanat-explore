@@ -12,7 +12,7 @@ export function OtherCities({ data }: Props) {
   if (data.length === 0) return null
 
   return (
-    <section className="bg-muted py-16 lg:py-20">
+    <section className="py-16 lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>

@@ -1,7 +1,8 @@
 import { ArrowLeft, Calendar, Clock, MapPin, Users } from "lucide-react"
 
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
-import { InclusionSection, ItinerarySection } from "@/features/open-trip"
+import { InclusionSection } from "@/features/open-trip/public/inclusion-section"
+import { ItinerarySection } from "@/features/open-trip/public/itinerary-section"
 import { formatDate, formatPrice, getTripBySlug, openTrips } from "@/features/open-trip/data"
 import type { Metadata } from "next"
 import Image from "next/image"
