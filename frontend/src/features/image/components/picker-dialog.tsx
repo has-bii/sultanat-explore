@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import Image from "next/image"
 
 import { blurhashToDataUrl } from "../lib/blurhash"
@@ -71,24 +72,28 @@ export function ImagePickerDialog({ value, onChange }: Props) {
             onChange={(e) => setSearchLocal(e.target.value)}
           />
         </InputGroup>
-        <Suspense
-          fallback={
-            <div className="@container/main">
-              <ImageGridSkeleton />
+        <ScrollArea className="h-[70vh] rounded-3xl border">
+          <Suspense
+            fallback={
+              <div className="@container/main">
+                <ImageGridSkeleton />
+              </div>
+            }
+          >
+            <div className="p-4">
+              <ImageGrid
+                className="@container/main min-h-0 flex-1"
+                query={{ limit: "10", sort: "createdAt", order: "desc", search }}
+                onClearSearch={() => setSearch("")}
+                selectedId={selectedId || undefined}
+                onImageClick={(image) => {
+                  setSelectedId(image.id)
+                  queryClient.prefetchQuery(getImageDetailQueryOptions(image.id))
+                }}
+              />
             </div>
-          }
-        >
-          <ImageGrid
-            className="@container/main min-h-0 flex-1"
-            query={{ limit: "10", sort: "createdAt", order: "desc", search }}
-            onClearSearch={() => setSearch("")}
-            selectedId={selectedId || undefined}
-            onImageClick={(image) => {
-              setSelectedId(image.id)
-              queryClient.prefetchQuery(getImageDetailQueryOptions(image.id))
-            }}
-          />
-        </Suspense>
+          </Suspense>
+        </ScrollArea>
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary" onClick={() => setSelectedId(null)}>
