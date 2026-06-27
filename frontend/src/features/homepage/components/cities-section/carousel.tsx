@@ -18,14 +18,12 @@ export function CitiesCarousel({ dataPromise }: Props) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
 
   useEffect(() => {
     if (!carouselApi) return
     const updateSelection = () => {
       setCanScrollPrev(carouselApi.canScrollPrev())
       setCanScrollNext(carouselApi.canScrollNext())
-      setCurrentSlide(carouselApi.selectedScrollSnap())
     }
     updateSelection()
     carouselApi.on("select", updateSelection)
