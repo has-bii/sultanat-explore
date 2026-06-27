@@ -1,6 +1,22 @@
 import { MessageCircle, PlaneTakeoff, Search } from "lucide-react"
 
-import { howItWorks } from "../data"
+const howItWorks = [
+  {
+    step: 1,
+    title: "Pilih Trip",
+    description: "Tentukan trip dan tanggal liburan",
+  },
+  {
+    step: 2,
+    title: "Chat WhatsApp",
+    description: "Hubungi kami via WhatsApp untuk konfirmasi pemesanan.",
+  },
+  {
+    step: 3,
+    title: "Berangkat!",
+    description: "Siapkan passport, duduk manis dan nikmati moment liburan mu!!!",
+  },
+]
 
 const iconMap = [Search, MessageCircle, PlaneTakeoff]
 

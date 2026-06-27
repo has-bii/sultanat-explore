@@ -5,7 +5,38 @@ import { useState } from "react"
 
 import Image from "next/image"
 
-import { galleryImages } from "../data"
+const galleryImages = [
+  {
+    src: "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=600&auto=format&fit=crop",
+    alt: "Hot air balloon Cappadocia",
+    span: "col-span-2 row-span-2",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1649333195003-18c47d64ed18?q=80&w=400&auto=format&fit=crop",
+    alt: "Blue Mosque Istanbul",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1580069491658-8220b0e8722d?q=80&w=400&auto=format&fit=crop",
+    alt: "Turkish tea time",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1564407727371-3eece6c58961?q=80&w=400&auto=format&fit=crop",
+    alt: "Istanbul skyline at sunset",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1566371486037-6072a54daf1f?q=80&w=600&auto=format&fit=crop",
+    alt: "Group photo travelers",
+    span: "col-span-1 row-span-2",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1578852952104-54f3dac8b260?q=80&w=400&auto=format&fit=crop",
+    alt: "Antalya coast",
+    span: "col-span-1 row-span-1",
+  },
+]
 
 export function PastTripGallery() {
   const [selected, setSelected] = useState<number | null>(null)

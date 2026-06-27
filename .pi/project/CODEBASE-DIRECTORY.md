@@ -395,8 +395,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── open-trip-list.page.tsx
     │   │   ├── stores/
     │   │   │   ├── action-dialog.store.ts
-    │   │   ├── data.ts
-    │   │   ├── types.ts
     │   ├── private-trip/
     │   │   ├── components/
     │   │   │   ├── benefits-section.tsx

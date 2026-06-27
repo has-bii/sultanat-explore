@@ -1,7 +1,16 @@
 import { Check, MessageCircle, X } from "lucide-react"
 
-import { WHATSAPP_BASE, formatDate, formatPrice } from "../data"
-import { computeDuration, type OpenTripInclusionDetail } from "./lib/fetch"
+import { formatPrice } from "@/utils/format-price"
+import { format } from "date-fns"
+import { id } from "date-fns/locale"
+
+import { type OpenTripInclusionDetail, computeDuration } from "./lib/fetch"
+
+const WHATSAPP_BASE = "https://wa.me/6281234567890?text="
+
+function formatDate(dateStr: string) {
+  return format(dateStr, "PP", { locale: id })
+}
 
 type Props = {
   inclusions: OpenTripInclusionDetail[]
@@ -33,10 +42,7 @@ export function InclusionSection({ inclusions, title, price, startAt, endAt }: P
           </h3>
           <ul className="mt-4 space-y-2.5">
             {includes.map((inc) => (
-              <li
-                key={inc.id}
-                className="text-muted-foreground flex items-center gap-2.5 text-sm"
-              >
+              <li key={inc.id} className="text-muted-foreground flex items-center gap-2.5 text-sm">
                 <span className="bg-primary/10 text-primary flex h-5 w-5 items-center justify-center rounded-full">
                   <Check className="h-3 w-3" />
                 </span>

@@ -2,7 +2,13 @@ import { ArrowLeft, Calendar, Clock, MapPin } from "lucide-react"
 
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import { renderArticleContent } from "@/features/article/public/lib/render-content"
-import { formatDate } from "@/features/open-trip/data"
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+}
 import { InclusionSection } from "@/features/open-trip/public/inclusion-section"
 import { ItinerarySection } from "@/features/open-trip/public/itinerary-section"
 import { computeDuration, fetchOpenTripBySlug } from "@/features/open-trip/public/lib/fetch"

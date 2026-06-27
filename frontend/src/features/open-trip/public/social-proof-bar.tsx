@@ -1,4 +1,9 @@
-import { socialStats } from "../data"
+const socialStats = [
+  { value: "500+", label: "Traveler Puas" },
+  { value: "50+", label: "Trip Selesai" },
+  { value: "4.9", label: "Rating" },
+  { value: "10+", label: "Destinasi" },
+]
 
 export function SocialProofBar() {
   return (

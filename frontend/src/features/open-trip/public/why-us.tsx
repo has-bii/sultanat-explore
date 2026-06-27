@@ -1,4 +1,26 @@
-import { trustBadges } from "../data"
+const trustBadges = [
+  {
+    icon: "💰",
+    title: "Garansi Harga Terbaik",
+    description:
+      "Jaminan harga terbaik & ter worth it sesuai fasilitas dan layanan yang kami berikan",
+  },
+  {
+    icon: "✅",
+    title: "Booking Simple & Mudah",
+    description: "Kami siap melayani dengan sepenuh hati",
+  },
+  {
+    icon: "🌟",
+    title: "Pelayanan Premium",
+    description: "Liburan dengan pelayanan spesial dan fasilitas terbaik",
+  },
+  {
+    icon: "🇮🇩",
+    title: "Guide Indonesia",
+    description: "Tour guide fasih bahasa Indonesia. Tidak ada barrier bahasa.",
+  },
+]
 
 export function WhyUs() {
   return (

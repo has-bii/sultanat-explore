@@ -1,6 +1,12 @@
 import { MapPin } from "lucide-react"
 
-import { formatDate } from "../data"
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+}
 import type { OpenTripCityDetail } from "./lib/fetch"
 
 export function ItinerarySection({ cities }: { cities: OpenTripCityDetail[] }) {
