@@ -1,6 +1,6 @@
 "use client"
 
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
+import { Archive, MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,12 +17,12 @@ import { id } from "date-fns/locale"
 import Link from "next/link"
 
 import type { GetOpenTripsResponse } from "../../queries"
-import { useDeleteOpenTripDialogStore } from "../../stores/delete-open-trip-dialog.store"
+import { useOpenTripActionDialogStore } from "../../stores/action-dialog.store"
 
 type OpenTrip = NonNullable<GetOpenTripsResponse["data"]["data"][number]>
 
 export function OpenTripTableRow({ openTrip }: { openTrip: OpenTrip }) {
-  const { onOpen: openDelete } = useDeleteOpenTripDialogStore()
+  const { onOpen } = useOpenTripActionDialogStore()
 
   const statusVariant =
     openTrip.status === "published"
@@ -30,6 +30,9 @@ export function OpenTripTableRow({ openTrip }: { openTrip: OpenTrip }) {
       : openTrip.status === "archived"
         ? "outline"
         : "secondary"
+
+  const isPublished = openTrip.status === "published"
+  const isArchived = openTrip.status === "archived"
 
   return (
     <TableRow>
@@ -76,10 +79,23 @@ export function OpenTripTableRow({ openTrip }: { openTrip: OpenTrip }) {
                 Edit
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => openDelete(openTrip.id)} variant="destructive">
-              <Trash2 />
-              Hapus
-            </DropdownMenuItem>
+            {!isArchived && (
+              <DropdownMenuItem
+                onClick={() => onOpen({ id: openTrip.id, mode: "archive" })}
+              >
+                <Archive />
+                Arsipkan
+              </DropdownMenuItem>
+            )}
+            {!isPublished && (
+              <DropdownMenuItem
+                onClick={() => onOpen({ id: openTrip.id, mode: "delete" })}
+                variant="destructive"
+              >
+                <Trash2 />
+                Hapus
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>

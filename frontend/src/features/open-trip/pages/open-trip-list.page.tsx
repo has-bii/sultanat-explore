@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 import { OpenTripFilters } from "../components/filter"
-import { DeleteOpenTripDialog } from "../components/dialog/delete"
+import { OpenTripActionDialog } from "../components/dialog/delete"
 import { OpenTripTable } from "../components/table"
 import { useOpenTripFilters } from "../hooks/use-open-trip-filters"
 import { type GetOpenTripsQuery } from "../queries"
@@ -39,7 +39,7 @@ export function OpenTripListPage() {
         <OpenTripTable query={tableQuery} />
       </Suspense>
 
-      <DeleteOpenTripDialog />
+      <OpenTripActionDialog />
     </>
   )
 }

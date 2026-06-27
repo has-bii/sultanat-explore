@@ -1,18 +1,19 @@
 "use client"
 
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Undo2 } from "lucide-react"
+import { Archive, Trash2, Undo2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 import type { CreateOpenTripInput } from "backend/modules/open-trip/open-trip.schema"
 
-import { DeleteOpenTripDialog } from "../components/dialog/delete"
+import { OpenTripActionDialog } from "../components/dialog/delete"
 import { OpenTripForm } from "../components/form"
 import { useOpenTripForm } from "../hooks/use-open-trip-form"
 import { useUpdateOpenTrip } from "../mutations/update-open-trip.mutation"
 import { getOpenTripQueryOptions } from "../queries"
+import { useOpenTripActionDialogStore } from "../stores/action-dialog.store"
 
 interface Props {
   openTripId: string
@@ -21,6 +22,10 @@ interface Props {
 export function EditOpenTripPage({ openTripId }: Props) {
   const { data: openTrip } = useSuspenseQuery(getOpenTripQueryOptions(openTripId))
   const { mutate, isPending, error } = useUpdateOpenTrip(openTripId)
+  const { onOpen } = useOpenTripActionDialogStore()
+
+  const isPublished = openTrip.status === "published"
+  const isArchived = openTrip.status === "archived"
 
   const form = useOpenTripForm({
     defaultValues: {
@@ -55,7 +60,24 @@ export function EditOpenTripPage({ openTripId }: Props) {
       <div className="flex items-center justify-between">
         <h1 className="line-clamp-1 text-2xl font-semibold">{openTrip.title}</h1>
         <div className="inline-flex items-center gap-2">
-          <DeleteOpenTripDialog />
+          {!isArchived && (
+            <Button
+              variant="outline"
+              onClick={() => onOpen({ id: openTripId, mode: "archive" })}
+            >
+              <Archive data-icon="inline-start" />
+              <span>Arsipkan</span>
+            </Button>
+          )}
+          {!isPublished && (
+            <Button
+              variant="destructive"
+              onClick={() => onOpen({ id: openTripId, mode: "delete" })}
+            >
+              <Trash2 data-icon="inline-start" />
+              <span>Hapus</span>
+            </Button>
+          )}
           <Button asChild variant="secondary">
             <Link href="/admin/dashboard/open-trip">
               <Undo2 data-icon="inline-start" />
@@ -65,6 +87,7 @@ export function EditOpenTripPage({ openTripId }: Props) {
         </div>
       </div>
 
+      <OpenTripActionDialog />
       <OpenTripForm form={form} mode="edit" isPending={isPending} error={error} />
     </div>
   )

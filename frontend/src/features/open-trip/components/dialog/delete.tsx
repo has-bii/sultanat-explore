@@ -11,16 +11,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
+import { useArchiveOpenTrip } from "../../mutations/archive-open-trip.mutation"
 import { useDeleteOpenTrip } from "../../mutations/delete-open-trip.mutation"
-import { useDeleteOpenTripDialogStore } from "../../stores/delete-open-trip-dialog.store"
+import { useOpenTripActionDialogStore } from "../../stores/action-dialog.store"
 
-export function DeleteOpenTripDialog() {
-  const { open, meta, onClose } = useDeleteOpenTripDialogStore()
-  const { mutate, isPending } = useDeleteOpenTrip()
+export function OpenTripActionDialog() {
+  const { open, meta, onClose } = useOpenTripActionDialogStore()
+  const archiveMutation = useArchiveOpenTrip()
+  const deleteMutation = useDeleteOpenTrip()
 
-  const handleDelete = () => {
+  const isArchive = meta?.mode === "archive"
+  const isPending = isArchive ? archiveMutation.isPending : deleteMutation.isPending
+
+  const handleConfirm = () => {
     if (!meta) return
-    mutate(meta, {
+
+    const mutation = isArchive ? archiveMutation : deleteMutation
+    mutation.mutate(meta.id, {
       onSuccess: () => {
         onClose()
       },
@@ -31,15 +38,29 @@ export function DeleteOpenTripDialog() {
     <AlertDialog open={open} onOpenChange={(open) => !open && onClose()}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Open Trip?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {isArchive ? "Arsipkan Open Trip?" : "Hapus Open Trip Secara Permanen?"}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Open trip akan diarsipkan (soft delete). Anda dapat memulihkannya nanti.
+            {isArchive
+              ? "Trip tidak akan tampil di halaman publik. Anda dapat memulihkannya nanti."
+              : "Tindakan ini tidak dapat dibatalkan. Data open trip akan dihapus secara permanen."}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete} disabled={isPending}>
-            {isPending ? "Menghapus..." : "Hapus"}
+          <AlertDialogAction
+            onClick={handleConfirm}
+            disabled={isPending}
+            variant={isArchive ? "default" : "destructive"}
+          >
+            {isPending
+              ? isArchive
+                ? "Mengarsipkan..."
+                : "Menghapus..."
+              : isArchive
+                ? "Arsipkan"
+                : "Hapus Permanen"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
