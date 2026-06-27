@@ -34,7 +34,7 @@ const includeList = {
 const includeDetail = includeList
 
 export async function listArticles(params: ArticleQueryOutput) {
-  const { cursor, limit, search, category, sort, order, published } = params
+  const { cursor, limit, search, category, sort, order, published, featured } = params
 
   let categoryId: string | undefined
   if (category) {
@@ -47,6 +47,7 @@ export async function listArticles(params: ArticleQueryOutput) {
 
   const where: Prisma.ArticleWhereInput = {
     ...(published !== undefined ? { published } : {}),
+    ...(featured !== undefined ? { featured } : {}),
     ...(categoryId ? { categoryId } : {}),
     ...(search
       ? {
