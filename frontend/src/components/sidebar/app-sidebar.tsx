@@ -64,6 +64,10 @@ const navMain = [
         title: "Overview",
         url: "/admin/dashboard/image",
       },
+      {
+        title: "Galeri",
+        url: "/admin/dashboard/image/gallery",
+      },
     ],
   },
   {

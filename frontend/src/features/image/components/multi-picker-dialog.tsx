@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { ImageGrid } from "./grid"
 import { ImageGridSkeleton } from "./grid/skeleton"
@@ -109,23 +110,25 @@ export function MultiImagePickerDialog({ selectedImages, onChange, max = DEFAULT
           />
         </InputGroup>
 
-        <Suspense
-          fallback={
-            <div className="@container/main">
-              <ImageGridSkeleton />
-            </div>
-          }
-        >
-          <ImageGrid
-            className="@container/main min-h-0 flex-1"
-            query={{ limit: "10", sort: "createdAt", order: "desc", search }}
-            onClearSearch={() => setSearch("")}
-            selectedIds={selectedIds}
-            onImageCheckedChange={({ id, url }) =>
-              handleToggleImage({ id, url })
+        <ScrollArea className="h-[70vh] rounded-3xl border">
+          <Suspense
+            fallback={
+              <div className="@container/main">
+                <ImageGridSkeleton />
+              </div>
             }
-          />
-        </Suspense>
+          >
+            <div className="p-4">
+              <ImageGrid
+                className="@container/main min-h-0 flex-1"
+                query={{ limit: "10", sort: "createdAt", order: "desc", search }}
+                onClearSearch={() => setSearch("")}
+                selectedIds={selectedIds}
+                onImageCheckedChange={({ id, url }) => handleToggleImage({ id, url })}
+              />
+            </div>
+          </Suspense>
+        </ScrollArea>
 
         <DialogFooter>
           <DialogClose asChild>
