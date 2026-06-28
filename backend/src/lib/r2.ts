@@ -1,4 +1,10 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { HTTPException } from "hono/http-exception"
 import { randomUUID } from "node:crypto"
@@ -34,6 +40,11 @@ export function r2KeyFromUrl(url: string): string {
   return u.pathname.replace(/^\//, "")
 }
 
+/** Swap the extension of a key (e.g. `images/2026/06/uuid.jpg` → `...uuid.webp`). */
+export function r2KeyWithExt(key: string, ext: string): string {
+  return key.replace(/\.[^.]+$/, `.${ext}`)
+}
+
 export function extByContentType(ct: string): string {
   switch (ct) {
     case "image/jpeg":
@@ -54,10 +65,7 @@ export function imageKey(ext: string): string {
   return `images/${year}/${month}/${randomUUID()}.${ext}`
 }
 
-export async function r2PresignPut(
-  key: string,
-  contentType: string,
-): Promise<{ url: string }> {
+export async function r2PresignPut(key: string, contentType: string): Promise<{ url: string }> {
   // R2 does not support presigned POST (S3 POST policy) — returns 501
   // NotImplemented. Use presigned PUT instead. ContentType is bound into
   // the signature; the client MUST send the same Content-Type header on
@@ -87,6 +95,28 @@ export async function r2Upload(key: string, body: Buffer, contentType: string): 
     }),
   )
   return `https://${PUBLIC_DOMAIN}/${key}`
+}
+
+export async function r2GetObject(key: string): Promise<Buffer> {
+  const res = await client.send(new GetObjectCommand({ Bucket: BUCKET, Key: key }))
+  const body = res.Body
+  if (!body) return Buffer.alloc(0)
+  // ponytail: R2 SDK Body is a stream; collect into one Buffer. Sizes here are ≤5MB (presign cap).
+  const chunks: Buffer[] = []
+  for await (const chunk of body as unknown as AsyncIterable<Buffer>) {
+    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk)
+  }
+  return Buffer.concat(chunks)
+}
+
+export async function r2Head(key: string): Promise<{ contentLength: number } | null> {
+  try {
+    const out = await client.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }))
+    return { contentLength: out.ContentLength ?? 0 }
+  } catch {
+    // ponytail: object not uploaded yet (404) or R2 transient error — caller decides
+    return null
+  }
 }
 
 export async function r2Delete(key: string): Promise<void> {

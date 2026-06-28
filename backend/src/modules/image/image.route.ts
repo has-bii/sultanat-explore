@@ -16,6 +16,7 @@ import {
   getImage,
   listImages,
   presignImages,
+  processExistingImage,
   updateImage,
 } from "backend/modules/image/image.service"
 import { paramIdSchema } from "backend/schemas/param.schema"
@@ -48,6 +49,15 @@ const imageRoute = new Hono()
     const images = await confirmImages(valid.items)
     return c.json(successResponse(images, "Foto berhasil disimpan"), 201)
   })
+  .post(
+    "/:id/process",
+    sValidator("param", paramIdSchema),
+    async (c) => {
+      const param = c.req.valid("param")
+      const image = await processExistingImage(param.id)
+      return c.json(successResponse(image, "Foto berhasil diproses"))
+    },
+  )
   .patch(
     "/:id",
     sValidator("param", paramIdSchema),

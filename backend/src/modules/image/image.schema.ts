@@ -3,7 +3,7 @@ import * as v from "valibot"
 import { cursorPaginationSchema, orderDirectionSchema } from "backend/schemas/query.schema"
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"] as const
-const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+export const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5MB — enforced at confirm via R2 HeadObject
 
 export const imageQuerySchema = v.object({
   ...cursorPaginationSchema.entries,
@@ -17,11 +17,11 @@ export const presignImageSchema = v.object({
     v.array(
       v.object({
         contentType: v.picklist(ACCEPTED_TYPES),
-        fileSize: v.pipe(v.number(), v.integer(), v.maxValue(MAX_SIZE)),
+        fileSize: v.pipe(v.number(), v.integer(), v.maxValue(MAX_IMAGE_SIZE)),
       }),
     ),
     v.minLength(1, "At least one file is required"),
-    v.maxLength(10, "Maximum 10 files allowed"),
+    v.maxLength(3, "Maximum 3 files allowed"),
   ),
 })
 
@@ -30,12 +30,12 @@ export const confirmImageSchema = v.object({
     v.array(
       v.object({
         key: v.pipe(v.string(), v.startsWith("images/")),
-        fileSize: v.pipe(v.number(), v.integer(), v.maxValue(MAX_SIZE)),
+        fileSize: v.pipe(v.number(), v.integer(), v.maxValue(MAX_IMAGE_SIZE)),
         alt: v.optional(v.pipe(v.string(), v.trim())),
       }),
     ),
     v.minLength(1, "At least one item is required"),
-    v.maxLength(10, "Maximum 10 items allowed"),
+    v.maxLength(3, "Maximum 3 items allowed"),
   ),
 })
 

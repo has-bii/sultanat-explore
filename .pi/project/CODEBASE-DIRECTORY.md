@@ -316,6 +316,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── image-card.tsx
     │   │   │   ├── multi-picker-dialog.tsx
     │   │   │   ├── picker-dialog.tsx
+    │   │   │   ├── process-image-button.tsx
     │   │   │   ├── selection-bar.tsx
     │   │   │   ├── upload-dialog/
     │   │   │   │   ├── dnd-images.tsx
@@ -331,6 +332,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── confirm-images.mutation.ts
     │   │   │   ├── delete-image.mutation.ts
     │   │   │   ├── presign-images.mutation.ts
+    │   │   │   ├── process-image.mutation.ts
     │   │   │   ├── update-image.mutation.ts
     │   │   ├── queries/
     │   │   │   ├── index.ts
@@ -520,6 +522,7 @@ backend/                           # Workspace package: API + DB + Auth
     ├── lib/
     │   ├── auth.ts  # Better Auth config (email+password, resend)
     │   ├── db.ts  # PrismaClient with Neon adapter
+    │   ├── image-processing.ts  # Sharp resize + blurHash pipeline
     │   ├── logger.ts  # Server logger
     │   ├── paginate.ts  # Cursor pagination helper
     │   ├── prisma-fragments.ts  # Prisma select fragments

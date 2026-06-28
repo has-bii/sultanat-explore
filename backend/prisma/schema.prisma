@@ -106,6 +106,7 @@ model Image {
   url       String
   alt       String?
   fileSize  Int
+  blurHash  String?
   createdAt DateTime @default(now())
 
   cities        City[]
