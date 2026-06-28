@@ -1,5 +1,5 @@
 export { AboutSection } from "./components/about-section"
 export { CitiesSection } from "./components/cities-section"
+export { GallerySection } from "./components/gallery-section"
 export { HeroSection } from "./components/hero-section"
 export { ServicesSection } from "./components/services-section"
-export { TestimonialsSection } from "./components/testimonials-section"

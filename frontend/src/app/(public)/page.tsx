@@ -4,9 +4,9 @@ import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import {
   AboutSection,
   CitiesSection,
+  GallerySection,
   HeroSection,
   ServicesSection,
-  TestimonialsSection,
 } from "@/features/homepage"
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <AboutSection />
       <ServicesSection />
       <CitiesSection />
-      <TestimonialsSection />
+      <GallerySection />
       {/* <FAQSection /> */}
       <CTASection />
       <FloatingWhatsApp />

@@ -97,6 +97,9 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   ├── faq-section.tsx
     │   ├── floating-whatsapp.tsx
     │   ├── footer.tsx
+    │   ├── gallery-column.tsx
+    │   ├── gallery-scroll-section-skeleton.tsx
+    │   ├── gallery-scroll-section.tsx
     │   ├── header.tsx
     │   ├── hero-3.tsx
     │   ├── main-page.tsx
@@ -301,11 +304,11 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   │   ├── carousel.tsx
     │   │   │   │   ├── index.tsx
     │   │   │   │   ├── skeleton.tsx
+    │   │   │   ├── gallery-section.tsx
     │   │   │   ├── hero-section.tsx
     │   │   │   ├── open-trip-section.tsx
     │   │   │   ├── private-trip-section.tsx
     │   │   │   ├── services-section.tsx
-    │   │   │   ├── testimonials-section.tsx
     │   │   │   ├── umrah-section.tsx
     │   │   ├── data.ts
     │   │   └── index.ts
