@@ -83,6 +83,7 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── sonner.tsx
     │   │   ├── switch.tsx
     │   │   ├── table.tsx
+    │   │   ├── tabs.tsx
     │   │   ├── textarea.tsx
     │   │   ├── toggle-group.tsx
     │   │   ├── toggle.tsx
@@ -285,6 +286,14 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   │   ├── faq-page-content.tsx
     │   │   ├── data.ts
     │   │   └── index.ts
+    │   ├── gallery/
+    │   │   ├── components/
+    │   │   │   ├── gallery-card-skeleton.tsx
+    │   │   │   ├── gallery-manager.tsx
+    │   │   ├── mutations/
+    │   │   │   ├── sync-gallery.mutation.ts
+    │   │   ├── queries/
+    │   │   │   ├── index.ts
     │   ├── homepage/
     │   │   ├── components/
     │   │   │   ├── about-section.tsx
@@ -550,6 +559,10 @@ backend/                           # Workspace package: API + DB + Auth
         │   ├── destination.route.ts
         │   ├── destination.schema.ts
         │   ├── destination.service.ts
+        ├── gallery/
+        │   ├── gallery.route.ts
+        │   ├── gallery.schema.ts
+        │   ├── gallery.service.ts
         ├── image/
         │   ├── image.route.ts
         │   ├── image.schema.ts

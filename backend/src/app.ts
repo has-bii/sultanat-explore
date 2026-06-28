@@ -10,6 +10,7 @@ import categoryRoute from "backend/modules/category/category.route"
 import cityCategoryRoute from "backend/modules/city-category/city-category.route"
 import cityRoute from "backend/modules/city/city.route"
 import destinationRoute from "backend/modules/destination/destination.route"
+import galleryRoute from "backend/modules/gallery/gallery.route"
 import imageRoute from "backend/modules/image/image.route"
 import inclusionItemRoute from "backend/modules/inclusion-item/inclusion-item.route"
 import openTripRoute from "backend/modules/open-trip/open-trip.route"
@@ -61,6 +62,7 @@ app.use("*", async (c, next) => {
 })
 
 const routes = app
+  .route("/gallery", galleryRoute)
   .route("/images", imageRoute)
   .route("/cities", cityRoute)
   .route("/destinations", destinationRoute)

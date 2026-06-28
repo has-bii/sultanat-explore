@@ -34,6 +34,15 @@ enum InclusionType {
   @@map("inclusion_type")
 }
 
+enum GalleryType {
+  home
+  open_trip
+  private_trip
+  umrah
+
+  @@map("gallery_type")
+}
+
 model User {
   id            String    @id @default(uuid(7)) @db.Uuid
   name          String
@@ -109,13 +118,31 @@ model Image {
   blurHash  String?
   createdAt DateTime @default(now())
 
-  cities        City[]
-  destinations  Destination[]
-  cityGalleries CityImage[]
-  articles      Article[]
-  openTrips     OpenTrip[]
+  cities         City[]
+  destinations   Destination[]
+  cityGalleries  CityImage[]
+  articles       Article[]
+  openTrips      OpenTrip[]
+  galleryImages  GalleryImage[]
 
   @@map("image")
+}
+
+// ─── Gallery ──────────────────────────────────────────────────
+
+model GalleryImage {
+  id        String      @id @default(uuid(7)) @db.Uuid
+  imageId   String      @db.Uuid
+  type      GalleryType
+  order     Int         @default(0)
+  createdAt DateTime    @default(now())
+
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@unique([type, order])
+  @@index([imageId])
+  @@index([type])
+  @@map("gallery_image")
 }
 
 // ─── Destination ───────────────────────────────────────────────
