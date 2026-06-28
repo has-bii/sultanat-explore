@@ -3,11 +3,11 @@ import { Suspense } from "react"
 
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { GallerySection } from "@/features/homepage"
 import { TripList } from "@/features/open-trip/public/components/trip-list"
 import { TripListSkeleton } from "@/features/open-trip/public/components/trip-list-skeleton"
 import { HowItWorks } from "@/features/open-trip/public/how-it-works"
 import { OpenTripExplanationA as OpenTripExplanation } from "@/features/open-trip/public/open-trip-explanation"
-import { PastTripGallery } from "@/features/open-trip/public/past-trip-gallery"
 import { WhyUs } from "@/features/open-trip/public/why-us"
 import type { Metadata } from "next"
 
@@ -57,7 +57,7 @@ export default async function OpenTripPage() {
         </div>
       </section>
 
-      <PastTripGallery />
+      <GallerySection type="open_trip" title="Galeri Open Trip" subtitle="Dokumentasi perjalanan traveler kami" />
 
       <WhyUs />
 

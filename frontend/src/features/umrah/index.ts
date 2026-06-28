@@ -1,4 +1,3 @@
-export { Gallery } from "./components/gallery"
 export { InclusionGrid } from "./components/inclusion-grid"
 export { ItineraryPreview } from "./components/itinerary-preview"
 export { PackageCards } from "./components/package-cards"

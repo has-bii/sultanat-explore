@@ -1,7 +1,6 @@
 import type {
   AdvisorProfile,
   FAQ,
-  GalleryImage,
   Inclusion,
   ItineraryDay,
   PackageTier,
@@ -235,41 +234,6 @@ export const processSteps: ProcessStep[] = [
     step: 4,
     title: "Berangkat!",
     description: "Pembimbing menjemput Anda. Tinggal ikuti — semua sudah kami atur.",
-  },
-]
-
-// ─── Gallery Images ──────────────────────────────────────────
-
-export const galleryImages: GalleryImage[] = [
-  {
-    src: "https://images.unsplash.com/photo-1580109158791-5cfcb80419e4?w=600&h=400&fit=crop",
-    alt: "Masjidil Haram Makkah",
-    span: "row-span-2",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1580109158791-5cfcb80419e4?w=400&h=400&fit=crop",
-    alt: "Jamaah thawaf Ka'bah",
-    span: "",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1580109158791-5cfcb80419e4?w=400&h=400&fit=crop",
-    alt: "Masjid Nabawi Madinah",
-    span: "",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1580109158791-5cfcb80419e4?w=600&h=400&fit=crop",
-    alt: "Suasana ibadah di Masjid",
-    span: "row-span-2",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1580109158791-5cfcb80419e4?w=400&h=400&fit=crop",
-    alt: "Makanan halal jamaah",
-    span: "",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1580109158791-5cfcb80419e4?w=400&h=400&fit=crop",
-    alt: "Jamaah ziarah Madinah",
-    span: "",
   },
 ]
 

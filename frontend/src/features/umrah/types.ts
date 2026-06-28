@@ -48,11 +48,6 @@ export type TrustStat = {
   label: string
 }
 
-export type GalleryImage = {
-  src: string
-  alt: string
-  span: string
-}
 
 export type AdvisorProfile = {
   name: string

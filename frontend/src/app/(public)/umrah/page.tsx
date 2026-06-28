@@ -3,7 +3,6 @@ import { Moon } from "lucide-react"
 import { CTASection } from "@/components/cta-section"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import {
-  Gallery,
   InclusionGrid,
   ItineraryPreview,
   PackageCards,
@@ -13,6 +12,7 @@ import {
   UmrahExplanation,
   UmrahFAQ,
 } from "@/features/umrah"
+import { GallerySection } from "@/features/homepage"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -65,7 +65,7 @@ export default function UmrahPage() {
       <ProcessTimeline />
 
       {/* 8. Gallery */}
-      <Gallery />
+      <GallerySection type="umrah" title="Galeri Umrah" subtitle="Kenangan perjalanan ibadah bersama SultanatExplore" />
 
       {/* 9. Testimonials */}
       <Testimonials />

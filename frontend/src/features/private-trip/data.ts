@@ -4,7 +4,6 @@ import type {
   City,
   ComparisonItem,
   FAQ,
-  GalleryImage,
   ProcessStep,
   SampleItinerary,
   Service,
@@ -353,41 +352,6 @@ export const trustStats: TrustStat[] = [
   { value: "1,200+", label: "Traveler Puas" },
   { value: "4.9★", label: "Rating" },
   { value: "98%", label: "Repeat Customer" },
-]
-
-// ─── Gallery Images ──────────────────────────────────────────
-
-export const galleryImages: GalleryImage[] = [
-  {
-    src: "https://images.unsplash.com/photo-1564407727371-3eece6c58961?w=600&h=400&fit=crop",
-    alt: "Private dinner Istanbul",
-    span: "row-span-2",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?w=400&h=400&fit=crop",
-    alt: "Balon udara Cappadocia",
-    span: "",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1578852952104-54f3dac8b260?w=400&h=400&fit=crop",
-    alt: "Pantai Antalya privat",
-    span: "",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&h=400&fit=crop",
-    alt: "Sightseeing Istanbul rombongan",
-    span: "row-span-2",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1720974613069-690834d3d08d?w=400&h=400&fit=crop",
-    alt: "Pamukkale private tour",
-    span: "",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1548684486-f61d163b2f6a?w=400&h=400&fit=crop",
-    alt: "Villa privat Bursa",
-    span: "",
-  },
 ]
 
 // ─── Helper ──────────────────────────────────────────────────

@@ -1,6 +1,5 @@
 export { BenefitsSection } from "./components/benefits-section"
 export { ComparisonTable } from "./components/comparison-table"
-export { PastTripGallery } from "./components/past-trip-gallery"
 export { PrivateFAQ } from "./components/private-faq"
 export { PrivateTripExplanation } from "./components/private-trip-explanation"
 export { ProcessTimeline } from "./components/process-timeline"

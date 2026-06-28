@@ -5,7 +5,6 @@ import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import {
   BenefitsSection,
   ComparisonTable,
-  PastTripGallery,
   PrivateFAQ,
   PrivateTripExplanation,
   ProcessTimeline,
@@ -15,6 +14,7 @@ import {
   TravelAdvisor,
   TripBuilderWizard,
 } from "@/features/private-trip"
+import { GallerySection } from "@/features/homepage"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -71,7 +71,7 @@ export default function PrivateTripPage() {
       <SampleItinerary />
 
       {/* 9. Gallery */}
-      <PastTripGallery />
+      <GallerySection type="private_trip" title="Galeri Private Trip" subtitle="Momen perjalanan privat bersama traveler kami" />
 
       {/* 10. Testimonials */}
       <TestimonialsSection />

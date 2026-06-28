@@ -416,7 +416,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── components/
     │   │   │   ├── benefits-section.tsx
     │   │   │   ├── comparison-table.tsx
-    │   │   │   ├── past-trip-gallery.tsx
     │   │   │   ├── private-faq.tsx
     │   │   │   ├── private-trip-explanation.tsx
     │   │   │   ├── process-timeline.tsx
@@ -446,7 +445,6 @@ frontend/                         # Next.js app (Next.js 16, App Router)
     │   │   ├── types.ts
     │   ├── umrah/
     │   │   ├── components/
-    │   │   │   ├── gallery.tsx
     │   │   │   ├── inclusion-grid.tsx
     │   │   │   ├── itinerary-preview.tsx
     │   │   │   ├── package-cards.tsx
