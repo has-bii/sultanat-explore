@@ -1,5 +1,3 @@
-import { Suspense } from "react"
-
 import { Header, HeaderBreadcrumb, HeaderBreadcrumbItem, HeaderLeft } from "@/components/header"
 import { MainPage, MainPageContent } from "@/components/main-page"
 import { GalleryManager } from "@/features/gallery/components/gallery-manager"
