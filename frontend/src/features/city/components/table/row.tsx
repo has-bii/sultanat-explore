@@ -30,7 +30,7 @@ export function CityTableRow({ dest }: { dest: CityRow }) {
               width={40}
               height={40}
               placeholder="blur"
-              blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
+              blurDataURL={blurhashToDataUrl(dest.image.blurHash ?? PLACEHOLDER_BLURHASH)}
             />
           </ItemMedia>
           <ItemContent>

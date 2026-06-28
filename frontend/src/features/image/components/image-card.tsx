@@ -38,7 +38,7 @@ export function ImageCard(props: ImageCardProps) {
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
           placeholder="blur"
-          blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
+          blurDataURL={blurhashToDataUrl(image.blurHash ?? PLACEHOLDER_BLURHASH)}
           className="object-cover"
         />
       </figure>

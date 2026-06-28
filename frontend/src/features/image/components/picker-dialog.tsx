@@ -147,7 +147,7 @@ function SelectedImage({ id, onOpenImagePicker }: SelectedImageProps) {
           fill
           sizes="(max-width: 640px) 100vw, 384px"
           placeholder="blur"
-          blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
+          blurDataURL={blurhashToDataUrl(data.blurHash ?? PLACEHOLDER_BLURHASH)}
           className="object-cover"
         />
         <Button

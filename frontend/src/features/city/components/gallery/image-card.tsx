@@ -30,6 +30,7 @@ export function ImageCard({ data, onDelete, isDragging }: ImageCardProp) {
         draggable={false}
         className="pointer-events-none size-full object-cover object-center"
         placeholder="blur"
+        // ponytail: gallery local state is {id,url} (picker pipeline); 300px drag-thumb — placeholder is fine here
         blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
       />
       <div className="pointer-events-auto absolute top-2 right-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">

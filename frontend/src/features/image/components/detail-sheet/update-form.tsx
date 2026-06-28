@@ -14,6 +14,7 @@ import { PLACEHOLDER_BLURHASH } from "../../lib/placeholder-blurhash"
 import { useUpdateImage } from "../../mutations/update-image.mutation"
 import { getImageDetailQueryOptions } from "../../queries"
 import { ImageDeleteDialog } from "../delete-dialog"
+import { ProcessImageButton } from "../process-image-button"
 
 type Props = {
   imageId: string
@@ -40,7 +41,7 @@ export function ImageUpdateForm({ imageId, onSuccess, onDeleteSuccess }: Props) 
             fill
             sizes="(max-width: 640px) 100vw, 384px"
             placeholder="blur"
-            blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
+            blurDataURL={blurhashToDataUrl(data.blurHash ?? PLACEHOLDER_BLURHASH)}
             className="object-contain"
           />
         </figure>
@@ -86,6 +87,7 @@ export function ImageUpdateForm({ imageId, onSuccess, onDeleteSuccess }: Props) 
       </div>
 
       <SheetFooter className="border-t">
+        {!data.blurHash && <ProcessImageButton imageId={imageId} />}
         <ImageDeleteDialog imageId={imageId} onSuccess={onDeleteSuccess} />
       </SheetFooter>
     </>

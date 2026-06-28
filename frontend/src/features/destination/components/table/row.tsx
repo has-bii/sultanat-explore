@@ -43,7 +43,7 @@ export function DestinationTableRow({ destination }: DestinationTableRowProps) {
               width={40}
               height={40}
               placeholder="blur"
-              blurDataURL={blurhashToDataUrl(PLACEHOLDER_BLURHASH)}
+              blurDataURL={blurhashToDataUrl(destination.image.blurHash ?? PLACEHOLDER_BLURHASH)}
             />
           </ItemMedia>
           <ItemContent>
